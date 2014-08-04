@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Service Url</string>
+			<key>Key</key>
+			<string>url_preference</string>
+		</dict>
+		<dict>
+			<key>Key</key>
+			<string>licencekey_preference</string>
+			<key>IsSecure</key>
+			<true/>
+			<key>Title</key>
+			<string>License Key</string>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Company Name</string>
+			<key>Key</key>
+			<string>company_preference</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Theme</string>
+			<key>Key</key>
+			<string>Theme_preference</string>
+			<key>DefaultValue</key>
+			<string></string>
+			<key>Titles</key>
+			<array>
+				<string>Red</string>
+				<string>Green</string>
+				<string>Black</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>0</string>
+				<string>1</string>
+				<string>2</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Offline Mode</string>
+			<key>Key</key>
+			<string>offline_mode</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Thumbnail Mode</string>
+			<key>Key</key>
+			<string>thumbnail_mode</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Sign Mode</string>
+			<key>Key</key>
+			<string>sign_mode</string>
+			<key>DefaultValue</key>
+			<string>BuiltInSign</string>
+			<key>Titles</key>
+			<array>
+				<string>Custom</string>
+				<string>BuiltIn</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>CustomSign</string>
+				<string>BuiltInSign</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Annotations Mode</string>
+			<key>Key</key>
+			<string>annotations_mode</string>
+			<key>DefaultValue</key>
+			<string>BuiltInAnnotations</string>
+			<key>Titles</key>
+			<array>
+				<string>Custom</string>
+				<string>BuiltIn</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>CustomAnnotations</string>
+				<string>BuiltInAnnotations</string>
+			</array>
+		</dict>
+	</array>
+	<key>StringsTable</key>
+	<string>Root</string>
+</dict>
+</plist>
