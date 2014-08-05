@@ -90,6 +90,8 @@
 "Progress.Connecting"="الإتصال ...";
 
 "Alert"="إنذار";
+"Alert.downloadSuccess"="تم التحميل بنجاح";
+"Alert.syncSuccess"="تمت المزامنة بنجاح";
 "Alert.Sign"="إنقر على وثيقة PDF للتوقيع";
 "Alert.fileNotFound"="لم يتم العثور على ملف";
 "Alert.IncorrectPin"="الرمز الشخصي غير صحيح";

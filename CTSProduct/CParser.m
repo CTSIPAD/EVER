@@ -1227,7 +1227,6 @@
 
     NSError *error;
     NSString* TotalCorrnb;
-    NSMutableArray* URLelements=[[NSMutableArray alloc]init];
     
     AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     

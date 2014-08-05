@@ -17,6 +17,7 @@
 		A2010BF2195D954E004AC93C /* highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = A2010BEF195D954E004AC93C /* highlight.png */; };
 		A2010BF3195D954E004AC93C /* save.png in Resources */ = {isa = PBXBuildFile; fileRef = A2010BF0195D954E004AC93C /* save.png */; };
 		A2010BF6195D979A004AC93C /* delete_item.png in Resources */ = {isa = PBXBuildFile; fileRef = A2010BF5195D979A004AC93C /* delete_item.png */; };
+		A22C462D1990B0BE0041530A /* sync.png in Resources */ = {isa = PBXBuildFile; fileRef = A22C462C1990B0BE0041530A /* sync.png */; };
 		A2B4FE6C1965501400D7EAB5 /* Actions.png in Resources */ = {isa = PBXBuildFile; fileRef = A2B4FE691965501400D7EAB5 /* Actions.png */; };
 		A2B4FE6D1965501400D7EAB5 /* arrowup2.png in Resources */ = {isa = PBXBuildFile; fileRef = A2B4FE6A1965501400D7EAB5 /* arrowup2.png */; };
 		A2B4FE6E1965501400D7EAB5 /* dropdown-button.png in Resources */ = {isa = PBXBuildFile; fileRef = A2B4FE6B1965501400D7EAB5 /* dropdown-button.png */; };
@@ -206,6 +207,7 @@
 		A2010BEF195D954E004AC93C /* highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = highlight.png; sourceTree = "<group>"; };
 		A2010BF0195D954E004AC93C /* save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save.png; sourceTree = "<group>"; };
 		A2010BF5195D979A004AC93C /* delete_item.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete_item.png; sourceTree = "<group>"; };
+		A22C462C1990B0BE0041530A /* sync.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sync.png; sourceTree = "<group>"; };
 		A2B4FE691965501400D7EAB5 /* Actions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Actions.png; sourceTree = "<group>"; };
 		A2B4FE6A1965501400D7EAB5 /* arrowup2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowup2.png; sourceTree = "<group>"; };
 		A2B4FE6B1965501400D7EAB5 /* dropdown-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dropdown-button.png"; sourceTree = "<group>"; };
@@ -829,6 +831,7 @@
 		A2F2331519599287008F71AF /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A22C462C1990B0BE0041530A /* sync.png */,
 				A2F24F42195F7E1000D0A564 /* cts_Priority.png */,
 				A2F24F40195F74EB00D0A564 /* cts_New.png */,
 				A2F24F3C195F73D500D0A564 /* cts_Lock.png */,
@@ -1290,6 +1293,7 @@
 				A2F24F43195F7E1000D0A564 /* cts_Priority.png in Resources */,
 				A2F8B5A6198BBEAB001BB7DF /* searchArchive.png in Resources */,
 				A2F23336195C397A008F71AF /* comments.png in Resources */,
+				A22C462D1990B0BE0041530A /* sync.png in Resources */,
 				A2B84F5A19628DAB0084035F /* GoBack.png in Resources */,
 				A2F61483195964F400956BF0 /* background@2x.png in Resources */,
 				A2F2333A195C397A008F71AF /* Note.png in Resources */,

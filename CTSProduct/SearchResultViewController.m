@@ -113,12 +113,30 @@
     [btndownload addTarget:self action:@selector(download) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *itemdownload = [[UIBarButtonItem alloc] initWithCustomView:btndownload];
     
-  
-    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
-        _toolbar.items = [NSArray arrayWithObjects:itemlogout,itemsettings,itemdownload,item, nil];
-    else
-        _toolbar.items = [NSArray arrayWithObjects:item,itemdownload,itemsettings,itemlogout, nil];
-
+    UIButton *btnSync=[[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-40, 2, 37, 37)];
+    [btnSync setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"sync.png"]]forState:UIControlStateNormal];
+    [btnSync addTarget:self action:@selector(performSync) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *itemSync = [[UIBarButtonItem alloc] initWithCustomView:btnSync];
+    if(mainDelegate.isOfflineMode){
+        if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
+            _toolbar.items = [NSArray arrayWithObjects:itemlogout,itemsettings,item, nil];
+        else
+            _toolbar.items = [NSArray arrayWithObjects:item,itemsettings,itemlogout, nil];
+    }
+    else{
+        if(([[CParser LoadOfflineActions]count]+[[CParser LoadBuiltInActions]count])>0){
+            if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
+                _toolbar.items = [NSArray arrayWithObjects:itemlogout,itemsettings,itemdownload,itemSync,item, nil];
+            else
+                _toolbar.items = [NSArray arrayWithObjects:item,itemSync,itemdownload,itemsettings,itemlogout, nil];
+        }
+        else{
+            if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
+                _toolbar.items = [NSArray arrayWithObjects:itemlogout,itemsettings,itemdownload,item, nil];
+            else
+                _toolbar.items = [NSArray arrayWithObjects:item,itemdownload,itemsettings,itemlogout, nil];
+        }
+    }
     
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
     [self.navigationController.navigationBar addSubview:_toolbar];
@@ -178,7 +196,39 @@
     
     
 }
+-(void)performSync{
+    NSMutableArray * offlineActions=[CParser LoadOfflineActions];
+    NSMutableArray* builtinActions=[CParser LoadBuiltInActions];
+    ReaderViewController* methodCall=[[ReaderViewController alloc]init];
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Sync",@"Synchronizing ...") maskType:SVProgressHUDMaskTypeBlack];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        for(OfflineAction* action in offlineActions){
+            NSURL *xmlUrl = [NSURL URLWithString:action.Url];
+            NSData *xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+            NSString *validationResultAction=[CParser ValidateWithData:xmlData];
+            
+            if(![validationResultAction isEqualToString:@"OK"])
+            {
+                [self ShowMessage:validationResultAction];
+            }
+            else {
+            }
+        }
+        for(BuiltInActions* act in builtinActions){
+            [methodCall uploadXml:act.Id];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SVProgressHUD dismiss];
+            [CParser DeleteOfflineActions:@"OfflineActions"];
+            [CParser DeleteOfflineActions:@"BuiltInActions"];
+            [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
 
+            
+        });
+    });
+
+
+}
 -(void)dropdown{
     if (self.menu.isOpen)
         return [self.menu close];
@@ -204,6 +254,8 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             
             [SVProgressHUD dismiss];
+            [self ShowMessage:NSLocalizedString(@"Alert.downloadSuccess",@"Synchronization Completed Successfully.")];
+
         });
     });
     
@@ -685,34 +737,7 @@
             //sync
             sync=NO;
             
-            NSMutableArray * offlineActions=[CParser LoadOfflineActions];
-            NSMutableArray* builtinActions=[CParser LoadBuiltInActions];
-            ReaderViewController* methodCall=[[ReaderViewController alloc]init];
-            [self performSelectorOnMainThread:@selector(increaseProgress) withObject:@"" waitUntilDone:YES];
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                for(OfflineAction* action in offlineActions){
-                    NSURL *xmlUrl = [NSURL URLWithString:action.Url];
-                    NSData *xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
-                    NSString *validationResultAction=[CParser ValidateWithData:xmlData];
-                    
-                    if(![validationResultAction isEqualToString:@"OK"])
-                    {
-                            [self ShowMessage:validationResultAction];
-                    }
-                    else {
-                    }
-                }
-                for(BuiltInActions* act in builtinActions){
-                    [methodCall uploadXml:act.Id];
-                }
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [SVProgressHUD dismiss];
-                    [CParser DeleteOfflineActions:@"OfflineActions"];
-                    [CParser DeleteOfflineActions:@"BuiltInActions"];
-
-                });
-            });
-
+            [self performSync];
             
         }
         else{
@@ -745,6 +770,10 @@
     
         }
     }
+    else{
+        sync=NO;
+
+    }
 }
 -(void)SyncActions{
     if(!mainDelegate.isOfflineMode && ([CParser EntitySize:@"OfflineActions"]>0||[CParser EntitySize:@"BuiltInActions"]>0)){
@@ -756,7 +785,7 @@
                                                         message:message
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Sync",@"Sync" )
-                                              otherButtonTitles:NSLocalizedString(@"Discard Actions",@"Discard Actions" ),nil];
+                                              otherButtonTitles:NSLocalizedString(@"Discard Actions",@"Discard Actions" ),NSLocalizedString(@"Not Now",@"Not Now" ),nil];
         [alert show];
         
     }

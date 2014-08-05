@@ -102,6 +102,8 @@
 "Alert.Success"="Saved Successfully";
 "Alert"="Alert";
 "Alert.Downloading"="Downloading ...";
+"Alert.syncSuccess"="Synchronization Completed Successfully";
+"Alert.downloadSuccess"="Download Completed";
 "Alert.Saving"="Saving ...";
 "Alert.Sign"="Tap on PDF document to sign";
 "Alert.fileNotFound"="file not found";
