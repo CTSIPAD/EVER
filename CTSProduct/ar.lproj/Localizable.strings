@@ -115,6 +115,8 @@
 "Alert.Colors"="يجب أن تكون قيمة اللون بين . و ‌٢٥٥";
 "Alert.ActionSuccess"="تمت العملية بنجاح.";
 "Alert.Success"="تم الحفظ بنجاح";
+"Alert.Downloading"="تحميل ...";
+
 "ShowAttachments"="عرض المرفقات";
 "AddNew"="إضافة جديد";
 
