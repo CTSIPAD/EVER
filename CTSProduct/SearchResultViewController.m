@@ -215,7 +215,10 @@
             }
         }
         for(BuiltInActions* act in builtinActions){
-            [methodCall uploadXml:act.Id];
+            if(![act.Action isEqualToString:@"CustomAnnotations"])
+                [methodCall uploadXml:act.Id];
+            else
+                [methodCall UploadAnnotations:act.Id];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [SVProgressHUD dismiss];
@@ -242,10 +245,15 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
       
     NSString* url;
+        NSString* showthumb;
+        if (mainDelegate.ShowThumbnail)
+            showthumb=@"true";
+        else
+            showthumb=@"false";
     if(mainDelegate.SupportsServlets)
-        url=[NSString stringWithFormat:@"http://%@?action=DownloadAll",mainDelegate.serverUrl];
+        url=[NSString stringWithFormat:@"http://%@?action=DownloadCoreData?token=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,showthumb];
     else
-        url=[NSString stringWithFormat:@"http://%@/DownloadAll",mainDelegate.serverUrl];
+        url=[NSString stringWithFormat:@"http://%@/DownloadCoreData?token=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,showthumb];
     
     NSURL *xmlUrl = [NSURL URLWithString:url];
     NSData * menuXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
@@ -757,6 +765,7 @@
             mainDelegate.user=nil;
             mainDelegate.NbOfCorrToLoad=0;
             mainDelegate.InboxTotalCorr=0;
+            if(!mainDelegate.isOfflineMode)
             [self deleteCachedFiles];
             self.navigationItem.rightBarButtonItem.enabled = NO;
             AppDelegate *delegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];

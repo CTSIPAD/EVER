@@ -35,6 +35,7 @@
 #import "AnnotationsController.h"
 #import "MoreTableViewController.h"
 #import "GDataXMLNode.h"
+#import "OfflineAction.h"
 #import "CSearch.h"
 #import "ManageSignatureViewController.h"
 #import "CustomViewController.h"
@@ -1652,6 +1653,8 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
 
 -(void)UploadAnnotations:(NSString*) docId{
     @try{
+        if (mainDelegate==nil) mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
+
         [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Saving",@"Saving ...") maskType:SVProgressHUDMaskTypeBlack];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             NSString* urlString;
@@ -1765,7 +1768,8 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
 -(void)uploadXml:(NSString*) docId{
     
     @try{
-        
+        if (mainDelegate==nil) mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
+
         [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Saving",@"Saving ...") maskType:SVProgressHUDMaskTypeBlack];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             NSString* urlString;
@@ -1824,8 +1828,7 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
             
             // close form
             [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-            
-            // set request body
+                        // set request body
             [request setHTTPBody:body];
             
             NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
@@ -2209,6 +2212,7 @@ typedef enum{
                         [self uploadXml:correspondence.Id];
                     else{
                         [CParser cacheBuiltInActions:correspondence.Id action:@"annotations" xml:nil];
+                        [SVProgressHUD dismiss];
                     }
                 });
                 
@@ -2308,7 +2312,9 @@ typedef enum{
                         if(!mainDelegate.isOfflineMode)
                             [self UploadAnnotations:correspondence.Id];
                         else{
-                            [CParser cacheBuiltInActions:correspondence.Id action:@"annotations" xml:nil];
+                            [CParser cacheBuiltInActions:correspondence.Id action:@"CustomAnnotations" xml:nil];
+                            [SVProgressHUD dismiss];
+
                         }
                         [mainDelegate.Highlights removeAllObjects];
                         [mainDelegate.Notes removeAllObjects];
@@ -2568,6 +2574,23 @@ typedef enum{
     SignController.correspondenceId=correspondence.Id;
     SignController.SignAction=correspondence.SignActions;
     SignController.delegate=self;
+}
+-(void)callXML{
+    NSMutableArray * offlineActions=[CParser LoadOfflineActions];
+
+    for(OfflineAction* action in offlineActions){
+
+
+    NSURL *xmlUrl = [NSURL URLWithString:action.Url];
+    NSData *xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+    NSString *validationResultAction=[CParser ValidateWithData:xmlData];
+    
+    if(![validationResultAction isEqualToString:@"OK"])
+    {
+        [self ShowMessage:validationResultAction];
+    }
+    }
+
 }
 -(void)tappedInToolbar:(ReaderMainToolbar *)toolbar actionButton:(UIButton *)button{
     NSMutableArray *actionProperties=[[NSMutableArray alloc]init];

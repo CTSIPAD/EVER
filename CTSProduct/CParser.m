@@ -618,7 +618,7 @@
         [BuiltinActions addObject:obj];
         
     }
-    [self DeleteOfflineActions:@"BuiltInActions"];
+   // [self DeleteOfflineActions:@"BuiltInActions"];
     return BuiltinActions;
 }
 
@@ -1253,8 +1253,10 @@
         return ;
         
     }
-    
-    NSArray *inboxes =[correspondencesXML elementsForName:@"Inbox"];
+    NSArray *inboxess =[correspondencesXML elementsForName:@"Inboxes"];
+	
+	for (GDataXMLElement *Inbox in inboxess) {
+    NSArray *inboxes =[Inbox elementsForName:@"Inbox"];
 	
 	for (GDataXMLElement *inbox in inboxes) {
         
@@ -1266,9 +1268,9 @@
             mainDelegate.InboxTotalCorr=[TotalCorrnb intValue];
         }
         
-        NSArray *correspondences =[inbox nodesForXPath:@"Correspondences/Correspondence" error:nil];
+        NSArray *DataItem =[inbox nodesForXPath:@"DataItems/DataItem" error:nil];
         
-        for (GDataXMLElement *correspondence in correspondences) {
+        for (GDataXMLElement *Item in DataItem) {
             
             NSString* transferId;
             NSString *Id;
@@ -1276,6 +1278,9 @@
             BOOL New;
             BOOL SHOWLOCK;
             NSString* thumbnailUrl;
+            NSArray *correspondences =[Item nodesForXPath:@"Correspondence" error:nil];
+            for (GDataXMLElement *correspondence in correspondences) {
+
             
             
             NSArray *correspondenceIds = [correspondence elementsForName:@"CorrespondenceId"];
@@ -1462,11 +1467,9 @@
             NSData* CustomItemsListData=[NSKeyedArchiver archivedDataWithRootObject:CustomItemsList];
             
             [self cacheCorrespondence:Id InboxId:inboxId priority:[NSString stringWithFormat:@"%hhd",Priority] new:[NSString stringWithFormat:@"%hhd",New] showlock:[NSString stringWithFormat:@"%hhd",SHOWLOCK] transferId:transferId thumbnailurl:thumbnailUrl SystemProperties:systempropertiesdata Properties:PropertiesListdata toolbarItems:toolbardata CustomActions:customdata SignActions:signactiondata AttachmentsList:AttachmentsListData AnnotationsList:AnnotationsListData CustomItemsList:CustomItemsListData];
-            
+            }
             /***************************************************************/
-            
-            NSArray *Attachments = [doc nodesForXPath:@"//Folders" error:nil];
-            
+            NSArray *Attachments =[Item nodesForXPath:@"Folders" error:nil];
             
             if (Attachments.count > 0) {
                 GDataXMLElement *AttachmentsXML =  [Attachments objectAtIndex:0];
@@ -1783,7 +1786,7 @@
             
             
         }
-    }
+    }}
 }
 +(void)GetFolderAttachment:(NSString*)url Id:(int)Id{
     AppDelegate* mainDelegate = (AppDelegate *) [[UIApplication sharedApplication]delegate];

@@ -98,6 +98,7 @@
 "Progress.Connecting"="Connecting ...";
 "ShowAttachments"="Show Attachments";
 "AddNew"="Add New";
+"Alert.Processing"="Processing";
 "Alert.ActionSuccess"="Action successfuly done.";
 "Alert.Success"="Saved Successfully";
 "Alert"="Alert";
