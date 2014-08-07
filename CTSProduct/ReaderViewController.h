@@ -81,4 +81,5 @@
 -(void)openmanagesignature;
 +(void)closeMetadata;
 -(void)uploadXml:(NSString*) docId;
+-(void)UploadAnnotations:(NSString*) docId;
 @end

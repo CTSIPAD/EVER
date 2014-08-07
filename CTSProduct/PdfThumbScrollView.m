@@ -499,8 +499,6 @@
         }
 
         
-
-        
 //	//	CGRect areaRect = CGRectInset(viewRect, TAP_AREA_SIZE, 0.0f); // Area
 //        
 //		//if (CGRectContainsPoint(areaRect, point)) // Single tap is inside the area

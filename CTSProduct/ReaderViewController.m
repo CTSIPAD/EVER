@@ -621,6 +621,7 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
     
 	mainToolbar = [[ReaderMainToolbar alloc] initWithFrame:toolbarRect document:document CorrespondenceId:self.correspondenceId MenuId:self.menuId AttachmentId:self.attachmentId]; // At top
 	mainToolbar.delegate = self;
+    mainToolbar.hidden=true;
     
     
     
@@ -889,6 +890,7 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     gCurrentOrientation=interfaceOrientation;
+    
 	return YES;
 }
 
@@ -1294,7 +1296,12 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
 		CGPoint point = [recognizer locationInView:recognizer.view];
         
 		CGRect areaRect = CGRectInset(viewRect, TAP_AREA_SIZE, 0.0f); // Area
-        
+        if ((mainToolbar.hidden == NO) || (mainPagebar.hidden == NO))
+        {
+            [mainToolbar hideToolbar]; [mainPagebar hidePagebar]; // Hide
+            
+        }
+
 		if (CGRectContainsPoint(areaRect, point)) // Single tap is inside the area
 		{
             

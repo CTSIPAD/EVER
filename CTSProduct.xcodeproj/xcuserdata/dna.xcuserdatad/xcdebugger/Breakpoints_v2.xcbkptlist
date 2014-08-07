@@ -57,7 +57,7 @@
                   symbolName = "-[PDFDocument searchHighlightArray:state:index:]"
                   moduleName = "CTSProduct"
                   urlString = "file://localhost/Users/dna/Desktop/GITFILES/CTSProduct/CTSProduct/PDFDocument.mm"
-                  timestampString = "429026464.715541"
+                  timestampString = "429094835.156553"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1343"
@@ -71,7 +71,7 @@
                   symbolName = "-[PDFDocument searchHighlightArray:state:index:]"
                   moduleName = "CTSProduct"
                   urlString = "file://localhost/Users/dna/Desktop/GITFILES/CTSProduct/CTSProduct/PDFDocument.mm"
-                  timestampString = "429026464.715874"
+                  timestampString = "429094835.156851"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1343"
@@ -524,11 +524,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2346"
-            endingLineNumber = "2346"
+            startingLineNumber = "2353"
+            endingLineNumber = "2353"
             landmarkName = "-executeAction:note:movehome:"
             landmarkType = "5">
          </BreakpointContent>
@@ -540,11 +540,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2347"
-            endingLineNumber = "2347"
+            startingLineNumber = "2354"
+            endingLineNumber = "2354"
             landmarkName = "-executeAction:note:movehome:"
             landmarkType = "5">
          </BreakpointContent>
@@ -556,11 +556,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2673"
-            endingLineNumber = "2673"
+            startingLineNumber = "2680"
+            endingLineNumber = "2680"
             landmarkName = "-tappedInToolbar:CustomButton:Item:ShowItems:"
             landmarkType = "5">
          </BreakpointContent>
@@ -588,11 +588,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2420"
-            endingLineNumber = "2420"
+            startingLineNumber = "2427"
+            endingLineNumber = "2427"
             landmarkName = "-executeAction:note:movehome:"
             landmarkType = "5">
          </BreakpointContent>
@@ -604,11 +604,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2768"
-            endingLineNumber = "2768"
+            startingLineNumber = "2775"
+            endingLineNumber = "2775"
             landmarkName = "-ActionMoveHome:"
             landmarkType = "5">
          </BreakpointContent>
@@ -636,11 +636,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2766"
-            endingLineNumber = "2766"
+            startingLineNumber = "2773"
+            endingLineNumber = "2773"
             landmarkName = "-ActionMoveHome:"
             landmarkType = "5">
          </BreakpointContent>
@@ -652,11 +652,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2630"
-            endingLineNumber = "2630"
+            startingLineNumber = "2637"
+            endingLineNumber = "2637"
             landmarkName = "-tappedInToolbar:MoreButton:"
             landmarkType = "5">
          </BreakpointContent>
@@ -668,11 +668,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2386"
-            endingLineNumber = "2386"
+            startingLineNumber = "2393"
+            endingLineNumber = "2393"
             landmarkName = "-executeAction:note:movehome:"
             landmarkType = "5">
          </BreakpointContent>
@@ -920,12 +920,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/SearchResultViewController.m"
-            timestampString = "429026464.018157"
+            timestampString = "429092720.929252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "283"
-            endingLineNumber = "283"
-            landmarkName = "-tableView:numberOfRowsInSection:"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
+            landmarkName = "-OpenSettingsPage"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -984,12 +984,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/SearchResultViewController.m"
-            timestampString = "429026464.018157"
+            timestampString = "429092720.929252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "448"
-            endingLineNumber = "448"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            startingLineNumber = "454"
+            endingLineNumber = "454"
+            landmarkName = "-performAction:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1000,11 +1000,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/SearchResultViewController.m"
-            timestampString = "429026464.018157"
+            timestampString = "429092720.929252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "482"
-            endingLineNumber = "482"
+            startingLineNumber = "488"
+            endingLineNumber = "488"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1064,11 +1064,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/SearchResultViewController.m"
-            timestampString = "429026464.018157"
+            timestampString = "429092720.929252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "497"
-            endingLineNumber = "497"
+            startingLineNumber = "503"
+            endingLineNumber = "503"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1318,12 +1318,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/SearchResultViewController.m"
-            timestampString = "429026464.018157"
+            timestampString = "429092720.929252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "234"
-            endingLineNumber = "234"
-            landmarkName = "-download"
+            startingLineNumber = "240"
+            endingLineNumber = "240"
+            landmarkName = "-performSync"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1730,11 +1730,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2408"
-            endingLineNumber = "2408"
+            startingLineNumber = "2415"
+            endingLineNumber = "2415"
             landmarkName = "-executeAction:note:movehome:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1762,11 +1762,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/SearchResultViewController.m"
-            timestampString = "429026464.018157"
+            timestampString = "429092720.929252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "745"
-            endingLineNumber = "745"
+            startingLineNumber = "751"
+            endingLineNumber = "751"
             landmarkName = "-alertView:clickedButtonAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1778,7 +1778,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/SearchResultViewController.m"
-            timestampString = "428921098.323842"
+            timestampString = "429091982.390592"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "120"
@@ -1911,11 +1911,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/SearchResultViewController.m"
-            timestampString = "429026464.018157"
+            timestampString = "429092720.929252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "247"
-            endingLineNumber = "247"
+            startingLineNumber = "253"
+            endingLineNumber = "253"
             landmarkName = "-download"
             landmarkType = "5">
          </BreakpointContent>
@@ -1943,12 +1943,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/SearchResultViewController.m"
-            timestampString = "429026464.018157"
+            timestampString = "429092720.929252"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "632"
-            endingLineNumber = "632"
-            landmarkName = "-openDocument:"
+            startingLineNumber = "638"
+            endingLineNumber = "638"
+            landmarkName = "-ShowMessage:"
             landmarkType = "5">
             <Locations>
                <Location
@@ -2005,11 +2005,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2315"
-            endingLineNumber = "2315"
+            startingLineNumber = "2322"
+            endingLineNumber = "2322"
             landmarkName = "-saveAnnotation"
             landmarkType = "5">
          </BreakpointContent>
@@ -2021,11 +2021,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2215"
-            endingLineNumber = "2215"
+            startingLineNumber = "2222"
+            endingLineNumber = "2222"
             landmarkName = "-saveAnnotation"
             landmarkType = "5">
          </BreakpointContent>
@@ -2037,11 +2037,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2212"
-            endingLineNumber = "2212"
+            startingLineNumber = "2219"
+            endingLineNumber = "2219"
             landmarkName = "-saveAnnotation"
             landmarkType = "5">
          </BreakpointContent>
@@ -2101,11 +2101,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1798"
-            endingLineNumber = "1798"
+            startingLineNumber = "1805"
+            endingLineNumber = "1805"
             landmarkName = "-uploadXml:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2117,11 +2117,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1682"
-            endingLineNumber = "1682"
+            startingLineNumber = "1689"
+            endingLineNumber = "1689"
             landmarkName = "-UploadAnnotations:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2133,11 +2133,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1823"
-            endingLineNumber = "1823"
+            startingLineNumber = "1830"
+            endingLineNumber = "1830"
             landmarkName = "-uploadXml:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2149,11 +2149,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2201"
-            endingLineNumber = "2201"
+            startingLineNumber = "2208"
+            endingLineNumber = "2208"
             landmarkName = "-saveAnnotation"
             landmarkType = "5">
          </BreakpointContent>
@@ -2165,11 +2165,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2190"
-            endingLineNumber = "2190"
+            startingLineNumber = "2197"
+            endingLineNumber = "2197"
             landmarkName = "-saveAnnotation"
             landmarkType = "5">
          </BreakpointContent>
@@ -2181,11 +2181,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1655"
-            endingLineNumber = "1655"
+            startingLineNumber = "1662"
+            endingLineNumber = "1662"
             landmarkName = "-UploadAnnotations:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2197,12 +2197,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "429025347.254921"
+            timestampString = "429094780.133382"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1770"
-            endingLineNumber = "1770"
+            startingLineNumber = "1777"
+            endingLineNumber = "1777"
             landmarkName = "-uploadXml:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CTSProduct/ReaderViewController.m"
+            timestampString = "429093410.070947"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "487"
+            endingLineNumber = "487"
+            landmarkName = "-openToolbar"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CTSProduct/ReaderMainToolbar.m"
+            timestampString = "429093424.254594"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "268"
+            endingLineNumber = "268"
+            landmarkName = "-showToolbar"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -65,7 +65,7 @@
 - (id)initWithFrame:(CGRect)frame document:(ReaderDocument *)object CorrespondenceId:(NSInteger)correspondenceId MenuId:(NSInteger)menuId AttachmentId:(NSInteger)attachmentId
 {
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
+    self.hidden=true;
 	assert(object != nil); // Must have a valid ReaderDocument
 	if ((self = [super initWithFrame:frame]))
 	{

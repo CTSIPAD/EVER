@@ -68,7 +68,7 @@
     
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn.frame = CGRectMake(10, 0, _toolbar.frame.size.width-250, 60);
+    
 
     [btn addTarget:self action:@selector(dropdown) forControlEvents:UIControlEventTouchUpInside];
     [btn setTitle:[NSString stringWithFormat:@"%@ %@",mainDelegate.user.firstName,mainDelegate.user.lastName] forState:UIControlStateNormal];
@@ -79,7 +79,7 @@
     [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    
 
     
    // UIBarButtonItem *separator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -118,6 +118,8 @@
     [btnSync addTarget:self action:@selector(performSync) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *itemSync = [[UIBarButtonItem alloc] initWithCustomView:btnSync];
     if(mainDelegate.isOfflineMode){
+         btn.frame = CGRectMake(10, 0, _toolbar.frame.size.width-220, 60);
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btn];
         if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
             _toolbar.items = [NSArray arrayWithObjects:itemlogout,itemsettings,item, nil];
         else
@@ -125,12 +127,16 @@
     }
     else{
         if(([[CParser LoadOfflineActions]count]+[[CParser LoadBuiltInActions]count])>0){
+             btn.frame = CGRectMake(10, 0, _toolbar.frame.size.width-300, 60);
+            UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btn];
             if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
                 _toolbar.items = [NSArray arrayWithObjects:itemlogout,itemsettings,itemdownload,itemSync,item, nil];
             else
                 _toolbar.items = [NSArray arrayWithObjects:item,itemSync,itemdownload,itemsettings,itemlogout, nil];
         }
         else{
+            btn.frame = CGRectMake(10, 0, _toolbar.frame.size.width-250, 60);
+            UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btn];
             if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
                 _toolbar.items = [NSArray arrayWithObjects:itemlogout,itemsettings,itemdownload,item, nil];
             else
