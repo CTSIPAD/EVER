@@ -203,6 +203,7 @@
     
     
 }
+
 -(void)performSync{
     NSMutableArray * offlineActions=[CParser LoadOfflineActions];
     NSMutableArray* builtinActions=[CParser LoadBuiltInActions];
@@ -291,7 +292,7 @@
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 //[SVProgressHUD dismiss];
                                 counter++;
-                               
+                                
                                 NSString *validationResult=[CParser ValidateWithData:returnData];
                                 if (mainDelegate==nil) mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
                                 if(!mainDelegate.isOfflineMode){
@@ -321,9 +322,9 @@
                             });
                             
                         });
-
+                        
                     }
-                        //[methodCall uploadXml:act.Id];
+                    //[methodCall uploadXml:act.Id];
                     else{
                         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                             NSString* urlString;
@@ -426,13 +427,13 @@
                             
                         });
                     }
-                       // [methodCall UploadAnnotations:act.Id];
+                    // [methodCall UploadAnnotations:act.Id];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if(counter==[builtinActions count]){
                         [SVProgressHUD dismiss];
                         [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
-
+                        
                     }
                     [CParser DeleteOfflineActions:@"OfflineActions"];
                     [CParser DeleteOfflineActions:@"BuiltInActions"];
@@ -442,9 +443,174 @@
             });
         });
     });
-
-
+    
+    
 }
+//-(void)performSync{
+//    NSMutableArray * offlineActions=[CParser LoadOfflineActions];
+//    NSMutableArray* builtinActions=[CParser LoadBuiltInActions];
+//    //ReaderViewController* methodCall=[[ReaderViewController alloc]init];
+//    [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Sync",@"Synchronizing ...") maskType:SVProgressHUDMaskTypeBlack];
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+//        for(OfflineAction* action in offlineActions){
+//            NSURL *xmlUrl = [NSURL URLWithString:[action.Url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//            NSData *xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+//            NSString *validationResultAction=[CParser ValidateWithData:xmlData];
+//            
+//            if(![validationResultAction isEqualToString:@"OK"])
+//            {
+//                [self ShowMessage:validationResultAction];
+//            }
+//            else {
+//            }
+//        }
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+//                for(BuiltInActions* act in builtinActions){
+//                 
+//                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+//                            NSString* urlString;
+//                            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+//                                                                                 NSUserDomainMask, YES);
+//                            NSString *documentsDirectory = [paths objectAtIndex:0];
+//                            NSString *documentsPath = [documentsDirectory
+//                                                       stringByAppendingPathComponent:@"annotations.xml"];
+//                            NSLog(@"%@",documentsPath);
+//                            
+//                            NSLog(@"Saving xml data to %@...", documentsPath);
+//                            
+//                            NSData *imageData= [NSData dataWithContentsOfFile:documentsPath] ;
+//                            
+//                            NSMutableData *body = [NSMutableData data];
+//                            // setting up the request object now
+//                            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+//                            [request setURL:[NSURL URLWithString:urlString]];
+//                            [request setHTTPMethod:@"POST"];
+//                            
+//                            NSString *boundary = @"---------------------------14737809831466499882746641449";
+//                            NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
+//                            [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+//                             if(![act.Action isEqualToString:@"CustomAnnotations"]){
+//                                 if(mainDelegate.SupportsServlets)
+//                                     urlString = [NSString stringWithFormat:@"http://%@",mainDelegate.serverUrl];
+//                                 else
+//                                     urlString = [NSString stringWithFormat:@"http://%@/UpdateDocument",mainDelegate.serverUrl];
+//                                 
+//                             
+//                                
+//                                 
+//                                 if(mainDelegate.SupportsServlets){
+//                                     // action parameter
+//                                     [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+//                                     [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"action\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+//                                     [body appendData:[@"UpdateDocument" dataUsingEncoding:NSUTF8StringEncoding]];
+//                                     [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+//                                     
+//                                 }
+//                                 
+//                                 // file
+//                                 [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+//                                 [body appendData:[@"Content-Disposition: form-data; name=\"userfile\"; filename=\".xml\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+//                                 [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+//                                 [body appendData:[NSData dataWithData:imageData]];
+//                                 [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+//                             }
+//                             else{
+//                                 // setting up the URL to post to
+//                                 if(mainDelegate.SupportsServlets)
+//                                     urlString = [NSString stringWithFormat:@"http://%@",mainDelegate.serverUrl];
+//                                 else
+//                                     urlString = [NSString stringWithFormat:@"http://%@/SaveAnnotations",mainDelegate.serverUrl];
+//                                 
+//                                 
+//                                 // action parameter
+//                                 if(mainDelegate.SupportsServlets){
+//                                     // action parameter
+//                                     [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+//                                     [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"action\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+//                                     [body appendData:[@"SaveAnnotations" dataUsingEncoding:NSUTF8StringEncoding]];
+//                                     [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+//                                 }
+//                                 
+//                                 
+//                                 
+//                                 
+//                                 // file
+//                                 [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+//                                 [body appendData:[@"Content-Disposition: form-data; name=\"annotations\"; filename=\".xml\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+//                                 [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+//                                 [body appendData:[NSData dataWithData:imageData]];
+//                                 [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+//                             }
+//                            
+//                            
+//                            
+//                            // text parameter
+//                            [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+//                            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"correspondenceId\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+//                            [body appendData:[act.Id dataUsingEncoding:NSUTF8StringEncoding]];
+//                            [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+//                            
+//                            
+//                            // close form
+//                            [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+//                            
+//                            // set request body
+//                            [request setHTTPBody:body];
+//                            
+//                            NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+//                            dispatch_async(dispatch_get_main_queue(), ^{
+//                                //[SVProgressHUD dismiss];
+//                                counter++;
+//                                
+//                                NSString *validationResult=[CParser ValidateWithData:returnData];
+//                                if (mainDelegate==nil) mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
+//                                if(!mainDelegate.isOfflineMode){
+//                                    if(![validationResult isEqualToString:@"OK"]){
+//                                        
+//                                        if([validationResult isEqualToString:@"Cannot access to the server"]){
+//                                            [self ShowMessage:validationResult];
+//                                        }
+//                                        else{
+//                                            [self ShowMessage:validationResult];
+//                                        }
+//                                    }else{
+//                                        if(counter==[builtinActions count]){
+//                                            [SVProgressHUD dismiss];
+//                                            [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
+//                                            
+//                                        }
+//                                    }
+//                                }else{
+//                                    if(counter==[builtinActions count]){
+//                                        [SVProgressHUD dismiss];
+//                                        [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
+//                                        
+//                                    }
+//                                }
+//                                
+//                            });
+//                            
+//                        });
+//                       // [methodCall UploadAnnotations:act.Id];
+//                }
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    if(counter==[builtinActions count]){
+//                        [SVProgressHUD dismiss];
+//                        [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
+//
+//                    }
+//                    [CParser DeleteOfflineActions:@"OfflineActions"];
+//                    [CParser DeleteOfflineActions:@"BuiltInActions"];
+//                    
+//                    
+//                });
+//            });
+//        });
+//    });
+//
+//
+//}
 -(void)dropdown{
     if (self.menu.isOpen)
         return [self.menu close];
