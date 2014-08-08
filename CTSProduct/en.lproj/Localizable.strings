@@ -98,10 +98,18 @@
 "Progress.Connecting"="Connecting ...";
 "ShowAttachments"="Show Attachments";
 "AddNew"="Add New";
+"Alert.SyncMsg"="Actions made in offline mode detected!";
+"Alert.SyncTitle"="Synchronization";
+"Alert.SyncButton"="Synchronize";
+"Alert.DiscardButton"="Discard Actions";
+"Alert.NotNowButton"="Not Now";
+"Alert.Extension"="Document extension not supported.";
+"Message"="Message";
 "Alert.Processing"="Processing";
 "Alert.ActionSuccess"="Action successfuly done.";
 "Alert.Success"="Saved Successfully";
 "Alert"="Alert";
+"Alert.SaveSuccess"="Saved Successfully";
 "Alert.Downloading"="Downloading ...";
 "Alert.syncSuccess"="Synchronization Completed Successfully";
 "Alert.downloadSuccess"="Download Completed";
@@ -119,6 +127,7 @@
 "Alert.Signing"="Signing ...";
 "Alert.Loading"="Loading ...";
 "c"="Document type not supported.";
+"ServerError"="Cannot access to the server";
 "Alert.RequiredFields"="PLease fill all required fields.";
 "Alert.SignatureSaved"="Signature Saved Successfully";
 "Alert.WrongPin"="Wrong Pincode";
@@ -134,6 +143,8 @@
 "Accept.Note"="Note";
 "Accept.Message"="Please fill Note field.";
 "Reject.RejectCorrespondence"="Reject Correspondence";
-
+"UploadAttachment"="Upload Attachment";
+"AttachmentName"="Attachment Name:";
+"Upload"="Upload";
 
 

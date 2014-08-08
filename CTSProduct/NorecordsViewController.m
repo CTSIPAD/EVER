@@ -90,7 +90,7 @@
     noRecords = [[UILabel alloc] initWithFrame:CGRectMake(180, 220, 500, 40)];
     noRecords.font =[UIFont fontWithName:@"Helvetica-Bold" size:25.0f];
     @try {
-        noRecords.text = [[NSString alloc] initWithFormat:@"No %@ To Display",((CMenu*)mainDelegate.user.menu[mainDelegate.selectedInbox-1]).name];
+        noRecords.text = [[NSString alloc] initWithFormat:@"No %@ To Display",((CMenu*)mainDelegate.user.menu[mainDelegate.inboxForArchiveSelected]).name];
 
     }
     @catch (NSException *exception) {

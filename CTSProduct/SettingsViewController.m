@@ -133,7 +133,8 @@
     mainDelegate.SettingsCorrNb =[self.NbOfCorrespondences.text intValue];
     [defaults setObject:self.NbOfCorrespondences.text forKey:@"CorrNbPerPage"];
     [defaults synchronize];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message" message:@"Saved Successfully" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Message",@"Message") message:NSLocalizedString(@"Alert.SaveSuccess",@"Saved Successfully") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
      [alert show];
 
 }

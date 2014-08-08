@@ -30,6 +30,7 @@
 @implementation SearchResultViewController{
     AppDelegate *mainDelegate ;
     BOOL sync;
+    int counter;
 }
 @synthesize toolbar=_toolbar;
 - (id)initWithStyle:(UITableViewStyle)style
@@ -44,7 +45,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    counter=0;
     sync=NO;
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     mainDelegate.attachmentSelected =0;
@@ -106,10 +107,10 @@
     
     UIButton *btndownload;
     if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
-        btndownload=[[UIButton alloc]initWithFrame:CGRectMake(10, 62, 37, 50)];
+        btndownload=[[UIButton alloc]initWithFrame:CGRectMake(10, 62, 37, 37)];
     else
-        btndownload=[[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-120, 62, 37, 50)];
-    [btndownload setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"save.png"]]forState:UIControlStateNormal];
+        btndownload=[[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-120, 62, 37, 37)];
+    [btndownload setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"downloadAll.png"]]forState:UIControlStateNormal];
     [btndownload addTarget:self action:@selector(download) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *itemdownload = [[UIBarButtonItem alloc] initWithCustomView:btndownload];
     
@@ -205,11 +206,11 @@
 -(void)performSync{
     NSMutableArray * offlineActions=[CParser LoadOfflineActions];
     NSMutableArray* builtinActions=[CParser LoadBuiltInActions];
-    ReaderViewController* methodCall=[[ReaderViewController alloc]init];
+    //ReaderViewController* methodCall=[[ReaderViewController alloc]init];
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Sync",@"Synchronizing ...") maskType:SVProgressHUDMaskTypeBlack];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         for(OfflineAction* action in offlineActions){
-            NSURL *xmlUrl = [NSURL URLWithString:action.Url];
+            NSURL *xmlUrl = [NSURL URLWithString:[action.Url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
             NSData *xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
             NSString *validationResultAction=[CParser ValidateWithData:xmlData];
             
@@ -220,19 +221,225 @@
             else {
             }
         }
-        for(BuiltInActions* act in builtinActions){
-            if(![act.Action isEqualToString:@"CustomAnnotations"])
-                [methodCall uploadXml:act.Id];
-            else
-                [methodCall UploadAnnotations:act.Id];
-        }
         dispatch_async(dispatch_get_main_queue(), ^{
-            [SVProgressHUD dismiss];
-            [CParser DeleteOfflineActions:@"OfflineActions"];
-            [CParser DeleteOfflineActions:@"BuiltInActions"];
-            [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                for(BuiltInActions* act in builtinActions){
+                    if(![act.Action isEqualToString:@"CustomAnnotations"]){
+                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                            NSString* urlString;
+                            
+                            
+                            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                                 NSUserDomainMask, YES);
+                            NSString *documentsDirectory = [paths objectAtIndex:0];
+                            NSString *documentsPath = [documentsDirectory
+                                                       stringByAppendingPathComponent:@"annotations.xml"];
+                            NSLog(@"%@",documentsPath);
+                            
+                            NSLog(@"Saving xml data to %@...", documentsPath);
+                            
+                            NSData *imageData= [NSData dataWithContentsOfFile:documentsPath] ;
+                            // setting up the URL to post to
+                            // setting up the URL to post to
+                            if(mainDelegate.SupportsServlets)
+                                urlString = [NSString stringWithFormat:@"http://%@",mainDelegate.serverUrl];
+                            else
+                                urlString = [NSString stringWithFormat:@"http://%@/UpdateDocument",mainDelegate.serverUrl];
+                            
+                            // setting up the request object now
+                            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+                            [request setURL:[NSURL URLWithString:urlString]];
+                            [request setHTTPMethod:@"POST"];
+                            
+                            
+                            NSString *boundary = @"---------------------------14737809831466499882746641449";
+                            NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
+                            [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+                            
+                            NSMutableData *body = [NSMutableData data];
+                            if(mainDelegate.SupportsServlets){
+                                // action parameter
+                                [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+                                [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"action\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+                                [body appendData:[@"UpdateDocument" dataUsingEncoding:NSUTF8StringEncoding]];
+                                [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+                                
+                            }
+                            
+                            // file
+                            [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+                            [body appendData:[@"Content-Disposition: form-data; name=\"userfile\"; filename=\".xml\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+                            [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+                            [body appendData:[NSData dataWithData:imageData]];
+                            [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+                            
+                            // text parameter
+                            [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+                            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"correspondenceId\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+                            [body appendData:[act.Id dataUsingEncoding:NSUTF8StringEncoding]];
+                            [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+                            
+                            
+                            // close form
+                            [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+                            // set request body
+                            [request setHTTPBody:body];
+                            
+                            NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+                            
+                            
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                //[SVProgressHUD dismiss];
+                                counter++;
+                               
+                                NSString *validationResult=[CParser ValidateWithData:returnData];
+                                if (mainDelegate==nil) mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
+                                if(!mainDelegate.isOfflineMode){
+                                    if(![validationResult isEqualToString:@"OK"]){
+                                        
+                                        if([validationResult isEqualToString:@"Cannot access to the server"]){
+                                            [self ShowMessage:validationResult];
+                                        }
+                                        else{
+                                            [self ShowMessage:validationResult];
+                                        }
+                                    }else{
+                                        if(counter==[builtinActions count]){
+                                            [SVProgressHUD dismiss];
+                                            [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
+                                            
+                                        }
+                                    }
+                                }else{
+                                    if(counter==[builtinActions count]){
+                                        [SVProgressHUD dismiss];
+                                        [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
+                                        
+                                    }
+                                }
+                                
+                            });
+                            
+                        });
 
-            
+                    }
+                        //[methodCall uploadXml:act.Id];
+                    else{
+                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                            NSString* urlString;
+                            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                                 NSUserDomainMask, YES);
+                            NSString *documentsDirectory = [paths objectAtIndex:0];
+                            NSString *documentsPath = [documentsDirectory
+                                                       stringByAppendingPathComponent:@"annotations.xml"];
+                            NSLog(@"%@",documentsPath);
+                            
+                            NSLog(@"Saving xml data to %@...", documentsPath);
+                            
+                            NSData *imageData= [NSData dataWithContentsOfFile:documentsPath] ;
+                            
+                            
+                            
+                            
+                            // setting up the URL to post to
+                            if(mainDelegate.SupportsServlets)
+                                urlString = [NSString stringWithFormat:@"http://%@",mainDelegate.serverUrl];
+                            else
+                                urlString = [NSString stringWithFormat:@"http://%@/SaveAnnotations",mainDelegate.serverUrl];
+                            
+                            // setting up the request object now
+                            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+                            [request setURL:[NSURL URLWithString:urlString]];
+                            [request setHTTPMethod:@"POST"];
+                            
+                            
+                            NSString *boundary = @"---------------------------14737809831466499882746641449";
+                            NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
+                            [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+                            
+                            NSMutableData *body = [NSMutableData data];
+                            
+                            // action parameter
+                            if(mainDelegate.SupportsServlets){
+                                // action parameter
+                                [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+                                [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"action\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+                                [body appendData:[@"SaveAnnotations" dataUsingEncoding:NSUTF8StringEncoding]];
+                                [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+                            }
+                            
+                            
+                            
+                            
+                            // file
+                            [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+                            [body appendData:[@"Content-Disposition: form-data; name=\"annotations\"; filename=\".xml\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+                            [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+                            [body appendData:[NSData dataWithData:imageData]];
+                            [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+                            
+                            // text parameter
+                            [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+                            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"correspondenceId\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+                            [body appendData:[act.Id dataUsingEncoding:NSUTF8StringEncoding]];
+                            [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+                            
+                            
+                            // close form
+                            [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+                            
+                            // set request body
+                            [request setHTTPBody:body];
+                            
+                            NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                //[SVProgressHUD dismiss];
+                                counter++;
+                                
+                                NSString *validationResult=[CParser ValidateWithData:returnData];
+                                if (mainDelegate==nil) mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
+                                if(!mainDelegate.isOfflineMode){
+                                    if(![validationResult isEqualToString:@"OK"]){
+                                        
+                                        if([validationResult isEqualToString:@"Cannot access to the server"]){
+                                            [self ShowMessage:validationResult];
+                                        }
+                                        else{
+                                            [self ShowMessage:validationResult];
+                                        }
+                                    }else{
+                                        if(counter==[builtinActions count]){
+                                            [SVProgressHUD dismiss];
+                                            [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
+                                            
+                                        }
+                                    }
+                                }else{
+                                    if(counter==[builtinActions count]){
+                                        [SVProgressHUD dismiss];
+                                        [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
+                                        
+                                    }
+                                }
+                                
+                            });
+                            
+                        });
+                    }
+                       // [methodCall UploadAnnotations:act.Id];
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if(counter==[builtinActions count]){
+                        [SVProgressHUD dismiss];
+                        [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
+
+                    }
+                    [CParser DeleteOfflineActions:@"OfflineActions"];
+                    [CParser DeleteOfflineActions:@"BuiltInActions"];
+                    
+                    
+                });
+            });
         });
     });
 
@@ -591,6 +798,8 @@
         mainDelegate.isBasketSelected = YES;
         [NSThread detachNewThreadSelector:@selector(increaseLoading) toTarget:self withObject:nil];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            NSData * menuXmlData;
+
             NSMutableDictionary *correspondences;
             if(!mainDelegate.isOfflineMode){
                 NSString* correspondenceUrl;
@@ -605,7 +814,7 @@
                     correspondenceUrl=[NSString stringWithFormat:@"http://%@/GetCorrespondences?token=%@&inboxId=%d&index=%d&pageSize=%d&language=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,mainDelegate.selectedInbox,mainDelegate.NbOfCorrToLoad,mainDelegate.SettingsCorrNb,mainDelegate.IpadLanguage,showthumb];
                
                 NSURL *xmlUrl = [NSURL URLWithString:correspondenceUrl];
-                NSData * menuXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+                menuXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
                 correspondences=[CParser loadCorrespondencesWithData:menuXmlData];
 
             }
@@ -621,9 +830,19 @@
             
           //  [((CMenu*)mainDelegate.user.menu[mainDelegate.selectedInbox-1]).correspondenceList addObjectsFromArray:[correspondences objectForKey:[NSString stringWithFormat:@"%d",currentInbox.menuId]]];
             dispatch_async(dispatch_get_main_queue(), ^{
+                if(!mainDelegate.isOfflineMode){
+                NSString *validationResultAction=[CParser ValidateWithData:menuXmlData];
                 
-                self.searchResult=mainDelegate.searchModule;
-                mainDelegate.NbOfCorrToLoad=mainDelegate.NbOfCorrToLoad+mainDelegate.SettingsCorrNb;
+                if(![validationResultAction isEqualToString:@"OK"])
+                {
+                    [self ShowMessage:validationResultAction];
+                }
+                else {
+                    self.searchResult=mainDelegate.searchModule;
+                    mainDelegate.NbOfCorrToLoad=mainDelegate.NbOfCorrToLoad+mainDelegate.SettingsCorrNb;
+                }
+                }
+                
                 [tableView reloadData];
                 [NSThread detachNewThreadSelector:@selector(dismiss) toTarget:self withObject:nil];
             });
@@ -794,13 +1013,13 @@
     if(!mainDelegate.isOfflineMode && ([CParser EntitySize:@"OfflineActions"]>0||[CParser EntitySize:@"BuiltInActions"]>0)){
         sync=YES;
         NSString* message;
-        message=NSLocalizedString(@"Actions made in offline mode detected!",@"Actions made in offline mode detected");
+        message=NSLocalizedString(@"Alert.SyncMsg",@"Actions made in offline mode detected");
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Synchronization",@"Synchronization")
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Alert.SyncTitle",@"Synchronization")
                                                         message:message
                                                        delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Sync",@"Sync" )
-                                              otherButtonTitles:NSLocalizedString(@"Discard Actions",@"Discard Actions" ),NSLocalizedString(@"Not Now",@"Not Now" ),nil];
+                                              cancelButtonTitle:NSLocalizedString(@"Alert.SyncButton",@"Sync" )
+                                              otherButtonTitles:NSLocalizedString(@"Alert.DiscardButton",@"Discard Actions" ),NSLocalizedString(@"Alert.NotNowButton",@"Not Now" ),nil];
         [alert show];
         
     }

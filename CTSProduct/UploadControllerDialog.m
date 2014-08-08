@@ -70,6 +70,8 @@
 {
     if (self) {
         originalFrame = frame;
+        mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
         centerPoint=CGPointMake(500, 400);
         // self.view.alpha = 1;
         self.view.layer.cornerRadius=5;
@@ -80,7 +82,7 @@
         UILabel *Titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, frame.size.width-20, 20)];
         
         
-        Titlelabel.text = NSLocalizedString(@"Upload Attachment",@"Upload Attachment");
+        Titlelabel.text = NSLocalizedString(@"UploadAttachment",@"Upload Attachment");
         Titlelabel.textAlignment=NSTextAlignmentCenter;
         Titlelabel.backgroundColor = [UIColor clearColor];
         Titlelabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
@@ -92,7 +94,6 @@
         UIButton *Camerabtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         Camerabtn.frame =CGRectMake(frame.size.width-65,62,35, 35);
         Camerabtn.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
-        [Camerabtn setTitle:NSLocalizedString(@"Cancel",@"Cancel") forState:UIControlStateNormal];
         [Camerabtn setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"camera.png"]]forState:UIControlStateNormal];
         [Camerabtn addTarget:self action:@selector(ChooseExisting) forControlEvents:UIControlEventTouchUpInside];
         [Camerabtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -116,24 +117,29 @@
         
         UILabel *attachment = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 200, 40)];
         attachment.textColor = [UIColor whiteColor];
-        attachment.text =NSLocalizedString(@"Attachment Name:",@"Attachment Name:");
-        attachment.textAlignment=NSTextAlignmentLeft;
+       
         attachment.backgroundColor = [UIColor clearColor];
         attachment.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
         
         txtAttachmentName = [[UITextField alloc] initWithFrame:CGRectMake(10, 60, 300, 40)];
         txtAttachmentName.borderStyle = UITextBorderStyleRoundedRect;
         txtAttachmentName.font = [UIFont systemFontOfSize:15];
-        txtAttachmentName.placeholder = NSLocalizedString(@"Attachment Name",@"Attachment Name");
+        txtAttachmentName.placeholder = NSLocalizedString(@"AttachmentName",@"Attachment Name");
         txtAttachmentName.autocorrectionType = UITextAutocorrectionTypeNo;
         txtAttachmentName.keyboardType = UIKeyboardTypeNumberPad;
         txtAttachmentName.returnKeyType = UIReturnKeyDone;
         txtAttachmentName.clearButtonMode = UITextFieldViewModeWhileEditing;
         txtAttachmentName.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-        mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         
         
-        
+        attachment.text =NSLocalizedString(@"AttachmentName",@"Attachment Name:");
+        if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
+            attachment.textAlignment=NSTextAlignmentRight;
+            txtAttachmentName.textAlignment=NSTextAlignmentRight;
+            attachment.frame=CGRectMake(((frame.size.width-(2*btnWidth +50))/2)+50, 20, 200, 40);
+        }
+        else
+            attachment.textAlignment=NSTextAlignmentLeft;
         
         [self.view addSubview:Titlelabel];
         [self.view addSubview:txtAttachmentName];
@@ -260,8 +266,10 @@
 }
 
 -(void)upload{
-    if([txtAttachmentName.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length>0)
+    if([txtAttachmentName.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length>0){
         [self appendXml:imageData];
+        [_delegate dismissUpload:self];
+    }
     else{
         UIAlertView *alertKO;
  alertKO=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Fields Missing",@"Fields Missing") message:NSLocalizedString(@"Please fill fileName field.",@"Please fill fileName field.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK",@"OK") otherButtonTitles: nil];

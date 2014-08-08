@@ -88,8 +88,16 @@
 "root.disconnect.YES"="تسجيل الخروج";
 
 "Progress.Connecting"="الإتصال ...";
-
+"Alert.SyncMsg"="لقد تم رصد اجراءت جرت دون إتصال.";
+"Alert.SyncTitle"="التزامن";
+"Alert.SyncButton"="مزامنة";
+"Alert.DiscardButton"="نبذ الإجراءات";
+"Alert.NotNowButton"="ليس الأن";
+"Alert.Extension"="نوع الوثيقة غير معتمد.";
+"Message"="رسالة";
+"Alert.SaveSuccess"="تم الحفظ بنجاح";
 "Alert"="إنذار";
+"ServerError"="يتعذر الوصول إلى الخادم.";
 "Alert.downloadSuccess"="تم التحميل بنجاح";
 "Alert.syncSuccess"="تمت المزامنة بنجاح";
 "Alert.Sign"="إنقر على وثيقة PDF للتوقيع";
@@ -121,6 +129,8 @@
 
 "ShowAttachments"="عرض المرفقات";
 "AddNew"="إضافة جديد";
-
+"UploadAttachment"="تحميل المرفقات";
+"AttachmentName"="اسم المرفق:";
+"Upload"="تحميل";
 
 

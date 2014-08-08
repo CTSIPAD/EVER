@@ -35,6 +35,7 @@
 #import "AnnotationsController.h"
 #import "MoreTableViewController.h"
 #import "GDataXMLNode.h"
+#import "OfflineAction.h"
 #import "CSearch.h"
 #import "ManageSignatureViewController.h"
 #import "CustomViewController.h"
@@ -620,8 +621,9 @@
 
 	mainToolbar = [[ReaderMainToolbar alloc] initWithFrame:toolbarRect document:document CorrespondenceId:self.correspondenceId MenuId:self.menuId AttachmentId:self.attachmentId]; // At top
 	mainToolbar.delegate = self;
-
-  
+    mainToolbar.hidden=true;
+    
+    
     
     
 	[self.view addSubview:mainToolbar];
@@ -1586,10 +1588,10 @@
         url = [NSString stringWithFormat:@"http://%@/TransferCorrespondence?token=%@&correspondenceId=%@&destinationId=%@&purposeId=%@&dueDate=%@&publicNote=%@&privateNote=%@",mainDelegate.serverUrl,userTemp.token,correspondence.TransferId,dest.rid,routeLabel.labelId,date,[Pnote stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],[note stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
             
         if(!mainDelegate.isOfflineMode){
-
-      if(self.menuId !=100)
-        [((CMenu*)mainDelegate.user.menu[self.menuId]).correspondenceList removeObjectAtIndex:self.correspondenceId];
-            NSURL *xmlUrl = [NSURL URLWithString:url];
+            
+            if(self.menuId !=100)
+                [((CMenu*)mainDelegate.user.menu[self.menuId]).correspondenceList removeObjectAtIndex:self.correspondenceId];
+            NSURL *xmlUrl = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
             NSData *xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
             NSString *validationResultAction=[CParser ValidateWithData:xmlData];
             
@@ -1624,6 +1626,11 @@
         }
         else{
             [CParser cacheOfflineActions:correspondence.Id url:url action:@"TransferCorrespondence"];
+            [CParser DeleteCorrespondence:correspondence.Id inboxId:correspondence.inboxId];
+            NSMutableDictionary *correspondences=[CParser LoadCorrespondences:[correspondence.inboxId intValue]];
+            mainDelegate.searchModule.correspondenceList = [correspondences objectForKey:[NSString stringWithFormat:@"%d",[correspondence.inboxId intValue]]];
+            
+            
         }
         
     if ([delegate respondsToSelector:@selector(dismissReaderViewController:)] == YES)
@@ -1646,6 +1653,8 @@
 
 -(void)UploadAnnotations:(NSString*) docId{
     @try{
+        if (mainDelegate==nil) mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
+
         [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Saving",@"Saving ...") maskType:SVProgressHUDMaskTypeBlack];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             NSString* urlString;
@@ -1759,7 +1768,8 @@
 -(void)uploadXml:(NSString*) docId{
     
     @try{
-        
+        if (mainDelegate==nil) mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
+
         [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Saving",@"Saving ...") maskType:SVProgressHUDMaskTypeBlack];
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                        NSString* urlString;
@@ -2029,284 +2039,287 @@ typedef enum{
         if(![mainDelegate.AnnotationsMode isEqualToString:@"CustomAnnotations"]){
             
             [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Processing",@"Processing ...") maskType:SVProgressHUDMaskTypeBlack];
-//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                });
-//                
-//            });
+            //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            //                dispatch_async(dispatch_get_main_queue(), ^{
+            //                });
+            //
+            //            });
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-
-            
-            NSString* dir  = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-            
-            NSString* path = [dir stringByAppendingString:@"/FoxitSaveAnnotation.pdf"];
-            
-            
-            
-            
-            
-            NSData* annotData= [NSData dataWithContentsOfFile:path];
-            
-            [Base64 initialize];
-            
-            NSString *annotString64=[Base64 encode:annotData];
-            
-            NSError *error;
-            
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                                 
-                                                                 NSUserDomainMask, YES);
-            
-            NSString *documentsDirectory = [paths objectAtIndex:0];
-            
-            NSString *documentsPath = [documentsDirectory
-                                       
-                                       stringByAppendingPathComponent:@"annotations.xml"];
-            
-            
-            
-            NSData *xmlData = [[NSMutableData alloc] initWithContentsOfFile:documentsPath];
-            
-            
-            
-            GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData options:0 error:&error];
-            
-            BOOL isFound=NO;
-            
-            GDataXMLElement* rootEl  = [doc rootElement];
-            
-            
-            
-            if(rootEl==nil){
                 
-                rootEl =[GDataXMLNode elementWithName:@"Documents" stringValue:@""];
+                
+                NSString* dir  = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+                
+                NSString* path = [dir stringByAppendingString:@"/FoxitSaveAnnotation.pdf"];
                 
                 
                 
-            }
-            
-            
-            
-            NSArray *allDocuments=[rootEl elementsForName:@"Document"];
-            
-            GDataXMLElement *docEl;
-            
-            if(allDocuments.count>0){
-                
-                for(docEl in allDocuments){
-                    
-                    
-                    
-                    NSArray *correspondenceIds=[docEl elementsForName:@"CorrespondenceId"];
-                    
-                    GDataXMLElement *correspondenceIdEl=[correspondenceIds objectAtIndex:0];
-                    
-                    
-                    
-                    NSArray *docIds=[docEl elementsForName:@"DocId"];
-                    
-                    GDataXMLElement *docIdEl=[docIds objectAtIndex:0];
-                    
-                    
-                    
-                    if([correspondenceIdEl.stringValue isEqualToString:correspondence.Id] && [docIdEl.stringValue isEqualToString:attachment.docId]){
-                        
-                        isFound=YES;
-                        
-                        NSArray *contents=[docEl elementsForName:@"Content"];
-                        
-                        GDataXMLElement *contentEl;
-                        
-                        if(contents.count>0){
-                            
-                            contentEl=[contents objectAtIndex:0];
-                            
-                            contentEl.stringValue=annotString64;
-                            
-                        }
-                        
-                    }
-                    
-                    
-                    
-                    
-                    
-                }
                 
                 
+                NSData* annotData= [NSData dataWithContentsOfFile:path];
                 
-            }
-            
-            
-            
-            if(isFound==NO){
+                [Base64 initialize];
                 
-                docEl=[GDataXMLNode elementWithName:@"Document" stringValue:@""];
+                NSString *annotString64=[Base64 encode:annotData];
                 
+                NSError *error;
                 
-                
-                GDataXMLElement *correspondenceIdEl=[GDataXMLNode elementWithName:@"CorrespondenceId" stringValue:correspondence.Id];
-                
-                [docEl addChild:correspondenceIdEl];
-                
-                GDataXMLElement *docIdEl=[GDataXMLNode elementWithName:@"DocId" stringValue:attachment.docId];
-                
-                [docEl addChild:docIdEl];
-                
-                GDataXMLElement *urlEl=[GDataXMLNode elementWithName:@"Url" stringValue:attachment.url];
-                
-                [docEl addChild:urlEl];
-                
-                GDataXMLElement *contentEl=[GDataXMLNode elementWithName:@"Content" stringValue:annotString64];
-                
-                [docEl addChild:contentEl];
-                
-                [rootEl addChild:docEl];
-                
-            }
-            
-            
-            
-            GDataXMLDocument *document2 = [[GDataXMLDocument alloc]
-                                           
-                                           initWithRootElement:rootEl] ;
-            
-            NSData *xmlData2 = document2.XMLData;
-            
-            
-            
-            NSLog(@"Saving xml data to %@...", documentsPath);
-            
-            [xmlData2 writeToFile:documentsPath atomically:YES];
-            
-            
-            
-            
-            
-            
-            
-            NSFileManager* fileManager=[NSFileManager defaultManager];
-            
-            
-            
-            if ( [[NSFileManager defaultManager] isReadableFileAtPath:path] ){
-                
-                [fileManager removeItemAtPath:attachment.tempPdfLocation error:nil];
-                
-                [[NSFileManager defaultManager] copyItemAtPath:path toPath:attachment.tempPdfLocation error:nil];
-                
-            }
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-
-            if(!mainDelegate.isOfflineMode)
-                [self uploadXml:correspondence.Id];
-            else{
-                [CParser cacheBuiltInActions:correspondence.Id action:@"annotations" xml:nil];
-            }
-            });
-            
-        });
-        }
-    
-        else{
-            mainDelegate.isAnnotated=NO;
-            @try {
-                
-                [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Processing",@"Processing ...") maskType:SVProgressHUDMaskTypeBlack];
-               
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                CCorrespondence *correspondence;
-                if(self.menuId!=100){
-                    correspondence= ((CMenu*)mainDelegate.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
-                }else{
-                    correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
-                }
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                                      
                                                                      NSUserDomainMask, YES);
                 
                 NSString *documentsDirectory = [paths objectAtIndex:0];
-                NSString *documentsPath = [documentsDirectory stringByAppendingPathComponent:@"annotations.xml"];
-                GDataXMLElement* rootEl =[GDataXMLNode elementWithName:@"Annotations" stringValue:@""];
-                if(mainDelegate.Notes.count>0 || mainDelegate.Highlights.count>0){
-                    GDataXMLElement *Height=[GDataXMLNode elementWithName:@"Height" stringValue:[NSString stringWithFormat:@"%f",[m_pdfview getHeight]]];
-                    GDataXMLElement *Width=[GDataXMLNode elementWithName:@"Width" stringValue:[NSString stringWithFormat:@"%f",[m_pdfview getWidth]]];
-                    GDataXMLElement * pageinfo=[GDataXMLNode elementWithName:@"PageInfo" stringValue:@""];
-                    GDataXMLElement * Size=[GDataXMLNode elementWithName:@"Size" stringValue:@""];
-                    
-                    
-                    [Size addChild:Height];
-                    [Size addChild:Width];
-                    [pageinfo addChild:Size];
-                    [rootEl addChild:pageinfo];}
                 
-                GDataXMLElement * NotesEl=[GDataXMLNode elementWithName:@"Notes" stringValue:@""];
-                GDataXMLElement * HighlightsEl=[GDataXMLNode elementWithName:@"Highlights" stringValue:@""];
+                NSString *documentsPath = [documentsDirectory
+                                           
+                                           stringByAppendingPathComponent:@"annotations.xml"];
                 
-                for(note* note in mainDelegate.Notes){
-                    GDataXMLElement *docEl=[GDataXMLNode elementWithName:@"Note" stringValue:@""];
-                    GDataXMLElement* noteAttribute=[GDataXMLElement attributeWithName:@"status" stringValue:note.status];
-                    [docEl addAttribute:noteAttribute];
-                    GDataXMLElement *AttachmentId=[GDataXMLNode elementWithName:@"AttachmentId" stringValue:[NSString stringWithFormat:@"%d",note.AttachmentId]];
-                    [docEl addChild:AttachmentId];
+                
+                
+                NSData *xmlData = [[NSMutableData alloc] initWithContentsOfFile:documentsPath];
+                
+                
+                
+                GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData options:0 error:&error];
+                
+                BOOL isFound=NO;
+                
+                GDataXMLElement* rootEl  = [doc rootElement];
+                
+                
+                
+                if(rootEl==nil){
                     
-                    GDataXMLElement *pgnb=[GDataXMLNode elementWithName:@"page" stringValue:[NSString stringWithFormat:@"%d",note.PageNb]];
-                    [docEl addChild:pgnb];
+                    rootEl =[GDataXMLNode elementWithName:@"Documents" stringValue:@""];
                     
-                    GDataXMLElement *x=[GDataXMLNode elementWithName:@"noteX" stringValue:[NSString stringWithFormat:@"%f",note.abscissa]];
-                    [docEl addChild:x];
                     
-                    GDataXMLElement *y=[GDataXMLNode elementWithName:@"noteY" stringValue:[NSString stringWithFormat:@"%f",note.ordinate]];
-                    [docEl addChild:y];
-                    
-                    GDataXMLElement *notee=[GDataXMLNode elementWithName:@"noteMSG" stringValue:note.note];
-                    [docEl addChild:notee];
-                    
-                    [NotesEl addChild:docEl];
                     
                 }
-                for(HighlightClass* obj in mainDelegate.Highlights){
-                    GDataXMLElement *docEl=[GDataXMLNode elementWithName:@"Highlight" stringValue:@""];
-                    GDataXMLElement* highlightAttribute=[GDataXMLElement attributeWithName:@"status" stringValue:obj.status];
-                    [docEl addAttribute:highlightAttribute];
-                    GDataXMLElement *pgnb=[GDataXMLNode elementWithName:@"page" stringValue:[NSString stringWithFormat:@"%d",obj.PageNb]];
-                    [docEl addChild:pgnb];
+                
+                
+                
+                NSArray *allDocuments=[rootEl elementsForName:@"Document"];
+                
+                GDataXMLElement *docEl;
+                
+                if(allDocuments.count>0){
                     
-                    GDataXMLElement *AttachmentId=[GDataXMLNode elementWithName:@"AttachmentId" stringValue:[NSString stringWithFormat:@"%d",obj.AttachmentId]];
-                    [docEl addChild:AttachmentId];
-                    GDataXMLElement *x=[GDataXMLNode elementWithName:@"HighlightX1" stringValue:[NSString stringWithFormat:@"%f",obj.abscissa]];
-                    [docEl addChild:x];
+                    for(docEl in allDocuments){
+                        
+                        
+                        
+                        NSArray *correspondenceIds=[docEl elementsForName:@"CorrespondenceId"];
+                        
+                        GDataXMLElement *correspondenceIdEl=[correspondenceIds objectAtIndex:0];
+                        
+                        
+                        
+                        NSArray *docIds=[docEl elementsForName:@"DocId"];
+                        
+                        GDataXMLElement *docIdEl=[docIds objectAtIndex:0];
+                        
+                        
+                        
+                        if([correspondenceIdEl.stringValue isEqualToString:correspondence.Id] && [docIdEl.stringValue isEqualToString:attachment.docId]){
+                            
+                            isFound=YES;
+                            
+                            NSArray *contents=[docEl elementsForName:@"Content"];
+                            
+                            GDataXMLElement *contentEl;
+                            
+                            if(contents.count>0){
+                                
+                                contentEl=[contents objectAtIndex:0];
+                                
+                                contentEl.stringValue=annotString64;
+                                
+                            }
+                            
+                        }
+                        
+                        
+                        
+                        
+                        
+                    }
                     
-                    GDataXMLElement *y=[GDataXMLNode elementWithName:@"HighlightY1" stringValue:[NSString stringWithFormat:@"%f",obj.ordinate]];
-                    [docEl addChild:y];
                     
-                    GDataXMLElement *x1=[GDataXMLNode elementWithName:@"HighlightX2" stringValue:[NSString stringWithFormat:@"%f",obj.x1]];
-                    [docEl addChild:x1];
-                    
-                    GDataXMLElement *y1=[GDataXMLNode elementWithName:@"HighlightY2" stringValue:[NSString stringWithFormat:@"%f",obj.y1]];
-                    [docEl addChild:y1];
-                    [HighlightsEl addChild:docEl];
                     
                 }
-                [rootEl addChild:NotesEl];
-                [rootEl addChild:HighlightsEl];
                 
-                GDataXMLDocument *document2 = [[GDataXMLDocument alloc] initWithRootElement:rootEl] ;
+                
+                
+                if(isFound==NO){
+                    
+                    docEl=[GDataXMLNode elementWithName:@"Document" stringValue:@""];
+                    
+                    
+                    
+                    GDataXMLElement *correspondenceIdEl=[GDataXMLNode elementWithName:@"CorrespondenceId" stringValue:correspondence.Id];
+                    
+                    [docEl addChild:correspondenceIdEl];
+                    
+                    GDataXMLElement *docIdEl=[GDataXMLNode elementWithName:@"DocId" stringValue:attachment.docId];
+                    
+                    [docEl addChild:docIdEl];
+                    
+                    GDataXMLElement *urlEl=[GDataXMLNode elementWithName:@"Url" stringValue:attachment.url];
+                    
+                    [docEl addChild:urlEl];
+                    
+                    GDataXMLElement *contentEl=[GDataXMLNode elementWithName:@"Content" stringValue:annotString64];
+                    
+                    [docEl addChild:contentEl];
+                    
+                    [rootEl addChild:docEl];
+                    
+                }
+                
+                
+                
+                GDataXMLDocument *document2 = [[GDataXMLDocument alloc]
+                                               
+                                               initWithRootElement:rootEl] ;
                 
                 NSData *xmlData2 = document2.XMLData;
                 
+                
+                
+                NSLog(@"Saving xml data to %@...", documentsPath);
+                
                 [xmlData2 writeToFile:documentsPath atomically:YES];
                 
+                
+                
+                
+                
+                
+                
+                NSFileManager* fileManager=[NSFileManager defaultManager];
+                
+                
+                
+                if ( [[NSFileManager defaultManager] isReadableFileAtPath:path] ){
+                    
+                    [fileManager removeItemAtPath:attachment.tempPdfLocation error:nil];
+                    
+                    [[NSFileManager defaultManager] copyItemAtPath:path toPath:attachment.tempPdfLocation error:nil];
+                    
+                }
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    
                     if(!mainDelegate.isOfflineMode)
-                        [self UploadAnnotations:correspondence.Id];
+                        [self uploadXml:correspondence.Id];
                     else{
                         [CParser cacheBuiltInActions:correspondence.Id action:@"annotations" xml:nil];
+                        [SVProgressHUD dismiss];
                     }
-                    [mainDelegate.Highlights removeAllObjects];
-                    [mainDelegate.Notes removeAllObjects];
                 });
+                
+            });
+        }
+        
+        else{
+            mainDelegate.isAnnotated=NO;
+            @try {
+                
+                [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Processing",@"Processing ...") maskType:SVProgressHUDMaskTypeBlack];
+                
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                    CCorrespondence *correspondence;
+                    if(self.menuId!=100){
+                        correspondence= ((CMenu*)mainDelegate.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
+                    }else{
+                        correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
+                    }
+                    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                         
+                                                                         NSUserDomainMask, YES);
+                    
+                    NSString *documentsDirectory = [paths objectAtIndex:0];
+                    NSString *documentsPath = [documentsDirectory stringByAppendingPathComponent:@"annotations.xml"];
+                    GDataXMLElement* rootEl =[GDataXMLNode elementWithName:@"Annotations" stringValue:@""];
+                    if(mainDelegate.Notes.count>0 || mainDelegate.Highlights.count>0){
+                        GDataXMLElement *Height=[GDataXMLNode elementWithName:@"Height" stringValue:[NSString stringWithFormat:@"%f",[m_pdfview getHeight]]];
+                        GDataXMLElement *Width=[GDataXMLNode elementWithName:@"Width" stringValue:[NSString stringWithFormat:@"%f",[m_pdfview getWidth]]];
+                        GDataXMLElement * pageinfo=[GDataXMLNode elementWithName:@"PageInfo" stringValue:@""];
+                        GDataXMLElement * Size=[GDataXMLNode elementWithName:@"Size" stringValue:@""];
+                        
+                        
+                        [Size addChild:Height];
+                        [Size addChild:Width];
+                        [pageinfo addChild:Size];
+                        [rootEl addChild:pageinfo];}
+                    
+                    GDataXMLElement * NotesEl=[GDataXMLNode elementWithName:@"Notes" stringValue:@""];
+                    GDataXMLElement * HighlightsEl=[GDataXMLNode elementWithName:@"Highlights" stringValue:@""];
+                    
+                    for(note* note in mainDelegate.Notes){
+                        GDataXMLElement *docEl=[GDataXMLNode elementWithName:@"Note" stringValue:@""];
+                        GDataXMLElement* noteAttribute=[GDataXMLElement attributeWithName:@"status" stringValue:note.status];
+                        [docEl addAttribute:noteAttribute];
+                        GDataXMLElement *AttachmentId=[GDataXMLNode elementWithName:@"AttachmentId" stringValue:[NSString stringWithFormat:@"%d",note.AttachmentId]];
+                        [docEl addChild:AttachmentId];
+                        
+                        GDataXMLElement *pgnb=[GDataXMLNode elementWithName:@"page" stringValue:[NSString stringWithFormat:@"%d",note.PageNb]];
+                        [docEl addChild:pgnb];
+                        
+                        GDataXMLElement *x=[GDataXMLNode elementWithName:@"noteX" stringValue:[NSString stringWithFormat:@"%f",note.abscissa]];
+                        [docEl addChild:x];
+                        
+                        GDataXMLElement *y=[GDataXMLNode elementWithName:@"noteY" stringValue:[NSString stringWithFormat:@"%f",note.ordinate]];
+                        [docEl addChild:y];
+                        
+                        GDataXMLElement *notee=[GDataXMLNode elementWithName:@"noteMSG" stringValue:note.note];
+                        [docEl addChild:notee];
+                        
+                        [NotesEl addChild:docEl];
+                        
+                    }
+                    for(HighlightClass* obj in mainDelegate.Highlights){
+                        GDataXMLElement *docEl=[GDataXMLNode elementWithName:@"Highlight" stringValue:@""];
+                        GDataXMLElement* highlightAttribute=[GDataXMLElement attributeWithName:@"status" stringValue:obj.status];
+                        [docEl addAttribute:highlightAttribute];
+                        GDataXMLElement *pgnb=[GDataXMLNode elementWithName:@"page" stringValue:[NSString stringWithFormat:@"%d",obj.PageNb]];
+                        [docEl addChild:pgnb];
+                        
+                        GDataXMLElement *AttachmentId=[GDataXMLNode elementWithName:@"AttachmentId" stringValue:[NSString stringWithFormat:@"%d",obj.AttachmentId]];
+                        [docEl addChild:AttachmentId];
+                        GDataXMLElement *x=[GDataXMLNode elementWithName:@"HighlightX1" stringValue:[NSString stringWithFormat:@"%f",obj.abscissa]];
+                        [docEl addChild:x];
+                        
+                        GDataXMLElement *y=[GDataXMLNode elementWithName:@"HighlightY1" stringValue:[NSString stringWithFormat:@"%f",obj.ordinate]];
+                        [docEl addChild:y];
+                        
+                        GDataXMLElement *x1=[GDataXMLNode elementWithName:@"HighlightX2" stringValue:[NSString stringWithFormat:@"%f",obj.x1]];
+                        [docEl addChild:x1];
+                        
+                        GDataXMLElement *y1=[GDataXMLNode elementWithName:@"HighlightY2" stringValue:[NSString stringWithFormat:@"%f",obj.y1]];
+                        [docEl addChild:y1];
+                        [HighlightsEl addChild:docEl];
+                        
+                    }
+                    [rootEl addChild:NotesEl];
+                    [rootEl addChild:HighlightsEl];
+                    
+                    GDataXMLDocument *document2 = [[GDataXMLDocument alloc] initWithRootElement:rootEl] ;
+                    
+                    NSData *xmlData2 = document2.XMLData;
+                    
+                    [xmlData2 writeToFile:documentsPath atomically:YES];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if(!mainDelegate.isOfflineMode)
+                            [self UploadAnnotations:correspondence.Id];
+                        else{
+                            [CParser cacheBuiltInActions:correspondence.Id action:@"CustomAnnotations" xml:nil];
+                            [SVProgressHUD dismiss];
+
+                        }
+                        [mainDelegate.Highlights removeAllObjects];
+                        [mainDelegate.Notes removeAllObjects];
+                    });
                 });
             }
             
@@ -2326,7 +2339,7 @@ typedef enum{
         [FileManager appendToLogView:@"ReaderViewController" function:@"saveAnnotation" ExceptionTitle:[ex name] exceptionReason:[ex reason]];
         
     }
-
+    
     
 }
 -(void)executeAction:(NSString*)action note:(NSString*)Note movehome:(BOOL)movehome
@@ -2352,7 +2365,7 @@ typedef enum{
             
         }
         if(!mainDelegate.isOfflineMode){
-            NSURL *xmlUrl = [NSURL URLWithString:url];
+            NSURL *xmlUrl = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
             NSData *xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
             NSString *validationResultAction=[CParser ValidateWithData:xmlData];
             
@@ -2410,7 +2423,7 @@ typedef enum{
 {
     if ([delegate respondsToSelector:@selector(dismissReaderViewController:)] == YES)
 	{
-       
+        
 		[delegate dismissReaderViewController:self]; // Dismiss the ReaderViewController
     }
     
@@ -2437,19 +2450,19 @@ typedef enum{
         
     }
     
-
+    
 }
 -(void)ShowUploadAttachmentDialog{
     if ([delegate respondsToSelector:@selector(dismissReaderViewController:)] == YES)
     {   CCorrespondence *correspondence;
-                if(self.menuId!=100){
+        if(self.menuId!=100){
             correspondence= ((CMenu*)mainDelegate.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
         }else{
             correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
         }
         UploadControllerDialog *uploadDialog = [[UploadControllerDialog alloc] initWithFrame:CGRectMake(300, 200, 400, 150)];
         uploadDialog.modalPresentationStyle = UIModalPresentationFormSheet;
-       uploadDialog.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        uploadDialog.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         uploadDialog.view.superview.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         [self presentViewController:uploadDialog animated:YES completion:nil];
         uploadDialog.view.superview.frame = CGRectMake(300, 200, 400, 150);
@@ -2459,6 +2472,13 @@ typedef enum{
 }
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar attachmentButton:(UIButton *)button
 {
+    
+    if ( (mainPagebar.hidden == NO))
+    {
+        folderPagebar.hidden = true;
+        mainPagebar.hidden=true;
+        [mainPagebar removeFromSuperview];
+    }
     CCorrespondence *correspondence;
     if(self.menuId!=100){
         correspondence= ((CMenu*)mainDelegate.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
@@ -2469,12 +2489,12 @@ typedef enum{
         [self ShowHidePageBar];
     }
     else{
-    AttachmentViewController *uploadViewController=[[AttachmentViewController alloc]initWithStyle:UITableViewStylePlain];
-    self.notePopController = [[UIPopoverController alloc] initWithContentViewController:uploadViewController];
-    self.notePopController.popoverContentSize = CGSizeMake(300, 50*correspondence.AttachmentsListMenu.count);
-    [self.notePopController presentPopoverFromRect:button.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    uploadViewController.actions=correspondence.AttachmentsListMenu;
-    uploadViewController.delegate=self;
+        AttachmentViewController *uploadViewController=[[AttachmentViewController alloc]initWithStyle:UITableViewStylePlain];
+        self.notePopController = [[UIPopoverController alloc] initWithContentViewController:uploadViewController];
+        self.notePopController.popoverContentSize = CGSizeMake(300, 50*correspondence.AttachmentsListMenu.count);
+        [self.notePopController presentPopoverFromRect:button.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+        uploadViewController.actions=correspondence.AttachmentsListMenu;
+        uploadViewController.delegate=self;
     }
     
 }
@@ -2487,7 +2507,13 @@ typedef enum{
 
 
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar annotationButton:(UIButton *)button{
-    
+    if ( (mainPagebar.hidden == NO))
+    {
+        folderPagebar.hidden = true;
+        mainPagebar.hidden=true;
+        [mainPagebar removeFromSuperview];
+        
+    }
 	AnnotationsController* noteController = [[AnnotationsController alloc] initWithStyle:UITableViewStylePlain];
     CCorrespondence *correspondence;
     CAttachment *attachment;
@@ -2512,7 +2538,7 @@ typedef enum{
             
         }
     }
-
+    
     attachment = [thumbnailrarray objectAtIndex:mainDelegate.attachmentSelected];
     
     BOOL found=NO;
@@ -2520,9 +2546,9 @@ typedef enum{
     if ([attachment.title rangeOfString:@".pdf"].location != NSNotFound) {
         found = YES;
     }
-
+    
     for(NSString*name in correspondence.AnnotationsList){
-            [annotProperties addObject:name];
+        [annotProperties addObject:name];
     }
 	noteController.properties=annotProperties;
 	noteController.delegate=self;
@@ -2537,6 +2563,12 @@ typedef enum{
 }
 
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar transferButton:(UIButton *)button{
+    if ( (mainPagebar.hidden == NO))
+    {
+        folderPagebar.hidden = true;
+        mainPagebar.hidden=true;
+        [mainPagebar removeFromSuperview];
+    }
     TransferViewController *transferView = [[TransferViewController alloc] initWithFrame:CGRectMake(0, 200, 450, 370)];
     transferView.modalPresentationStyle = UIModalPresentationFormSheet;
     transferView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -2546,6 +2578,12 @@ typedef enum{
     transferView.delegate=self;
 }
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar SignActionButton:(UIButton *)button{
+    if ( (mainPagebar.hidden == NO))
+    {
+        folderPagebar.hidden = true;
+        mainPagebar.hidden=true;
+        [mainPagebar removeFromSuperview];
+    }
     CCorrespondence *correspondence;
     if(self.menuId!=100){
         correspondence= ((CMenu*)mainDelegate.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
@@ -2565,20 +2603,20 @@ typedef enum{
 }
 -(void)tappedInToolbar:(ReaderMainToolbar *)toolbar actionButton:(UIButton *)button{
     NSMutableArray *actionProperties=[[NSMutableArray alloc]init];
-     CCorrespondence *correspondence;
+    CCorrespondence *correspondence;
     for(id key in correspondence.toolbar){
         if(([key isEqualToString:@"Accept"] ||[key isEqualToString:@"Reject"] || [key isEqualToString:@"Send"] || [key isEqualToString:@"Sign and Send"] )&&[[correspondence.toolbar objectForKey:key] isEqualToString:@"YES"]){
             [actionProperties addObject:key];
         }
     }
-   // CCorrespondence *correspondence;
+    // CCorrespondence *correspondence;
     if(self.menuId!=100){
         correspondence= ((CMenu*)mainDelegate.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
     }else{
         correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
     }
     SignatureController *newactionViewController=[[SignatureController alloc]initWithStyle:UITableViewStylePlain];
-   // newactionViewController.action=correspondence.actions;
+    // newactionViewController.action=correspondence.actions;
     self.notePopController = [[UIPopoverController alloc] initWithContentViewController:newactionViewController];
 	
 	//size as needed
@@ -2596,7 +2634,12 @@ typedef enum{
 }
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar MoreButton:(UIButton *)button
 {
-    
+    if ( (mainPagebar.hidden == NO))
+    {
+        folderPagebar.hidden = true;
+        mainPagebar.hidden=true;
+        [mainPagebar removeFromSuperview];
+    }
     CCorrespondence *correspondence;
     if(self.menuId!=100){
         correspondence= ((CMenu*)mainDelegate.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
@@ -2638,6 +2681,12 @@ typedef enum{
     
 }
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar CustomButton:(UIButton *)button Item:(ToolbarItem *)item ShowItems:(BOOL)ShowItems{
+    if ( (mainPagebar.hidden == NO))
+    {
+        folderPagebar.hidden = true;
+        mainPagebar.hidden=true;
+        [mainPagebar removeFromSuperview];
+    }
     if(!ShowItems){
         CAction* action = [[CAction alloc] initWithLabel:item.Label action:item.Name popup:item.popup backhome:item.backhome Custom:item.Custom];
         [self PopUpCommentDialog:nil Action:action document:nil];
@@ -2649,21 +2698,26 @@ typedef enum{
         }else{
             correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
         }
-             CustomViewController *customViewController=[[CustomViewController alloc]initWithStyle:UITableViewStylePlain];
-            customViewController.actions=[correspondence.CustomItemsList objectForKey:item.Name];
-
-            self.notePopController = [[UIPopoverController alloc] initWithContentViewController:customViewController];
-            self.notePopController.popoverContentSize = CGSizeMake(300, 50*customViewController.actions.count);
-            [self.notePopController presentPopoverFromRect:button.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-            customViewController.actions=[correspondence.CustomItemsList objectForKey:item.Name];
-            customViewController.delegate=self;
-
+        CustomViewController *customViewController=[[CustomViewController alloc]initWithStyle:UITableViewStylePlain];
+        customViewController.actions=[correspondence.CustomItemsList objectForKey:item.Name];
+        
+        self.notePopController = [[UIPopoverController alloc] initWithContentViewController:customViewController];
+        self.notePopController.popoverContentSize = CGSizeMake(300, 50*customViewController.actions.count);
+        [self.notePopController presentPopoverFromRect:button.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+        customViewController.actions=[correspondence.CustomItemsList objectForKey:item.Name];
+        customViewController.delegate=self;
+        
     }
-
+    
 }
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar actionsButton:(UIButton *)button
 {
-    
+    if ( (mainPagebar.hidden == NO))
+    {
+        folderPagebar.hidden = true;
+        mainPagebar.hidden=true;
+        [mainPagebar removeFromSuperview];
+    }
     CCorrespondence *correspondence;
     if(self.menuId!=100){
         correspondence= ((CMenu*)mainDelegate.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
@@ -2684,15 +2738,15 @@ typedef enum{
             
         }
     }
-
-        CAttachment *file=thumbnailrarray[self.attachmentId];
+    
+    CAttachment *file=thumbnailrarray[self.attachmentId];
     
     ActionsViewController* actionController = [[ActionsViewController alloc] initWithStyle:UITableViewStylePlain];
     actionController.document=document;
 	actionController.correspondenceId=correspondence.Id;
     actionController.docId=file.docId;
 	actionController.actions=correspondence.ActionsMenu;
-
+    
 	self.notePopController = [[UIPopoverController alloc] initWithContentViewController:actionController];
 	
 	//size as needed
@@ -2700,12 +2754,17 @@ typedef enum{
     
     
 	[self.notePopController presentPopoverFromRect:button.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-
+    
     actionController.delegate=self;
-
+    
 }
 -(void)PopUpCommentDialog:(UITableViewController*)viewcontroller Action:(CAction *)action document:(ReaderDocument*)document1{
-    
+    if ( (mainPagebar.hidden == NO))
+    {
+        folderPagebar.hidden = true;
+        mainPagebar.hidden=true;
+        [mainPagebar removeFromSuperview];
+    }
     if ([delegate respondsToSelector:@selector(dismissReaderViewController:)] == YES)
     {
         [self.notePopController dismissPopoverAnimated:NO];
@@ -2721,16 +2780,26 @@ typedef enum{
 }
 -(void)dismissPopUp:(UITableViewController*)viewcontroller{
     [self.notePopController dismissPopoverAnimated:NO];
-
+    
+}
+-(void)dismissUpload:(UIViewController*)viewcontroller{
+    if ([delegate respondsToSelector:@selector(dismissReaderViewController:)] == YES)
+	{
+        
+        [viewcontroller dismissViewControllerAnimated:YES  completion:^{
+           // [delegate dismissReaderViewController:self];
+        }];
+    }
+    
 }
 
 -(void)movehome:(TransferViewController *)viewcontroller{
-        
-        if ([delegate respondsToSelector:@selector(dismissReaderViewController:)] == YES)
-        {
-            [self.notePopController dismissPopoverAnimated:NO];
-                [delegate dismissReaderViewController:self]; // Dismiss the ReaderViewController
-        }
+    
+    if ([delegate respondsToSelector:@selector(dismissReaderViewController:)] == YES)
+    {
+        [self.notePopController dismissPopoverAnimated:NO];
+        [delegate dismissReaderViewController:self]; // Dismiss the ReaderViewController
+    }
     
 }
 -(void)ActionMoveHome:(CommentViewController *)viewcontroller{
@@ -2743,7 +2812,7 @@ typedef enum{
         SearchResultViewController *searchResultViewController = [[SearchResultViewController alloc]initWithStyle:UITableViewStylePlain];
         [navController pushViewController:searchResultViewController animated:YES];
         
-
+        
     }
     
 }
@@ -2755,7 +2824,7 @@ typedef enum{
         [mainPagebar removeFromSuperview];
         mainPagebar.hidden=true;
     }
-[self.noteContainer removeFromSuperview];
+    [self.noteContainer removeFromSuperview];
     [metadataContainer removeFromSuperview];
     m_pdfview.frame=CGRectMake ((self.view.bounds.size.width-self.view.bounds.size.width/1.75)/2, 5, self.view.bounds.size.width/1.75, self.view.bounds.size.height-5);
     isMetadataVisible=!isMetadataVisible;
@@ -2769,32 +2838,32 @@ typedef enum{
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar metadataButton:(UIButton *)button
 {
     @try{
-    [mainToolbar hideToolbar];
-    //[mainPagebar hidePagebar];
+        [mainToolbar hideToolbar];
+        //[mainPagebar hidePagebar];
         if( mainPagebar.hidden==false){
             [mainPagebar removeFromSuperview];
             mainPagebar.hidden=true;
         }    if(isNoteVisible)
-        [self.noteContainer removeFromSuperview];
-    if(isMetadataVisible){
-        [metadataContainer removeFromSuperview];
-        m_pdfview.frame=CGRectMake ((self.view.bounds.size.width-self.view.bounds.size.width/1.75)/2, 5, self.view.bounds.size.width/1.75, self.view.bounds.size.height-5);
-    }
+            [self.noteContainer removeFromSuperview];
+        if(isMetadataVisible){
+            [metadataContainer removeFromSuperview];
+            m_pdfview.frame=CGRectMake ((self.view.bounds.size.width-self.view.bounds.size.width/1.75)/2, 5, self.view.bounds.size.width/1.75, self.view.bounds.size.height-5);
+        }
         else{
-    CGRect viewRect = CGRectMake(0,0, 320, self.view.bounds.size.height);
-    CCorrespondence *correspondence;
-    if(self.menuId!=100){
-        correspondence= ((CMenu*)mainDelegate.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
-    }else{
-        correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
-    }
-   MetadataViewController  *metadataTable=[[MetadataViewController alloc]initWithStyle:UITableViewStyleGrouped];
-    metadataTable.view.frame=viewRect;
-    
-    
-    metadataTable.currentCorrespondence=correspondence;
-   
-    
+            CGRect viewRect = CGRectMake(0,0, 320, self.view.bounds.size.height);
+            CCorrespondence *correspondence;
+            if(self.menuId!=100){
+                correspondence= ((CMenu*)mainDelegate.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
+            }else{
+                correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
+            }
+            MetadataViewController  *metadataTable=[[MetadataViewController alloc]initWithStyle:UITableViewStyleGrouped];
+            metadataTable.view.frame=viewRect;
+            
+            
+            metadataTable.currentCorrespondence=correspondence;
+            
+            
             
     [self addChildViewController:metadataTable];
             
@@ -2940,28 +3009,28 @@ isNoteVisible=!isNoteVisible;
 - (void)pagebar:(ReaderMainPagebar *)pagebar gotoPage:(NSInteger)page document:(ReaderDocument*)newdocument fileId:(NSInteger)fileId
 {
     @try{
-   document=newdocument;
+        document=newdocument;
         [numberPages setTitle:[NSString stringWithFormat:@"1 of %@",document.pageCount] forState:UIControlStateNormal];
-    self.attachmentId=fileId;
-    contentViews = [NSMutableDictionary new];
-    currentPage=0;
-    for (UIView *view in self.view.subviews)
-    {
-        if (![view isKindOfClass:[mainToolbar class]] && ![view isKindOfClass:[mainPagebar class]])
-            [view removeFromSuperview];
-    }
-    
-    lastHideTime = [NSDate date];
-    [self updateScrollViewContentViews];
-    lastAppearSize = CGSizeZero;
-    [self performSelector:@selector(showDocument:) withObject:nil afterDelay:0];
-    [UIApplication sharedApplication].idleTimerDisabled = YES;
-	//[self showDocumentPage:page]; // Show the page
+        self.attachmentId=fileId;
+        contentViews = [NSMutableDictionary new];
+        currentPage=0;
+        for (UIView *view in self.view.subviews)
+        {
+            if (![view isKindOfClass:[mainToolbar class]] && ![view isKindOfClass:[mainPagebar class]])
+                [view removeFromSuperview];
+        }
+        
+        lastHideTime = [NSDate date];
+        [self updateScrollViewContentViews];
+        lastAppearSize = CGSizeZero;
+        [self performSelector:@selector(showDocument:) withObject:nil afterDelay:0];
+        [UIApplication sharedApplication].idleTimerDisabled = YES;
+        //[self showDocumentPage:page]; // Show the page
     }
     @catch (NSException *ex) {
         [FileManager appendToLogView:@"ReaderViewController" function:@"gotoPage" ExceptionTitle:[ex name] exceptionReason:[ex reason]];
     }
-
+    
 }
 
 #pragma mark UIApplication notification methods
@@ -2969,7 +3038,7 @@ isNoteVisible=!isNoteVisible;
 - (void)applicationWill:(NSNotification *)notification
 {
 	[document saveReaderDocument]; // Save any ReaderDocument object changes
-
+    
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
 	{
 		if (printInteraction != nil) [printInteraction dismissAnimated:NO];
@@ -2980,13 +3049,13 @@ isNoteVisible=!isNoteVisible;
 
 //-(void)SearchDataFromPDF{
 //    Searching=YES;
-//   
+//
 //    //[searchPopVC dismissPopoverAnimated:YES];
 //   [self performSelectorInBackground:@selector(GetFirstPageWithResult) withObject:nil ];
-//    
-//   
-//    
-//   
+//
+//
+//
+//
 //    //[self GetListOfSearchPage];
 //}
 //static float progress = 0.0f;
@@ -3031,7 +3100,7 @@ isNoteVisible=!isNoteVisible;
     {
         if(alertView.tag==TAG_DEV)
         {
-           // [cview setAnnotationNoteMsg:[alertView textFieldAtIndex:0].text];
+            // [cview setAnnotationNoteMsg:[alertView textFieldAtIndex:0].text];
             
         }
         if(alertView.tag==TAG_SAVE){
@@ -3050,18 +3119,18 @@ isNoteVisible=!isNoteVisible;
             [self saveAnnotation];
         }
         else{
-           
+            
         }
         
-                }
-                
+    }
     
-            else
-            {
-                UIAlertView *alertNoSig=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Info",@"Info") message:NSLocalizedString(@"Alert.NoSignature",@"No Signature Available,please configure a signature")delegate:self cancelButtonTitle:NSLocalizedString(@"OK",@"OK") otherButtonTitles: nil];
-                [alertNoSig show];
-            }
-
+    
+    else
+    {
+        UIAlertView *alertNoSig=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Info",@"Info") message:NSLocalizedString(@"Alert.NoSignature",@"No Signature Available,please configure a signature")delegate:self cancelButtonTitle:NSLocalizedString(@"OK",@"OK") otherButtonTitles: nil];
+        [alertNoSig show];
+    }
+    
     
 }
 
@@ -3073,21 +3142,21 @@ isNoteVisible=!isNoteVisible;
 }
 
 - (void)tappedSaveSignatureWithWidth:(NSString*)width withHeight:(NSString*)height withRed:(NSString *)red withGreen:(NSString *)green withBlue:(NSString *)blue{
-   
-        
-        [Base64 initialize];
-        NSData* imgData;
+    
+    
+    [Base64 initialize];
+    NSData* imgData;
     UIImage *image=[UIImage imageWithData:[Base64 decode:mainDelegate.user.signature]];
     
     imgData=UIImageJPEGRepresentation([self changeColor:image withRed:red withGreen:green withBlue:blue], 1.0);
-
     
-        [m_pdfdoc setSignatureData:imgData];
-        [m_pdfview setBtnHighlight:NO];
-        [m_pdfview setBtnNote:NO];
-        [m_pdfview setBtnSign:YES];
-        [m_pdfview setAnnotationSignHeight:[height integerValue]];
-        [m_pdfview setAnnotationSignWidth:[width integerValue]];
+    
+    [m_pdfdoc setSignatureData:imgData];
+    [m_pdfview setBtnHighlight:NO];
+    [m_pdfview setBtnNote:NO];
+    [m_pdfview setBtnSign:YES];
+    [m_pdfview setAnnotationSignHeight:[height integerValue]];
+    [m_pdfview setAnnotationSignWidth:[width integerValue]];
     
     if([mainDelegate.Signaction isEqualToString:@"FreeSign"] || [mainDelegate.Signaction isEqualToString:@"FreeSignAll"]){
     

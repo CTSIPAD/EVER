@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 @class UploadControllerDialog;
 @protocol UploadViewDelegate <NSObject>
+-(void)dismissUpload:(UIViewController*)viewcontroller;
 @required
 
 

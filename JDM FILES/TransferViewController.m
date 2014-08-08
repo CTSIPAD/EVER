@@ -471,6 +471,10 @@ self.pmCC.period = [PMPeriod oneDayPeriodWithDate:[NSDate date]];
     txtNote1.frame = CGRectMake(originalFrame.size.width/2+10, 260, (originalFrame.size.width-40)/2, 150);
     closeButton.frame =CGRectMake(((originalFrame.size.width-(2*btnWidth +50))/2)+btnWidth+50, 420, btnWidth, 35);
     saveButton.frame = CGRectMake((originalFrame.size.width-(2*btnWidth +50))/2, 420, btnWidth, 35);
+    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
+        ddbtnDueDate.frame = CGRectMake(originalFrame.size.width/2, 195, 20, 30);
+        ddbtnDirection.frame = CGRectMake(10, 195, 20, 30);
+    }
     origin=50;
     [self.view addSubview:lblTransferTo];
     [self.view addSubview:txtTransferTo];

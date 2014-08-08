@@ -141,7 +141,7 @@
 														   options:0 error:&error];
     
     if(xmlData.length==0){
-        return @"Cannot access to the server";}
+        return NSLocalizedString(@"ServerError",@"Cannot access to the server");}
     else
         if (doc == nil) {
             return @"Technical issue";
