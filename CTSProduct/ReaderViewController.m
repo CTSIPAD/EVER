@@ -2407,7 +2407,9 @@ typedef enum{
                 
             }
         }else{
+            
             [CParser cacheOfflineActions:correspondence.Id url:url action:action];
+            [SVProgressHUD dismiss];
             if(movehome){
                 NSMutableDictionary *correspondences=[CParser LoadCorrespondences:[correspondence.inboxId intValue]];
                 mainDelegate.searchModule.correspondenceList = [correspondences objectForKey:[NSString stringWithFormat:@"%d",[correspondence.inboxId intValue]]];
@@ -2633,6 +2635,7 @@ typedef enum{
     [self saveAnnotation];
     
 }
+
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar MoreButton:(UIButton *)button
 {
     if ( (mainPagebar.hidden == NO))

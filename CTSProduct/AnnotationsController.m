@@ -133,7 +133,7 @@ typedef enum{
     
 } AnnotationsType;
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath  {    
-    int annotation;
+    int annotation = 0;
     CAction* action;
     if(indexPath.row<self.properties.count){
          action=self.properties[indexPath.row];

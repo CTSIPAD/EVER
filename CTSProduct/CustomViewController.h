@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CAction.h"
 #import "ReaderDocument.h"
-@protocol TransferViewDelegate <NSObject>
+@protocol CustomViewDelegate <NSObject>
 -(void)ShowHidePageBar;
 -(void)ShowUploadAttachmentDialog;
 -(void)dismissPopUp:(UITableViewController*)viewcontroller;
@@ -24,6 +24,6 @@
 @interface CustomViewController : UITableViewController<UIAlertViewDelegate>
 
 @property(nonatomic,strong)NSMutableArray* actions;
-@property(nonatomic,unsafe_unretained,readwrite) id <TransferViewDelegate> delegate;
+@property(nonatomic,unsafe_unretained,readwrite) id <CustomViewDelegate> delegate;
 
 @end

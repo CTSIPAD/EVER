@@ -12,7 +12,7 @@
 #import "CAction.h"
 #import "CUser.h"
 
-@protocol TransferViewDelegate <NSObject>
+@protocol MoreDelegate <NSObject>
 @required
 -(void)movehome:(UITableViewController*)viewcontroller;
 -(void)PopUpCommentDialog:(UITableViewController*)viewcontroller Action:(CAction *)action document:(ReaderDocument*)document;
@@ -31,6 +31,6 @@
 @property(nonatomic,strong)NSString* docId;
 @property(nonatomic,strong)NSMutableArray* actions;
 @property(nonatomic,strong)	ReaderDocument *document;
-@property(nonatomic,unsafe_unretained,readwrite) id <TransferViewDelegate> delegate;
+@property(nonatomic,unsafe_unretained,readwrite) id <MoreDelegate> delegate;
 
 @end

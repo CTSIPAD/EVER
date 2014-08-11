@@ -31,6 +31,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 self.highlightNow=NO;
+    self.searchResultViewController = [[SearchResultViewController alloc]initWithStyle:UITableViewStylePlain];
+
     self.IpadLanguage=[[[NSBundle mainBundle] preferredLocalizations]objectAtIndex:0];
     self.serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
     self.isOfflineMode = [[[NSUserDefaults standardUserDefaults] stringForKey:@"offline_mode"] boolValue];

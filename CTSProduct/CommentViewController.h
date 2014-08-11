@@ -16,7 +16,6 @@
 @required // Delegate protocols
 - (void)dismissReaderViewController:(ReaderViewController *)viewController;
 -(void)ActionMoveHome:(CommentViewController*)viewcontroller;
-//-(void)AcceptReject:(NSString*)note viewController:(CommentViewController *)viewcontroller action:( NSString *)action;
 -(void)SignAndSendIt:(NSString*)action document:(ReaderDocument *)document note:(NSString*)note;
 -(void)executeAction:(NSString*)action note:(NSString*)Note movehome:(BOOL)movehome;
 

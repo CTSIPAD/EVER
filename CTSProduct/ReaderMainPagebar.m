@@ -253,7 +253,7 @@
 		pageNumberLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
 		pageNumberLabel.shadowColor = [UIColor blackColor];
 		pageNumberLabel.adjustsFontSizeToFitWidth = YES;
-		pageNumberLabel.minimumFontSize = 12.0f;
+		//pageNumberLabel.minimumFontSize = 12.0f;
 
 		[pageNumberView addSubview:pageNumberLabel]; // Add label view
 
@@ -824,7 +824,7 @@
 {
 	if ((self = [super initWithFrame:frame])) // Superclass init
 	{
-		CGFloat value = (small ? 0.6f : 0.7f); // Size based alpha value
+		//CGFloat value = (small ? 0.6f : 0.7f); // Size based alpha value
 
 		//UIColor *background = [UIColor colorWithWhite:0.8f alpha:value];
 

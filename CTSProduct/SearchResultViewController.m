@@ -24,6 +24,7 @@
 #import "OfflineAction.h"
 #import "BuiltInActions.h"
 #import "UserDetail.h"
+#import "SomeNetworkOperation.h"
 @interface SearchResultViewController ()
 @end
 
@@ -31,6 +32,10 @@
     AppDelegate *mainDelegate ;
     BOOL sync;
     int counter;
+    NSOperationQueue *queue;
+    UIBarButtonItem *itemdownload;
+    UIButton *btndownload;
+
 }
 @synthesize toolbar=_toolbar;
 - (id)initWithStyle:(UITableViewStyle)style
@@ -48,6 +53,10 @@
     counter=0;
     sync=NO;
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    mainDelegate.activityIndicatorObject=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    mainDelegate.activityIndicatorObject.center=CGPointMake(517, 420);
+    mainDelegate.activityIndicatorObject.transform = CGAffineTransformMakeScale(1.5, 1.5);
     mainDelegate.attachmentSelected =0;
     mainDelegate.NbOfCorrToLoad=mainDelegate.SettingsCorrNb;
 
@@ -78,10 +87,7 @@
     btn.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:20.0f];
     btn.titleLabel.textAlignment=NSTextAlignmentCenter;
     [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    
-    
-
+   
     
    // UIBarButtonItem *separator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
   //  separator.width = 190;
@@ -105,14 +111,13 @@
     UIBarButtonItem *itemlogout = [[UIBarButtonItem alloc] initWithCustomView:btnLogout];
     
     
-    UIButton *btndownload;
     if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
         btndownload=[[UIButton alloc]initWithFrame:CGRectMake(10, 62, 37, 37)];
     else
         btndownload=[[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-120, 62, 37, 37)];
     [btndownload setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"downloadAll.png"]]forState:UIControlStateNormal];
     [btndownload addTarget:self action:@selector(download) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *itemdownload = [[UIBarButtonItem alloc] initWithCustomView:btndownload];
+    itemdownload = [[UIBarButtonItem alloc] initWithCustomView:btndownload];
     
     UIButton *btnSync=[[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-40, 2, 37, 37)];
     [btnSync setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"sync.png"]]forState:UIControlStateNormal];
@@ -200,29 +205,50 @@
     }];
 
     
+    if(mainDelegate.Downloading)
+    {
+        [mainDelegate.activityIndicatorObject startAnimating];
+        itemdownload.customView = mainDelegate.activityIndicatorObject;
+    }
+    
+}
+- (void)didFinishLoad:(NSMutableData *)info{
+   // NSLog(@"info:%@",info);
+    [self ShowMessage:NSLocalizedString(@"Alert.downloadSuccess",@"Synchronization Completed Successfully.")];
+    [mainDelegate.activityIndicatorObject stopAnimating];
+    itemdownload.customView=btndownload;
     
     
 }
-
 -(void)performSync{
     NSMutableArray * offlineActions=[CParser LoadOfflineActions];
     NSMutableArray* builtinActions=[CParser LoadBuiltInActions];
+    queue = [[NSOperationQueue alloc] init] ;
+    [queue setMaxConcurrentOperationCount:3];
+    
+    for(OfflineAction* action in offlineActions){
+        NSURL *url = [NSURL URLWithString:[action.Url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        SomeNetworkOperation *op = [[SomeNetworkOperation alloc] init];
+        op.delegate = self;
+        op.urlToLoad = url;
+        [queue addOperation:op];
+    }
     //ReaderViewController* methodCall=[[ReaderViewController alloc]init];
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Sync",@"Synchronizing ...") maskType:SVProgressHUDMaskTypeBlack];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        for(OfflineAction* action in offlineActions){
-            NSURL *xmlUrl = [NSURL URLWithString:[action.Url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-            NSData *xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
-            NSString *validationResultAction=[CParser ValidateWithData:xmlData];
-            
-            if(![validationResultAction isEqualToString:@"OK"])
-            {
-                [self ShowMessage:validationResultAction];
-            }
-            else {
-            }
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
+//    [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Sync",@"Synchronizing ...") maskType:SVProgressHUDMaskTypeBlack];
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+//        for(OfflineAction* action in offlineActions){
+//            NSURL *xmlUrl = [NSURL URLWithString:[action.Url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//            NSData *xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+//            NSString *validationResultAction=[CParser ValidateWithData:xmlData];
+//            
+//            if(![validationResultAction isEqualToString:@"OK"])
+//            {
+//                [self ShowMessage:validationResultAction];
+//            }
+//            else {
+//            }
+//        }
+//        dispatch_async(dispatch_get_main_queue(), ^{
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                 for(BuiltInActions* act in builtinActions){
                     if(![act.Action isEqualToString:@"CustomAnnotations"]){
@@ -249,7 +275,6 @@
                             
                             // setting up the request object now
                             NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-                            [request setURL:[NSURL URLWithString:urlString]];
                             [request setHTTPMethod:@"POST"];
                             
                             
@@ -311,13 +336,8 @@
                                             
                                         }
                                     }
-                                }else{
-                                    if(counter==[builtinActions count]){
-                                        [SVProgressHUD dismiss];
-                                        [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
-                                        
-                                    }
                                 }
+                                
                                 
                             });
                             
@@ -415,13 +435,8 @@
                                             
                                         }
                                     }
-                                }else{
-                                    if(counter==[builtinActions count]){
-                                        [SVProgressHUD dismiss];
-                                        [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
-                                        
-                                    }
                                 }
+                               
                                 
                             });
                             
@@ -441,8 +456,8 @@
                     
                 });
             });
-        });
-    });
+//        });
+//    });
     
     
 }
@@ -619,34 +634,57 @@
 }
 
 -(void)download{
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Downloading",@"Downloading ...") maskType:SVProgressHUDMaskTypeBlack];
+    
+    [mainDelegate.activityIndicatorObject startAnimating];
+    itemdownload.customView = mainDelegate.activityIndicatorObject;
+    mainDelegate.Downloading=YES;
 
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-      
+//    [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Downloading",@"Downloading ...") maskType:SVProgressHUDMaskTypeBlack];
+//
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+//      
+//    NSString* url;
+//        NSString* showthumb;
+//        if (mainDelegate.ShowThumbnail)
+//            showthumb=@"true";
+//        else
+//            showthumb=@"false";
+//    if(mainDelegate.SupportsServlets)
+//        url=[NSString stringWithFormat:@"http://%@?action=DownloadCoreData?token=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,showthumb];
+//    else
+//        url=[NSString stringWithFormat:@"http://%@/DownloadCoreData?token=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,showthumb];
+//    
+//    NSURL *xmlUrl = [NSURL URLWithString:url];
+//    NSData * menuXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+//    [CParser Download:menuXmlData];
+//    
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            
+//            [SVProgressHUD dismiss];
+//            [self ShowMessage:NSLocalizedString(@"Alert.downloadSuccess",@"Synchronization Completed Successfully.")];
+//
+//        });
+//    });
+    
+    
     NSString* url;
-        NSString* showthumb;
-        if (mainDelegate.ShowThumbnail)
-            showthumb=@"true";
-        else
-            showthumb=@"false";
+    NSString* showthumb;
+    if (mainDelegate.ShowThumbnail)
+        showthumb=@"true";
+    else
+        showthumb=@"false";
     if(mainDelegate.SupportsServlets)
         url=[NSString stringWithFormat:@"http://%@?action=DownloadCoreData?token=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,showthumb];
     else
         url=[NSString stringWithFormat:@"http://%@/DownloadCoreData?token=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,showthumb];
+    queue = [[NSOperationQueue alloc] init] ;
+    [queue setMaxConcurrentOperationCount:3];
     
-    NSURL *xmlUrl = [NSURL URLWithString:url];
-    NSData * menuXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
-    [CParser Download:menuXmlData];
-    
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            [SVProgressHUD dismiss];
-            [self ShowMessage:NSLocalizedString(@"Alert.downloadSuccess",@"Synchronization Completed Successfully.")];
+    SomeNetworkOperation *op = [[SomeNetworkOperation alloc] init];
+    op.delegate = self;
+    op.urlToLoad = [NSURL URLWithString:url];
+    [queue addOperation:op];
 
-        });
-    });
-    
-    
     
 
 }
@@ -1064,6 +1102,7 @@
                 
                 [self presentViewController:readerViewController animated:YES completion:^{
                     [self performSelectorOnMainThread:@selector(dismiss) withObject:nil waitUntilDone:YES];
+                    
                 }];
                 
             }
@@ -1192,14 +1231,14 @@
 }
 - (void)dismissReaderViewController:(ReaderViewController *)viewController
 {
-    
-    
+
     [self.navigationController popViewControllerAnimated:YES];
     
     [viewController dismissViewControllerAnimated:YES completion:nil];
     UINavigationController *navController=[mainDelegate.splitViewController.viewControllers objectAtIndex:1];
     [navController setNavigationBarHidden:YES animated:YES];
     SearchResultViewController *searchResultViewController = [[SearchResultViewController alloc]initWithStyle:UITableViewStylePlain];
+    mainDelegate.searchResultViewController=searchResultViewController;
         [navController pushViewController:searchResultViewController animated:YES];
    }
 

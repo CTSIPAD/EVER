@@ -15,7 +15,7 @@
 @class SignatureController;
 @class TransferViewController;
 
-@protocol TransferViewDelegate <NSObject>
+@protocol SignatureViewDelegate <NSObject>
 
 @required
 -(void)SignAndMovehome:(SignatureController *)viewcontroller;
@@ -37,7 +37,7 @@
 }
 @property(nonatomic,strong)NSMutableArray* SignAction;
 @property(nonatomic,strong)	ReaderDocument *document;
-@property(nonatomic,unsafe_unretained,readwrite) id <TransferViewDelegate> delegate;
+@property(nonatomic,unsafe_unretained,readwrite) id <SignatureViewDelegate> delegate;
 @property(nonatomic,strong)	PDFView* m_pdfview;
 @property(nonatomic,strong)	PDFDocument* m_pdfdoc;
 @property(nonatomic,strong)NSString* correspondenceId;

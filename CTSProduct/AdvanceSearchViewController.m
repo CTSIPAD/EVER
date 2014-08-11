@@ -277,7 +277,7 @@
          [cell addSubview:btnSearch];
 
          segmentedControl = [[UISegmentedControl alloc] initWithItems:itemArray];
-         NSDictionary *highlightedattributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:17],NSFontAttributeName,[UIColor whiteColor],UITextAttributeTextColor, nil];
+         NSDictionary *highlightedattributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:17],NSFontAttributeName,[UIColor whiteColor],NSForegroundColorAttributeName, nil];
          [segmentedControl setTitleTextAttributes:highlightedattributes forState:UIControlStateNormal];
          [segmentedControl setTitleTextAttributes:highlightedattributes forState:UIControlStateSelected];
          segmentedControl.frame = CGRectMake((self.view.frame.size.width-300)/3, (appDelegate.searchModule.criterias.count+1)*80, 300, 70);

@@ -401,7 +401,7 @@ BOOL lockSelected=NO;
         if([validationResult isEqualToString:@"Cannot access to the server"])
         {isPerformed=YES;
             
-            CFPendingAction*pa = [[CFPendingAction alloc] initWithActionUrl:url];
+          //  CFPendingAction*pa = [[CFPendingAction alloc] initWithActionUrl:url];
            // [mainDelegate.user addPendingAction:pa];
         }else
             [delegate tappedInToolbar:self lockButton:nil message:validationResult];

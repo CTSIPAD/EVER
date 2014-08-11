@@ -11,6 +11,7 @@
 #import "CUser.h"
 #import "CSearch.h"
 #import "SplitViewController.h"
+#import "SearchResultViewController.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
@@ -21,6 +22,7 @@
 @property (strong, nonatomic) NSString* IpadLanguage;
 @property(nonatomic,assign)BOOL isSharepoint;
 @property(nonatomic,assign)BOOL isOfflineMode;
+@property(nonatomic,assign)BOOL Downloading;
 @property (strong, nonatomic) CSearch *searchModule;
 @property (assign, nonatomic) NSInteger selectedInbox;
 @property (assign, nonatomic) NSInteger InboxTotalCorr;
@@ -46,6 +48,8 @@
 @property (assign, nonatomic)NSInteger inboxForArchiveSelected;
 @property (strong, nonatomic)SplitViewController *splitViewController;
 @property (nonatomic, retain) NSData *logo;
+@property (nonatomic, retain) SearchResultViewController *searchResultViewController;
+@property (nonatomic, retain)UIActivityIndicatorView *activityIndicatorObject;
 @property (nonatomic, assign) BOOL ShowThumbnail;
 @property (nonatomic, assign) BOOL SupportsServlets;
 @property (nonatomic, assign) NSString* SignMode;

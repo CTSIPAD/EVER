@@ -327,7 +327,7 @@ static PMThemeEngine* sharedInstance;
 
     NSAssert(usedFont != nil, @"Please provide proper font either in theme file or in a code.");
     
-    CGSize sz = [string sizeWithFont:usedFont];
+    CGSize sz = [string sizeWithAttributes:@{NSFontAttributeName:usedFont}];
     BOOL isGradient = ![colorObj isKindOfClass:[NSString class]];
     CGSize shadowOffset = CGSizeZero;
 
