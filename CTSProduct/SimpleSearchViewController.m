@@ -171,7 +171,7 @@
     
 
     segmentedControl = [[UISegmentedControl alloc] initWithItems:itemArray];
-    NSDictionary *highlightedattributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:17],UITextAttributeFont,[UIColor whiteColor],UITextAttributeTextColor, nil];
+    NSDictionary *highlightedattributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:17],NSFontAttributeName,[UIColor whiteColor],UITextAttributeTextColor, nil];
     [segmentedControl setTitleTextAttributes:highlightedattributes forState:UIControlStateNormal];
     segmentedControl.frame = CGRectMake((self.view.frame.size.width-110)/3, 400, 300, 70);
     segmentedControl.tintColor = [UIColor colorWithRed:0.0f / 255.0f green:155.0f / 255.0f blue:213.0f / 255.0f alpha:1.0];
