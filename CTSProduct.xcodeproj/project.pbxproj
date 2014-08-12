@@ -47,6 +47,7 @@
 		A2E75C90197CF0700085CD10 /* REMenuItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E75C8B197CF0700085CD10 /* REMenuItemView.m */; };
 		A2E75C93197D2FE20085CD10 /* UserDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E75C92197D2FE20085CD10 /* UserDetail.m */; };
 		A2E75C97197E432E0085CD10 /* UploadControllerDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E75C96197E432E0085CD10 /* UploadControllerDialog.m */; };
+		A2EB9200199A493D0047D0E3 /* OfflineResult.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EB91FF199A493D0047D0E3 /* OfflineResult.m */; };
 		A2EC2AFE196D2CAF00411E1C /* OfflineAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EC2AFD196D2CAF00411E1C /* OfflineAction.m */; };
 		A2EC2B01196D7DE000411E1C /* BuiltInActions.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EC2B00196D7DE000411E1C /* BuiltInActions.m */; };
 		A2EC2B05196EA52B00411E1C /* calendar.png in Resources */ = {isa = PBXBuildFile; fileRef = A2EC2B04196EA52B00411E1C /* calendar.png */; };
@@ -250,6 +251,8 @@
 		A2E75C92197D2FE20085CD10 /* UserDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDetail.m; sourceTree = "<group>"; };
 		A2E75C95197E432E0085CD10 /* UploadControllerDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadControllerDialog.h; sourceTree = "<group>"; };
 		A2E75C96197E432E0085CD10 /* UploadControllerDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadControllerDialog.m; sourceTree = "<group>"; };
+		A2EB91FE199A493D0047D0E3 /* OfflineResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineResult.h; sourceTree = "<group>"; };
+		A2EB91FF199A493D0047D0E3 /* OfflineResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineResult.m; sourceTree = "<group>"; };
 		A2EC2AFC196D2CAF00411E1C /* OfflineAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineAction.h; sourceTree = "<group>"; };
 		A2EC2AFD196D2CAF00411E1C /* OfflineAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineAction.m; sourceTree = "<group>"; };
 		A2EC2AFF196D7DE000411E1C /* BuiltInActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuiltInActions.h; sourceTree = "<group>"; };
@@ -1002,6 +1005,8 @@
 				A2E75C92197D2FE20085CD10 /* UserDetail.m */,
 				A2B9FA10197FC95900A61F5F /* ToolbarItem.h */,
 				A2B9FA11197FC95900A61F5F /* ToolbarItem.m */,
+				A2EB91FE199A493D0047D0E3 /* OfflineResult.h */,
+				A2EB91FF199A493D0047D0E3 /* OfflineResult.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -1392,6 +1397,7 @@
 				A2F232F919557C5000CA09DD /* AppDelegate.m in Sources */,
 				A2F614751959640F00956BF0 /* PMCalendarBackgroundView.m in Sources */,
 				A29A719B1998B1F800143756 /* SomeNetworkOperation.m in Sources */,
+				A2EB9200199A493D0047D0E3 /* OfflineResult.m in Sources */,
 				A2F613CE19586D9500956BF0 /* SVProgressHUD.m in Sources */,
 				A2F614541959606C00956BF0 /* AnnotationsController.m in Sources */,
 				A2F613E91958778200956BF0 /* GDataXMLElement-Extras.m in Sources */,

@@ -23,12 +23,15 @@
 @property(nonatomic,assign)BOOL isSharepoint;
 @property(nonatomic,assign)BOOL isOfflineMode;
 @property(nonatomic,assign)BOOL Downloading;
+@property(nonatomic,assign)BOOL Sync;
 @property (strong, nonatomic) CSearch *searchModule;
 @property (assign, nonatomic) NSInteger selectedInbox;
 @property (assign, nonatomic) NSInteger InboxTotalCorr;
 @property (assign, nonatomic) NSInteger origin;
 @property (strong, nonatomic) CUser *user;
 @property(nonatomic,assign)NSInteger menuSelectedItem;
+@property(nonatomic,assign)NSInteger CountOfflineActions;
+@property(nonatomic,assign)NSInteger CounterSync;
 @property(nonatomic,assign)BOOL highlightNow;
 @property(nonatomic,assign)BOOL SearchActive;
 @property (strong,nonatomic)NSString* docUrl;
@@ -57,6 +60,7 @@
 @property (nonatomic, assign) NSString* Signaction;
 @property (assign,nonatomic) NSInteger NbOfCorrToLoad;
 @property (assign,nonatomic) NSInteger SettingsCorrNb;
+@property (retain,nonatomic) NSMutableArray* SyncActions;
 @property (retain,nonatomic) NSMutableArray* Highlights;
 @property (retain,nonatomic) NSMutableArray* Notes;
 @property (retain,nonatomic) NSMutableArray* IncomingHighlights;

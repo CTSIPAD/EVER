@@ -25,6 +25,7 @@
 #import "BuiltInActions.h"
 #import "UserDetail.h"
 #import "SomeNetworkOperation.h"
+#import "OfflineResult.h"
 @interface SearchResultViewController ()
 @end
 
@@ -35,7 +36,8 @@
     NSOperationQueue *queue;
     UIBarButtonItem *itemdownload;
     UIButton *btndownload;
-
+    UIButton *btnSync;
+    UIBarButtonItem *itemSync;
 }
 @synthesize toolbar=_toolbar;
 - (id)initWithStyle:(UITableViewStyle)style
@@ -119,10 +121,10 @@
     [btndownload addTarget:self action:@selector(download) forControlEvents:UIControlEventTouchUpInside];
     itemdownload = [[UIBarButtonItem alloc] initWithCustomView:btndownload];
     
-    UIButton *btnSync=[[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-40, 2, 37, 37)];
+    btnSync=[[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-40, 2, 37, 37)];
     [btnSync setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"sync.png"]]forState:UIControlStateNormal];
     [btnSync addTarget:self action:@selector(performSync) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *itemSync = [[UIBarButtonItem alloc] initWithCustomView:btnSync];
+    itemSync = [[UIBarButtonItem alloc] initWithCustomView:btnSync];
     if(mainDelegate.isOfflineMode){
          btn.frame = CGRectMake(10, 0, _toolbar.frame.size.width-220, 60);
         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btn];
@@ -209,28 +211,87 @@
     {
         [mainDelegate.activityIndicatorObject startAnimating];
         itemdownload.customView = mainDelegate.activityIndicatorObject;
+        itemSync.enabled=FALSE;
+    }
+    if(mainDelegate.Sync){
+        [mainDelegate.activityIndicatorObject startAnimating];
+        itemSync.customView = mainDelegate.activityIndicatorObject;
+        itemdownload.enabled=FALSE;
     }
     
 }
 - (void)didFinishLoad:(NSMutableData *)info{
    // NSLog(@"info:%@",info);
-    [self ShowMessage:NSLocalizedString(@"Alert.downloadSuccess",@"Synchronization Completed Successfully.")];
-    [mainDelegate.activityIndicatorObject stopAnimating];
-    itemdownload.customView=btndownload;
+    
+    NSString *validationResult=[CParser ValidateWithData:info];
+    if (mainDelegate==nil) mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
+        if(![validationResult isEqualToString:@"OK"]){
+            
+            if([validationResult isEqualToString:@"Cannot access to the server"]){
+                
+                    if([mainDelegate.SyncActions count]>0 && !itemSync.isEnabled){
+                        OfflineResult *OR=mainDelegate.SyncActions[0];
+                        [self ShowMessage:OR.Result];
+                        [mainDelegate.SyncActions removeAllObjects];
+                    }else{
+                        [self ShowMessage:validationResult];
+
+                    }
+                    
+               
+            }
+            else{
+                [self ShowMessage:validationResult];
+            }
+            [mainDelegate.activityIndicatorObject stopAnimating];
+            itemSync.enabled=true;itemdownload.enabled=true;
+            itemdownload.customView=btndownload;
+            itemSync.customView=btnSync;
+
+        }else{
+            if(mainDelegate.Sync){
+                [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
+                [mainDelegate.activityIndicatorObject stopAnimating];
+                itemSync.customView=btnSync;
+                mainDelegate.Sync=NO;
+                [CParser DeleteOfflineActions:@"OfflineActions"];
+                [CParser DeleteOfflineActions:@"BuiltInActions"];
+                itemdownload.enabled=true;
+                [mainDelegate.SyncActions removeAllObjects];
+            }
+            else{
+                
+                [self ShowMessage:NSLocalizedString(@"Alert.downloadSuccess",@"Synchronization Completed Successfully.")];
+                [mainDelegate.activityIndicatorObject stopAnimating];
+                itemdownload.customView=btndownload;
+                itemSync.enabled=true;
+            }
+        }
+   
     
     
 }
 -(void)performSync{
+    
+    mainDelegate.CounterSync=0;
+    mainDelegate.Sync=YES;
+    itemdownload.enabled=false;
+    [mainDelegate.activityIndicatorObject startAnimating];
+    itemSync.customView = mainDelegate.activityIndicatorObject;
     NSMutableArray * offlineActions=[CParser LoadOfflineActions];
     NSMutableArray* builtinActions=[CParser LoadBuiltInActions];
+    mainDelegate.CountOfflineActions=[offlineActions count]+[builtinActions count];
     queue = [[NSOperationQueue alloc] init] ;
     [queue setMaxConcurrentOperationCount:3];
-    
+    mainDelegate.SyncActions=[[NSMutableArray alloc]init];
     for(OfflineAction* action in offlineActions){
         NSURL *url = [NSURL URLWithString:[action.Url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         SomeNetworkOperation *op = [[SomeNetworkOperation alloc] init];
         op.delegate = self;
-        op.urlToLoad = url;
+        NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:30.0];
+        op.requestToLoad = request;
+        op.Action=action.Action;
+        
         [queue addOperation:op];
     }
     //ReaderViewController* methodCall=[[ReaderViewController alloc]init];
@@ -249,10 +310,10 @@
 //            }
 //        }
 //        dispatch_async(dispatch_get_main_queue(), ^{
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+          //  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                 for(BuiltInActions* act in builtinActions){
                     if(![act.Action isEqualToString:@"CustomAnnotations"]){
-                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                       // dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                             NSString* urlString;
                             
                             
@@ -275,6 +336,7 @@
                             
                             // setting up the request object now
                             NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+                            [request setURL:[NSURL URLWithString:urlString]];
                             [request setHTTPMethod:@"POST"];
                             
                             
@@ -310,43 +372,49 @@
                             [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
                             // set request body
                             [request setHTTPBody:body];
+                            SomeNetworkOperation *op = [[SomeNetworkOperation alloc] init];
+                            op.delegate = self;
                             
-                            NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-                            
-                            
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                //[SVProgressHUD dismiss];
-                                counter++;
-                                
-                                NSString *validationResult=[CParser ValidateWithData:returnData];
-                                if (mainDelegate==nil) mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
-                                if(!mainDelegate.isOfflineMode){
-                                    if(![validationResult isEqualToString:@"OK"]){
-                                        
-                                        if([validationResult isEqualToString:@"Cannot access to the server"]){
-                                            [self ShowMessage:validationResult];
-                                        }
-                                        else{
-                                            [self ShowMessage:validationResult];
-                                        }
-                                    }else{
-                                        if(counter==[builtinActions count]){
-                                            [SVProgressHUD dismiss];
-                                            [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
-                                            
-                                        }
-                                    }
-                                }
-                                
-                                
-                            });
-                            
-                        });
+                            op.requestToLoad = request;
+                        op.Action=act.Action;
+
+                            [queue addOperation:op];
+//                            NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+//                            
+//                            
+//                            dispatch_async(dispatch_get_main_queue(), ^{
+//                                //[SVProgressHUD dismiss];
+//                                counter++;
+//                                
+//                                NSString *validationResult=[CParser ValidateWithData:returnData];
+//                                if (mainDelegate==nil) mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
+//                                if(!mainDelegate.isOfflineMode){
+//                                    if(![validationResult isEqualToString:@"OK"]){
+//                                        
+//                                        if([validationResult isEqualToString:@"Cannot access to the server"]){
+//                                            [self ShowMessage:validationResult];
+//                                        }
+//                                        else{
+//                                            [self ShowMessage:validationResult];
+//                                        }
+//                                    }else{
+//                                        if(counter==[builtinActions count]){
+//                                            [SVProgressHUD dismiss];
+//                                            [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
+//                                            
+//                                        }
+//                                    }
+//                                }
+//                                
+//                                
+//                            });
+//                            
+//                        });
                         
                     }
                     //[methodCall uploadXml:act.Id];
                     else{
-                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                       // dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                             NSString* urlString;
                             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                                                  NSUserDomainMask, YES);
@@ -411,51 +479,56 @@
                             
                             // set request body
                             [request setHTTPBody:body];
-                            
-                            NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                //[SVProgressHUD dismiss];
-                                counter++;
-                                
-                                NSString *validationResult=[CParser ValidateWithData:returnData];
-                                if (mainDelegate==nil) mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
-                                if(!mainDelegate.isOfflineMode){
-                                    if(![validationResult isEqualToString:@"OK"]){
-                                        
-                                        if([validationResult isEqualToString:@"Cannot access to the server"]){
-                                            [self ShowMessage:validationResult];
-                                        }
-                                        else{
-                                            [self ShowMessage:validationResult];
-                                        }
-                                    }else{
-                                        if(counter==[builtinActions count]){
-                                            [SVProgressHUD dismiss];
-                                            [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
-                                            
-                                        }
-                                    }
-                                }
-                               
-                                
-                            });
-                            
-                        });
+                        SomeNetworkOperation *op = [[SomeNetworkOperation alloc] init];
+                        op.delegate = self;
+                        op.Action=act.Action;
+                        op.requestToLoad = request;
+                        
+                        [queue addOperation:op];
+//                            NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+//                            dispatch_async(dispatch_get_main_queue(), ^{
+//                                //[SVProgressHUD dismiss];
+//                                counter++;
+//                                
+//                                NSString *validationResult=[CParser ValidateWithData:returnData];
+//                                if (mainDelegate==nil) mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
+//                                if(!mainDelegate.isOfflineMode){
+//                                    if(![validationResult isEqualToString:@"OK"]){
+//                                        
+//                                        if([validationResult isEqualToString:@"Cannot access to the server"]){
+//                                            [self ShowMessage:validationResult];
+//                                        }
+//                                        else{
+//                                            [self ShowMessage:validationResult];
+//                                        }
+//                                    }else{
+//                                        if(counter==[builtinActions count]){
+//                                            [SVProgressHUD dismiss];
+//                                            [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
+//                                            
+//                                        }
+//                                    }
+//                                }
+//                               
+//                                
+//                            });
+//                            
+//                        });
                     }
                     // [methodCall UploadAnnotations:act.Id];
                 }
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if(counter==[builtinActions count]){
-                        [SVProgressHUD dismiss];
-                        [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
-                        
-                    }
-                    [CParser DeleteOfflineActions:@"OfflineActions"];
-                    [CParser DeleteOfflineActions:@"BuiltInActions"];
-                    
-                    
-                });
-            });
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    if(counter==[builtinActions count]){
+//                        [SVProgressHUD dismiss];
+//                        [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
+//                        
+//                    }
+//                    [CParser DeleteOfflineActions:@"OfflineActions"];
+//                    [CParser DeleteOfflineActions:@"BuiltInActions"];
+//                    
+//                    
+//                });
+//            });
 //        });
 //    });
     
@@ -634,10 +707,11 @@
 }
 
 -(void)download{
-    
+    mainDelegate.SyncActions=[[NSMutableArray alloc]init];
     [mainDelegate.activityIndicatorObject startAnimating];
     itemdownload.customView = mainDelegate.activityIndicatorObject;
     mainDelegate.Downloading=YES;
+    itemSync.enabled=false;
 
 //    [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Downloading",@"Downloading ...") maskType:SVProgressHUDMaskTypeBlack];
 //
@@ -682,7 +756,8 @@
     
     SomeNetworkOperation *op = [[SomeNetworkOperation alloc] init];
     op.delegate = self;
-    op.urlToLoad = [NSURL URLWithString:url];
+    op.Action=@"Download";
+    op.requestToLoad =  [NSURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:5.0];;
     [queue addOperation:op];
 
     
@@ -1215,7 +1290,7 @@
     }
 }
 -(void)SyncActions{
-    if(!mainDelegate.isOfflineMode && ([CParser EntitySize:@"OfflineActions"]>0||[CParser EntitySize:@"BuiltInActions"]>0)){
+    if(!mainDelegate.isOfflineMode&&!mainDelegate.Downloading && ([CParser EntitySize:@"OfflineActions"]>0||[CParser EntitySize:@"BuiltInActions"]>0)){
         sync=YES;
         NSString* message;
         message=NSLocalizedString(@"Alert.SyncMsg",@"Actions made in offline mode detected");

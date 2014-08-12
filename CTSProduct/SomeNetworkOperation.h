@@ -23,5 +23,7 @@
 }
 
 @property (nonatomic, weak) id <OperationDelegate>delegate;
-@property (nonatomic, retain) NSURL *urlToLoad;
+@property (nonatomic, retain) NSURLRequest *requestToLoad;
+@property (strong,nonatomic)NSString* Action;
+
 @end
