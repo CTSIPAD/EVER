@@ -144,10 +144,4 @@ AppDelegate *mainDelegate;
     
 }
 
-
-
-
-
-
-
 @end

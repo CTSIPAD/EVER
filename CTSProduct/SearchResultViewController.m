@@ -26,6 +26,7 @@
 #import "UserDetail.h"
 #import "SomeNetworkOperation.h"
 #import "OfflineResult.h"
+#import "SyncViewController.h"
 @interface SearchResultViewController ()
 @end
 
@@ -222,17 +223,34 @@
 }
 - (void)didFinishLoad:(NSMutableData *)info{
    // NSLog(@"info:%@",info);
-    
+    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     NSString *validationResult=[CParser ValidateWithData:info];
     if (mainDelegate==nil) mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
         if(![validationResult isEqualToString:@"OK"]){
             
             if([validationResult isEqualToString:@"Cannot access to the server"]){
                 
-                    if([mainDelegate.SyncActions count]>0 && !itemSync.isEnabled){
-                        OfflineResult *OR=mainDelegate.SyncActions[0];
-                        [self ShowMessage:OR.Result];
-                        [mainDelegate.SyncActions removeAllObjects];
+                    if([mainDelegate.SyncActions count]>0 ){
+                        if ( !itemSync.isEnabled) {
+                            OfflineResult *OR=mainDelegate.SyncActions[0];
+                            [self ShowMessage:OR.Result];
+                        }
+                        else{
+                            [mainDelegate.activityIndicatorObject stopAnimating];
+                            itemSync.customView=btnSync;
+                            mainDelegate.Sync=NO;
+                            itemdownload.enabled=true;
+                            [self ShowMessage:validationResult];
+
+//                            SyncViewController *Results = [[SyncViewController alloc] initWithFrame:CGRectMake(0, 0, 450, 470)];
+//                            Results.modalPresentationStyle = UIModalPresentationFormSheet;
+//                            Results.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//                            [self presentViewController:Results animated:YES completion:nil];
+//                            
+//                            Results.view.superview.frame = CGRectMake(300, 200, 450, 470);
+                        }
+                        
                     }else{
                         [self ShowMessage:validationResult];
 
@@ -250,14 +268,24 @@
 
         }else{
             if(mainDelegate.Sync){
-                [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
+               [self ShowMessage:NSLocalizedString(@"Alert.syncSuccess",@"Synchronization Completed Successfully.")];
                 [mainDelegate.activityIndicatorObject stopAnimating];
                 itemSync.customView=btnSync;
                 mainDelegate.Sync=NO;
                 [CParser DeleteOfflineActions:@"OfflineActions"];
                 [CParser DeleteOfflineActions:@"BuiltInActions"];
                 itemdownload.enabled=true;
-                [mainDelegate.SyncActions removeAllObjects];
+            
+//            
+//            SyncViewController *Results = [[SyncViewController alloc] initWithFrame:CGRectMake(0, 0, 450, 470)];
+//            Results.modalPresentationStyle = UIModalPresentationFormSheet;
+//            Results.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//            [self presentViewController:Results animated:YES completion:nil];
+//            
+//            Results.view.superview.frame = CGRectMake(300, 200, 450, 470);
+            
+
+                
             }
             else{
                 
@@ -272,7 +300,6 @@
     
 }
 -(void)performSync{
-    
     mainDelegate.CounterSync=0;
     mainDelegate.Sync=YES;
     itemdownload.enabled=false;
@@ -284,6 +311,8 @@
     queue = [[NSOperationQueue alloc] init] ;
     [queue setMaxConcurrentOperationCount:3];
     mainDelegate.SyncActions=[[NSMutableArray alloc]init];
+    [mainDelegate.SyncActions removeAllObjects];
+
     for(OfflineAction* action in offlineActions){
         NSURL *url = [NSURL URLWithString:[action.Url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         SomeNetworkOperation *op = [[SomeNetworkOperation alloc] init];
@@ -757,7 +786,7 @@
     SomeNetworkOperation *op = [[SomeNetworkOperation alloc] init];
     op.delegate = self;
     op.Action=@"Download";
-    op.requestToLoad =  [NSURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:5.0];;
+    op.requestToLoad =  [NSURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:30.0];;
     [queue addOperation:op];
 
     

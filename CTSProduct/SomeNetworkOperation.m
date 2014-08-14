@@ -137,7 +137,7 @@
         OR.Result=[NSString stringWithFormat:@"Connection failed! Error - %@",
                    [error localizedDescription]];
         [mainDelegate.SyncActions addObject:OR];
-        [mainDelegate.SyncActions addObject:self.Action];
+        
     mainDelegate.CounterSync++;
     if(mainDelegate.CountOfflineActions==mainDelegate.CounterSync ){
         mainDelegate.CounterSync = 0;

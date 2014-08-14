@@ -1518,6 +1518,7 @@
                         NSArray *urls = [attachment elementsForName:@"URL"];
                         if (urls.count > 0) {
                             GDataXMLElement *urlEl = (GDataXMLElement *) [urls objectAtIndex:0];
+                            NSLog(@"%@",urlEl.stringValue);
                             url = urlEl.stringValue;
                            
                             

@@ -74,7 +74,8 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:mainDelegate.selectedInbox inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+    if(mainDelegate.inboxForArchiveSelected!=0)
+    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:mainDelegate.inboxForArchiveSelected inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (void)didReceiveMemoryWarning

@@ -48,6 +48,9 @@
 		A2E75C93197D2FE20085CD10 /* UserDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E75C92197D2FE20085CD10 /* UserDetail.m */; };
 		A2E75C97197E432E0085CD10 /* UploadControllerDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E75C96197E432E0085CD10 /* UploadControllerDialog.m */; };
 		A2EB9200199A493D0047D0E3 /* OfflineResult.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EB91FF199A493D0047D0E3 /* OfflineResult.m */; };
+		A2EB9208199B60A10047D0E3 /* failure.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A2EB9206199B60A10047D0E3 /* failure.jpg */; };
+		A2EB9209199B60A10047D0E3 /* success.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A2EB9207199B60A10047D0E3 /* success.jpg */; };
+		A2EB920C199B99D10047D0E3 /* SyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EB920B199B99D10047D0E3 /* SyncViewController.m */; };
 		A2EC2AFE196D2CAF00411E1C /* OfflineAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EC2AFD196D2CAF00411E1C /* OfflineAction.m */; };
 		A2EC2B01196D7DE000411E1C /* BuiltInActions.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EC2B00196D7DE000411E1C /* BuiltInActions.m */; };
 		A2EC2B05196EA52B00411E1C /* calendar.png in Resources */ = {isa = PBXBuildFile; fileRef = A2EC2B04196EA52B00411E1C /* calendar.png */; };
@@ -253,6 +256,10 @@
 		A2E75C96197E432E0085CD10 /* UploadControllerDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadControllerDialog.m; sourceTree = "<group>"; };
 		A2EB91FE199A493D0047D0E3 /* OfflineResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineResult.h; sourceTree = "<group>"; };
 		A2EB91FF199A493D0047D0E3 /* OfflineResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineResult.m; sourceTree = "<group>"; };
+		A2EB9206199B60A10047D0E3 /* failure.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = failure.jpg; sourceTree = "<group>"; };
+		A2EB9207199B60A10047D0E3 /* success.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = success.jpg; sourceTree = "<group>"; };
+		A2EB920A199B99D10047D0E3 /* SyncViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncViewController.h; sourceTree = "<group>"; };
+		A2EB920B199B99D10047D0E3 /* SyncViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncViewController.m; sourceTree = "<group>"; };
 		A2EC2AFC196D2CAF00411E1C /* OfflineAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineAction.h; sourceTree = "<group>"; };
 		A2EC2AFD196D2CAF00411E1C /* OfflineAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineAction.m; sourceTree = "<group>"; };
 		A2EC2AFF196D7DE000411E1C /* BuiltInActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuiltInActions.h; sourceTree = "<group>"; };
@@ -709,6 +716,25 @@
 			name = UPLOAD;
 			sourceTree = "<group>";
 		};
+		A2EB9201199B4D6A0047D0E3 /* Sync Result */ = {
+			isa = PBXGroup;
+			children = (
+				A2EB9205199B60900047D0E3 /* images */,
+				A2EB920A199B99D10047D0E3 /* SyncViewController.h */,
+				A2EB920B199B99D10047D0E3 /* SyncViewController.m */,
+			);
+			name = "Sync Result";
+			sourceTree = "<group>";
+		};
+		A2EB9205199B60900047D0E3 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				A2EB9206199B60A10047D0E3 /* failure.jpg */,
+				A2EB9207199B60A10047D0E3 /* success.jpg */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
 		A2EC2B02196EA49400411E1C /* search */ = {
 			isa = PBXGroup;
 			children = (
@@ -779,6 +805,7 @@
 		A2F232EE19557C5000CA09DD /* CTSProduct */ = {
 			isa = PBXGroup;
 			children = (
+				A2EB9201199B4D6A0047D0E3 /* Sync Result */,
 				A29A71981998B1CA00143756 /* Network operations */,
 				A2F8B59A1989909B001BB7DF /* CustomToolbar */,
 				A2E75C94197E42A00085CD10 /* UPLOAD */,
@@ -1351,6 +1378,8 @@
 				A2010BF3195D954E004AC93C /* save.png in Resources */,
 				A2010BEC195D6C55004AC93C /* Sign.png in Resources */,
 				A2B84F641962F3AC0084035F /* settings.png in Resources */,
+				A2EB9208199B60A10047D0E3 /* failure.jpg in Resources */,
+				A2EB9209199B60A10047D0E3 /* success.jpg in Resources */,
 				A2B4FE6D1965501400D7EAB5 /* arrowup2.png in Resources */,
 				A2B4FE6C1965501400D7EAB5 /* Actions.png in Resources */,
 				A2EC2B07196EA57200411E1C /* down-arrow.png in Resources */,
@@ -1394,6 +1423,7 @@
 				A2F614EC1959769000956BF0 /* Signature.m in Sources */,
 				A2E75C93197D2FE20085CD10 /* UserDetail.m in Sources */,
 				A2F6138519583FC200956BF0 /* LoginViewController.m in Sources */,
+				A2EB920C199B99D10047D0E3 /* SyncViewController.m in Sources */,
 				A2F232F919557C5000CA09DD /* AppDelegate.m in Sources */,
 				A2F614751959640F00956BF0 /* PMCalendarBackgroundView.m in Sources */,
 				A29A719B1998B1F800143756 /* SomeNetworkOperation.m in Sources */,

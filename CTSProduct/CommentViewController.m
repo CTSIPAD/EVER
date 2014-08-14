@@ -191,12 +191,13 @@
     else{
         [delegate executeAction:Action.action note:[self.txtNote.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] movehome:Action.backhome];
     }
+    [NSThread detachNewThreadSelector:@selector(dismiss) toTarget:self withObject:nil];
+
     [self dismissViewControllerAnimated:YES  completion:^{
         if(Action.backhome)
             [delegate ActionMoveHome:self];
     }];
     
-    [NSThread detachNewThreadSelector:@selector(dismiss) toTarget:self withObject:nil];
 
 }
 
