@@ -858,18 +858,18 @@
             NSDictionary *subDictionary = [correspondence.systemProperties objectForKey:key];
             NSArray *keys=[subDictionary allKeys];
             NSString *value = [subDictionary objectForKey:[keys objectAtIndex:0]];
-            if([[keys objectAtIndex:0] isEqualToString:@"Sender"])
+            if([[keys objectAtIndex:0] isEqualToString:@"Sender"]||[[keys objectAtIndex:0] isEqualToString:@"المرسل"])
             {
                 cell.label2.text=[NSString stringWithFormat:@"%@: %@",[keys objectAtIndex:0],value];
                 
-            }else if([[keys objectAtIndex:0] isEqualToString:@"Subject"])
+            }else if([[keys objectAtIndex:0] isEqualToString:@"Subject"]||[[keys objectAtIndex:0] isEqualToString:@"الموضوع"])
             {
                 cell.label1.text=[NSString stringWithFormat:@"%@: %@",[keys objectAtIndex:0],value];
-            }else if([[keys objectAtIndex:0] isEqualToString:@"Reference Number"])
+            }else if([[keys objectAtIndex:0] isEqualToString:@"Reference Number"]||[[keys objectAtIndex:0] isEqualToString:@"الرقم المرجعي"])
             {
                 cell.label3.text=[NSString stringWithFormat:@"%@: %@",[keys objectAtIndex:0],value];
             }
-            else if([[keys objectAtIndex:0] isEqualToString:@"Date"])
+            else if([[keys objectAtIndex:0] isEqualToString:@"Date"]||[[keys objectAtIndex:0] isEqualToString:@"التاريخ"])
             {
                 cell.label4.text=[NSString stringWithFormat:@"%@: %@",[keys objectAtIndex:0],value];
             }

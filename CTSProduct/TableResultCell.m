@@ -122,7 +122,7 @@
   
         else
             if ((Priority && !New)||(!Priority  && New))
-                self.LockButton.frame = CGRectMake(self.frame.origin.x+20, 0, 30, 30);
+                self.LockButton.frame = CGRectMake(self.frame.origin.x+35, 0, 30, 30);
             else
                 self.LockButton.frame = CGRectMake(self.frame.origin.x+5, 0, 30, 30);
 
