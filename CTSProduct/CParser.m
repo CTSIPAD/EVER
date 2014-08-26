@@ -215,12 +215,12 @@
                     NSString *title;
                     NSString * detail;
                     
-                    NSArray *titles = [actionItem elementsForName:@"Title"];
+                    NSArray *titles = [actionItem elementsForName:@"Key"];
                     if (titles.count > 0) {
                         GDataXMLElement *titleEl = (GDataXMLElement *) [titles objectAtIndex:0];
                         title = titleEl.stringValue;
                     }
-                    NSArray *details = [actionItem elementsForName:@"Description"];
+                    NSArray *details = [actionItem elementsForName:@"Value"];
                     if (details.count > 0) {
                         GDataXMLElement *detailEl = (GDataXMLElement *) [details objectAtIndex:0];
                         detail = detailEl.stringValue;

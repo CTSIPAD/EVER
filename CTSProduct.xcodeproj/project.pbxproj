@@ -188,6 +188,7 @@
 		A2F8B5A7198BBEAB001BB7DF /* SearchButton.png in Resources */ = {isa = PBXBuildFile; fileRef = A2F8B5A3198BBEAB001BB7DF /* SearchButton.png */; };
 		A2F8B5A8198BBEAB001BB7DF /* SearchButtontest.PNG in Resources */ = {isa = PBXBuildFile; fileRef = A2F8B5A4198BBEAB001BB7DF /* SearchButtontest.PNG */; };
 		A2F8B5A9198BBEAB001BB7DF /* searchInbox.png in Resources */ = {isa = PBXBuildFile; fileRef = A2F8B5A5198BBEAB001BB7DF /* searchInbox.png */; };
+		A2FE653719AC7C4300CC5628 /* UserDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2FE653619AC7C4300CC5628 /* UserDetailsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -505,6 +506,8 @@
 		A2F8B5A3198BBEAB001BB7DF /* SearchButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SearchButton.png; sourceTree = "<group>"; };
 		A2F8B5A4198BBEAB001BB7DF /* SearchButtontest.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SearchButtontest.PNG; sourceTree = "<group>"; };
 		A2F8B5A5198BBEAB001BB7DF /* searchInbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchInbox.png; sourceTree = "<group>"; };
+		A2FE653519AC7C4300CC5628 /* UserDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDetailsViewController.h; sourceTree = "<group>"; };
+		A2FE653619AC7C4300CC5628 /* UserDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDetailsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -805,6 +808,7 @@
 		A2F232EE19557C5000CA09DD /* CTSProduct */ = {
 			isa = PBXGroup;
 			children = (
+				A2FE653419AC7C2300CC5628 /* USER Details */,
 				A2EB9201199B4D6A0047D0E3 /* Sync Result */,
 				A29A71981998B1CA00143756 /* Network operations */,
 				A2F8B59A1989909B001BB7DF /* CustomToolbar */,
@@ -1002,10 +1006,10 @@
 				A2F6140F19587F7B00956BF0 /* CSearchType.m */,
 				A2F6140B19587F5D00956BF0 /* CSearchCriteria.h */,
 				A2F6140C19587F5D00956BF0 /* CSearchCriteria.m */,
+				A2F6140619587F3800956BF0 /* CAction.m */,
 				A2F6140819587F4B00956BF0 /* CAnnotation.h */,
 				A2F6140919587F4B00956BF0 /* CAnnotation.m */,
 				A2F6140519587F3800956BF0 /* CAction.h */,
-				A2F6140619587F3800956BF0 /* CAction.m */,
 				A2F6140219587F2600956BF0 /* CDestination.h */,
 				A2F6140319587F2600956BF0 /* CDestination.m */,
 				A2F613FF19587EF000956BF0 /* CRouteLabel.h */,
@@ -1251,6 +1255,15 @@
 			name = CustomToolbar;
 			sourceTree = "<group>";
 		};
+		A2FE653419AC7C2300CC5628 /* USER Details */ = {
+			isa = PBXGroup;
+			children = (
+				A2FE653519AC7C4300CC5628 /* UserDetailsViewController.h */,
+				A2FE653619AC7C4300CC5628 /* UserDetailsViewController.m */,
+			);
+			name = "USER Details";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1490,6 +1503,7 @@
 				A2F614CF19596D3900956BF0 /* CommentViewController.m in Sources */,
 				A2F613D71958737E00956BF0 /* StringEncryption.m in Sources */,
 				A2F614761959640F00956BF0 /* PMCalendarController.m in Sources */,
+				A2FE653719AC7C4300CC5628 /* UserDetailsViewController.m in Sources */,
 				A2E75C8D197CF0700085CD10 /* REMenu.m in Sources */,
 				A2F6144619595EC100956BF0 /* ReaderViewController.m in Sources */,
 				A2F614DF195973FA00956BF0 /* SignatureViewController.m in Sources */,

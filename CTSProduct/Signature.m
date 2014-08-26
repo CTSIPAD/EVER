@@ -24,7 +24,6 @@ CGPoint midPoint(CGPoint p1 ,CGPoint p2){
         imageView.userInteractionEnabled=YES;
         self.sigView=imageView;
         self.sigView.userInteractionEnabled=YES;
-        
 		self.backgroundColor=[UIColor whiteColor];
 		self.userInteractionEnabled=YES;
         
@@ -66,7 +65,7 @@ CGPoint midPoint(CGPoint p1 ,CGPoint p2){
     CGPoint mid1=midPoint(previousPoint1, previousPoint2);
     CGPoint mid2=midPoint(currentPoint, previousPoint1);
     
-    UIGraphicsBeginImageContext(self.sigView.frame.size);
+    UIGraphicsBeginImageContextWithOptions(self.sigView.frame.size,NO,0.0);
     CGContextRef context=UIGraphicsGetCurrentContext();
     
     [self.sigView.image drawInRect:CGRectMake(0, 0, self.sigView.frame.size.width, self.sigView.frame.size.height)];
@@ -88,7 +87,31 @@ CGPoint midPoint(CGPoint p1 ,CGPoint p2){
     sigView.image = nil;
     [UIView commitAnimations];
 }
+- (UIImage *)invertImage:(UIImage *)originalImage
+{
+    UIGraphicsBeginImageContext(originalImage.size);
+    CGContextSetBlendMode(UIGraphicsGetCurrentContext(), kCGBlendModeCopy);
+    CGRect imageRect = CGRectMake(0, 0, originalImage.size.width, originalImage.size.height);
+    [originalImage drawInRect:imageRect];
+    
+    
+    CGContextSetBlendMode(UIGraphicsGetCurrentContext(), kCGBlendModeDifference);
+    // translate/flip the graphics context (for transforming from CG* coords to UI* coords
+    CGContextTranslateCTM(UIGraphicsGetCurrentContext(), 0, originalImage.size.height);
+    CGContextScaleCTM(UIGraphicsGetCurrentContext(), 1.0, -1.0);
+    //mask the image
+    CGContextClipToMask(UIGraphicsGetCurrentContext(), imageRect,  originalImage.CGImage);
+    CGContextSetFillColorWithColor(UIGraphicsGetCurrentContext(),[UIColor whiteColor].CGColor);
+    CGContextFillRect(UIGraphicsGetCurrentContext(), CGRectMake(0, 0, originalImage.size.width, originalImage.size.height));
+    UIImage *returnImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return returnImage;
+}
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+    
+//    [self setSignatureImage:[self invertImage:self.sigView.image]];
+//    self.sigView.image=self.signatureImage;
     [self setSignatureImage:self.sigView.image];
 }
 @end

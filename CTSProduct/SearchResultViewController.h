@@ -15,6 +15,8 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableview;
 @property(nonatomic,strong)IBOutlet UIToolbar *toolbar;
 @property (strong, readwrite, nonatomic) REMenu *menu;
+@property(nonatomic,strong)UIPopoverController* notePopController ;
+
 
 @property (nonatomic,strong)CSearch *searchResult;
 - (void)didFinishLoad:(NSMutableData *)info;

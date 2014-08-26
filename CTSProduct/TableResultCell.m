@@ -9,6 +9,7 @@
 #import "TableResultCell.h"
 #import "NSData+Base64.h"
 #import "AppDelegate.h"
+
 @implementation TableResultCell{
     AppDelegate* mainDelegate;
 }
@@ -109,7 +110,10 @@
     self.label1.font=[UIFont fontWithName:@"Verdana" size:20];
     self.label1.textAlignment=NSTextAlignmentCenter;
     self.label1.font=[UIFont boldSystemFontOfSize:20];
-    self.label1.text=@"Tap here to Load More";
+    if([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+        self.label1.text=@"اضغط هنا لتحميل المزيد";
+    else
+        self.label1.text=@"Tap here to Load More";
     [self addSubview:self.label1];
     
 }

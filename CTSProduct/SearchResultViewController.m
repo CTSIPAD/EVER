@@ -27,6 +27,7 @@
 #import "SomeNetworkOperation.h"
 #import "OfflineResult.h"
 #import "SyncViewController.h"
+#import "UserDetailsViewController.h"
 @interface SearchResultViewController ()
 @end
 
@@ -39,6 +40,7 @@
     UIButton *btndownload;
     UIButton *btnSync;
     UIBarButtonItem *itemSync;
+    UIButton *btn ;
 }
 @synthesize toolbar=_toolbar;
 - (id)initWithStyle:(UITableViewStyle)style
@@ -80,7 +82,7 @@
 //    userlabel.font =[UIFont fontWithName:@"Helvetica" size:20.0f];
     
     
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn = [UIButton buttonWithType:UIButtonTypeCustom];
     
 
     [btn addTarget:self action:@selector(dropdown) forControlEvents:UIControlEventTouchUpInside];
@@ -167,45 +169,45 @@
     self.navigationController.toolbarHidden=YES;
     [self SyncActions];
     
-    
-    NSMutableArray* REmenuitems=[[NSMutableArray alloc]init];
-    for(UserDetail * obj in mainDelegate.user.UserDetails){
-        REMenuItem *Item = [[REMenuItem alloc] initWithTitle:obj.title
-                                                        subtitle:obj.detail
-                                                           image:[UIImage imageNamed:@"Icon_Home"]
-                                                highlightedImage:nil
-                                                          action:^(REMenuItem *item) {
-                                                              NSLog(@"Item: %@", item);
-                                                          }];
-        [REmenuitems addObject:Item];
-    }
-   
-    
-    self.menu = [[REMenu alloc] initWithItems:REmenuitems];
-    if (!REUIKitIsFlatMode()) {
-        self.menu.cornerRadius = 4;
-        self.menu.shadowRadius = 4;
-        self.menu.shadowColor = [UIColor blackColor];
-        self.menu.shadowOffset = CGSizeMake(0, 1);
-        self.menu.shadowOpacity = 1;
-    }
-    
-    self.menu.separatorOffset = CGSizeMake(15.0, 0.0);
-    self.menu.imageOffset = CGSizeMake(5, -1);
-    self.menu.waitUntilAnimationIsComplete = NO;
-    self.menu.badgeLabelConfigurationBlock = ^(UILabel *badgeLabel, REMenuItem *item) {
-        badgeLabel.backgroundColor = [UIColor colorWithRed:200/255.0 green:179/255.0 blue:134/255.0 alpha:1];
-        badgeLabel.layer.borderColor = [UIColor colorWithRed:0.000 green:0.648 blue:0.507 alpha:1.000].CGColor;
-    };
-    
-    
-    [self.menu setClosePreparationBlock:^{
-        NSLog(@"Menu will close");
-    }];
-    
-    [self.menu setCloseCompletionHandler:^{
-        NSLog(@"Menu did close");
-    }];
+//    
+//    NSMutableArray* REmenuitems=[[NSMutableArray alloc]init];
+//    for(UserDetail * obj in mainDelegate.user.UserDetails){
+//        REMenuItem *Item = [[REMenuItem alloc] initWithTitle:obj.title
+//                                                        subtitle:obj.detail
+//                                                           image:[UIImage imageNamed:@"Icon_Home"]
+//                                                highlightedImage:nil
+//                                                          action:^(REMenuItem *item) {
+//                                                              NSLog(@"Item: %@", item);
+//                                                          }];
+//        [REmenuitems addObject:Item];
+//    }
+//   
+//    
+//    self.menu = [[REMenu alloc] initWithItems:REmenuitems];
+//    if (!REUIKitIsFlatMode()) {
+//        self.menu.cornerRadius = 4;
+//        self.menu.shadowRadius = 4;
+//        self.menu.shadowColor = [UIColor blackColor];
+//        self.menu.shadowOffset = CGSizeMake(0, 1);
+//        self.menu.shadowOpacity = 1;
+//    }
+//    
+//    self.menu.separatorOffset = CGSizeMake(15.0, 0.0);
+//    self.menu.imageOffset = CGSizeMake(5, -1);
+//    self.menu.waitUntilAnimationIsComplete = NO;
+//    self.menu.badgeLabelConfigurationBlock = ^(UILabel *badgeLabel, REMenuItem *item) {
+//        badgeLabel.backgroundColor = [UIColor colorWithRed:200/255.0 green:179/255.0 blue:134/255.0 alpha:1];
+//        badgeLabel.layer.borderColor = [UIColor colorWithRed:0.000 green:0.648 blue:0.507 alpha:1.000].CGColor;
+//    };
+//    
+//    
+//    [self.menu setClosePreparationBlock:^{
+//        NSLog(@"Menu will close");
+//    }];
+//    
+//    [self.menu setCloseCompletionHandler:^{
+//        NSLog(@"Menu did close");
+//    }];
 
     
     if(mainDelegate.Downloading)
@@ -729,12 +731,37 @@
 //
 //}
 -(void)dropdown{
-    if (self.menu.isOpen)
-        return [self.menu close];
-     UINavigationController *navController=[mainDelegate.splitViewController.viewControllers objectAtIndex:1];
-    [self.menu showFromNavigationController:navController];
-}
+    
+    if(mainDelegate.user.UserDetails.count>0){
+    UserDetailsViewController *UserDetails=[[UserDetailsViewController alloc]initWithStyle:UITableViewStylePlain];
+    self.notePopController = [[UIPopoverController alloc] initWithContentViewController:UserDetails];
+    if(mainDelegate.user.UserDetails.count>6)
+        self.notePopController.popoverContentSize = CGSizeMake(250, 50*6);
+    else
+        self.notePopController.popoverContentSize = CGSizeMake(250, 50*mainDelegate.user.UserDetails.count);
 
+    CGRect rect= CGRectMake(btn.frame.origin.x, btn.frame.origin.y, btn.frame.size.width, btn.frame.size.height);
+    UINavigationController *navController=[mainDelegate.splitViewController.viewControllers objectAtIndex:1];
+    
+        [self.notePopController presentPopoverFromRect:rect inView:navController.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+
+       
+    
+    UserDetails.UserDetail=mainDelegate.user.UserDetails;
+    UserDetails.delegate=self;
+
+    }
+    
+    
+//    if (self.menu.isOpen)
+//        return [self.menu close];
+//     UINavigationController *navController=[mainDelegate.splitViewController.viewControllers objectAtIndex:1];
+//    [self.menu showFromNavigationController:navController];
+}
+-(void)dismissPopUp:(UITableViewController*)viewcontroller{
+    [self.notePopController dismissPopoverAnimated:NO];
+    
+}
 -(void)download{
     mainDelegate.SyncActions=[[NSMutableArray alloc]init];
     [mainDelegate.activityIndicatorObject startAnimating];
@@ -858,20 +885,32 @@
             NSDictionary *subDictionary = [correspondence.systemProperties objectForKey:key];
             NSArray *keys=[subDictionary allKeys];
             NSString *value = [subDictionary objectForKey:[keys objectAtIndex:0]];
-            if([[keys objectAtIndex:0] isEqualToString:@"Sender"]||[[keys objectAtIndex:0] isEqualToString:@"المرسل"])
+            if([key isEqualToString:@"2"])
             {
+                //cell.label2.lineBreakMode = NSLineBreakByWordWrapping;
+                //cell.label2.numberOfLines = 0;
                 cell.label2.text=[NSString stringWithFormat:@"%@: %@",[keys objectAtIndex:0],value];
+               // [cell.label2 sizeToFit];
                 
-            }else if([[keys objectAtIndex:0] isEqualToString:@"Subject"]||[[keys objectAtIndex:0] isEqualToString:@"الموضوع"])
+            }else if([key isEqualToString:@"1"])
             {
+                cell.label1.lineBreakMode = NSLineBreakByWordWrapping;
+                cell.label1.numberOfLines = 0;
                 cell.label1.text=[NSString stringWithFormat:@"%@: %@",[keys objectAtIndex:0],value];
-            }else if([[keys objectAtIndex:0] isEqualToString:@"Reference Number"]||[[keys objectAtIndex:0] isEqualToString:@"الرقم المرجعي"])
+               // [cell.label1 sizeToFit];
+            }else if([key isEqualToString:@"0"])
             {
+              // cell.label3.lineBreakMode = NSLineBreakByWordWrapping;
+              // cell.label3.numberOfLines = 0;
                 cell.label3.text=[NSString stringWithFormat:@"%@: %@",[keys objectAtIndex:0],value];
+                //[cell.label3 sizeToFit];
             }
-            else if([[keys objectAtIndex:0] isEqualToString:@"Date"]||[[keys objectAtIndex:0] isEqualToString:@"التاريخ"])
+            else if([key isEqualToString:@"3"])
             {
+               // cell.label4.lineBreakMode = NSLineBreakByWordWrapping;
+               // cell.label4.numberOfLines = 0;
                 cell.label4.text=[NSString stringWithFormat:@"%@: %@",[keys objectAtIndex:0],value];
+               // [cell.label4 sizeToFit];
             }
         }
         

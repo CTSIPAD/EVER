@@ -75,7 +75,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     if(mainDelegate.inboxForArchiveSelected!=0)
-    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:mainDelegate.inboxForArchiveSelected inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+        [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:mainDelegate.inboxForArchiveSelected inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (void)didReceiveMemoryWarning
@@ -149,7 +149,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.userInteractionEnabled = NO;
         
-
+        
     }
     else
         if(indexPath.row==rowsNumber-1){//search
@@ -205,7 +205,7 @@
         
         UINavigationController *navController=[mainDelegate.splitViewController.viewControllers objectAtIndex:1];
         [navController setNavigationBarHidden:YES animated:YES];
-       
+        
         if(indexPath.row!=0){
             /***** search button *****/
             if(indexPath.row==totalMenuItemsCount-1){
@@ -215,7 +215,7 @@
                     if(mainDelegate.SupportsServlets)
                         searchUrl = [NSString stringWithFormat:@"http://%@?action=BuildAdvancedSearch&token=%@&language=%@",mainDelegate.serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
                     else
-                         searchUrl = [NSString stringWithFormat:@"http://%@/BuildAdvancedSearch?token=%@&language=%@",mainDelegate.serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
+                        searchUrl = [NSString stringWithFormat:@"http://%@/BuildAdvancedSearch?token=%@&language=%@",mainDelegate.serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
                     NSURL *xmlUrl = [NSURL URLWithString:searchUrl];
                     NSData *searchXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
                     
@@ -236,7 +236,7 @@
                 
             }
             /*****end search button *****/
-
+            
             else{
                 
                 
@@ -245,42 +245,42 @@
                 
                 mainDelegate.inboxForArchiveSelected = indexPath.row-1;
                 
-//                if(mainDelegate.isOfflineMode){
-//                    canFound=NO;
-//                    [self ShowMessage:NSLocalizedString(@"Alert.NoTask",@"No Tasks Found")];
-//                    
-//                }
-//                else{
-                    //[NSThread detachNewThreadSelector:@selector(increaseLoading) toTarget:self withObject:nil];
-                    [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Loading",@"Loading ...") maskType:SVProgressHUDMaskTypeBlack];
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                        
-                        NSMutableDictionary *correspondences;
-                        if(!mainDelegate.isOfflineMode){
-                            NSString* correspondenceUrl;
-                            NSString* showthumb;
-                            if (mainDelegate.ShowThumbnail)
-                                showthumb=@"true";
-                            else
-                                showthumb=@"false";
-                            if(mainDelegate.SupportsServlets)
-                                correspondenceUrl = [NSString stringWithFormat:@"http://%@?action=GetCorrespondences&token=%@&inboxId=%d&index=%d&pageSize=%d&language=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,currentInbox.menuId,0,mainDelegate.SettingsCorrNb,mainDelegate.IpadLanguage,showthumb];
-                            else
-                                correspondenceUrl = [NSString stringWithFormat:@"http://%@/GetCorrespondences?token=%@&inboxId=%d&index=%d&pageSize=%d&language=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,currentInbox.menuId,0,mainDelegate.SettingsCorrNb,mainDelegate.IpadLanguage,showthumb];
+                //                if(mainDelegate.isOfflineMode){
+                //                    canFound=NO;
+                //                    [self ShowMessage:NSLocalizedString(@"Alert.NoTask",@"No Tasks Found")];
+                //
+                //                }
+                //                else{
+                //[NSThread detachNewThreadSelector:@selector(increaseLoading) toTarget:self withObject:nil];
+                [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Loading",@"Loading ...") maskType:SVProgressHUDMaskTypeBlack];
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                    
+                    NSMutableDictionary *correspondences;
+                    if(!mainDelegate.isOfflineMode){
+                        NSString* correspondenceUrl;
+                        NSString* showthumb;
+                        if (mainDelegate.ShowThumbnail)
+                            showthumb=@"true";
+                        else
+                            showthumb=@"false";
+                        if(mainDelegate.SupportsServlets)
+                            correspondenceUrl = [NSString stringWithFormat:@"http://%@?action=GetCorrespondences&token=%@&inboxId=%d&index=%d&pageSize=%d&language=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,currentInbox.menuId,0,mainDelegate.SettingsCorrNb,mainDelegate.IpadLanguage,showthumb];
+                        else
+                            correspondenceUrl = [NSString stringWithFormat:@"http://%@/GetCorrespondences?token=%@&inboxId=%d&index=%d&pageSize=%d&language=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,currentInbox.menuId,0,mainDelegate.SettingsCorrNb,mainDelegate.IpadLanguage,showthumb];
                         NSURL *xmlUrl = [NSURL URLWithString:correspondenceUrl];
-                           NSData *menuXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
-                            correspondences=[CParser loadCorrespondencesWithData:menuXmlData];
-                        }
-                        else{
-                            correspondences=[CParser LoadCorrespondences:currentInbox.menuId];
-                        }
-                     
+                        NSData *menuXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+                        correspondences=[CParser loadCorrespondencesWithData:menuXmlData];
+                    }
+                    else{
+                        correspondences=[CParser LoadCorrespondences:currentInbox.menuId];
+                    }
+                    
+                    
+                    if(!mainDelegate.isOfflineMode){
                         
-                        if(!mainDelegate.isOfflineMode){
-
                         if(mainDelegate.searchModule ==nil){
-                           
-
+                            
+                            
                             NSString* searchUrl;
                             if(mainDelegate.SupportsServlets)
                                 searchUrl= [NSString stringWithFormat:@"http://%@?action=BuildAdvancedSearch&token=%@&language=%@",mainDelegate.serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
@@ -289,71 +289,70 @@
                             NSURL *xmlUrl = [NSURL URLWithString:searchUrl];
                             NSData *searchXmlData;
                             if(!mainDelegate.isOfflineMode){
-                            searchXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
-                            
-                            NSString *validationResult=[CParser ValidateWithData:searchXmlData];
-                            if(![validationResult isEqualToString:@"OK"]){
-                                [self ShowMessage:validationResult];
-                            }
-                            else{
+                                searchXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
                                 
-                                [CParser cacheXml:@"Search" xml:searchXmlData nb:@"0" name:@""];
-                                mainDelegate.searchModule=[CParser loadSearchWithData:searchXmlData];
-                            }
+                                NSString *validationResult=[CParser ValidateWithData:searchXmlData];
+                                if(![validationResult isEqualToString:@"OK"]){
+                                    [self ShowMessage:validationResult];
+                                }
+                                else{
+                                    
+                                    [CParser cacheXml:@"Search" xml:searchXmlData nb:@"0" name:@""];
+                                    mainDelegate.searchModule=[CParser loadSearchWithData:searchXmlData];
+                                }
                             }else{
                                 searchXmlData=[CParser LoadXML:@"Search" nb:@"0" name:@""];
                                 mainDelegate.searchModule=[CParser loadSearchWithData:searchXmlData];
-
+                                
                             }
                         }
-                        }else{
-                            mainDelegate.searchModule=[[CSearch alloc]init];
-                        }
-                        // mainDelegate.searchModule.correspondenceList = [CParser loadSearchCorrespondencesWithData:menuXmlData];
+                    }else{
+                        mainDelegate.searchModule=[[CSearch alloc]init];
+                    }
+                    // mainDelegate.searchModule.correspondenceList = [CParser loadSearchCorrespondencesWithData:menuXmlData];
+                    
+                    mainDelegate.searchModule.correspondenceList = [correspondences objectForKey:[NSString stringWithFormat:@"%ld",(long)currentInbox.menuId]];
+                    
+                    
+                    
+                    ((CMenu*)mainDelegate.user.menu[indexPath.row-1]).correspondenceList=[correspondences objectForKey:[NSString stringWithFormat:@"%d",currentInbox.menuId]];
+                    
+                    
+                    
+                    if(((CMenu*)mainDelegate.user.menu[indexPath.row-1]).correspondenceList.count ==0){
+                        canFound=NO;
+                        NorecordsViewController *norecordsView=[[NorecordsViewController alloc] init];
+                        [navController pushViewController:norecordsView animated:YES];
+                        mainDelegate.selectedInbox=((CMenu*)mainDelegate.user.menu[tableView.indexPathForSelectedRow.row-1]).menuId;
                         
-                        mainDelegate.searchModule.correspondenceList = [correspondences objectForKey:[NSString stringWithFormat:@"%ld",(long)currentInbox.menuId]];
+                        //   [self ShowMessage:[correspondences objectForKey:@"error"]];
                         
-                        
-                        
-                        ((CMenu*)mainDelegate.user.menu[indexPath.row-1]).correspondenceList=[correspondences objectForKey:[NSString stringWithFormat:@"%d",currentInbox.menuId]];
-                        
-                        
-                        
-                        if(((CMenu*)mainDelegate.user.menu[indexPath.row-1]).correspondenceList.count ==0){
-                            canFound=NO;
-                            NorecordsViewController *norecordsView=[[NorecordsViewController alloc] init];
-                            [navController pushViewController:norecordsView animated:YES];
-                            mainDelegate.selectedInbox=((CMenu*)mainDelegate.user.menu[tableView.indexPathForSelectedRow.row-1]).menuId;
-
-                         //   [self ShowMessage:[correspondences objectForKey:@"error"]];
+                    }
+                    else{
+                        canFound=YES;
+                    }
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if(canFound){
+                            mainDelegate.selectedInbox=((CMenu*)mainDelegate.user.menu[indexPath.row-1]).menuId;
+                            SearchResultViewController *searchResultViewController = [[SearchResultViewController alloc]initWithStyle:UITableViewStylePlain];
+                            
+                            mainDelegate.menuSelectedItem=indexPath.row-1;
+                            [navController pushViewController:searchResultViewController animated:YES];
                             
                         }
                         else{
-                            canFound=YES;
+                            
+                            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:mainDelegate.selectedInbox inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                            
+                            return;
                         }
                         
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            if(canFound){
-                                mainDelegate.selectedInbox=((CMenu*)mainDelegate.user.menu[indexPath.row-1]).menuId;
-                                SearchResultViewController *searchResultViewController = [[SearchResultViewController alloc]initWithStyle:UITableViewStylePlain];
-
-                                mainDelegate.menuSelectedItem=indexPath.row-1;
-                                [navController pushViewController:searchResultViewController animated:YES];
-
-                            }
-                            else{
-                                
-                                [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:mainDelegate.selectedInbox inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
-                                [SVProgressHUD dismiss];
-
-                                return;
-                            }
-
-                            
-                        });
                         
                     });
                     
+                });
+                
                 
                 
             }
@@ -380,10 +379,10 @@
         if ([mainDelegate.user processPendingActions]) {
             
             //upload signature document
-           // [self uploadSignatureXml];
+            // [self uploadSignatureXml];
             
             //upload pending documents
-          //  [self uploadPendingXml];
+            //  [self uploadPendingXml];
             
             
             //reload baskets if no pendings left
@@ -401,7 +400,7 @@
                 homeUrl = [NSString stringWithFormat:@"http://%@?action=GetCorrespondences&token=%@&inboxId=%@&index=%d&pageSize=%d&language=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,inboxIds,0,mainDelegate.SettingsCorrNb,mainDelegate.IpadLanguage,showthumb];
             else
                 homeUrl = [NSString stringWithFormat:@"http://%@/GetCorrespondences?token=%@&inboxId=%@&index=%d&pageSize=%d&language=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,inboxIds,0,mainDelegate.SettingsCorrNb,mainDelegate.IpadLanguage,showthumb];
-         
+            
             NSURL *xmlUrl = [NSURL URLWithString:homeUrl];
             NSData *homeXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
             
@@ -413,7 +412,7 @@
                 
             }
             mainDelegate.selectedInbox=((CMenu*)mainDelegate.user.menu[0]).menuId;
-
+            
             [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:mainDelegate.selectedInbox inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
             
             [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:mainDelegate.selectedInbox inSection:0]] ;

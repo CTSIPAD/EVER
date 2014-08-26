@@ -72,31 +72,45 @@
 
 
 
-- (void)viewDidLoad
-{
-    	[SVProgressHUD dismiss];
-    [super viewDidLoad];
-    //jis toolbar
+//- (void)viewDidLoad
+//{
+//    [super viewDidLoad];
+//    //jis toolbar
+//    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//
+////    CGFloat red = 88.0f / 255.0f;
+////    CGFloat green = 96.0f / 255.0f;
+////    CGFloat blue = 104.0f / 255.0f;
+//
+//
+//    
+//    
+//    
+//    
+//}
+- (void)viewDidAppear:(BOOL)animated{
+
+    self.navigationItem.hidesBackButton=YES;
+    self.navigationController.navigationBarHidden = NO;
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-//    CGFloat red = 88.0f / 255.0f;
-//    CGFloat green = 96.0f / 255.0f;
-//    CGFloat blue = 104.0f / 255.0f;
-
-
-    
-    
     
     noRecords = [[UILabel alloc] initWithFrame:CGRectMake(180, 220, 500, 40)];
     noRecords.font =[UIFont fontWithName:@"Helvetica-Bold" size:25.0f];
     @try {
-        noRecords.text = [[NSString alloc] initWithFormat:@"No %@ To Display",((CMenu*)mainDelegate.user.menu[mainDelegate.inboxForArchiveSelected]).name];
-
+        if([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+            noRecords.text = [[NSString alloc] initWithFormat:@"لا توجد %@ للعرض",((CMenu*)mainDelegate.user.menu[mainDelegate.inboxForArchiveSelected]).name];
+        else
+            noRecords.text = [[NSString alloc] initWithFormat:@"No %@ To Display",((CMenu*)mainDelegate.user.menu[mainDelegate.inboxForArchiveSelected]).name];
+        
     }
     @catch (NSException *exception) {
-        noRecords.text = [[NSString alloc] initWithFormat:@"No Records To Display"];
+        if([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+            noRecords.text = [[NSString alloc] initWithFormat:@"No Records To Display"];
+        else
+            noRecords.text = [[NSString alloc] initWithFormat:@"لا توجد سجلات للعرض"];
+        
     }
-   
+    
     
     noRecords.shadowColor = [UIColor colorWithRed:0.0f / 255.0f green:155.0f / 255.0f blue:213.0f / 255.0f alpha:1.0];
     noRecords.shadowOffset = CGSizeMake(0.0, 1.0);
@@ -104,8 +118,9 @@
     //[self.view setBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
     [self.view setBackgroundColor:[UIColor colorWithRed:29.0f / 255.0f green:29.0f / 255.0f blue:29.0f / 255.0f alpha:1.0]];
     [self.view addSubview:noRecords];
-    self.navigationItem.hidesBackButton=YES;
-    self.navigationController.navigationBarHidden = NO;
+
+    [SVProgressHUD dismiss];
+
 }
 
 -(void)blink{

@@ -432,7 +432,8 @@
         
         // set request body
         [request setHTTPBody:body];
-        
+        [request setTimeoutInterval:120];
+
         NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
        // NSURL *xmlUrl = [NSURL URLWithString:url];
        // NSData *xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
