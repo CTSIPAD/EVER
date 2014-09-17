@@ -278,10 +278,11 @@
             callMethod=@"FreeSignAll";
         
         NSString* signUrl = [NSString stringWithFormat:@"http://%@?action=%@&positionX=%@&positionY=%@&loginName=%@&pdfFilePath=%@&pageNumber=%d&SiteId=%@&FileId=%@&FileUrl=%@",serverUrl1,callMethod,xposition,yposition,mainDelegate.user.loginName,mainDelegate.docUrl,self.DocumentPagesNb,mainDelegate.SiteId,mainDelegate.FileId,[mainDelegate.FileUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        
+            NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:[signUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
+            NSData *searchXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
     
-        NSURL *xmlUrl = [NSURL URLWithString:[signUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        NSData *searchXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+      //  NSURL *xmlUrl = [NSURL URLWithString:[signUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+      //  NSData *searchXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
 
         CParser *p=[[CParser alloc] init];
         [p john:searchXmlData];

@@ -27,6 +27,7 @@
 @property (nonatomic, retain) NSMutableDictionary* destinations;
 @property (nonatomic, retain) NSMutableArray *actions;
 @property (nonatomic, retain) NSMutableArray *UserDetails;
+@property (nonatomic, retain) NSMutableArray* Sections;
 
 
 

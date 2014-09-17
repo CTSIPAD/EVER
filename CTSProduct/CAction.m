@@ -9,7 +9,7 @@
 #import "CAction.h"
 
 @implementation CAction
-@synthesize label,action,icon,popup;
+@synthesize label,action,icon,popup,LookupId;
 -(id)initWithLabel:(NSString*)actionLabel  icon:(NSString*)actionIcon  action:(NSString*)actionName popup:(BOOL) pop backhome:(BOOL)backh{
      if ((self = [super init])) {
          self.label=actionLabel;
@@ -37,6 +37,7 @@
     [encoder encodeObject: self.label];
     [encoder encodeObject: self.icon];
     [encoder encodeObject: self.action];
+    [encoder encodeObject: self.LookupId];
     [encoder encodeObject: [NSNumber numberWithInt:self.popup]];
     [encoder encodeObject:[NSNumber numberWithInt:self.backhome]];
     [encoder encodeObject:[NSNumber numberWithInt:self.Custom]];
@@ -48,6 +49,7 @@
     self.label=[decoder decodeObject];
     self.icon=[decoder decodeObject];
     self.action=[decoder decodeObject];
+    self.LookupId=[decoder decodeObject];
     self.popup=[[decoder decodeObject]boolValue];
     self.backhome=[[decoder decodeObject]boolValue];
     self.Custom=[[decoder decodeObject]boolValue];

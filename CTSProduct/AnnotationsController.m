@@ -31,15 +31,15 @@
 {
     [super viewDidLoad];
     mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
-
-    CGFloat red = 29.0f / 255.0f;
-    CGFloat green = 29.0f / 255.0f;
-    CGFloat blue = 29.0f / 255.0f;
+    
+    CGFloat red = 1.0f / 255.0f;
+    CGFloat green = 49.0f / 255.0f;
+    CGFloat blue = 97.0f / 255.0f;
     self.tableView.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
     
     [self.tableView setSeparatorColor:[UIColor whiteColor]];
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0,0,0,0)];
-   [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"annotationCell"];
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"annotationCell"];
 }
 
 
@@ -68,10 +68,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if([mainDelegate.SignMode isEqualToString:@"BuiltInSign"])
-    return self.properties.count+1;//1 for erase
+        return self.properties.count+1;//1 for erase
     else
         return self.properties.count+2;// 2 for erase and save buttons
-
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -80,11 +80,11 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 37, 37)];
-
-   UILabel *labelTitle= [[UILabel alloc] initWithFrame:CGRectMake(70, 5,cell.frame.size.width-140, 40)];
-   labelTitle.textColor = [UIColor whiteColor];
-   labelTitle.backgroundColor = [UIColor clearColor];
-
+    
+    UILabel *labelTitle= [[UILabel alloc] initWithFrame:CGRectMake(70, 5,cell.frame.size.width-140, 40)];
+    labelTitle.textColor = [UIColor whiteColor];
+    labelTitle.backgroundColor = [UIColor clearColor];
+    
     if(indexPath.row==self.properties.count){
         labelTitle.text=NSLocalizedString(@"Erase",@"Erase");
         imageView.image=[UIImage imageNamed:@"erase.png"];
@@ -94,7 +94,7 @@
             cell.userInteractionEnabled=NO;
             cell.backgroundColor=[UIColor grayColor];
         }
-         labelTitle.text=NSLocalizedString(@"Save",@"Save");
+        labelTitle.text=NSLocalizedString(@"Save",@"Save");
         imageView.image=[UIImage imageNamed:@"save.png"];
     }
     else{
@@ -110,21 +110,21 @@
             [imageView setImage:image];
         }
         else{
-
-        if([action.action isEqualToString:@"Highlight"]){
-            imageView.image=[UIImage imageNamed:@"highlight.png"];
-        }else if([action.action isEqualToString:@"Note"]){
-            imageView.image=[UIImage imageNamed:@"note.png"];
-        }
+            
+            if([action.action isEqualToString:@"Highlight"]){
+                imageView.image=[UIImage imageNamed:@"highlight.png"];
+            }else if([action.action isEqualToString:@"Note"]){
+                imageView.image=[UIImage imageNamed:@"note.png"];
+            }
         }
     }
     if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
         labelTitle.textAlignment=NSTextAlignmentRight;
         imageView.frame=CGRectMake(cell.frame.size.width-45, 5, 37, 37);
     }
-   
-        [cell addSubview:imageView];
-        [cell addSubview:labelTitle];
+    
+    [cell addSubview:imageView];
+    [cell addSubview:labelTitle];
     
     return cell;
 }
@@ -132,11 +132,11 @@ typedef enum{
     Highlight,Sign,Note,Erase,Save
     
 } AnnotationsType;
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath  {    
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath  {
     int annotation = 0;
     CAction* action;
     if(indexPath.row<self.properties.count){
-         action=self.properties[indexPath.row];
+        action=self.properties[indexPath.row];
         if(action.Custom){
             if(action.popup==NO){
                 [_delegate executeAction:action.action note:@"" movehome:action.backhome];
@@ -165,14 +165,14 @@ typedef enum{
         }
     }
     else{
-    
-    if(indexPath.row==self.properties.count){
-        annotation= Erase;
-    }else if(indexPath.row==self.properties.count+1){
-        annotation=Save;
-    }
-    
-    [self.delegate performaAnnotation:annotation];
+        
+        if(indexPath.row==self.properties.count){
+            annotation= Erase;
+        }else if(indexPath.row==self.properties.count+1){
+            annotation=Save;
+        }
+        
+        [self.delegate performaAnnotation:annotation];
     }
 }
 

@@ -1,4 +1,4 @@
-    //
+//
 //  DropDownView.m
 //  CustomTableView
 //
@@ -28,7 +28,7 @@
 
 
 - (id)initWithData:(NSArray*)array cellHeight:(CGFloat)cHeight heightTableView:(CGFloat)tHeightTableView paddingTop:(CGFloat)tPaddingTop paddingLeft:(CGFloat)tPaddingLeft paddingRight:(CGFloat)tPaddingRight refView:(UIView*)rView animation:(AnimationType)tAnimation openAnimationDuration:(CGFloat)openDuration closeAnimationDuration:(CGFloat)closeDuration{
-
+    
 	if ((self = [super init])) {
 		
 		self.arrayData=array;
@@ -67,7 +67,7 @@
 	
 	return self;
 	
-}	
+}
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
@@ -75,11 +75,11 @@
 	[super viewDidLoad];
 	
 	CGRect refFrame = refView.frame;
-   
+    
 	
 	self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0,refFrame.size.width+paddingRight, (animationType == BOTH || animationType == BLENDIN)?arrayData.count*heightOfCell:1) style:UITableViewStylePlain];
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
-     self.tableView.separatorColor = [UIColor colorWithRed:152.0f/255.0f green:45.0f/255.0f blue:20.0f/255.0f alpha:1.0];
+    self.tableView.separatorColor = [UIColor colorWithRed:152.0f/255.0f green:45.0f/255.0f blue:20.0f/255.0f alpha:1.0];
 	self.tableView.dataSource = self;
 	self.tableView.userInteractionEnabled=YES;
     [self.tableView setAllowsSelection:YES];
@@ -111,9 +111,9 @@
 
 
 - (void)dealloc {
-//    [super dealloc];
-//	[uiTableView release];
-//	[arrayData,refView release];
+    //    [super dealloc];
+    //	[uiTableView release];
+    //	[arrayData,refView release];
 	
 }
 
@@ -125,13 +125,13 @@
 	return heightOfCell;
 	
 	
-}	
+}
 
 - (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section{
 	
 	return arrayData.count;
 	
-}	
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
 	
@@ -147,7 +147,7 @@
         CGFloat green = 155.0f / 255.0f;
         CGFloat blue = 213.0f / 255.0f;
         
-//        cell.backgroundColor=[UIColor colorWithRed:195.0/255.0f green:61.0/255.0f blue:24.0/255.0f alpha:1.0];
+        //        cell.backgroundColor=[UIColor colorWithRed:195.0/255.0f green:61.0/255.0f blue:24.0/255.0f alpha:1.0];
         cell.backgroundColor=[UIColor colorWithRed:red green:green blue:blue alpha:1.0];
 		
     }
@@ -157,7 +157,7 @@
     cell.textLabel.textColor=[UIColor whiteColor];
 	return cell;
 	
-}	
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -168,34 +168,34 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-
+    
 	return 0;
 	
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-
+    
 	return 0;
 	
-}	
+}
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-
+    
 	return @"";
-}	
+}
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
-
+    
 	return @"";
 	
-}	
+}
 
 #pragma mark -
 #pragma mark DropDownViewDelegate
 
 -(void)dropDownCellSelected:(NSInteger)returnIndex{
 	
-}	
+}
 
 #pragma mark -
 #pragma mark Class Methods
@@ -204,30 +204,30 @@
 -(void)openAnimation{
 	
     if(self.view.hidden==YES)
-	self.view.hidden = NO;
+        self.view.hidden = NO;
     else self.view.hidden = YES;
     
 	self.tableView.frame = CGRectMake(self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width, heightTableView);
-//	NSValue *contextPoint = [NSValue valueWithCGPoint:self.view.center] ;
-//	
-//	[UIView beginAnimations:nil context:(__bridge void *)(contextPoint)];
-//	
-//	[UIView setAnimationDuration:open];
-//	
-//	[UIView setAnimationCurve:UIViewAnimationCurveLinear];
-//	
-//	[UIView setAnimationRepeatCount:1];
-//	
-//	[UIView setAnimationDelay:0];
-//	
-//	if(animationType == BOTH || animationType == GROW)
-//		self.tableView.frame = CGRectMake(self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width, heightTableView);
-//	
-//	if(animationType == BOTH || animationType == BLENDIN)
-//		self.view.alpha = 1;
-//	
-//	[UIView commitAnimations];
-//	
+    //	NSValue *contextPoint = [NSValue valueWithCGPoint:self.view.center] ;
+    //
+    //	[UIView beginAnimations:nil context:(__bridge void *)(contextPoint)];
+    //
+    //	[UIView setAnimationDuration:open];
+    //
+    //	[UIView setAnimationCurve:UIViewAnimationCurveLinear];
+    //
+    //	[UIView setAnimationRepeatCount:1];
+    //
+    //	[UIView setAnimationDelay:0];
+    //
+    //	if(animationType == BOTH || animationType == GROW)
+    //		self.tableView.frame = CGRectMake(self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width, heightTableView);
+    //
+    //	if(animationType == BOTH || animationType == BLENDIN)
+    //		self.view.alpha = 1;
+    //
+    //	[UIView commitAnimations];
+    //
 	
 	
 	
@@ -259,14 +259,14 @@
 	[self performSelector:@selector(hideView) withObject:nil afterDelay:close];
 	
 	
-		
+    
 }
 
-	 
+
 -(void)hideView{
 	
 	self.view.hidden = YES;
-
+    
 }	 
 
 

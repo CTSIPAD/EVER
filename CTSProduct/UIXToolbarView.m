@@ -50,6 +50,7 @@
 		self.userInteractionEnabled = YES;
 		self.contentMode = UIViewContentModeRedraw;
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        
 		self.backgroundColor = [UIColor colorWithRed:3/255.0f green:3/255.0f  blue:3/255.0f  alpha:0.9];
 
 //		CAGradientLayer *layer = (CAGradientLayer *)self.layer;

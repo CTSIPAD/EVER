@@ -35,6 +35,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
     }
     return self;
 }
@@ -72,35 +73,29 @@
 
 
 
-//- (void)viewDidLoad
-//{
-//    [super viewDidLoad];
-//    //jis toolbar
-//    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//
-////    CGFloat red = 88.0f / 255.0f;
-////    CGFloat green = 96.0f / 255.0f;
-////    CGFloat blue = 104.0f / 255.0f;
-//
-//
-//    
-//    
-//    
-//    
-//}
-- (void)viewDidAppear:(BOOL)animated{
-
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    //jis toolbar
+    
+    //    CGFloat red = 88.0f / 255.0f;
+    //    CGFloat green = 96.0f / 255.0f;
+    //    CGFloat blue = 104.0f / 255.0f;
+    
+    CGFloat red = 173.0f / 255.0f;
+    CGFloat green = 208.0f / 255.0f;
+    CGFloat blue = 238.0f / 255.0f;
     self.navigationItem.hidesBackButton=YES;
     self.navigationController.navigationBarHidden = NO;
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    noRecords = [[UILabel alloc] initWithFrame:CGRectMake(180, 220, 500, 40)];
+    noRecords = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2-50, self.view.frame.size.height/3, 500, 40)];
     noRecords.font =[UIFont fontWithName:@"Helvetica-Bold" size:25.0f];
     @try {
         if([mainDelegate.IpadLanguage isEqualToString:@"ar"])
-            noRecords.text = [[NSString alloc] initWithFormat:@"لا توجد %@ للعرض",((CMenu*)mainDelegate.user.menu[mainDelegate.inboxForArchiveSelected]).name];
+            noRecords.text = [[NSString alloc] initWithFormat:@"لا توجد %@ للعرض",((CMenu*)mainDelegate.user.menu[mainDelegate.inboxForArchiveSelected-1]).name];
         else
-            noRecords.text = [[NSString alloc] initWithFormat:@"No %@ To Display",((CMenu*)mainDelegate.user.menu[mainDelegate.inboxForArchiveSelected]).name];
+            noRecords.text = [[NSString alloc] initWithFormat:@"No %@ To Display",((CMenu*)mainDelegate.user.menu[mainDelegate.inboxForArchiveSelected-1]).name];
         
     }
     @catch (NSException *exception) {
@@ -116,11 +111,18 @@
     noRecords.shadowOffset = CGSizeMake(0.0, 1.0);
     noRecords.textColor = [UIColor whiteColor];
     //[self.view setBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
-    [self.view setBackgroundColor:[UIColor colorWithRed:29.0f / 255.0f green:29.0f / 255.0f blue:29.0f / 255.0f alpha:1.0]];
+    [self.view setBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
     [self.view addSubview:noRecords];
-
+    
     [SVProgressHUD dismiss];
-
+    
+    
+    
+    
+}
+- (void)viewDidAppear:(BOOL)animated{
+    
+    
 }
 
 -(void)blink{

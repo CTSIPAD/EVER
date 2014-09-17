@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "CSearch.h"
 #import "CUser.h"
+#import "CAttachment.h"
 @interface CParser : NSObject
 +(void)ClearCache;
 +(NSString*)ValidateWithData:(NSData*)xmlData;
@@ -38,4 +39,7 @@
 +(void)GetFolderAttachment:(NSString*)url Id:(int)Id;
 +(void)DeleteCorrespondence:(NSString*)CorrespondenceId inboxId:(NSString*)InboxId;
 +(void)Download:(NSData*)xmlData;
++(void)LoadDepartmentChanges:(NSData *) xmlData;
++(NSMutableArray*)loadRecipients:(NSString*) url ;
++(CAttachment*)LoadNewAttachmentResults:(NSData *)xmlData docId:(NSString*)docid;
 @end

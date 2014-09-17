@@ -34,6 +34,6 @@
 -(id) initWithTitle:(NSString*)title docId:(NSString*)did url:(NSString*)url location:(NSString*)folderName;
 
 -(id) initWithTitle:(NSString*)title docId:(NSString*)did url:(NSString*)url  SiteId:(NSString*)SiteId  FileId:(NSString*)FileId AttachmentId:(NSString*)AttachmentId FileUrl:(NSString *)FileUrl ThubnailUrl:(NSString *)ThubnailUrl isOriginalMail:(NSString*)isOriginalMail FolderName:(NSString*)FolderName;
-
+-(id) initWithTitle:(NSString*)title docId:(NSString*)did url:(NSString*)url  AttachmentId:(NSString*)AttachmentId ThubnailUrl:(NSString *)ThubnailUrl isOriginalMail:(NSString*)isOriginalMail FolderName:(NSString*)FolderName;
 -(NSString *)saveInCacheinDirectory:(NSString*)dirName fromSharepoint:(BOOL)isSharePoint;
 @end

@@ -26,6 +26,7 @@
 @property (nonatomic, retain) NSMutableArray *AttachmentsListMenu;
 @property (nonatomic, retain) NSMutableArray *AnnotationsList;
 @property (nonatomic, retain) NSMutableDictionary *CustomItemsList;
+@property (retain,nonatomic) NSMutableArray* QuickActions;
 
 
 @property(nonatomic,retain) NSString* ThumnailUrl;

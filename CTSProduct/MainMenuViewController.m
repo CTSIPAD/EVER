@@ -48,9 +48,9 @@
     
     [self.navigationController setNavigationBarHidden:TRUE];
     
-    CGFloat redsep = 88.0f / 255.0f;
-    CGFloat greensep = 96.0f / 255.0f;
-    CGFloat bluesep = 104.0f / 255.0f;
+    CGFloat redsep = 12.0f / 255.0f;
+    CGFloat greensep = 93.0f / 255.0f;
+    CGFloat bluesep = 174.0f / 255.0f;
     self.tableView.opaque=NO;
     
     [self.tableView setSeparatorColor:[UIColor colorWithRed:redsep green:greensep blue:bluesep alpha:1.0]];
@@ -136,15 +136,19 @@
     
     NSInteger rowsNumber=totalMenuItemsCount;
     if(indexPath.row==0){//logo
+        CGFloat redview = 12.0f / 255.0f;
+        CGFloat greenview = 93.0f / 255.0f;
+        CGFloat blueview= 174.0f / 255.0f;
         
-        CGFloat redview = 88.0f / 255.0f;
-        CGFloat greenview = 96.0f / 255.0f;
-        CGFloat blueview = 104.0f / 255.0f;
+        CGFloat red = 1.0f / 255.0f;
+        CGFloat green= 49.0f / 255.0f;
+        CGFloat blue= 97.0f / 255.0f;
+        
         UIView *bl = [[UIView alloc] initWithFrame:CGRectMake(5, 5, self.tableView.frame.size.width-10, 114)];
         UIImage *Logo = [UIImage imageWithData:mainDelegate.logo];
         bl.backgroundColor = [UIColor colorWithRed:redview green:greenview blue:blueview alpha:1.0];
         bl.layer.contents = (id)Logo.CGImage;
-        cell.backgroundColor = [UIColor blackColor];
+        cell.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
         [cell.contentView addSubview:bl];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.userInteractionEnabled = NO;
@@ -155,16 +159,16 @@
         if(indexPath.row==rowsNumber-1){//search
             imageView.image=[UIImage imageNamed:[NSString stringWithFormat:@"cts_Search.png"]];
             labelText.text=NSLocalizedString(@"Search",@"Search");
-            CGFloat red = 88.0f / 255.0f;
-            CGFloat green = 96.0f / 255.0f;
-            CGFloat blue = 104.0f / 255.0f;
+            CGFloat red = 12.0f / 255.0f;
+            CGFloat green = 93.0f / 255.0f;
+            CGFloat blue= 174.0f / 255.0f;
             cell.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
             
         }
         else {
-            CGFloat red = 88.0f / 255.0f;
-            CGFloat green = 96.0f / 255.0f;
-            CGFloat blue = 104.0f / 255.0f;
+            CGFloat red = 12.0f / 255.0f;
+            CGFloat green = 93.0f / 255.0f;
+            CGFloat blue= 174.0f / 255.0f;
             cell.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
             if(indexPath.row == 3){
                 NSData * data= [NSData dataWithBase64EncodedString:((CMenu*)mainDelegate.user.menu[indexPath.row-1]).icon];
@@ -193,7 +197,7 @@
     
     [cell.contentView addSubview:imageView];
     [cell.contentView addSubview:labelText];
-    bgColorView.backgroundColor = [UIColor colorWithRed:0.0f / 255.0f green:155.0f / 255.0f blue:213.0f / 255.0f alpha:1.0];//blue
+    bgColorView.backgroundColor = [UIColor colorWithRed:1.0f / 255.0f green:49.0f / 255.0f blue:97.0f / 255.0f alpha:1.0];//blue
     bgColorView.layer.masksToBounds = YES;
     cell.selectedBackgroundView = bgColorView;
     
@@ -205,6 +209,7 @@
         
         UINavigationController *navController=[mainDelegate.splitViewController.viewControllers objectAtIndex:1];
         [navController setNavigationBarHidden:YES animated:YES];
+        mainDelegate.inboxForArchiveSelected = indexPath.row;
         
         if(indexPath.row!=0){
             /***** search button *****/
@@ -216,8 +221,10 @@
                         searchUrl = [NSString stringWithFormat:@"http://%@?action=BuildAdvancedSearch&token=%@&language=%@",mainDelegate.serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
                     else
                         searchUrl = [NSString stringWithFormat:@"http://%@/BuildAdvancedSearch?token=%@&language=%@",mainDelegate.serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
-                    NSURL *xmlUrl = [NSURL URLWithString:searchUrl];
-                    NSData *searchXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+                    // NSURL *xmlUrl = [NSURL URLWithString:searchUrl];
+                    //  NSData *searchXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+                    NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:searchUrl] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
+                    NSData *searchXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
                     
                     NSString *validationResult=[CParser ValidateWithData:searchXmlData];
                     if(![validationResult isEqualToString:@"OK"]){
@@ -243,7 +250,6 @@
                 mainDelegate.isBasketSelected = YES;
                 CMenu* currentInbox=((CMenu*)mainDelegate.user.menu[indexPath.row-1]);
                 
-                mainDelegate.inboxForArchiveSelected = indexPath.row-1;
                 
                 //                if(mainDelegate.isOfflineMode){
                 //                    canFound=NO;
@@ -267,8 +273,10 @@
                             correspondenceUrl = [NSString stringWithFormat:@"http://%@?action=GetCorrespondences&token=%@&inboxId=%d&index=%d&pageSize=%d&language=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,currentInbox.menuId,0,mainDelegate.SettingsCorrNb,mainDelegate.IpadLanguage,showthumb];
                         else
                             correspondenceUrl = [NSString stringWithFormat:@"http://%@/GetCorrespondences?token=%@&inboxId=%d&index=%d&pageSize=%d&language=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,currentInbox.menuId,0,mainDelegate.SettingsCorrNb,mainDelegate.IpadLanguage,showthumb];
-                        NSURL *xmlUrl = [NSURL URLWithString:correspondenceUrl];
-                        NSData *menuXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+                        // NSURL *xmlUrl = [NSURL URLWithString:correspondenceUrl];
+                        // NSData *menuXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+                        NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:correspondenceUrl] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
+                        NSData *menuXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
                         correspondences=[CParser loadCorrespondencesWithData:menuXmlData];
                     }
                     else{
@@ -286,11 +294,13 @@
                                 searchUrl= [NSString stringWithFormat:@"http://%@?action=BuildAdvancedSearch&token=%@&language=%@",mainDelegate.serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
                             else
                                 searchUrl= [NSString stringWithFormat:@"http://%@/BuildAdvancedSearch?token=%@&language=%@",mainDelegate.serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
-                            NSURL *xmlUrl = [NSURL URLWithString:searchUrl];
+                            //   NSURL *xmlUrl = [NSURL URLWithString:searchUrl];
+                            NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:searchUrl] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
+                            // NSData *menuXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
                             NSData *searchXmlData;
                             if(!mainDelegate.isOfflineMode){
-                                searchXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
-                                
+                                //  searchXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+                                searchXmlData =[NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
                                 NSString *validationResult=[CParser ValidateWithData:searchXmlData];
                                 if(![validationResult isEqualToString:@"OK"]){
                                     [self ShowMessage:validationResult];
@@ -345,7 +355,7 @@
                             
                             [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:mainDelegate.selectedInbox inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
                             
-                            return;
+                            
                         }
                         
                         
@@ -401,10 +411,11 @@
             else
                 homeUrl = [NSString stringWithFormat:@"http://%@/GetCorrespondences?token=%@&inboxId=%@&index=%d&pageSize=%d&language=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,inboxIds,0,mainDelegate.SettingsCorrNb,mainDelegate.IpadLanguage,showthumb];
             
-            NSURL *xmlUrl = [NSURL URLWithString:homeUrl];
-            NSData *homeXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+            // NSURL *xmlUrl = [NSURL URLWithString:homeUrl];
+            // NSData *homeXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
             
-            
+            NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:homeUrl] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
+            NSData *homeXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
             NSMutableDictionary *correspondences=[CParser loadCorrespondencesWithData:homeXmlData];
             for (CMenu* menu in mainDelegate.user.menu)
             {

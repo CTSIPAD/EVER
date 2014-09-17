@@ -18,7 +18,7 @@
 -(void)ActionMoveHome:(CommentViewController*)viewcontroller;
 -(void)SignAndSendIt:(NSString*)action document:(ReaderDocument *)document note:(NSString*)note;
 -(void)executeAction:(NSString*)action note:(NSString*)Note movehome:(BOOL)movehome;
-
+-(void)dismissUpload:(UIViewController*)viewcontroller;
 @end
 
 @interface CommentViewController : UIViewController<UITextViewDelegate,ActionTaskDelegate>

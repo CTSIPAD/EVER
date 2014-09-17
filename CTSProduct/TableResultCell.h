@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface TableResultCell : UITableViewCell
+#import "ReaderViewController.h"
+@interface TableResultCell : UITableViewCell<ReaderViewControllerDelegate,UIPopoverControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
 @property (strong, nonatomic) IBOutlet UILabel *label1;
@@ -19,6 +19,9 @@
 @property (nonatomic, strong) NSString *imageThumbnailBase64;
 @property (nonatomic, strong) UIImageView *imageNew;
 @property (nonatomic, strong) UIImageView *imagePriority;
+@property(nonatomic,strong)UIPopoverController* notePopController ;
+@property(nonatomic,assign)int index ;
+@property (nonatomic, unsafe_unretained, readwrite) id <ReaderViewControllerDelegate> delegate;
 
 -(void)updateCell;
 -(void)showNew:(BOOL)lock priority:(BOOL)Priority new:(BOOL)New;

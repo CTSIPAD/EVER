@@ -11,11 +11,13 @@
 #import "ReaderViewController.h"
 #import "REMenu.h"
 
-@interface SearchResultViewController : UITableViewController<UISplitViewControllerDelegate,UIPopoverControllerDelegate,ReaderViewControllerDelegate>
+@interface SearchResultViewController : UITableViewController<UISplitViewControllerDelegate,UIPopoverControllerDelegate,ReaderViewControllerDelegate,UISearchBarDelegate, UITableViewDataSource>
 @property (strong, nonatomic) IBOutlet UITableView *tableview;
 @property(nonatomic,strong)IBOutlet UIToolbar *toolbar;
 @property (strong, readwrite, nonatomic) REMenu *menu;
 @property(nonatomic,strong)UIPopoverController* notePopController ;
+
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 
 
 @property (nonatomic,strong)CSearch *searchResult;

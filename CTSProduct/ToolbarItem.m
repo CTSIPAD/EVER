@@ -9,6 +9,7 @@
 #import "ToolbarItem.h"
 
 @implementation ToolbarItem
+@synthesize LookupId;
 -(id)initWithName:(NSString*)name  Label:(NSString*)label Display:(BOOL)display Custom:(BOOL)custom popup:(BOOL) pop backhome:(BOOL)backh{
     self = [super init];
     if (self) {
@@ -27,6 +28,7 @@
 {
     [encoder encodeObject: self.Name];
     [encoder encodeObject: self.Label];
+    [encoder encodeObject: self.LookupId];
     [encoder encodeObject: [NSNumber numberWithInt:self.Display]];
     [encoder encodeObject: [NSNumber numberWithInt:self.popup]];
     [encoder encodeObject:[NSNumber numberWithInt:self.backhome]];
@@ -37,6 +39,7 @@
 {
     self.Name=[decoder decodeObject];
     self.label=[decoder decodeObject];
+    self.LookupId=[decoder decodeObject];
     self.Display=[[decoder decodeObject]boolValue];
     self.popup=[[decoder decodeObject]boolValue];
     self.backhome=[[decoder decodeObject]boolValue];

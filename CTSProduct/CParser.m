@@ -98,8 +98,13 @@
     NSString* userid;
     NSString* Islocked;
     NSMutableDictionary* dict=[[NSMutableDictionary alloc]init];
-    NSURL *xmlUrl = [NSURL URLWithString:url];
-    NSData *searchXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+    AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    // NSURL *xmlUrl = [NSURL URLWithString:url];
+    // NSData *searchXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+    
+    NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
+    NSData *searchXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
     NSError *error;
     GDataXMLDocument *doc= [[GDataXMLDocument alloc] initWithData:searchXmlData options:0 error:&error];
     
@@ -134,7 +139,73 @@
     
     return dict;
 }
++(CAttachment*)LoadNewAttachmentResults:(NSData *)xmlData docId:(NSString*)docid{
+    NSError *error;
+    GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
+														   options:0 error:&error];
+	NSArray *results = [doc nodesForXPath:@"//Result" error:nil];
+	GDataXMLElement *resultXML =  [results objectAtIndex:0];
+    
+    NSArray *Folders = [resultXML elementsForName:@"Folder"];
+    for(GDataXMLElement *FoldersEl in Folders) {
+        NSString* folderName = [FoldersEl attributeForName:@"Name"].stringValue;
+        NSArray *attachmentXML = [FoldersEl elementsForName:@"Attachment"];
+        
+        for(GDataXMLElement *attachment in attachmentXML)
+        {
+            NSString *urlattach;
+            NSString *idattach;
+            NSString *thumbnailurlattach;
+            NSString* FileName;
+            NSString* isOriginalMail;
+            
+            
+                NSArray *ids = [attachment elementsForName:@"AttachmentId"];
+                if (ids.count > 0) {
+                    GDataXMLElement *idEl = (GDataXMLElement *) [ids objectAtIndex:0];
+                    idattach = idEl.stringValue;
+                }
+                
+                NSArray *urls = [attachment elementsForName:@"URL"];
+                if (urls.count > 0) {
+                    GDataXMLElement *urlEl = (GDataXMLElement *) [urls objectAtIndex:0];
+                    urlattach = urlEl.stringValue;
+                }
+                
+                NSArray *thumbnailurls = [attachment elementsForName:@"ThumbnailURL"];
+                if (thumbnailurls.count > 0) {
+                    GDataXMLElement *thumbnailurlEl = (GDataXMLElement *) [thumbnailurls objectAtIndex:0];
+                    thumbnailurlattach = thumbnailurlEl.stringValue;
+                }
+                NSArray *FileNames = [attachment elementsForName:@"FileName"];
+                if (FileNames.count > 0) {
+                    GDataXMLElement *FileNameEL = (GDataXMLElement *) [FileNames objectAtIndex:0];
+                    FileName = FileNameEL.stringValue;
+                }
+                NSArray *isOriginalMails = [attachment elementsForName:@"IsOriginalMail"];
+                if (isOriginalMails.count > 0) {
+                    GDataXMLElement *isOriginalMailEl= (GDataXMLElement *) [isOriginalMails objectAtIndex:0];
+                    isOriginalMail = isOriginalMailEl.stringValue;
+                }
+                
+            
+            
+            CAttachment* attachment=[[CAttachment alloc]initWithTitle:FileName docId:docid url:urlattach AttachmentId:idattach ThubnailUrl:thumbnailurlattach isOriginalMail:isOriginalMail FolderName:folderName];
+            AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
+            CCorrespondence *correspondence=mainDelegate.searchModule.correspondenceList[docid.intValue];
+            if(correspondence.attachmentsList==nil){
+                correspondence.attachmentsList=[[NSMutableArray alloc]init];
+                mainDelegate.FolderName=folderName;
+            }
+            [correspondence.attachmentsList addObject:attachment];
+            
+
+            return attachment;
+        }
+    }
+    return nil;
+}
 +(NSString*)ValidateWithData:(NSData *)xmlData{
     NSError *error;
     GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
@@ -163,7 +234,38 @@
     }
     return @"OK";
 }
++(NSMutableArray*)loadRecipients:(NSString*) url{
+    NSData *xmlData ;
+    AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSError *error;
+    if(!mainDelegate.isOfflineMode){
+        NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:[url  stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
+        xmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+   
+    
+    GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
+														   options:0 error:&error];
+    
+	NSArray *results = [doc nodesForXPath:@"//Result" error:nil];
+        GDataXMLElement *recipients =  [results objectAtIndex:0];
+        NSMutableArray* destinations = [[NSMutableArray alloc] init];
+        NSArray *Destinations =[recipients elementsForName:@"Destinations"];
+        for (GDataXMLElement *destEl in Destinations) {
+            NSArray* dests=[destEl nodesForXPath:@"Destination" error:nil];
+            for(GDataXMLElement* item in dests){
+                NSString *DestId=[(GDataXMLElement *) [item attributeForName:@"Id"] stringValue ];
+                NSString* value = item.stringValue;
+              CDestination* dest = [[CDestination alloc] initWithName:value Id:DestId];
+                [destinations addObject:dest];
+            }
+            
+        }
+        return destinations;
+    }
+    return nil;
+	
 
+}
 
 + (CUser *)loadUserWithData:(NSString *)url {
     NSData *xmlData ;
@@ -173,8 +275,12 @@
     NSString* IconsCached = [defaults objectForKey:@"iconsCache"];
     NSError *error;
     if(!mainDelegate.isOfflineMode){
-        NSURL *xmlURL = [NSURL URLWithString:url];
-        xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlURL];
+        NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
+        
+        // NSURL *xmlUrl = [NSURL URLWithString:url];
+        xmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+        // NSURL *xmlURL = [NSURL URLWithString:url];
+        //xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlURL];
         [self cacheXml:@"Login" xml:xmlData nb:@"0" name:@""];
     }
     else{
@@ -186,8 +292,36 @@
     
 	NSArray *results = [doc nodesForXPath:@"//Result" error:nil];
 	
+    
+    
 	//LOAD first user in XML
 	GDataXMLElement *userXML =  [results objectAtIndex:0];
+    
+    
+    NSArray *Lookups =[userXML elementsForName:@"Lookups"];
+    NSMutableDictionary* allLookups = [[NSMutableDictionary alloc] init];
+    for (GDataXMLElement *LookupEl in Lookups) {
+        NSArray *Lookup =[LookupEl elementsForName:@"Lookup"];
+        for(GDataXMLElement* LookupItem in Lookup){
+            NSMutableDictionary* LookupList = [[NSMutableDictionary alloc] init];
+            
+            NSString *LookupId=[(GDataXMLElement *) [LookupItem attributeForName:@"Id"] stringValue ];
+            NSArray* LookupItems=[LookupItem nodesForXPath:@"Item" error:nil];
+            for(GDataXMLElement* item in LookupItems){
+                
+                NSString* ItemId=[(GDataXMLElement *) [item attributeForName:@"Id"] stringValue ];
+                NSString* value = item.stringValue;
+                [LookupList setObject:value forKey:ItemId];
+            }
+            [allLookups setObject:LookupList forKey:LookupId];
+            
+        }
+        
+    }
+    mainDelegate.Lookups=[[NSMutableDictionary alloc]init];
+    mainDelegate.Lookups=allLookups;
+    
+    
     NSString* status=[(GDataXMLElement *) [userXML attributeForName:@"Status"] stringValue];
     if([status isEqualToString:@"OK"]){
         //fill by user data
@@ -323,7 +457,8 @@
             }
         }
         NSArray *routes = [doc nodesForXPath:@"//TransferData" error:nil];
-        
+        NSMutableArray* Sections=[[NSMutableArray alloc]init];
+
         for (GDataXMLElement *route in routes) {
             
             
@@ -333,7 +468,6 @@
             
             NSMutableArray* keys=[[NSMutableArray alloc]init];
             NSMutableArray* values=[[NSMutableArray alloc]init];
-            
             if (destinationsList.count > 0) {
                 
                 GDataXMLElement *destinationsXml = (GDataXMLElement *) [destinationsList objectAtIndex:0];
@@ -343,6 +477,10 @@
                 for (GDataXMLElement * destEl in destinationsEl) {
                     NSArray *SectionsList = [destEl elementsForName:@"Destination"];
                     NSString* SectionId = [destEl attributeForName:@"Id"].stringValue;
+                    NSString* SectionValue=destEl.stringValue;
+                    LookUpObject* sect=[[LookUpObject alloc]initWithName:SectionId value:SectionValue];
+                    [Sections addObject:sect];
+
                     if(SectionsList.count>0){
                         for (GDataXMLElement *destinationItem in SectionsList) {
                             
@@ -403,7 +541,7 @@
         [user setRouteLabels:routesLabel];
         [user setUserDetails:userdetails];
         [user setServerMessage:status];
-        
+        [user setSections:Sections];
         return user;
     }
     else{
@@ -422,7 +560,120 @@
         
     }
 }
-
++(void)LoadDepartmentChanges:(NSData *) xmlData{
+    AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    NSError *error;
+    
+    GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
+														   options:0 error:&error];
+    
+	NSArray *results = [doc nodesForXPath:@"//Result" error:nil];
+	
+	GDataXMLElement *userXML =  [results objectAtIndex:0];
+    NSString* status=[(GDataXMLElement *) [userXML attributeForName:@"Status"] stringValue];
+    if([status isEqualToString:@"OK"]){
+        
+        NSString* lastName;
+        
+        
+        NSMutableArray* routesLabel = [[NSMutableArray alloc] init];
+        NSArray *lastNames = [userXML elementsForName:@"DepartmentName"];
+        if  (lastNames.count > 0) {
+            GDataXMLElement *lastNameEl = (GDataXMLElement *) [lastNames objectAtIndex:0];
+            lastName = lastNameEl.stringValue;
+        }
+        
+        NSArray *routes = [doc nodesForXPath:@"//TransferData" error:nil];
+        
+        for (GDataXMLElement *route in routes) {
+            
+            
+            
+            NSArray *routeLabelList = [route elementsForName:@"Purposes"];
+            
+            if (routeLabelList.count > 0) {
+                
+                GDataXMLElement *labels = (GDataXMLElement *) [routeLabelList objectAtIndex:0];
+                
+                NSArray *labelsEl = [labels elementsForName:@"Purpose"];
+                
+                for (GDataXMLElement * destEl in labelsEl) {
+                    
+                    NSString* destId = [destEl attributeForName:@"Id"].stringValue;
+                    NSString* value = destEl.stringValue;
+                    
+                    CRouteLabel* rlabel = [[CRouteLabel alloc] initWithName:value Id:destId];
+                    [routesLabel addObject:rlabel];
+                    
+                }
+            }
+            CRouteLabel* rlabel = [[CRouteLabel alloc] initWithName:@"NO LABEL" Id:@"NONE"];
+            [routesLabel addObject:rlabel];
+        }
+        NSMutableArray* menuItems = [[NSMutableArray alloc] init];
+        
+        NSFetchRequest *fetchRequest;
+        NSError *error;
+        NSEntityDescription *entity;
+        id delegate = [[UIApplication sharedApplication] delegate];
+        
+        NSManagedObjectContext* managedObjectContext = [delegate managedObjectContext];
+        
+        fetchRequest = [[NSFetchRequest alloc] init];
+        entity = [NSEntityDescription
+                  entityForName:@"InboxItems" inManagedObjectContext:managedObjectContext];
+        [fetchRequest setEntity:entity];
+        NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        NSMutableDictionary * cachedmenuItems=[[NSMutableDictionary alloc]init];
+        NSString * menuId;
+        NSString *icon;
+        
+        for (NSManagedObject *obj in fetchedObjects) {
+            
+            menuId=[obj valueForKey:@"id"];
+            icon=[obj valueForKey:@"icon"];
+            [cachedmenuItems setObject:icon forKey:menuId];
+            
+        }
+        [self DeleteOfflineActions:@"InboxItems"];
+        NSArray *menus =[doc nodesForXPath:@"//Inbox/InboxItems/InboxItem" error:nil];
+        if (menus.count > 0) {
+            
+            
+            for (GDataXMLElement *menuItem in menus) {
+                
+                NSInteger menuId;
+                NSString *name;
+                NSString *icon;
+                
+                NSArray *menuIds = [menuItem elementsForName:@"InboxId"];
+                GDataXMLElement *menuIdEl = (GDataXMLElement *) [menuIds objectAtIndex:0];
+                menuId = [menuIdEl.stringValue integerValue];
+                
+                
+                NSArray *names = [menuItem elementsForName:@"Name"];
+                if (names.count > 0) {
+                    GDataXMLElement *nameEl = (GDataXMLElement *) [names objectAtIndex:0];
+                    name = nameEl.stringValue;
+                }
+                
+                icon = [cachedmenuItems objectForKey:menuIdEl.stringValue];
+                
+                [self cacheInboxItem:menuIdEl.stringValue icon:icon name:name];
+                CMenu* menu = [[CMenu alloc] initWithName:name Id:menuId Icon:icon];
+                
+                [menuItems addObject:menu];
+            }
+            
+        }
+        [mainDelegate.user setMenu:menuItems];
+        [mainDelegate.user setLastName:lastName];
+        [mainDelegate.user setRouteLabels:routesLabel];
+    }
+    
+    
+}
 +(NSData*)LoadCachedIcons:(NSString*)key{
     NSFetchRequest *fetchRequest;
     NSError *error;
@@ -618,7 +869,7 @@
         [BuiltinActions addObject:obj];
         
     }
-   // [self DeleteOfflineActions:@"BuiltInActions"];
+    // [self DeleteOfflineActions:@"BuiltInActions"];
     return BuiltinActions;
 }
 
@@ -1045,7 +1296,7 @@
             GDataXMLElement *newEl = (GDataXMLElement *) [[correspondence elementsForName:@"IsNew"]objectAtIndex:0];
             New = [newEl.stringValue boolValue];
             
-            GDataXMLElement *showlockedEl = (GDataXMLElement *) [[correspondence elementsForName:@"ShowLock"]objectAtIndex:0];
+            GDataXMLElement *showlockedEl = (GDataXMLElement *) [[correspondence elementsForName:@"IsLocked"]objectAtIndex:0];
             SHOWLOCK = [showlockedEl.stringValue boolValue];
             
             
@@ -1065,7 +1316,7 @@
             NSArray *Maintoolbar =[correspondence nodesForXPath:@"ToolbarItems" error:nil];
             NSMutableDictionary *toolbarItems=[[NSMutableDictionary alloc] init],*CustomItemsList=[[NSMutableDictionary alloc] init];
             NSMutableArray *toolbarActions=[[NSMutableArray alloc] init];
-            NSMutableArray *signActions=[[NSMutableArray alloc]init] ,*AnnotationsList=[[NSMutableArray alloc]init],*AttachmentsList=[[NSMutableArray alloc]init];
+            NSMutableArray *signActions=[[NSMutableArray alloc]init] ,*AnnotationsList=[[NSMutableArray alloc]init],*AttachmentsList=[[NSMutableArray alloc]init],*QuickActions=[[NSMutableArray alloc]init];
             int key=-1;
             for(GDataXMLElement * element in Maintoolbar){
                 NSArray *toolbar=element.children;
@@ -1078,12 +1329,22 @@
                         NSString* Name=[(GDataXMLElement *) [prop attributeForName:@"Name"] stringValue];
                         NSString* Label=[(GDataXMLElement *) [prop attributeForName:@"Label"] stringValue];
                         BOOL Display=[[(GDataXMLElement *) [prop attributeForName:@"Display"] stringValue]boolValue];
+                        BOOL QuickAction=[[(GDataXMLElement *) [prop attributeForName:@"QuickAction"] stringValue]boolValue];
                         BOOL popup=[[(GDataXMLElement *) [prop attributeForName:@"ShowPopup"] stringValue]boolValue];
                         BOOL backhome=[[(GDataXMLElement *) [prop attributeForName:@"ReturnHome"] stringValue]boolValue];
+                        NSString* LookupId=[(GDataXMLElement *) [prop attributeForName:@"LookupId"] stringValue];
                         
-                        ToolbarItem* item=[[ToolbarItem alloc]initWithName:Name Label:Label Display:Display Custom:YES popup:popup backhome:backhome];
+                        ToolbarItem* item=[[ToolbarItem alloc]initWithName:Name Label:Label Display:Display Custom:YES popup:popup backhome:backhome ];
+                        [item setLookupId:LookupId];
                         if (Display) {
                             [toolbarItems setValue:item forKey:[NSString stringWithFormat:@"%d",key]];
+                            if(QuickAction)
+                            {
+                                CAction* Qact = [[CAction alloc] initWithLabel:Label action:Name popup:popup backhome:backhome Custom:YES];
+                                [Qact setLookupId:LookupId];
+                                if(prop.children.count<=0)
+                                    [QuickActions addObject:Qact];
+                            }
                         }
                         
                         NSArray *Subitems=prop.children;
@@ -1099,12 +1360,19 @@
                                         NSString* Namee=[(GDataXMLElement *) [item1 attributeForName:@"Name"] stringValue];
                                         NSString* Labell=[(GDataXMLElement *) [item1 attributeForName:@"Label"] stringValue];
                                         BOOL Displayy=[[(GDataXMLElement *) [item1 attributeForName:@"Display"] stringValue]boolValue];
+                                        BOOL QuickActionn=[[(GDataXMLElement *) [prop attributeForName:@"QuickAction"] stringValue]boolValue];
                                         BOOL popup=[[(GDataXMLElement *) [item1 attributeForName:@"ShowPopup"] stringValue]boolValue];
                                         BOOL returnHome=[[(GDataXMLElement *) [item1 attributeForName:@"ReturnHome"] stringValue]boolValue];
+                                        NSString* LookupId=[(GDataXMLElement *) [item1 attributeForName:@"LookupId"] stringValue];
+                                        
                                         if (Displayy){
                                             CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:popup backhome:returnHome Custom:YES];
+                                            [menu setLookupId:LookupId];
                                             [CustomItemsArray addObject:menu];
-                                            
+                                            if(QuickActionn)
+                                            {
+                                                [QuickActions addObject:menu];
+                                            }
                                         }
                                     }
                                 }
@@ -1119,10 +1387,20 @@
                             NSString* Name=[(GDataXMLElement *) [prop attributeForName:@"Name"] stringValue];
                             NSString* Label=[(GDataXMLElement *) [prop attributeForName:@"Label"] stringValue];
                             BOOL Display=[[(GDataXMLElement *) [prop attributeForName:@"Display"] stringValue]boolValue];
-                            ToolbarItem* item=[[ToolbarItem alloc]initWithName:Name Label:Label Display:Display Custom:NO popup:NO backhome:NO];
+                            BOOL QuickAction=[[(GDataXMLElement *) [prop attributeForName:@"QuickAction"] stringValue]boolValue];
+                            NSString* LookupId=[(GDataXMLElement *) [prop attributeForName:@"LookupId"] stringValue];
+                            
+                            ToolbarItem* item=[[ToolbarItem alloc]initWithName:Name Label:Label Display:Display Custom:NO popup:NO backhome:NO ];
+                            [item setLookupId:LookupId];
                             if (Display) {
                                 [toolbarItems setValue:item forKey:[NSString stringWithFormat:@"%d",key]];
-                                
+                                if(QuickAction)
+                                {
+                                    CAction* Qact = [[CAction alloc] initWithLabel:Label action:Name popup:NO backhome:NO Custom:NO];
+                                    [Qact setLookupId:LookupId];
+                                    if(prop.children.count<=0)
+                                        [QuickActions addObject:Qact];
+                                }
                             }
                             NSArray *Subitems=prop.children;
                             if(Subitems.count>0){
@@ -1135,11 +1413,19 @@
                                             NSString* Namee=[(GDataXMLElement *) [item1 attributeForName:@"Name"] stringValue];
                                             NSString* Labell=[(GDataXMLElement *) [item1 attributeForName:@"Label"] stringValue];
                                             BOOL Displayy=[[(GDataXMLElement *) [item1 attributeForName:@"Display"] stringValue]boolValue];
+                                            BOOL QuickAction=[[(GDataXMLElement *) [item1 attributeForName:@"QuickAction"] stringValue]boolValue];
+                                            NSString* LookupId=[(GDataXMLElement *) [item1 attributeForName:@"LookupId"] stringValue];
                                             
                                             if (Displayy){
                                                 
                                                 if(![Name isEqualToString:@"More"]){
                                                     CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:NO backhome:NO Custom:NO];
+                                                    [menu setLookupId:LookupId];
+                                                    if(QuickAction)
+                                                    {
+                                                        
+                                                        [QuickActions addObject:menu];
+                                                    }
                                                     if([Name isEqualToString:@"Annotations"]){
                                                         [AnnotationsList addObject:menu];
                                                     }
@@ -1153,6 +1439,11 @@
                                                     BOOL popup=[[(GDataXMLElement *) [item1 attributeForName:@"ShowPopup"] stringValue]boolValue];
                                                     BOOL returnHome=[[(GDataXMLElement *) [item1 attributeForName:@"ReturnHome"] stringValue]boolValue];
                                                     CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:popup backhome:returnHome Custom:NO];
+                                                    [menu setLookupId:LookupId];
+                                                    if(QuickAction)
+                                                    {
+                                                        [QuickActions addObject:menu];
+                                                    }
                                                     [toolbarActions addObject:menu];
                                                 }
                                             }
@@ -1164,10 +1455,18 @@
                                             NSString* Namee=[(GDataXMLElement *) [item1 attributeForName:@"Name"] stringValue];
                                             NSString* Labell=[(GDataXMLElement *) [item1 attributeForName:@"Label"] stringValue];
                                             BOOL Displayy=[[(GDataXMLElement *) [item1 attributeForName:@"Display"] stringValue]boolValue];
+                                            BOOL QuickActionn=[[(GDataXMLElement *) [item1 attributeForName:@"QuickAction"] stringValue]boolValue];
                                             BOOL popup=[[(GDataXMLElement *) [item1 attributeForName:@"ShowPopup"] stringValue]boolValue];
                                             BOOL returnHome=[[(GDataXMLElement *) [item1 attributeForName:@"ReturnHome"] stringValue]boolValue];
+                                            NSString* LookupId=[(GDataXMLElement *) [item1 attributeForName:@"LookupId"] stringValue];
+                                            
                                             if (Displayy){
                                                 CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:popup backhome:returnHome Custom:YES];
+                                                [menu setLookupId:LookupId];
+                                                if(QuickActionn)
+                                                {
+                                                    [QuickActions addObject:menu];
+                                                }
                                                 if([Name isEqualToString:@"Annotations"]){
                                                     [AnnotationsList addObject:menu];
                                                 }
@@ -1203,7 +1502,7 @@
             [newCorrespondence setAttachmentsListMenu:AttachmentsList];     /*NSMutableArray*/
             [newCorrespondence setAnnotationsList:AnnotationsList];         /*NSMutableArray*/
             [newCorrespondence setCustomItemsList:CustomItemsList];         /*NSMutableDictionary*/
-            
+            [newCorrespondence setQuickActions:QuickActions];
             //  [newCorrespondence setActionsMenu:toolbarMenuActions];
             NSData* signactiondata=[NSKeyedArchiver archivedDataWithRootObject:signActions];
             NSData* customdata=[NSKeyedArchiver archivedDataWithRootObject:toolbarActions];
@@ -1224,7 +1523,7 @@
 }
 +(void)Download:(NSData*)xmlData {
     
-
+    
     NSError *error;
     NSString* TotalCorrnb;
     
@@ -1256,546 +1555,552 @@
     NSArray *inboxess =[correspondencesXML elementsForName:@"Inboxes"];
 	
 	for (GDataXMLElement *Inbox in inboxess) {
-    NSArray *inboxes =[Inbox elementsForName:@"Inbox"];
-	
-	for (GDataXMLElement *inbox in inboxes) {
+        NSArray *inboxes =[Inbox elementsForName:@"Inbox"];
         
-        NSString *inboxId=[(GDataXMLElement *) [inbox attributeForName:@"Id"] stringValue ];
-        NSArray *totalCorrNb = [inbox elementsForName:@"Total"];
-        if (totalCorrNb.count > 0) {
-            GDataXMLElement *totalEl = (GDataXMLElement *) [totalCorrNb objectAtIndex:0];
-            TotalCorrnb = totalEl.stringValue;
-            mainDelegate.InboxTotalCorr=[TotalCorrnb intValue];
-        }
-        
-        NSArray *DataItem =[inbox nodesForXPath:@"DataItems/DataItem" error:nil];
-        
-        for (GDataXMLElement *Item in DataItem) {
+        for (GDataXMLElement *inbox in inboxes) {
             
-            NSString* transferId;
-            NSString *Id;
-            BOOL Priority;
-            BOOL New;
-            BOOL SHOWLOCK;
-            NSString* thumbnailUrl;
-            NSArray *correspondences =[Item nodesForXPath:@"Correspondence" error:nil];
-            for (GDataXMLElement *correspondence in correspondences) {
-
-            
-            
-            NSArray *correspondenceIds = [correspondence elementsForName:@"CorrespondenceId"];
-            if (correspondenceIds.count > 0) {
-                GDataXMLElement *correspondenceIdEl = (GDataXMLElement *) [correspondenceIds objectAtIndex:0];
-                Id = correspondenceIdEl.stringValue;
-            }
-
-            
-            NSArray *transferIds = [correspondence elementsForName:@"TransferId"];
-            if (transferIds.count > 0) {
-                GDataXMLElement *transferIdEl = (GDataXMLElement *) [transferIds objectAtIndex:0];
-                transferId = transferIdEl.stringValue;
+            NSString *inboxId=[(GDataXMLElement *) [inbox attributeForName:@"Id"] stringValue ];
+            NSArray *totalCorrNb = [inbox elementsForName:@"Total"];
+            if (totalCorrNb.count > 0) {
+                GDataXMLElement *totalEl = (GDataXMLElement *) [totalCorrNb objectAtIndex:0];
+                TotalCorrnb = totalEl.stringValue;
+                mainDelegate.InboxTotalCorr=[TotalCorrnb intValue];
             }
             
-            NSArray *thumbnailUrls = [correspondence elementsForName:@"ThumbnailUrl"];
-            if (thumbnailUrls.count > 0) {
-                GDataXMLElement *thumbnailUrlEl= (GDataXMLElement *) [thumbnailUrls objectAtIndex:0];
-                thumbnailUrl = thumbnailUrlEl.stringValue;
-            }
-            else
-                thumbnailUrl=@"";
+            NSArray *DataItem =[inbox nodesForXPath:@"DataItems/DataItem" error:nil];
             
-            
-            NSArray *priorities = [correspondence elementsForName:@"IsHighPriority"];
-            if (priorities.count > 0) {
-                GDataXMLElement *priorityEl = (GDataXMLElement *) [priorities objectAtIndex:0];
-                Priority = [priorityEl.stringValue boolValue];
-            }
-            
-            GDataXMLElement *newEl = (GDataXMLElement *) [[correspondence elementsForName:@"IsNew"]objectAtIndex:0];
-            New = [newEl.stringValue boolValue];
-            
-            GDataXMLElement *showlockedEl = (GDataXMLElement *) [[correspondence elementsForName:@"ShowLock"]objectAtIndex:0];
-            SHOWLOCK = [showlockedEl.stringValue boolValue];
-            
-            
-            //********GRIDINFO**********
-            NSArray *systemProperties =[correspondence nodesForXPath:@"GridInfo" error:nil];
-            NSMutableDictionary *systemPropertiesList=[[NSMutableDictionary alloc] init] ;
-            if (systemProperties.count > 0) {
-                systemPropertiesList=[self loadItemsByOrder:systemProperties];
-            }
-            //********METADATA**********
-            NSArray *properties = [correspondence elementsForName:@"Metadata"];
-            NSMutableDictionary *propertiesList=[[NSMutableDictionary alloc] init];
-            if (properties.count > 0) {
-                propertiesList=[self loadItemsByOrder:properties];
-            }
-            // NSArray *xx=correspondence.children;
-            NSArray *Maintoolbar =[correspondence nodesForXPath:@"ToolbarItems" error:nil];
-            NSMutableDictionary *toolbarItems=[[NSMutableDictionary alloc] init],*CustomItemsList=[[NSMutableDictionary alloc] init];
-            NSMutableArray *toolbarActions=[[NSMutableArray alloc] init];
-            NSMutableArray *signActions=[[NSMutableArray alloc]init] ,*AnnotationsList=[[NSMutableArray alloc]init],*AttachmentsList=[[NSMutableArray alloc]init];
-            int key=-1;
-            for(GDataXMLElement * element in Maintoolbar){
-                NSArray *toolbar=element.children;
-                for(GDataXMLElement *prop in toolbar)
-                {
-                    if([prop.name isEqualToString:@"CustomToolbarItem"]){
-                        
-                        key++;
-                        NSMutableArray *CustomItemsArray=[[NSMutableArray alloc]init];
-                        NSString* Name=[(GDataXMLElement *) [prop attributeForName:@"Name"] stringValue];
-                        NSString* Label=[(GDataXMLElement *) [prop attributeForName:@"Label"] stringValue];
-                        BOOL Display=[[(GDataXMLElement *) [prop attributeForName:@"Display"] stringValue]boolValue];
-                        BOOL popup=[[(GDataXMLElement *) [prop attributeForName:@"ShowPopup"] stringValue]boolValue];
-                        BOOL backhome=[[(GDataXMLElement *) [prop attributeForName:@"ReturnHome"] stringValue]boolValue];
-                        
-                        ToolbarItem* item=[[ToolbarItem alloc]initWithName:Name Label:Label Display:Display Custom:YES popup:popup backhome:backhome];
-                        if (Display) {
-                            [toolbarItems setValue:item forKey:[NSString stringWithFormat:@"%d",key]];
-                        }
-                        
-                        NSArray *Subitems=prop.children;
-                        if(Subitems.count>0){
-                            for(GDataXMLElement *item in Subitems)
-                            {   NSArray *toolbarItem=item .children;
+            for (GDataXMLElement *Item in DataItem) {
+                
+                NSString* transferId;
+                NSString *Id;
+                BOOL Priority;
+                BOOL New;
+                BOOL SHOWLOCK;
+                NSString* thumbnailUrl;
+                NSArray *correspondences =[Item nodesForXPath:@"Correspondence" error:nil];
+                for (GDataXMLElement *correspondence in correspondences) {
+                    
+                    
+                    
+                    NSArray *correspondenceIds = [correspondence elementsForName:@"CorrespondenceId"];
+                    if (correspondenceIds.count > 0) {
+                        GDataXMLElement *correspondenceIdEl = (GDataXMLElement *) [correspondenceIds objectAtIndex:0];
+                        Id = correspondenceIdEl.stringValue;
+                    }
+                    
+                    
+                    NSArray *transferIds = [correspondence elementsForName:@"TransferId"];
+                    if (transferIds.count > 0) {
+                        GDataXMLElement *transferIdEl = (GDataXMLElement *) [transferIds objectAtIndex:0];
+                        transferId = transferIdEl.stringValue;
+                    }
+                    
+                    NSArray *thumbnailUrls = [correspondence elementsForName:@"ThumbnailUrl"];
+                    if (thumbnailUrls.count > 0) {
+                        GDataXMLElement *thumbnailUrlEl= (GDataXMLElement *) [thumbnailUrls objectAtIndex:0];
+                        thumbnailUrl = thumbnailUrlEl.stringValue;
+                    }
+                    else
+                        thumbnailUrl=@"";
+                    
+                    
+                    NSArray *priorities = [correspondence elementsForName:@"IsHighPriority"];
+                    if (priorities.count > 0) {
+                        GDataXMLElement *priorityEl = (GDataXMLElement *) [priorities objectAtIndex:0];
+                        Priority = [priorityEl.stringValue boolValue];
+                    }
+                    
+                    GDataXMLElement *newEl = (GDataXMLElement *) [[correspondence elementsForName:@"IsNew"]objectAtIndex:0];
+                    New = [newEl.stringValue boolValue];
+                    
+                    GDataXMLElement *showlockedEl = (GDataXMLElement *) [[correspondence elementsForName:@"ShowLock"]objectAtIndex:0];
+                    SHOWLOCK = [showlockedEl.stringValue boolValue];
+                    
+                    
+                    //********GRIDINFO**********
+                    NSArray *systemProperties =[correspondence nodesForXPath:@"GridInfo" error:nil];
+                    NSMutableDictionary *systemPropertiesList=[[NSMutableDictionary alloc] init] ;
+                    if (systemProperties.count > 0) {
+                        systemPropertiesList=[self loadItemsByOrder:systemProperties];
+                    }
+                    //********METADATA**********
+                    NSArray *properties = [correspondence elementsForName:@"Metadata"];
+                    NSMutableDictionary *propertiesList=[[NSMutableDictionary alloc] init];
+                    if (properties.count > 0) {
+                        propertiesList=[self loadItemsByOrder:properties];
+                    }
+                    // NSArray *xx=correspondence.children;
+                    NSArray *Maintoolbar =[correspondence nodesForXPath:@"ToolbarItems" error:nil];
+                    NSMutableDictionary *toolbarItems=[[NSMutableDictionary alloc] init],*CustomItemsList=[[NSMutableDictionary alloc] init];
+                    NSMutableArray *toolbarActions=[[NSMutableArray alloc] init];
+                    NSMutableArray *signActions=[[NSMutableArray alloc]init] ,*AnnotationsList=[[NSMutableArray alloc]init],*AttachmentsList=[[NSMutableArray alloc]init];
+                    int key=-1;
+                    for(GDataXMLElement * element in Maintoolbar){
+                        NSArray *toolbar=element.children;
+                        for(GDataXMLElement *prop in toolbar)
+                        {
+                            if([prop.name isEqualToString:@"CustomToolbarItem"]){
                                 
-                                for(GDataXMLElement *item1 in toolbarItem)
-                                {
-                                    
-                                    if([item1.name isEqualToString:@"CustomToolbarItem"])
-                                    {
-                                        NSString* Namee=[(GDataXMLElement *) [item1 attributeForName:@"Name"] stringValue];
-                                        NSString* Labell=[(GDataXMLElement *) [item1 attributeForName:@"Label"] stringValue];
-                                        BOOL Displayy=[[(GDataXMLElement *) [item1 attributeForName:@"Display"] stringValue]boolValue];
-                                        BOOL popup=[[(GDataXMLElement *) [item1 attributeForName:@"ShowPopup"] stringValue]boolValue];
-                                        BOOL returnHome=[[(GDataXMLElement *) [item1 attributeForName:@"ReturnHome"] stringValue]boolValue];
-                                        if (Displayy){
-                                            CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:popup backhome:returnHome Custom:YES];
-                                            [CustomItemsArray addObject:menu];
+                                key++;
+                                NSMutableArray *CustomItemsArray=[[NSMutableArray alloc]init];
+                                NSString* Name=[(GDataXMLElement *) [prop attributeForName:@"Name"] stringValue];
+                                NSString* Label=[(GDataXMLElement *) [prop attributeForName:@"Label"] stringValue];
+                                BOOL Display=[[(GDataXMLElement *) [prop attributeForName:@"Display"] stringValue]boolValue];
+                                BOOL QuickAction=[[(GDataXMLElement *) [prop attributeForName:@"QuickAction"] stringValue]boolValue];
+                                BOOL popup=[[(GDataXMLElement *) [prop attributeForName:@"ShowPopup"] stringValue]boolValue];
+                                BOOL backhome=[[(GDataXMLElement *) [prop attributeForName:@"ReturnHome"] stringValue]boolValue];
+                                
+                                ToolbarItem* item=[[ToolbarItem alloc]initWithName:Name Label:Label Display:Display Custom:YES popup:popup backhome:backhome ];
+                                if (Display) {
+                                    [toolbarItems setValue:item forKey:[NSString stringWithFormat:@"%d",key]];
+                                }
+                                
+                                NSArray *Subitems=prop.children;
+                                if(Subitems.count>0){
+                                    for(GDataXMLElement *item in Subitems)
+                                    {   NSArray *toolbarItem=item .children;
+                                        
+                                        for(GDataXMLElement *item1 in toolbarItem)
+                                        {
                                             
+                                            if([item1.name isEqualToString:@"CustomToolbarItem"])
+                                            {
+                                                NSString* Namee=[(GDataXMLElement *) [item1 attributeForName:@"Name"] stringValue];
+                                                NSString* Labell=[(GDataXMLElement *) [item1 attributeForName:@"Label"] stringValue];
+                                                BOOL Displayy=[[(GDataXMLElement *) [item1 attributeForName:@"Display"] stringValue]boolValue];
+                                                BOOL popup=[[(GDataXMLElement *) [item1 attributeForName:@"ShowPopup"] stringValue]boolValue];
+                                                BOOL returnHome=[[(GDataXMLElement *) [item1 attributeForName:@"ReturnHome"] stringValue]boolValue];
+                                                if (Displayy){
+                                                    CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:popup backhome:returnHome Custom:YES];
+                                                    [CustomItemsArray addObject:menu];
+                                                    
+                                                }
+                                            }
+                                        }
+                                        [CustomItemsList setObject:CustomItemsArray forKey:Name];
+                                    }
+                                }
+                            }
+                            else
+                                if([prop.name isEqualToString:@"ToolbarItem"]){
+                                    
+                                    key++;
+                                    NSString* Name=[(GDataXMLElement *) [prop attributeForName:@"Name"] stringValue];
+                                    NSString* Label=[(GDataXMLElement *) [prop attributeForName:@"Label"] stringValue];
+                                    BOOL Display=[[(GDataXMLElement *) [prop attributeForName:@"Display"] stringValue]boolValue];
+                                    BOOL QuickAction=[[(GDataXMLElement *) [prop attributeForName:@"QuickAction"] stringValue]boolValue];
+                                    
+                                    ToolbarItem* item=[[ToolbarItem alloc]initWithName:Name Label:Label Display:Display Custom:NO popup:NO backhome:NO ];
+                                    if (Display) {
+                                        [toolbarItems setValue:item forKey:[NSString stringWithFormat:@"%d",key]];
+                                        
+                                    }
+                                    NSArray *Subitems=prop.children;
+                                    if(Subitems.count>0){
+                                        for(GDataXMLElement *item in Subitems)
+                                        {   NSArray *toolbarItem=item .children;
+                                            
+                                            for(GDataXMLElement *item1 in toolbarItem)
+                                            {
+                                                if([item1.name isEqualToString:@"ToolbarItem"]){
+                                                    NSString* Namee=[(GDataXMLElement *) [item1 attributeForName:@"Name"] stringValue];
+                                                    NSString* Labell=[(GDataXMLElement *) [item1 attributeForName:@"Label"] stringValue];
+                                                    BOOL Displayy=[[(GDataXMLElement *) [item1 attributeForName:@"Display"] stringValue]boolValue];
+                                                    
+                                                    if (Displayy){
+                                                        
+                                                        if(![Name isEqualToString:@"More"]){
+                                                            CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:NO backhome:NO Custom:NO];
+                                                            if([Name isEqualToString:@"Annotations"]){
+                                                                [AnnotationsList addObject:menu];
+                                                            }
+                                                            else if ([Name isEqualToString:@"Attachments"])
+                                                                [AttachmentsList addObject:menu];
+                                                            else if ([Name isEqualToString:@"Signature"])
+                                                                [signActions addObject:menu];
+                                                            
+                                                        }
+                                                        else{
+                                                            BOOL popup=[[(GDataXMLElement *) [item1 attributeForName:@"ShowPopup"] stringValue]boolValue];
+                                                            BOOL returnHome=[[(GDataXMLElement *) [item1 attributeForName:@"ReturnHome"] stringValue]boolValue];
+                                                            CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:popup backhome:returnHome Custom:NO];
+                                                            [toolbarActions addObject:menu];
+                                                        }
+                                                    }
+                                                    
+                                                }
+                                                
+                                                if([item1.name isEqualToString:@"CustomToolbarItem"])
+                                                {
+                                                    NSString* Namee=[(GDataXMLElement *) [item1 attributeForName:@"Name"] stringValue];
+                                                    NSString* Labell=[(GDataXMLElement *) [item1 attributeForName:@"Label"] stringValue];
+                                                    BOOL Displayy=[[(GDataXMLElement *) [item1 attributeForName:@"Display"] stringValue]boolValue];
+                                                    BOOL popup=[[(GDataXMLElement *) [item1 attributeForName:@"ShowPopup"] stringValue]boolValue];
+                                                    BOOL returnHome=[[(GDataXMLElement *) [item1 attributeForName:@"ReturnHome"] stringValue]boolValue];
+                                                    if (Displayy){
+                                                        CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:popup backhome:returnHome Custom:YES];
+                                                        if([Name isEqualToString:@"Annotations"]){
+                                                            [AnnotationsList addObject:menu];
+                                                        }
+                                                        else if ([Name isEqualToString:@"Attachments"])
+                                                            [AttachmentsList addObject:menu];
+                                                        else if ([Name isEqualToString:@"Signature"])
+                                                            [signActions addObject:menu];
+                                                        else
+                                                            if([Name isEqualToString:@"More"])
+                                                                [toolbarActions addObject:menu];
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
-                                [CustomItemsList setObject:CustomItemsArray forKey:Name];
-                            }
                         }
+                        
                     }
-                    else
-                        if([prop.name isEqualToString:@"ToolbarItem"]){
+                    
+                    NSData* signactiondata=[NSKeyedArchiver archivedDataWithRootObject:signActions];
+                    NSData* customdata=[NSKeyedArchiver archivedDataWithRootObject:toolbarActions];
+                    NSData* toolbardata=[NSKeyedArchiver archivedDataWithRootObject:toolbarItems];
+                    NSData* systempropertiesdata=[NSKeyedArchiver archivedDataWithRootObject:systemPropertiesList];
+                    NSData* PropertiesListdata=[NSKeyedArchiver archivedDataWithRootObject:propertiesList];
+                    NSData* AttachmentsListData=[NSKeyedArchiver archivedDataWithRootObject:AttachmentsList];
+                    NSData* AnnotationsListData=[NSKeyedArchiver archivedDataWithRootObject:AnnotationsList];
+                    NSData* CustomItemsListData=[NSKeyedArchiver archivedDataWithRootObject:CustomItemsList];
+                    
+                    [self cacheCorrespondence:Id InboxId:inboxId priority:[NSString stringWithFormat:@"%hhd",Priority] new:[NSString stringWithFormat:@"%hhd",New] showlock:[NSString stringWithFormat:@"%hhd",SHOWLOCK] transferId:transferId thumbnailurl:thumbnailUrl SystemProperties:systempropertiesdata Properties:PropertiesListdata toolbarItems:toolbardata CustomActions:customdata SignActions:signactiondata AttachmentsList:AttachmentsListData AnnotationsList:AnnotationsListData CustomItemsList:CustomItemsListData];
+                }
+                /***************************************************************/
+                NSArray *Attachments =[Item nodesForXPath:@"Folders" error:nil];
+                
+                if (Attachments.count > 0) {
+                    GDataXMLElement *AttachmentsXML =  [Attachments objectAtIndex:0];
+                    NSArray *Folders = [AttachmentsXML elementsForName:@"Folder"];
+                    
+                    for(GDataXMLElement *FoldersEl in Folders) {
+                        NSString* folderName = [FoldersEl attributeForName:@"Name"].stringValue;
+                        NSArray *Folderxml = [FoldersEl elementsForName:@"Attachments"];
+                        for(GDataXMLElement *folders in Folderxml)
+                        {
                             
-                            key++;
-                            NSString* Name=[(GDataXMLElement *) [prop attributeForName:@"Name"] stringValue];
-                            NSString* Label=[(GDataXMLElement *) [prop attributeForName:@"Label"] stringValue];
-                            BOOL Display=[[(GDataXMLElement *) [prop attributeForName:@"Display"] stringValue]boolValue];
-                            ToolbarItem* item=[[ToolbarItem alloc]initWithName:Name Label:Label Display:Display Custom:NO popup:NO backhome:NO];
-                            if (Display) {
-                                [toolbarItems setValue:item forKey:[NSString stringWithFormat:@"%d",key]];
+                            NSArray *attachmentXML = [folders elementsForName:@"Attachment"];
+                            
+                            for(GDataXMLElement *attachment in attachmentXML)
+                            {
                                 
-                            }
-                            NSArray *Subitems=prop.children;
-                            if(Subitems.count>0){
-                                for(GDataXMLElement *item in Subitems)
-                                {   NSArray *toolbarItem=item .children;
+                                [mainDelegate.IncomingHighlights removeAllObjects];
+                                [mainDelegate.IncomingNotes removeAllObjects];
+                                mainDelegate.IncomingNotes=[[NSMutableArray alloc]init];
+                                mainDelegate.IncomingHighlights=[[NSMutableArray alloc]init];
+                                NSString* fileUri;
+                                NSString* FileName;
+                                NSString* url;
+                                NSString* SiteId;
+                                NSString* FileId;
+                                NSString* FileUrl;
+                                NSString* thumbnailUrl;
+                                NSString* isOriginalMail;
+                                NSString* AttachmentId;
+                                
+                                NSArray *fileUris = [attachment elementsForName:@"DocId"];
+                                if (fileUris.count > 0) {
+                                    GDataXMLElement *fileUriEl = (GDataXMLElement *) [fileUris objectAtIndex:0];
+                                    fileUri = fileUriEl.stringValue;
+                                }
+                                NSArray *attachid = [attachment elementsForName:@"AttachmentId"];
+                                if (attachid.count > 0) {
+                                    GDataXMLElement *attachidEl = (GDataXMLElement *) [attachid objectAtIndex:0];
+                                    AttachmentId = attachidEl.stringValue;
+                                }
+                                NSArray *FileNames = [attachment elementsForName:@"FileName"];
+                                if (FileNames.count > 0) {
+                                    GDataXMLElement *FileNameEL = (GDataXMLElement *) [FileNames objectAtIndex:0];
+                                    FileName = FileNameEL.stringValue;
+                                }
+                                NSArray *urls = [attachment elementsForName:@"URL"];
+                                if (urls.count > 0) {
+                                    GDataXMLElement *urlEl = (GDataXMLElement *) [urls objectAtIndex:0];
+                                    NSLog(@"%@",urlEl.stringValue);
+                                    url = urlEl.stringValue;
                                     
-                                    for(GDataXMLElement *item1 in toolbarItem)
+                                    
+                                    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                                    NSString* tempPdfLocation=@"";
+                                    
+                                    NSString*strUrl;
+                                    NSString* CorrespondenceId=Id;
+                                    strUrl= [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];//url where the file located
+                                    NSURL *url=[NSURL URLWithString:strUrl];
+                                    
+                                    NSString *cachesDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];// /Users/dna/Library/Application Support/iPhone Simulator/7.0.3/Applications/9A637052-BDFD-4567-B3AC-6B01DDFD5430/Library/Caches
+                                    
+                                    NSString *path = [cachesDirectory stringByAppendingPathComponent:CorrespondenceId];//append correspondence number
+                                    NSError *error;
+                                    if (![[NSFileManager defaultManager] fileExistsAtPath:path])    //Does directory already exist?
                                     {
-                                        if([item1.name isEqualToString:@"ToolbarItem"]){
-                                            NSString* Namee=[(GDataXMLElement *) [item1 attributeForName:@"Name"] stringValue];
-                                            NSString* Labell=[(GDataXMLElement *) [item1 attributeForName:@"Label"] stringValue];
-                                            BOOL Displayy=[[(GDataXMLElement *) [item1 attributeForName:@"Display"] stringValue]boolValue];
+                                        if (![[NSFileManager defaultManager] createDirectoryAtPath:path
+                                                                       withIntermediateDirectories:NO
+                                                                                        attributes:nil
+                                                                                             error:&error])
+                                        {
+                                            NSLog(@"Create directory error: %@", error);
+                                        }
+                                    }
+                                    
+                                    
+                                    NSString* pdfCacheName = [url lastPathComponent];//take the name of the file
+                                    
+                                    tempPdfLocation = [path stringByAppendingPathComponent:pdfCacheName];//compute the full path for the file
+                                    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:tempPdfLocation];//check if file if already exists
+                                    if(!fileExists){//write file to cache if not exist
+                                        
+                                        NSData *data = [NSData dataWithContentsOfURL:url ];
+                                        if(data.length!=0)
+                                            [data writeToFile:tempPdfLocation atomically:TRUE];
+                                        else tempPdfLocation=@"";
+                                    }
+                                    
+                                    
+                                    
+                                }
+                                
+                                NSArray *ServerFileInfo = [attachment nodesForXPath:@"ServerFileInfo" error:nil];
+                                GDataXMLElement *ServerFileInfoXML;
+                                
+                                if(ServerFileInfo.count>0){
+                                    
+                                    ServerFileInfoXML = [ServerFileInfo objectAtIndex:0];
+                                    
+                                    NSArray *SiteIds = [ServerFileInfoXML elementsForName:@"SiteId"];
+                                    if (SiteIds.count > 0) {
+                                        GDataXMLElement *SiteIdEl = (GDataXMLElement *) [SiteIds objectAtIndex:0];
+                                        SiteId = SiteIdEl.stringValue;
+                                    }
+                                    
+                                    NSArray *FileIds = [ServerFileInfoXML elementsForName:@"FileId"];
+                                    if (FileIds.count > 0) {
+                                        GDataXMLElement *FileIdEl = (GDataXMLElement *) [FileIds objectAtIndex:0];
+                                        FileId = FileIdEl.stringValue;
+                                    }
+                                    
+                                    NSArray *FileUrls = [ServerFileInfoXML elementsForName:@"FileURL"];
+                                    if (FileUrls.count > 0) {
+                                        GDataXMLElement *FileUrlEl = (GDataXMLElement *) [FileUrls objectAtIndex:0];
+                                        FileUrl = FileUrlEl.stringValue;
+                                    }
+                                }
+                                NSArray *thumbnailUrls = [attachment elementsForName:@"ThumbnailURL"];
+                                if (thumbnailUrls.count > 0) {
+                                    GDataXMLElement *thumbnailUrlEl= (GDataXMLElement *) [thumbnailUrls objectAtIndex:0];
+                                    thumbnailUrl = thumbnailUrlEl.stringValue;
+                                }
+                                
+                                NSArray *isOriginalMails = [attachment elementsForName:@"IsOriginalMail"];
+                                if (isOriginalMails.count > 0) {
+                                    GDataXMLElement *isOriginalMailEl= (GDataXMLElement *) [isOriginalMails objectAtIndex:0];
+                                    isOriginalMail = isOriginalMailEl.stringValue;
+                                }
+                                
+                                
+                                //     NSMutableArray* annotations = [[NSMutableArray alloc] init];
+                                NSArray *annotationsXml = [attachment elementsForName:@"Annotations"];
+                                
+                                if (annotationsXml.count > 0) {
+                                    GDataXMLElement *annotationsEl = (GDataXMLElement *) [annotationsXml objectAtIndex:0];
+                                    NSArray *Notes = [annotationsEl nodesForXPath:@"Notes" error:nil];
+                                    
+                                    
+                                    
+                                    GDataXMLElement *NotesXML;
+                                    
+                                    if(Notes.count>0){
+                                        
+                                        NotesXML = [Notes objectAtIndex:0];
+                                        
+                                    }
+                                    
+                                    NSArray *noteXML = [NotesXML elementsForName:@"Note"];
+                                    
+                                    NSString *noteX;
+                                    
+                                    NSString *noteY;
+                                    
+                                    NSString *notepage;
+                                    
+                                    NSString *noteMSG;
+                                    
+                                    for(GDataXMLElement *notee in noteXML)
+                                        
+                                    {
+                                        NSArray *noteXs = [notee elementsForName:@"X"];
+                                        
+                                        if (noteXs.count > 0) {
                                             
-                                            if (Displayy){
-                                                
-                                                if(![Name isEqualToString:@"More"]){
-                                                    CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:NO backhome:NO Custom:NO];
-                                                    if([Name isEqualToString:@"Annotations"]){
-                                                        [AnnotationsList addObject:menu];
-                                                    }
-                                                    else if ([Name isEqualToString:@"Attachments"])
-                                                        [AttachmentsList addObject:menu];
-                                                    else if ([Name isEqualToString:@"Signature"])
-                                                        [signActions addObject:menu];
-                                                    
-                                                }
-                                                else{
-                                                    BOOL popup=[[(GDataXMLElement *) [item1 attributeForName:@"ShowPopup"] stringValue]boolValue];
-                                                    BOOL returnHome=[[(GDataXMLElement *) [item1 attributeForName:@"ReturnHome"] stringValue]boolValue];
-                                                    CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:popup backhome:returnHome Custom:NO];
-                                                    [toolbarActions addObject:menu];
-                                                }
-                                            }
+                                            GDataXMLElement *noteXEl = (GDataXMLElement *) [noteXs objectAtIndex:0];
+                                            
+                                            noteX = noteXEl.stringValue;
                                             
                                         }
                                         
-                                        if([item1.name isEqualToString:@"CustomToolbarItem"])
-                                        {
-                                            NSString* Namee=[(GDataXMLElement *) [item1 attributeForName:@"Name"] stringValue];
-                                            NSString* Labell=[(GDataXMLElement *) [item1 attributeForName:@"Label"] stringValue];
-                                            BOOL Displayy=[[(GDataXMLElement *) [item1 attributeForName:@"Display"] stringValue]boolValue];
-                                            BOOL popup=[[(GDataXMLElement *) [item1 attributeForName:@"ShowPopup"] stringValue]boolValue];
-                                            BOOL returnHome=[[(GDataXMLElement *) [item1 attributeForName:@"ReturnHome"] stringValue]boolValue];
-                                            if (Displayy){
-                                                CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:popup backhome:returnHome Custom:YES];
-                                                if([Name isEqualToString:@"Annotations"]){
-                                                    [AnnotationsList addObject:menu];
-                                                }
-                                                else if ([Name isEqualToString:@"Attachments"])
-                                                    [AttachmentsList addObject:menu];
-                                                else if ([Name isEqualToString:@"Signature"])
-                                                    [signActions addObject:menu];
-                                                else
-                                                    if([Name isEqualToString:@"More"])
-                                                        [toolbarActions addObject:menu];
-                                            }
+                                        NSArray *noteYs = [notee elementsForName:@"Y"];
+                                        
+                                        if (noteYs.count > 0) {
+                                            
+                                            GDataXMLElement *noteYEl = (GDataXMLElement *) [noteYs objectAtIndex:0];
+                                            
+                                            noteY = noteYEl.stringValue;
+                                            
                                         }
+                                        
+                                        NSArray *pages = [notee elementsForName:@"Page"];
+                                        
+                                        if (pages.count > 0) {
+                                            
+                                            GDataXMLElement *pageEl = (GDataXMLElement *) [pages objectAtIndex:0];
+                                            
+                                            notepage = pageEl.stringValue;
+                                            
+                                        }
+                                        
+                                        NSArray *noteMSGs = [notee elementsForName:@"Text"];
+                                        
+                                        if (noteMSGs.count > 0) {
+                                            
+                                            GDataXMLElement *noteMSGEl = (GDataXMLElement *) [noteMSGs objectAtIndex:0];
+                                            
+                                            noteMSG = noteMSGEl.stringValue;
+                                            
+                                        }
+                                        
+                                        CGPoint ptLeftTop;
+                                        
+                                        ptLeftTop.x=[noteX intValue];
+                                        
+                                        ptLeftTop.y=[noteY intValue];
+                                        
+                                        note* noteObj=[[note alloc]initWithName:ptLeftTop.x ordinate:ptLeftTop.y note:noteMSG PageNb:notepage.intValue AttachmentId:AttachmentId.intValue];
+                                        [mainDelegate.IncomingNotes addObject:noteObj];
+                                        
+                                    }
+                                    
+                                    NSArray *Highlights = [annotationsEl nodesForXPath:@"Highlights" error:nil];
+                                    
+                                    GDataXMLElement *HighlightsXML;
+                                    
+                                    if(Highlights.count>0){
+                                        
+                                        HighlightsXML = [Highlights objectAtIndex:0];
+                                        
+                                    }
+                                    
+                                    NSArray *HighlightXML = [HighlightsXML elementsForName:@"Highlight"];
+                                    
+                                    NSString *HighlightX1;
+                                    
+                                    NSString *HighlightY1;
+                                    
+                                    NSString *HighlightX2;
+                                    
+                                    NSString *HighlightY2;
+                                    
+                                    NSString *Highlightpage;
+                                    
+                                    
+                                    for(GDataXMLElement *Highlight in HighlightXML)
+                                    {
+                                        NSArray *HighlightX1s = [Highlight elementsForName:@"X"];
+                                        
+                                        if (HighlightX1s.count > 0) {
+                                            
+                                            GDataXMLElement *HighlightX1El = (GDataXMLElement *) [HighlightX1s objectAtIndex:0];
+                                            
+                                            HighlightX1= HighlightX1El.stringValue;
+                                            
+                                        }
+                                        
+                                        
+                                        NSArray *HighlightX2s = [Highlight elementsForName:@"Y"];
+                                        
+                                        if (HighlightX2s.count > 0) {
+                                            
+                                            GDataXMLElement *HighlightX2El = (GDataXMLElement *) [HighlightX2s objectAtIndex:0];
+                                            
+                                            HighlightX2= HighlightX2El.stringValue;
+                                            
+                                        }
+                                        
+                                        
+                                        NSArray *HighlightY1s = [Highlight elementsForName:@"Z"];
+                                        
+                                        if (HighlightY1s.count > 0) {
+                                            
+                                            GDataXMLElement *HighlightY1El = (GDataXMLElement *) [HighlightY1s objectAtIndex:0];
+                                            
+                                            HighlightY1= HighlightY1El.stringValue;
+                                            
+                                        }
+                                        
+                                        NSArray *HighlightY2s = [Highlight elementsForName:@"W"];
+                                        
+                                        if (HighlightY2s.count > 0) {
+                                            
+                                            GDataXMLElement *HighlightY2El = (GDataXMLElement *) [HighlightY2s objectAtIndex:0];
+                                            
+                                            HighlightY2= HighlightY2El.stringValue;
+                                            
+                                        }
+                                        
+                                        
+                                        NSArray *Highlightpages = [Highlight elementsForName:@"Page"];
+                                        
+                                        if (Highlightpages.count > 0) {
+                                            
+                                            GDataXMLElement *HighlightpageEl = (GDataXMLElement *) [Highlightpages objectAtIndex:0];
+                                            
+                                            Highlightpage = HighlightpageEl.stringValue;
+                                            
+                                        }
+                                        
+                                        
+                                        CGPoint ptLeftTop;
+                                        
+                                        CGPoint ptRightBottom;
+                                        
+                                        ptLeftTop.x=[HighlightX1 intValue];
+                                        
+                                        ptLeftTop.y=[HighlightY1 intValue];
+                                        
+                                        ptRightBottom.x=[HighlightX2 intValue];
+                                        
+                                        ptRightBottom.y=[HighlightY2 intValue];
+                                        
+                                        HighlightClass* obj=[[HighlightClass alloc]initWithName:ptLeftTop.x ordinate:ptLeftTop.y height:ptRightBottom.x width:ptRightBottom.y PageNb:notepage.intValue AttachmentId:AttachmentId.intValue];
+                                        [mainDelegate.IncomingHighlights addObject:obj];
+                                        
                                     }
                                 }
-                            }
-                        }
-                }
+                                
+                                NSData* NoteAnnotationsData=[NSKeyedArchiver archivedDataWithRootObject:[mainDelegate.IncomingNotes copy]];
+                                NSData* HighlightAnnotationsData=[NSKeyedArchiver archivedDataWithRootObject:[mainDelegate.IncomingHighlights copy]];
+                                
+                                [self cacheAttachment:AttachmentId CorrespondenceId:Id FileName:FileName fileuri:fileUri url:url siteId:SiteId FileId:FileId thumbnailurl:thumbnailUrl FileUrl:FileUrl IsOriginalMail:isOriginalMail FolderName:folderName NoteAnnotations:NoteAnnotationsData HighlightAnnotations:HighlightAnnotationsData];
+                                
+                            }}}}
+                
                 
             }
-            
-            NSData* signactiondata=[NSKeyedArchiver archivedDataWithRootObject:signActions];
-            NSData* customdata=[NSKeyedArchiver archivedDataWithRootObject:toolbarActions];
-            NSData* toolbardata=[NSKeyedArchiver archivedDataWithRootObject:toolbarItems];
-            NSData* systempropertiesdata=[NSKeyedArchiver archivedDataWithRootObject:systemPropertiesList];
-            NSData* PropertiesListdata=[NSKeyedArchiver archivedDataWithRootObject:propertiesList];
-            NSData* AttachmentsListData=[NSKeyedArchiver archivedDataWithRootObject:AttachmentsList];
-            NSData* AnnotationsListData=[NSKeyedArchiver archivedDataWithRootObject:AnnotationsList];
-            NSData* CustomItemsListData=[NSKeyedArchiver archivedDataWithRootObject:CustomItemsList];
-            
-            [self cacheCorrespondence:Id InboxId:inboxId priority:[NSString stringWithFormat:@"%hhd",Priority] new:[NSString stringWithFormat:@"%hhd",New] showlock:[NSString stringWithFormat:@"%hhd",SHOWLOCK] transferId:transferId thumbnailurl:thumbnailUrl SystemProperties:systempropertiesdata Properties:PropertiesListdata toolbarItems:toolbardata CustomActions:customdata SignActions:signactiondata AttachmentsList:AttachmentsListData AnnotationsList:AnnotationsListData CustomItemsList:CustomItemsListData];
-            }
-            /***************************************************************/
-            NSArray *Attachments =[Item nodesForXPath:@"Folders" error:nil];
-            
-            if (Attachments.count > 0) {
-                GDataXMLElement *AttachmentsXML =  [Attachments objectAtIndex:0];
-            NSArray *Folders = [AttachmentsXML elementsForName:@"Folder"];
-            
-            for(GDataXMLElement *FoldersEl in Folders) {
-                NSString* folderName = [FoldersEl attributeForName:@"Name"].stringValue;
-                NSArray *Folderxml = [FoldersEl elementsForName:@"Attachments"];
-                for(GDataXMLElement *folders in Folderxml)
-                {
-                    
-                    NSArray *attachmentXML = [folders elementsForName:@"Attachment"];
-                    
-                    for(GDataXMLElement *attachment in attachmentXML)
-                    {
-                        
-                        [mainDelegate.IncomingHighlights removeAllObjects];
-                        [mainDelegate.IncomingNotes removeAllObjects];
-                        mainDelegate.IncomingNotes=[[NSMutableArray alloc]init];
-                        mainDelegate.IncomingHighlights=[[NSMutableArray alloc]init];
-                        NSString* fileUri;
-                        NSString* FileName;
-                        NSString* url;
-                        NSString* SiteId;
-                        NSString* FileId;
-                        NSString* FileUrl;
-                        NSString* thumbnailUrl;
-                        NSString* isOriginalMail;
-                        NSString* AttachmentId;
-                        
-                        NSArray *fileUris = [attachment elementsForName:@"DocId"];
-                        if (fileUris.count > 0) {
-                            GDataXMLElement *fileUriEl = (GDataXMLElement *) [fileUris objectAtIndex:0];
-                            fileUri = fileUriEl.stringValue;
-                        }
-                        NSArray *attachid = [attachment elementsForName:@"AttachmentId"];
-                        if (attachid.count > 0) {
-                            GDataXMLElement *attachidEl = (GDataXMLElement *) [attachid objectAtIndex:0];
-                            AttachmentId = attachidEl.stringValue;
-                        }
-                        NSArray *FileNames = [attachment elementsForName:@"FileName"];
-                        if (FileNames.count > 0) {
-                            GDataXMLElement *FileNameEL = (GDataXMLElement *) [FileNames objectAtIndex:0];
-                            FileName = FileNameEL.stringValue;
-                        }
-                        NSArray *urls = [attachment elementsForName:@"URL"];
-                        if (urls.count > 0) {
-                            GDataXMLElement *urlEl = (GDataXMLElement *) [urls objectAtIndex:0];
-                            NSLog(@"%@",urlEl.stringValue);
-                            url = urlEl.stringValue;
-                           
-                            
-                            mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                            NSString* tempPdfLocation=@"";
-                            
-                            NSString*strUrl;
-                            NSString* CorrespondenceId=Id;
-                            strUrl= [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];//url where the file located
-                            NSURL *url=[NSURL URLWithString:strUrl];
-                            
-                            NSString *cachesDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];// /Users/dna/Library/Application Support/iPhone Simulator/7.0.3/Applications/9A637052-BDFD-4567-B3AC-6B01DDFD5430/Library/Caches
-                            
-                            NSString *path = [cachesDirectory stringByAppendingPathComponent:CorrespondenceId];//append correspondence number
-                            NSError *error;
-                            if (![[NSFileManager defaultManager] fileExistsAtPath:path])    //Does directory already exist?
-                            {
-                                if (![[NSFileManager defaultManager] createDirectoryAtPath:path
-                                                               withIntermediateDirectories:NO
-                                                                                attributes:nil
-                                                                                     error:&error])
-                                {
-                                    NSLog(@"Create directory error: %@", error);
-                                }
-                            }
-                            
-                            
-                            NSString* pdfCacheName = [url lastPathComponent];//take the name of the file
-                            
-                            tempPdfLocation = [path stringByAppendingPathComponent:pdfCacheName];//compute the full path for the file
-                            BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:tempPdfLocation];//check if file if already exists
-                            if(!fileExists){//write file to cache if not exist
-                                
-                                NSData *data = [NSData dataWithContentsOfURL:url ];
-                                if(data.length!=0)
-                                    [data writeToFile:tempPdfLocation atomically:TRUE];
-                                else tempPdfLocation=@"";
-                            }
-                            
-                            
-                            
-                        }
-
-                        NSArray *ServerFileInfo = [attachment nodesForXPath:@"ServerFileInfo" error:nil];
-                        GDataXMLElement *ServerFileInfoXML;
-                        
-                        if(ServerFileInfo.count>0){
-                            
-                            ServerFileInfoXML = [ServerFileInfo objectAtIndex:0];
-                            
-                            NSArray *SiteIds = [ServerFileInfoXML elementsForName:@"SiteId"];
-                            if (SiteIds.count > 0) {
-                                GDataXMLElement *SiteIdEl = (GDataXMLElement *) [SiteIds objectAtIndex:0];
-                                SiteId = SiteIdEl.stringValue;
-                            }
-                            
-                            NSArray *FileIds = [ServerFileInfoXML elementsForName:@"FileId"];
-                            if (FileIds.count > 0) {
-                                GDataXMLElement *FileIdEl = (GDataXMLElement *) [FileIds objectAtIndex:0];
-                                FileId = FileIdEl.stringValue;
-                            }
-                            
-                            NSArray *FileUrls = [ServerFileInfoXML elementsForName:@"FileURL"];
-                            if (FileUrls.count > 0) {
-                                GDataXMLElement *FileUrlEl = (GDataXMLElement *) [FileUrls objectAtIndex:0];
-                                FileUrl = FileUrlEl.stringValue;
-                            }
-                        }
-                        NSArray *thumbnailUrls = [attachment elementsForName:@"ThumbnailURL"];
-                        if (thumbnailUrls.count > 0) {
-                            GDataXMLElement *thumbnailUrlEl= (GDataXMLElement *) [thumbnailUrls objectAtIndex:0];
-                            thumbnailUrl = thumbnailUrlEl.stringValue;
-                        }
-                        
-                        NSArray *isOriginalMails = [attachment elementsForName:@"IsOriginalMail"];
-                        if (isOriginalMails.count > 0) {
-                            GDataXMLElement *isOriginalMailEl= (GDataXMLElement *) [isOriginalMails objectAtIndex:0];
-                            isOriginalMail = isOriginalMailEl.stringValue;
-                        }
-                        
-                        
-                        //     NSMutableArray* annotations = [[NSMutableArray alloc] init];
-                        NSArray *annotationsXml = [attachment elementsForName:@"Annotations"];
-                        
-                        if (annotationsXml.count > 0) {
-                            GDataXMLElement *annotationsEl = (GDataXMLElement *) [annotationsXml objectAtIndex:0];
-                            NSArray *Notes = [annotationsEl nodesForXPath:@"Notes" error:nil];
-                            
-                            
-                            
-                            GDataXMLElement *NotesXML;
-                            
-                            if(Notes.count>0){
-                                
-                                NotesXML = [Notes objectAtIndex:0];
-                                
-                            }
-                            
-                            NSArray *noteXML = [NotesXML elementsForName:@"Note"];
-                            
-                            NSString *noteX;
-                            
-                            NSString *noteY;
-                            
-                            NSString *notepage;
-                            
-                            NSString *noteMSG;
-                            
-                            for(GDataXMLElement *notee in noteXML)
-                                
-                            {
-                                NSArray *noteXs = [notee elementsForName:@"X"];
-                                
-                                if (noteXs.count > 0) {
-                                    
-                                    GDataXMLElement *noteXEl = (GDataXMLElement *) [noteXs objectAtIndex:0];
-                                    
-                                    noteX = noteXEl.stringValue;
-                                    
-                                }
-                                
-                                NSArray *noteYs = [notee elementsForName:@"Y"];
-                                
-                                if (noteYs.count > 0) {
-                                    
-                                    GDataXMLElement *noteYEl = (GDataXMLElement *) [noteYs objectAtIndex:0];
-                                    
-                                    noteY = noteYEl.stringValue;
-                                    
-                                }
-                                
-                                NSArray *pages = [notee elementsForName:@"Page"];
-                                
-                                if (pages.count > 0) {
-                                    
-                                    GDataXMLElement *pageEl = (GDataXMLElement *) [pages objectAtIndex:0];
-                                    
-                                    notepage = pageEl.stringValue;
-                                    
-                                }
-                                
-                                NSArray *noteMSGs = [notee elementsForName:@"Text"];
-                                
-                                if (noteMSGs.count > 0) {
-                                    
-                                    GDataXMLElement *noteMSGEl = (GDataXMLElement *) [noteMSGs objectAtIndex:0];
-                                    
-                                    noteMSG = noteMSGEl.stringValue;
-                                    
-                                }
-                                
-                                CGPoint ptLeftTop;
-                                
-                                ptLeftTop.x=[noteX intValue];
-                                
-                                ptLeftTop.y=[noteY intValue];
-                                
-                                note* noteObj=[[note alloc]initWithName:ptLeftTop.x ordinate:ptLeftTop.y note:noteMSG PageNb:notepage.intValue AttachmentId:AttachmentId.intValue];
-                                [mainDelegate.IncomingNotes addObject:noteObj];
-                                
-                            }
-                            
-                            NSArray *Highlights = [annotationsEl nodesForXPath:@"Highlights" error:nil];
-                            
-                            GDataXMLElement *HighlightsXML;
-                            
-                            if(Highlights.count>0){
-                                
-                                HighlightsXML = [Highlights objectAtIndex:0];
-                                
-                            }
-                            
-                            NSArray *HighlightXML = [HighlightsXML elementsForName:@"Highlight"];
-                            
-                            NSString *HighlightX1;
-                            
-                            NSString *HighlightY1;
-                            
-                            NSString *HighlightX2;
-                            
-                            NSString *HighlightY2;
-                            
-                            NSString *Highlightpage;
-                            
-                            
-                            for(GDataXMLElement *Highlight in HighlightXML)
-                            {
-                                NSArray *HighlightX1s = [Highlight elementsForName:@"X"];
-                                
-                                if (HighlightX1s.count > 0) {
-                                    
-                                    GDataXMLElement *HighlightX1El = (GDataXMLElement *) [HighlightX1s objectAtIndex:0];
-                                    
-                                    HighlightX1= HighlightX1El.stringValue;
-                                    
-                                }
-                                
-                                
-                                NSArray *HighlightX2s = [Highlight elementsForName:@"Y"];
-                                
-                                if (HighlightX2s.count > 0) {
-                                    
-                                    GDataXMLElement *HighlightX2El = (GDataXMLElement *) [HighlightX2s objectAtIndex:0];
-                                    
-                                    HighlightX2= HighlightX2El.stringValue;
-                                    
-                                }
-                                
-                                
-                                NSArray *HighlightY1s = [Highlight elementsForName:@"Z"];
-                                
-                                if (HighlightY1s.count > 0) {
-                                    
-                                    GDataXMLElement *HighlightY1El = (GDataXMLElement *) [HighlightY1s objectAtIndex:0];
-                                    
-                                    HighlightY1= HighlightY1El.stringValue;
-                                    
-                                }
-                                
-                                NSArray *HighlightY2s = [Highlight elementsForName:@"W"];
-                                
-                                if (HighlightY2s.count > 0) {
-                                    
-                                    GDataXMLElement *HighlightY2El = (GDataXMLElement *) [HighlightY2s objectAtIndex:0];
-                                    
-                                    HighlightY2= HighlightY2El.stringValue;
-                                    
-                                }
-                                
-                                
-                                NSArray *Highlightpages = [Highlight elementsForName:@"Page"];
-                                
-                                if (Highlightpages.count > 0) {
-                                    
-                                    GDataXMLElement *HighlightpageEl = (GDataXMLElement *) [Highlightpages objectAtIndex:0];
-                                    
-                                    Highlightpage = HighlightpageEl.stringValue;
-                                    
-                                }
-                                
-                                
-                                CGPoint ptLeftTop;
-                                
-                                CGPoint ptRightBottom;
-                                
-                                ptLeftTop.x=[HighlightX1 intValue];
-                                
-                                ptLeftTop.y=[HighlightY1 intValue];
-                                
-                                ptRightBottom.x=[HighlightX2 intValue];
-                                
-                                ptRightBottom.y=[HighlightY2 intValue];
-                                
-                                HighlightClass* obj=[[HighlightClass alloc]initWithName:ptLeftTop.x ordinate:ptLeftTop.y height:ptRightBottom.x width:ptRightBottom.y PageNb:notepage.intValue AttachmentId:AttachmentId.intValue];
-                                [mainDelegate.IncomingHighlights addObject:obj];
-                                
-                            }
-                        }
-                        
-                        NSData* NoteAnnotationsData=[NSKeyedArchiver archivedDataWithRootObject:[mainDelegate.IncomingNotes copy]];
-                        NSData* HighlightAnnotationsData=[NSKeyedArchiver archivedDataWithRootObject:[mainDelegate.IncomingHighlights copy]];
-                        
-                        [self cacheAttachment:AttachmentId CorrespondenceId:Id FileName:FileName fileuri:fileUri url:url siteId:SiteId FileId:FileId thumbnailurl:thumbnailUrl FileUrl:FileUrl IsOriginalMail:isOriginalMail FolderName:folderName NoteAnnotations:NoteAnnotationsData HighlightAnnotations:HighlightAnnotationsData];
-                        
-                    }}}}
-            
-            
-        }
-    }}
+        }}
 }
 +(void)GetFolderAttachment:(NSString*)url Id:(int)Id{
     AppDelegate* mainDelegate = (AppDelegate *) [[UIApplication sharedApplication]delegate];
     CCorrespondence *correspondence=mainDelegate.searchModule.correspondenceList[Id];
     NSString* urlTextEscaped = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    NSURL *xmlUrl = [NSURL URLWithString:urlTextEscaped];
-    NSData *xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+    // NSURL *xmlUrl = [NSURL URLWithString:urlTextEscaped];
+    // NSData *xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+    
+    NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlTextEscaped] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
+    NSData *xmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
     NSError *error;
     GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
                                                            options:0 error:&error];
@@ -1928,38 +2233,38 @@
 }
 
 //+ (NSMutableArray *)loadFoldersListWith:(NSArray*) folders {
-//	
-//	
+//
+//
 //	NSMutableArray* Allfolders = [[NSMutableArray alloc] init];
-//	
+//
 //	for (GDataXMLElement *folder in folders) {
-//		
+//
 //        NSString *name;
-//        
-//		
+//
+//
 //        NSArray *names = [folder elementsForName:@"Name"];
 //        if (names.count > 0) {
 //            GDataXMLElement *namesEl = (GDataXMLElement *) [names objectAtIndex:0];
 //            name = namesEl.stringValue;
 //        }
-//        
+//
 //        NSMutableArray* attachments = [[NSMutableArray alloc] init];
 //        NSArray *attachmentsXml = [folder elementsForName:@"Attachments"];
 //        if (attachmentsXml.count > 0) {
 //            GDataXMLElement *attachmentsEl = (GDataXMLElement *) [attachmentsXml objectAtIndex:0];
 //            attachments=[self loadAttachmentListWith:attachmentsEl];
 //        }
-//        
-//        
+//
+//
 //        CFolder* newFolder = [[CFolder alloc] initWithName:name];
 //        [newFolder setAttachments:attachments];
 //        [Allfolders addObject:newFolder];
 //    }
-//    
-//    
-//    
+//
+//
+//
 //    return Allfolders;
-//    
+//
 //}
 
 
@@ -2282,7 +2587,7 @@
         //   xml=[obj valueForKey:@"xml"];
         NSMutableArray *NoteAnnotations=[[NSMutableArray alloc] init];
         NSMutableArray *HighlightAnnotations=[[NSMutableArray alloc] init];
-
+        
         fileUri=[obj valueForKey:@"fileuri"];
         FileName=[obj valueForKey:@"filename"];
         url=[obj valueForKey:@"url"];
@@ -2293,7 +2598,7 @@
         isOriginalMail=[obj valueForKey:@"isoriginalmail"];
         AttachmentId=[obj valueForKey:@"attachmentid"];
         FolderName=[obj valueForKey:@"foldername"];
-
+        
         NoteAnnotations=[NSKeyedUnarchiver unarchiveObjectWithData:[obj valueForKey:@"noteannotations"]];
         HighlightAnnotations=[NSKeyedUnarchiver unarchiveObjectWithData:[obj valueForKey:@"highlightannotations"]];
         
@@ -2301,9 +2606,9 @@
         [newAttachment setNoteAnnotations:[NoteAnnotations copy]];
         [newAttachment setHighlightAnnotations:[HighlightAnnotations copy]];
         [Attachments addObject:newAttachment];
-
-        }
-
+        
+    }
+    
     
     
     
@@ -2514,6 +2819,7 @@
     NSError *error;
     NSString* TotalCorrnb;
     AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
     GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
                                                            options:0 error:&error];
     
@@ -2525,9 +2831,17 @@
     
     NSString* status=[(GDataXMLElement *) [correspondencesXML attributeForName:@"Status"] stringValue];
     
-    
-    if([status isEqualToString:@"Error"]){
+    if([status isEqualToString:@"ERROR"]){
+        NSMutableDictionary* dict=[[NSMutableDictionary alloc]init];
+        NSString* ErrorMessage=@"Server Error";
+        NSArray *Message = [correspondencesXML elementsForName:@"ErrorMessage"];
+        if (Message.count > 0) {
+            GDataXMLElement *msgEl = (GDataXMLElement *) [Message objectAtIndex:0];
+            ErrorMessage = msgEl.stringValue;
+        }
+        [dict setObject:ErrorMessage forKey:@"error"];
         return nil;
+        
     }
     NSArray *totalCorrNb = [correspondencesXML elementsForName:@"Total"];
     if (totalCorrNb.count > 0) {
@@ -2600,7 +2914,7 @@
         NSArray *Maintoolbar =[correspondence nodesForXPath:@"ToolbarItems" error:nil];
         NSMutableDictionary *toolbarItems=[[NSMutableDictionary alloc] init],*CustomItemsList=[[NSMutableDictionary alloc] init];
         NSMutableArray *toolbarActions=[[NSMutableArray alloc] init];
-        NSMutableArray *signActions=[[NSMutableArray alloc]init] ,*AnnotationsList=[[NSMutableArray alloc]init],*AttachmentsList=[[NSMutableArray alloc]init];
+        NSMutableArray *signActions=[[NSMutableArray alloc]init] ,*AnnotationsList=[[NSMutableArray alloc]init],*AttachmentsList=[[NSMutableArray alloc]init],*QuickActions=[[NSMutableArray alloc]init];
         int key=-1;
         for(GDataXMLElement * element in Maintoolbar){
             NSArray *toolbar=element.children;
@@ -2613,12 +2927,22 @@
                     NSString* Name=[(GDataXMLElement *) [prop attributeForName:@"Name"] stringValue];
                     NSString* Label=[(GDataXMLElement *) [prop attributeForName:@"Label"] stringValue];
                     BOOL Display=[[(GDataXMLElement *) [prop attributeForName:@"Display"] stringValue]boolValue];
+                    BOOL QuickAction=[[(GDataXMLElement *) [prop attributeForName:@"QuickAction"] stringValue]boolValue];
                     BOOL popup=[[(GDataXMLElement *) [prop attributeForName:@"ShowPopup"] stringValue]boolValue];
                     BOOL backhome=[[(GDataXMLElement *) [prop attributeForName:@"ReturnHome"] stringValue]boolValue];
+                    NSString* LookupId=[(GDataXMLElement *) [prop attributeForName:@"LookupId"] stringValue];
                     
-                    ToolbarItem* item=[[ToolbarItem alloc]initWithName:Name Label:Label Display:Display Custom:YES popup:popup backhome:backhome];
+                    ToolbarItem* item=[[ToolbarItem alloc]initWithName:Name Label:Label Display:Display Custom:YES popup:popup backhome:backhome ];
+                    [item setLookupId:LookupId];
                     if (Display) {
                         [toolbarItems setValue:item forKey:[NSString stringWithFormat:@"%d",key]];
+                        if(QuickAction)
+                        {
+                            CAction* Qact = [[CAction alloc] initWithLabel:Label action:Name popup:popup backhome:backhome Custom:YES];
+                            [Qact setLookupId:LookupId];
+                            if(prop.children.count<=0)
+                                [QuickActions addObject:Qact];
+                        }
                     }
                     
                     NSArray *Subitems=prop.children;
@@ -2634,12 +2958,19 @@
                                     NSString* Namee=[(GDataXMLElement *) [item1 attributeForName:@"Name"] stringValue];
                                     NSString* Labell=[(GDataXMLElement *) [item1 attributeForName:@"Label"] stringValue];
                                     BOOL Displayy=[[(GDataXMLElement *) [item1 attributeForName:@"Display"] stringValue]boolValue];
+                                    BOOL QuickActionn=[[(GDataXMLElement *) [prop attributeForName:@"QuickAction"] stringValue]boolValue];
                                     BOOL popup=[[(GDataXMLElement *) [item1 attributeForName:@"ShowPopup"] stringValue]boolValue];
                                     BOOL returnHome=[[(GDataXMLElement *) [item1 attributeForName:@"ReturnHome"] stringValue]boolValue];
+                                    NSString* LookupId=[(GDataXMLElement *) [item1 attributeForName:@"LookupId"] stringValue];
+                                    
                                     if (Displayy){
                                         CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:popup backhome:returnHome Custom:YES];
+                                        [menu setLookupId:LookupId];
                                         [CustomItemsArray addObject:menu];
-                                        
+                                        if(QuickActionn)
+                                        {
+                                            [QuickActions addObject:menu];
+                                        }
                                     }
                                 }
                             }
@@ -2654,10 +2985,20 @@
                         NSString* Name=[(GDataXMLElement *) [prop attributeForName:@"Name"] stringValue];
                         NSString* Label=[(GDataXMLElement *) [prop attributeForName:@"Label"] stringValue];
                         BOOL Display=[[(GDataXMLElement *) [prop attributeForName:@"Display"] stringValue]boolValue];
-                        ToolbarItem* item=[[ToolbarItem alloc]initWithName:Name Label:Label Display:Display Custom:NO popup:NO backhome:NO];
+                        BOOL QuickAction=[[(GDataXMLElement *) [prop attributeForName:@"QuickAction"] stringValue]boolValue];
+                        NSString* LookupId=[(GDataXMLElement *) [prop attributeForName:@"LookupId"] stringValue];
+                        
+                        ToolbarItem* item=[[ToolbarItem alloc]initWithName:Name Label:Label Display:Display Custom:NO popup:NO backhome:NO ];
+                        [item setLookupId:LookupId];
                         if (Display) {
                             [toolbarItems setValue:item forKey:[NSString stringWithFormat:@"%d",key]];
-                            
+                            if(QuickAction)
+                            {
+                                CAction* Qact = [[CAction alloc] initWithLabel:Label action:Name popup:NO backhome:NO Custom:NO];
+                                [Qact setLookupId:LookupId];
+                                if(prop.children.count<=0)
+                                    [QuickActions addObject:Qact];
+                            }
                         }
                         NSArray *Subitems=prop.children;
                         if(Subitems.count>0){
@@ -2670,11 +3011,19 @@
                                         NSString* Namee=[(GDataXMLElement *) [item1 attributeForName:@"Name"] stringValue];
                                         NSString* Labell=[(GDataXMLElement *) [item1 attributeForName:@"Label"] stringValue];
                                         BOOL Displayy=[[(GDataXMLElement *) [item1 attributeForName:@"Display"] stringValue]boolValue];
+                                        BOOL QuickAction=[[(GDataXMLElement *) [item1 attributeForName:@"QuickAction"] stringValue]boolValue];
+                                        NSString* LookupId=[(GDataXMLElement *) [item1 attributeForName:@"LookupId"] stringValue];
                                         
                                         if (Displayy){
                                             
                                             if(![Name isEqualToString:@"More"]){
                                                 CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:NO backhome:NO Custom:NO];
+                                                [menu setLookupId:LookupId];
+                                                if(QuickAction)
+                                                {
+                                                    
+                                                    [QuickActions addObject:menu];
+                                                }
                                                 if([Name isEqualToString:@"Annotations"]){
                                                     [AnnotationsList addObject:menu];
                                                 }
@@ -2688,6 +3037,11 @@
                                                 BOOL popup=[[(GDataXMLElement *) [item1 attributeForName:@"ShowPopup"] stringValue]boolValue];
                                                 BOOL returnHome=[[(GDataXMLElement *) [item1 attributeForName:@"ReturnHome"] stringValue]boolValue];
                                                 CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:popup backhome:returnHome Custom:NO];
+                                                [menu setLookupId:LookupId];
+                                                if(QuickAction)
+                                                {
+                                                    [QuickActions addObject:menu];
+                                                }
                                                 [toolbarActions addObject:menu];
                                             }
                                         }
@@ -2699,10 +3053,18 @@
                                         NSString* Namee=[(GDataXMLElement *) [item1 attributeForName:@"Name"] stringValue];
                                         NSString* Labell=[(GDataXMLElement *) [item1 attributeForName:@"Label"] stringValue];
                                         BOOL Displayy=[[(GDataXMLElement *) [item1 attributeForName:@"Display"] stringValue]boolValue];
+                                        BOOL QuickActionn=[[(GDataXMLElement *) [item1 attributeForName:@"QuickAction"] stringValue]boolValue];
                                         BOOL popup=[[(GDataXMLElement *) [item1 attributeForName:@"ShowPopup"] stringValue]boolValue];
                                         BOOL returnHome=[[(GDataXMLElement *) [item1 attributeForName:@"ReturnHome"] stringValue]boolValue];
+                                        NSString* LookupId=[(GDataXMLElement *) [item1 attributeForName:@"LookupId"] stringValue];
+                                        
                                         if (Displayy){
                                             CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:popup backhome:returnHome Custom:YES];
+                                            [menu setLookupId:LookupId];
+                                            if(QuickActionn)
+                                            {
+                                                [QuickActions addObject:menu];
+                                            }
                                             if([Name isEqualToString:@"Annotations"]){
                                                 [AnnotationsList addObject:menu];
                                             }
@@ -2737,6 +3099,7 @@
         [newCorrespondence setAttachmentsListMenu:AttachmentsList];
         [newCorrespondence setAnnotationsList:AnnotationsList];
         [newCorrespondence setCustomItemsList:CustomItemsList];
+        [newCorrespondence setQuickActions:QuickActions];
         [Allcorrespondences addObject:newCorrespondence];
         
     }

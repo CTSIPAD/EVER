@@ -9,7 +9,7 @@
 #import "CUser.h"
 #import "CFPendingAction.h"
 #import "GDataXMLNode.h"
-
+#import "AppDelegate.h"
 
 @implementation CUser
 
@@ -32,7 +32,7 @@
 -(BOOL)processSingleAction:(CFPendingAction*)pa
 {
 	
-
+    AppDelegate *mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	@try {
         NSString *post =[NSString stringWithFormat:@"%@",pa.actionUrl];
         
@@ -50,10 +50,11 @@
         [request setURL:[NSURL URLWithString:fullUrl]];
         
         [request setHTTPMethod:@"POST"];
+        
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         [request setHTTPBody:postData];
-        
+        [request setTimeoutInterval:mainDelegate.Request_timeOut];
         
         NSError *requestError;
         

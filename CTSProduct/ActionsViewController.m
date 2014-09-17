@@ -38,10 +38,14 @@
 {
     [super viewDidLoad];
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CGFloat red = 29.0f / 255.0f;
-    CGFloat green = 29.0f / 255.0f;
-    CGFloat blue = 29.0f / 255.0f;
-    self.tableView.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
+    //    CGFloat red = 29.0f / 255.0f;
+    //    CGFloat green = 29.0f / 255.0f;
+    //    CGFloat blue = 29.0f / 255.0f;
+    //    self.tableView.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
+    CGFloat red = 1.0f / 255.0f;
+    CGFloat green = 49.0f / 255.0f;
+    CGFloat blue = 97.0f / 255.0f;
+    self.view.backgroundColor= [UIColor colorWithRed:red green:green  blue:blue  alpha:1.0];
     
     [self.tableView setSeparatorColor:[UIColor whiteColor]];
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0,0,0,0)];
@@ -107,8 +111,8 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath  {
     
     CAction *actionProperty=self.actions[indexPath.row];
-        [_delegate PopUpCommentDialog:self Action:actionProperty.action document:nil];
-
+    [_delegate PopUpCommentDialog:self Action:actionProperty.action document:nil];
+    
 }
 
 -(void)ShowMessage:(NSString*)message{
@@ -133,13 +137,15 @@
         NSString* params=[NSString stringWithFormat:@"action=ExecuteCustomActions&token=%@&correspondenceId=%@&docId=%@&actionType=%@", mainDelegate.user.token,self.correspondenceId,self.docId,action];
         NSString *serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
         NSString* url = [NSString stringWithFormat:@"http://%@?%@",serverUrl,params];
-        NSURL *xmlUrl = [NSURL URLWithString:url];
-        NSData *xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+        NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
+        
+        // NSURL *xmlUrl = [NSURL URLWithString:url];
+        NSData *xmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
         NSString *validationResultAction=[CParser ValidateWithData:xmlData];
         
         if(![validationResultAction isEqualToString:@"OK"])
         {
-                [self ShowMessage:validationResultAction];
+            [self ShowMessage:validationResultAction];
             
         }else {
             NSString* correspondenceUrl;
@@ -152,9 +158,10 @@
                 correspondenceUrl=[NSString stringWithFormat:@"http://%@?action=GetCorrespondences&token=%@&inboxId=%d&index=%d&pageSize=%d&language=%@&showThumbnails=%@",serverUrl,mainDelegate.user.token,mainDelegate.selectedInbox,0,mainDelegate.SettingsCorrNb,mainDelegate.IpadLanguage,showthumb];
             else
                 correspondenceUrl=[NSString stringWithFormat:@"http://%@/GetCorrespondences?token=%@&inboxId=%d&index=%d&pageSize=%d&language=%@&showThumbnails=%@",serverUrl,mainDelegate.user.token,mainDelegate.selectedInbox,0,mainDelegate.SettingsCorrNb,mainDelegate.IpadLanguage,showthumb];
-            
-            NSURL *xmlUrl = [NSURL URLWithString:correspondenceUrl];
-            NSData *menuXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+            NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:correspondenceUrl] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
+            NSData *menuXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+            //  NSURL *xmlUrl = [NSURL URLWithString:correspondenceUrl];
+            //NSData *menuXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
             
             NSMutableDictionary *correspondences=[CParser loadCorrespondencesWithData:menuXmlData];
             

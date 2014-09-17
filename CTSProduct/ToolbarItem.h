@@ -15,6 +15,6 @@
 @property(nonatomic,assign)BOOL Custom;
 @property (nonatomic, assign) BOOL popup;
 @property (nonatomic, assign) BOOL backhome;
-
+@property (nonatomic, retain) NSString * LookupId;
 -(id)initWithName:(NSString*)name  Label:(NSString*)label Display:(BOOL)display Custom:(BOOL)custom popup:(BOOL) pop backhome:(BOOL)backh;
 @end

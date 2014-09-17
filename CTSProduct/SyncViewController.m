@@ -15,7 +15,7 @@
 
 @implementation SyncViewController{
     AppDelegate *mainDelegate;
-
+    
 }
 
 @synthesize Results;
@@ -40,7 +40,7 @@
         [closeButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
         [closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.view addSubview:closeButton];
-           }
+    }
     return self;
 }
 - (void)viewDidLoad
@@ -86,7 +86,7 @@
     UILabel *labelTitle= [[UILabel alloc] initWithFrame:CGRectMake(70, 5,cell.frame.size.width-140, 40)];
     UILabel *Reason= [[UILabel alloc] initWithFrame:CGRectMake(70, 50,cell.frame.size.width-140, 40)];
     
-     labelTitle.textColor = [UIColor whiteColor];
+    labelTitle.textColor = [UIColor whiteColor];
     labelTitle.backgroundColor = [UIColor clearColor];
     Reason.textColor = [UIColor redColor];
     Reason.backgroundColor = [UIColor clearColor];
@@ -96,7 +96,7 @@
     labelTitle.font = [UIFont boldSystemFontOfSize:18];
 	labelTitle.numberOfLines = ceilf([[NSString stringWithFormat:@"%@",row.Name] sizeWithFont:[UIFont boldSystemFontOfSize:18] constrainedToSize:CGSizeMake(300, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height/20.0);
     labelTitle.text=row.Name;
-
+    
     if([row.Result isEqualToString:@""]){
         
         [imageView setImage:[UIImage imageNamed:@"success.jpg"]];
@@ -110,14 +110,14 @@
         
     }
     if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
-         labelTitle.textAlignment=NSTextAlignmentRight;
+        labelTitle.textAlignment=NSTextAlignmentRight;
         Reason.textAlignment=NSTextAlignmentRight;
         imageView.frame=CGRectMake(cell.frame.size.width-45, 5, 37, 37);
     }
     [cell addSubview:imageView];
-     [cell addSubview:labelTitle];
+    [cell addSubview:labelTitle];
     [cell addSubview:Reason];
-
+    
     return cell;
     
 }

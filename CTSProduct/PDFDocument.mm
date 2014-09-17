@@ -808,7 +808,7 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
     m_bAddStamp = TRUE;
     int nCount=0;
     
-    m_current_page = [self getPDFPage:m_pageCount];
+    m_current_page = [self getPDFPage:m_pageCount-1];
     [self setCurPage:m_current_page];
     
     

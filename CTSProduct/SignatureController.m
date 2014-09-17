@@ -41,9 +41,9 @@
 {
     [super viewDidLoad];
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CGFloat red = 29.0f / 255.0f;
-    CGFloat green = 29.0f / 255.0f;
-    CGFloat blue = 29.0f / 255.0f;
+    CGFloat red = 1.0f / 255.0f;
+    CGFloat green = 49.0f / 255.0f;
+    CGFloat blue = 97.0f / 255.0f;
     self.tableView.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
     self.tableView.delegate=self;
     self.tableView.dataSource=self;
@@ -93,7 +93,7 @@
     }
     else
         labelTitle.text=actionProperty.label;
-
+    
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 37, 37)];
     UIImage *cellImage;
     if(actionProperty.Custom)
@@ -130,18 +130,25 @@
             
         }
     }else{
-    if([actionProperty.action isEqualToString:@"Sign"]||[actionProperty.action isEqualToString:@"SignAll"])
-        [self ActionExecute:actionProperty.action document:document];
-    else if([actionProperty.action isEqualToString:@"FreeSign"]||[actionProperty.action isEqualToString:@"FreeSignAll"]){
-        [self SignWithLocation:actionProperty.action document:document];
-        
-    }
+        if([actionProperty.action isEqualToString:@"Sign"]||[actionProperty.action isEqualToString:@"SignAll"]){
+           
+            [self ActionExecute:actionProperty.action document:document];
+        }
+        else if([actionProperty.action isEqualToString:@"FreeSign"]||[actionProperty.action isEqualToString:@"FreeSignAll"]){
+            [self SignWithLocation:actionProperty.action document:document];
+            
+        }
+        else{
+            [m_pdfview setHandsign:YES];
+
+            [_delegate HandSign];
+        }
     }
     //  [_delegate PopUpCommentDialog:self];
 }
 -(void)SignWithLocation:(NSString*)action document:(ReaderDocument *)document{
-
-        
+    
+    
     if([mainDelegate.SignMode isEqualToString:@"CustomSign"]){
         mainDelegate.Signaction =@"";
         m_pdfview.delegate = _delegate;
@@ -185,38 +192,39 @@
         }
         NSString* searchUrl = [NSString stringWithFormat:@"http://%@?action=SignIt&loginName=%@&pdfFilePath=%@&pageNumber=%d&SiteId=%@&FileId=%@&FileUrl=%@",mainDelegate.serverUrl,mainDelegate.user.loginName,mainDelegate.docUrl,self.document.pageCount.intValue,mainDelegate.SiteId,mainDelegate.FileId,mainDelegate.FileUrl];
         if(!mainDelegate.isOfflineMode){
-        NSURL *xmlUrl = [NSURL URLWithString:searchUrl];
-        NSData *XmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
-        
-        CParser *p=[[CParser alloc] init];
-        [p john:XmlData];
-        
-        
-        [_delegate showDocument:nil];
-        
-        
-        CGPoint ptLeftTop;
-        
-        ptLeftTop.x = 279;
-        ptLeftTop.y = 360;
-        
-        
-        [m_pdfdoc extractText:ptLeftTop];
-        [m_pdfview setNeedsDisplay];
-        
-        
-        NSString *validationResultAction=[CParser ValidateWithData:XmlData];
-        
-        if(![validationResultAction isEqualToString:@"OK"])
-        {
-  
+            // NSURL *xmlUrl = [NSURL URLWithString:searchUrl];
+            // NSData *XmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+            NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:[searchUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
+            NSData *XmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+            CParser *p=[[CParser alloc] init];
+            [p john:XmlData];
+            
+            
+            [_delegate showDocument:nil];
+            
+            
+            CGPoint ptLeftTop;
+            
+            ptLeftTop.x = 279;
+            ptLeftTop.y = 360;
+            
+            
+            [m_pdfdoc extractText:ptLeftTop];
+            [m_pdfview setNeedsDisplay];
+            
+            
+            NSString *validationResultAction=[CParser ValidateWithData:XmlData];
+            
+            if(![validationResultAction isEqualToString:@"OK"])
+            {
+                
                 [self ShowMessage:validationResultAction];
-            
-        }else {
-            
-            [self ShowMessage:@"Action successfuly done."];
-            
-        }
+                
+            }else {
+                
+                [self ShowMessage:@"Action successfuly done."];
+                
+            }
         }else{
             [CParser cacheOfflineActions:self.correspondenceId url:searchUrl action:@"Sign"];
         }
@@ -238,6 +246,8 @@
         
         
         [m_pdfdoc AddStampAnnot:ptLeftTop secondPoint:ptRightBottom previousPoint:ptLeftTop];
+        [m_pdfview setBtnSign:NO];
+        
     }
     
 }

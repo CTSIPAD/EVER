@@ -26,35 +26,51 @@
 @synthesize NbOfCorrToLoad,SettingsCorrNb,InboxTotalCorr=_InboxTotalCorr;
 @synthesize Signaction=_Signaction;
 @synthesize AnnotationsMode=_AnnotationsMode;
-@synthesize Highlights =_Highlights,Notes=_Notes,attachmentType=_attachmentType;
+@synthesize Highlights =_Highlights,Notes=_Notes,attachmentType=_attachmentType,Char_count;
 @synthesize IncomingHighlights =_IncomingHighlights,IncomingNotes=_IncomingNotes;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-self.highlightNow=NO;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+    
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    NSString *fileName =[NSString stringWithFormat:@"%@.log",[NSDate date]];
+    
+    NSString *logFilePath = [documentsDirectory stringByAppendingPathComponent:fileName];
+    
+    freopen([logFilePath cStringUsingEncoding:NSASCIIStringEncoding],"a+",stderr);
+    self.highlightNow=NO;
+    self.Char_count=3;
     self.searchResultViewController = [[SearchResultViewController alloc]initWithStyle:UITableViewStylePlain];
-
+    self.DrawLayerViews=[[NSMutableDictionary alloc]init];
     self.IpadLanguage=[[[NSBundle mainBundle] preferredLocalizations]objectAtIndex:0];
     self.serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
     self.isOfflineMode = [[[NSUserDefaults standardUserDefaults] stringForKey:@"offline_mode"] boolValue];
     self.ShowThumbnail=[[[NSUserDefaults standardUserDefaults] stringForKey:@"thumbnail_mode"]boolValue];
     self.SupportsServlets=[[[NSUserDefaults standardUserDefaults] stringForKey:@"Support_Servlets"]boolValue];
+    self.EncryptionEnabled=[[[NSUserDefaults standardUserDefaults] stringForKey:@"enable_encryption"]boolValue];
+    self.PinCodeEnabled=[[[NSUserDefaults standardUserDefaults] stringForKey:@"enable_pincode"]boolValue];
+    
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"CorrNbPerPage"]==nil )
         self.SettingsCorrNb =20;
     else{
         self.SettingsCorrNb =[[[NSUserDefaults standardUserDefaults] stringForKey:@"CorrNbPerPage"]intValue];
+        
+    }
+    NSDictionary* defaults = @{@"timeout_preference":@"30",@"sign_mode": @"BuiltInSign",@"annotations_mode": @"BuiltInAnnotations",@"charNumber_preference":@"3"};
+    self.Request_timeOut = [[[NSUserDefaults standardUserDefaults] stringForKey:@"timeout_preference"]intValue];
+    self.Char_count = [[[NSUserDefaults standardUserDefaults] stringForKey:@"charNumber_preference"]intValue];
 
-          }
-    NSDictionary* defaults = @{@"sign_mode": @"BuiltInSign",@"annotations_mode": @"BuiltInAnnotations"};
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
-     self.SignMode=[[NSUserDefaults standardUserDefaults] objectForKey:@"sign_mode"];
+    self.SignMode=[[NSUserDefaults standardUserDefaults] objectForKey:@"sign_mode"];
     self.AnnotationsMode=[[NSUserDefaults standardUserDefaults]objectForKey:@"annotations_mode"];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     self.Highlights=[[NSMutableArray alloc]init];
     self.SearchActive=NO;
-
+    self.QuickActionClicked=NO;
     self.Notes=[[NSMutableArray alloc]init];
     
-        return YES;
+    return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -65,20 +81,20 @@ self.highlightNow=NO;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-  
+    
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-  
+    
     self.IpadLanguage=[[[NSBundle mainBundle] preferredLocalizations]objectAtIndex:0];
     [[NSUserDefaults standardUserDefaults] synchronize];
     self.serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
@@ -87,7 +103,12 @@ self.highlightNow=NO;
     self.SignMode=[[NSUserDefaults standardUserDefaults] stringForKey:@"sign_mode"];
     self.AnnotationsMode=[[NSUserDefaults standardUserDefaults]objectForKey:@"annotations_mode"];
     self.SupportsServlets=[[[NSUserDefaults standardUserDefaults] stringForKey:@"Support_Servlets"]boolValue];
+    self.EncryptionEnabled=[[[NSUserDefaults standardUserDefaults] stringForKey:@"enable_encryption"]boolValue];
+    self.PinCodeEnabled=[[[NSUserDefaults standardUserDefaults] stringForKey:@"enable_pincode"]boolValue];
+    self.Request_timeOut = [[[NSUserDefaults standardUserDefaults] stringForKey:@"timeout_preference"]intValue];
+    self.Char_count = [[[NSUserDefaults standardUserDefaults] stringForKey:@"charNumber_preference"]intValue];
 
+    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -102,11 +123,11 @@ self.highlightNow=NO;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     if (managedObjectContext != nil) {
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-             // Replace this implementation with code to handle the error appropriately.
-             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
+            // Replace this implementation with code to handle the error appropriately.
+            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
-        } 
+        }
     }
 }
 

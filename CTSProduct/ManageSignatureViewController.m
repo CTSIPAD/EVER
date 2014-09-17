@@ -22,9 +22,11 @@
     UITextField *txtPin;
     UITextField *txtWidth;
     UITextField *txtHeight;
-     UITextField *txtRed;
-     UITextField *txtBlue;
-     UITextField *txtGreen;
+    UITextField *txtRed;
+    UITextField *txtBlue;
+    UITextField *txtGreen;
+    AppDelegate *mainDelegate;
+    
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -39,18 +41,23 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
 	// Do any additional setup after loading the view.
 }
 
 - (id)initWithFrame:(CGRect)frame
 {
     if (self) {
-
+        
         self.view.layer.cornerRadius=5;
         self.view.clipsToBounds=YES;
         self.view.layer.borderWidth=1.0;
         self.view.layer.borderColor=[[UIColor grayColor]CGColor];
-        self.view.backgroundColor= [UIColor colorWithRed:29/255.0f green:29/255.0f  blue:29/255.0f  alpha:1.0];
+        CGFloat red = 1.0f / 255.0f;
+        CGFloat green = 49.0f / 255.0f;
+        CGFloat blue = 97.0f / 255.0f;
+        self.view.backgroundColor= [UIColor colorWithRed:red green:green  blue:blue  alpha:1.0];
         UILabel *Titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, frame.size.width, 20)];
         Titlelabel.text = NSLocalizedString(@"Signature",@"Signature");
         Titlelabel.textAlignment=NSTextAlignmentCenter;
@@ -58,34 +65,34 @@
         Titlelabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
         Titlelabel.textColor=[UIColor whiteColor];
         [self.view addSubview:Titlelabel];
-        
-        UILabel *lblPincode=[[UILabel alloc]initWithFrame:CGRectMake(10, 40, frame.size.width-20, 20)];
-        lblPincode.text = NSLocalizedString(@"Signature.PinCode",@"Pin Code");
-        lblPincode.backgroundColor = [UIColor clearColor];
-        lblPincode.font = [UIFont fontWithName:@"Helvetica" size:16];
-        lblPincode.textColor=[UIColor whiteColor];
-        [self.view addSubview:lblPincode];
-        
-        txtPin=[[UITextField alloc]initWithFrame:CGRectMake(10, 65, frame.size.width-20, 30)];
-        txtPin.backgroundColor = [UIColor whiteColor];
-        txtPin.clearButtonMode = UITextFieldViewModeWhileEditing;
-        txtPin.keyboardType = UIKeyboardTypeNumberPad;
-        txtPin.secureTextEntry=YES;
-        txtPin.delegate=self;
-        [self.view addSubview:txtPin];
-        
+        if(mainDelegate.PinCodeEnabled){
+            UILabel *lblPincode=[[UILabel alloc]initWithFrame:CGRectMake(10, 40, frame.size.width-20, 20)];
+            lblPincode.text = NSLocalizedString(@"Signature.PinCode",@"Pin Code");
+            lblPincode.backgroundColor = [UIColor clearColor];
+            lblPincode.font = [UIFont fontWithName:@"Helvetica" size:16];
+            lblPincode.textColor=[UIColor whiteColor];
+            [self.view addSubview:lblPincode];
+            
+            txtPin=[[UITextField alloc]initWithFrame:CGRectMake(10, 65, frame.size.width-20, 30)];
+            txtPin.backgroundColor = [UIColor whiteColor];
+            txtPin.clearButtonMode = UITextFieldViewModeWhileEditing;
+            txtPin.keyboardType = UIKeyboardTypeNumberPad;
+            txtPin.secureTextEntry=YES;
+            txtPin.delegate=self;
+            [self.view addSubview:txtPin];
+        }
         UILabel *lblWidth=[[UILabel alloc]initWithFrame:CGRectMake(10, 105, frame.size.width/2-30, 20)];
         lblWidth.text = NSLocalizedString(@"Signature.Width",@"width");
         lblWidth.backgroundColor = [UIColor clearColor];
         lblWidth.font = [UIFont fontWithName:@"Helvetica" size:16];
         lblWidth.textColor=[UIColor whiteColor];
-       
+        
         [self.view addSubview:lblWidth];
         
         txtWidth=[[UITextField alloc]initWithFrame:CGRectMake(10, 130, frame.size.width/2-30, 30)];
-         txtWidth.backgroundColor = [UIColor whiteColor];
+        txtWidth.backgroundColor = [UIColor whiteColor];
         txtWidth.text=[NSString stringWithFormat:@"%d",100];
-         txtWidth.keyboardType = UIKeyboardTypeNumberPad;
+        txtWidth.keyboardType = UIKeyboardTypeNumberPad;
         txtWidth.delegate=self;
         [self.view addSubview:txtWidth];
         
@@ -96,13 +103,13 @@
         lblHeight.textColor=[UIColor whiteColor];
         [self.view addSubview:lblHeight];
         
-       
+        
         
         txtHeight=[[UITextField alloc]initWithFrame:CGRectMake(frame.size.width/2+20, 130, frame.size.width/2-30, 30)];
-         txtHeight.backgroundColor = [UIColor whiteColor];
+        txtHeight.backgroundColor = [UIColor whiteColor];
         txtHeight.keyboardType = UIKeyboardTypeNumberPad;
         txtHeight.text=[NSString stringWithFormat:@"%d",100];
-         txtHeight.delegate=self;
+        txtHeight.delegate=self;
         [self.view addSubview:txtHeight];
         
         UILabel *lblColor=[[UILabel alloc]initWithFrame:CGRectMake(10, 180, frame.size.width/2-30, 20)];
@@ -161,7 +168,7 @@
         CGFloat selectedRed = 52.0f / 255.0f;
         CGFloat selectedGreen = 52.0f / 255.0f;
         CGFloat selectedBlue = 52.0f / 255.0f;
-        closeButton.backgroundColor = [UIColor colorWithRed:selectedRed green:selectedGreen blue:selectedBlue alpha:1.0];
+        //  closeButton.backgroundColor = [UIColor colorWithRed:selectedRed green:selectedGreen blue:selectedBlue alpha:1.0];
         
         UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         saveButton.frame = CGRectMake(closeButton.frame.origin.x+100+((frame.size.width-200)/3), 300, 100, 35);
@@ -169,10 +176,10 @@
         [saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
         saveButton.layer.cornerRadius=5;
         [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        saveButton.backgroundColor = [UIColor colorWithRed:selectedRed green:selectedGreen blue:selectedBlue alpha:1.0];
+        //  saveButton.backgroundColor = [UIColor colorWithRed:selectedRed green:selectedGreen blue:selectedBlue alpha:1.0];
         [self.view addSubview:closeButton];
         [self.view addSubview:saveButton];
-
+        
         
     }
     
@@ -195,7 +202,7 @@
 
 - (void)hide
 {
-
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -203,7 +210,7 @@
 
 -(void)save{
     UIAlertView *alertKO;
-    if(txtPin.text.length==0 || txtWidth.text.length==0 ||txtHeight.text.length==0 ||txtBlue.text.length==0 ||txtRed.text.length==0 || txtGreen.text.length==0)
+    if((txtPin.text.length==0 && mainDelegate.PinCodeEnabled)|| txtWidth.text.length==0 ||txtHeight.text.length==0 ||txtBlue.text.length==0 ||txtRed.text.length==0 || txtGreen.text.length==0)
     {
         alertKO=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Info",@"Info") message:NSLocalizedString(@"Alert.RequiredFields",@"PLease fill all required fields.";) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK",@"OK") otherButtonTitles: nil];
         [alertKO show];
@@ -215,36 +222,39 @@
     }
     else{
         
-//      AppDelegate*  appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//        NSString* pinCodeVal=appDelegate.user.pincode;
-//        NSData	*b64DecData = [Base64 decode:pinCodeVal];
-//        NSString *password = @"CTSEMEIPAD";
-//        
-//        NSData *decryptedData = [b64DecData AESDecryptWithPassphrase:password];
-//        NSString* alertPinTxt=txtPin.text;
-//        NSString* decryptedStr = [[NSString alloc] initWithData:decryptedData encoding:NSASCIIStringEncoding];
-//        decryptedStr = [decryptedStr stringByTrimmingCharactersInSet:
-//                        [NSCharacterSet whitespaceCharacterSet]];
-//        if  ([alertPinTxt isEqualToString:decryptedStr]) {
-//            [self.delegate tappedSaveSignatureWithWidth:txtWidth.text withHeight:txtHeight.text withRed:txtRed.text withGreen:txtGreen.text withBlue:txtBlue.text];
-//            [self hide];
-//            
-//        }
+        //      AppDelegate*  appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        //        NSString* pinCodeVal=appDelegate.user.pincode;
+        //        NSData	*b64DecData = [Base64 decode:pinCodeVal];
+        //        NSString *password = @"CTSEMEIPAD";
+        //
+        //        NSData *decryptedData = [b64DecData AESDecryptWithPassphrase:password];
+        //        NSString* alertPinTxt=txtPin.text;
+        //        NSString* decryptedStr = [[NSString alloc] initWithData:decryptedData encoding:NSASCIIStringEncoding];
+        //        decryptedStr = [decryptedStr stringByTrimmingCharactersInSet:
+        //                        [NSCharacterSet whitespaceCharacterSet]];
+        //        if  ([alertPinTxt isEqualToString:decryptedStr]) {
+        //            [self.delegate tappedSaveSignatureWithWidth:txtWidth.text withHeight:txtHeight.text withRed:txtRed.text withGreen:txtGreen.text withBlue:txtBlue.text];
+        //            [self hide];
+        //
+        //        }
         //jis sign
         AppDelegate*  appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        
+        NSString* b64EncStrOld;
         
         NSString *str = txtPin.text;
-        NSString * _key = @"EverTeamYears202020";
-        StringEncryption *crypto = [[StringEncryption alloc] init];
-        NSData *_secretData = [str dataUsingEncoding:NSUTF8StringEncoding];
-        CCOptions padding = kCCOptionPKCS7Padding;
-        NSData *encryptedData = [crypto encrypt:_secretData key:[_key dataUsingEncoding:NSUTF8StringEncoding] padding:&padding];
-        NSString* b64EncStrOld=[encryptedData base64EncodingWithLineLength:0];
-
-
-        if([appDelegate.user.pincode isEqualToString:b64EncStrOld]){
+        if(mainDelegate.PinCodeEnabled){
+            NSString * _key = @"EverTeamYears202020";
+            StringEncryption *crypto = [[StringEncryption alloc] init];
+            NSData *_secretData = [str dataUsingEncoding:NSUTF8StringEncoding];
+            CCOptions padding = kCCOptionPKCS7Padding;
+            NSData *encryptedData = [crypto encrypt:_secretData key:[_key dataUsingEncoding:NSUTF8StringEncoding] padding:&padding];
+            b64EncStrOld=[encryptedData base64EncodingWithLineLength:0];
+        }else{
+            b64EncStrOld=str;
+        }
+        
+        if([appDelegate.user.pincode isEqualToString:b64EncStrOld]||!mainDelegate.PinCodeEnabled){
             [self.delegate tappedSaveSignatureWithWidth:txtWidth.text withHeight:txtHeight.text withRed:txtRed.text withGreen:txtGreen.text withBlue:txtBlue.text];
             [self hide];
         }

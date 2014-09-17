@@ -19,6 +19,10 @@
 		A2010BF6195D979A004AC93C /* delete_item.png in Resources */ = {isa = PBXBuildFile; fileRef = A2010BF5195D979A004AC93C /* delete_item.png */; };
 		A208246C1993A760004E09EF /* downloadAll.png in Resources */ = {isa = PBXBuildFile; fileRef = A208246B1993A760004E09EF /* downloadAll.png */; };
 		A22C462D1990B0BE0041530A /* sync.png in Resources */ = {isa = PBXBuildFile; fileRef = A22C462C1990B0BE0041530A /* sync.png */; };
+		A29793A319BEF42300AD6D1D /* clickformenu1.png in Resources */ = {isa = PBXBuildFile; fileRef = A29793A019BEF42300AD6D1D /* clickformenu1.png */; };
+		A29793A419BEF42300AD6D1D /* disclosure.png in Resources */ = {isa = PBXBuildFile; fileRef = A29793A119BEF42300AD6D1D /* disclosure.png */; };
+		A29793A519BEF42300AD6D1D /* disclosure@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A29793A219BEF42300AD6D1D /* disclosure@2x.png */; };
+		A29793A819BEF62900AD6D1D /* LookUpObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A29793A719BEF62900AD6D1D /* LookUpObject.m */; };
 		A29A719B1998B1F800143756 /* SomeNetworkOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A29A719A1998B1F800143756 /* SomeNetworkOperation.m */; };
 		A2B4FE6C1965501400D7EAB5 /* Actions.png in Resources */ = {isa = PBXBuildFile; fileRef = A2B4FE691965501400D7EAB5 /* Actions.png */; };
 		A2B4FE6D1965501400D7EAB5 /* arrowup2.png in Resources */ = {isa = PBXBuildFile; fileRef = A2B4FE6A1965501400D7EAB5 /* arrowup2.png */; };
@@ -40,6 +44,7 @@
 		A2B9FA2D198413FE00A61F5F /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B9FA2C198413FE00A61F5F /* libxml2.dylib */; };
 		A2B9FA38198414F400A61F5F /* fpdfemb_ios_arm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B9FA36198414F400A61F5F /* fpdfemb_ios_arm.a */; };
 		A2B9FA39198414F400A61F5F /* fpdfemb_ios_emu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A2B9FA37198414F400A61F5F /* fpdfemb_ios_emu.a */; };
+		A2BDBEFC19C986CE009E3562 /* DrawLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A2BDBEFB19C986CE009E3562 /* DrawLayerView.m */; };
 		A2E75C8C197CF0700085CD10 /* RECommonFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E75C83197CF0700085CD10 /* RECommonFunctions.m */; };
 		A2E75C8D197CF0700085CD10 /* REMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E75C85197CF0700085CD10 /* REMenu.m */; };
 		A2E75C8E197CF0700085CD10 /* REMenuContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E75C87197CF0700085CD10 /* REMenuContainerView.m */; };
@@ -216,6 +221,11 @@
 		A2010BF5195D979A004AC93C /* delete_item.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete_item.png; sourceTree = "<group>"; };
 		A208246B1993A760004E09EF /* downloadAll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloadAll.png; sourceTree = "<group>"; };
 		A22C462C1990B0BE0041530A /* sync.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sync.png; sourceTree = "<group>"; };
+		A29793A019BEF42300AD6D1D /* clickformenu1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clickformenu1.png; sourceTree = "<group>"; };
+		A29793A119BEF42300AD6D1D /* disclosure.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disclosure.png; sourceTree = "<group>"; };
+		A29793A219BEF42300AD6D1D /* disclosure@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "disclosure@2x.png"; sourceTree = "<group>"; };
+		A29793A619BEF62900AD6D1D /* LookUpObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LookUpObject.h; sourceTree = "<group>"; };
+		A29793A719BEF62900AD6D1D /* LookUpObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LookUpObject.m; sourceTree = "<group>"; };
 		A29A71991998B1F800143756 /* SomeNetworkOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SomeNetworkOperation.h; sourceTree = "<group>"; };
 		A29A719A1998B1F800143756 /* SomeNetworkOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SomeNetworkOperation.m; sourceTree = "<group>"; };
 		A2B4FE691965501400D7EAB5 /* Actions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Actions.png; sourceTree = "<group>"; };
@@ -241,6 +251,8 @@
 		A2B9FA2C198413FE00A61F5F /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		A2B9FA36198414F400A61F5F /* fpdfemb_ios_arm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = fpdfemb_ios_arm.a; sourceTree = "<group>"; };
 		A2B9FA37198414F400A61F5F /* fpdfemb_ios_emu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = fpdfemb_ios_emu.a; sourceTree = "<group>"; };
+		A2BDBEFA19C986CE009E3562 /* DrawLayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawLayerView.h; sourceTree = "<group>"; };
+		A2BDBEFB19C986CE009E3562 /* DrawLayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawLayerView.m; sourceTree = "<group>"; };
 		A2E75C82197CF0700085CD10 /* RECommonFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RECommonFunctions.h; sourceTree = "<group>"; };
 		A2E75C83197CF0700085CD10 /* RECommonFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECommonFunctions.m; sourceTree = "<group>"; };
 		A2E75C84197CF0700085CD10 /* REMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REMenu.h; sourceTree = "<group>"; };
@@ -579,6 +591,8 @@
 				A2F614891959659C00956BF0 /* ManageSignatureViewController.m */,
 				A2F614CA19596D2800956BF0 /* SignatureController.h */,
 				A2F614CB19596D2800956BF0 /* SignatureController.m */,
+				A2BDBEFA19C986CE009E3562 /* DrawLayerView.h */,
+				A2BDBEFB19C986CE009E3562 /* DrawLayerView.m */,
 			);
 			name = Signature;
 			sourceTree = "<group>";
@@ -880,6 +894,8 @@
 		A2F2331519599287008F71AF /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A29793A119BEF42300AD6D1D /* disclosure.png */,
+				A29793A219BEF42300AD6D1D /* disclosure@2x.png */,
 				A208246B1993A760004E09EF /* downloadAll.png */,
 				A22C462C1990B0BE0041530A /* sync.png */,
 				A2F24F42195F7E1000D0A564 /* cts_Priority.png */,
@@ -905,6 +921,7 @@
 		A2F24F2C195DA8D100D0A564 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				A29793A019BEF42300AD6D1D /* clickformenu1.png */,
 				A2B9FA1A198244AA00A61F5F /* Hide.png */,
 				A2B4FE691965501400D7EAB5 /* Actions.png */,
 				A2B4FE6A1965501400D7EAB5 /* arrowup2.png */,
@@ -1002,6 +1019,8 @@
 		A2F613DB1958755800956BF0 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				A29793A619BEF62900AD6D1D /* LookUpObject.h */,
+				A29793A719BEF62900AD6D1D /* LookUpObject.m */,
 				A2F6140E19587F7B00956BF0 /* CSearchType.h */,
 				A2F6140F19587F7B00956BF0 /* CSearchType.m */,
 				A2F6140B19587F5D00956BF0 /* CSearchCriteria.h */,
@@ -1020,8 +1039,8 @@
 				A2F613FA19587B6400956BF0 /* CAttachment.m */,
 				A2F613F619587A4100956BF0 /* CSearch.h */,
 				A2F613F719587A4100956BF0 /* CSearch.m */,
-				A2F613EE1958786200956BF0 /* CCorrespondence.h */,
 				A2F613EF1958786200956BF0 /* CCorrespondence.m */,
+				A2F613EE1958786200956BF0 /* CCorrespondence.h */,
 				A2F613E2195876CF00956BF0 /* CParser.h */,
 				A2F613E3195876CF00956BF0 /* CParser.m */,
 				A2F613DF195876A100956BF0 /* CMenu.h */,
@@ -1347,7 +1366,9 @@
 				A2F2333E195C397A008F71AF /* up.jpg in Resources */,
 				A2F232F319557C5000CA09DD /* InfoPlist.strings in Resources */,
 				A2B9FA201982459700A61F5F /* More-flipped.png in Resources */,
+				A29793A319BEF42300AD6D1D /* clickformenu1.png in Resources */,
 				A2010BEA195D6C55004AC93C /* FreeSign.png in Resources */,
+				A29793A419BEF42300AD6D1D /* disclosure.png in Resources */,
 				A2F8B5A0198BBE48001BB7DF /* littleadvanced.png in Resources */,
 				A2F24F3F195F73D500D0A564 /* cts_Unlock.png in Resources */,
 				A2F24F3E195F73D500D0A564 /* cts_Lock.png in Resources */,
@@ -1355,6 +1376,7 @@
 				A2F8B5A6198BBEAB001BB7DF /* searchArchive.png in Resources */,
 				A2F23336195C397A008F71AF /* comments.png in Resources */,
 				A22C462D1990B0BE0041530A /* sync.png in Resources */,
+				A29793A519BEF42300AD6D1D /* disclosure@2x.png in Resources */,
 				A2B84F5A19628DAB0084035F /* GoBack.png in Resources */,
 				A2F61483195964F400956BF0 /* background@2x.png in Resources */,
 				A2F2333A195C397A008F71AF /* Note.png in Resources */,
@@ -1467,7 +1489,9 @@
 				A2F6144019595C8800956BF0 /* ReaderContentPage.m in Sources */,
 				A2F6144F1959602E00956BF0 /* NotesTableViewCell.m in Sources */,
 				A2F614E0195973FA00956BF0 /* SimpleSearchViewController.m in Sources */,
+				A2BDBEFC19C986CE009E3562 /* DrawLayerView.m in Sources */,
 				A2E75C8F197CF0700085CD10 /* REMenuItem.m in Sources */,
+				A29793A819BEF62900AD6D1D /* LookUpObject.m in Sources */,
 				A2F6141019587F7B00956BF0 /* CSearchType.m in Sources */,
 				A2F613F01958786200956BF0 /* CCorrespondence.m in Sources */,
 				A2F232F519557C5000CA09DD /* main.m in Sources */,
@@ -1690,7 +1714,7 @@
 					"/Users/dna/Desktop/latest\\ code\\ asghal/CTSiPad",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6d8525e6-e88d-48a2-8fa1-a97b940c8034";
+				PROVISIONING_PROFILE = "d9554611-ebac-43fb-8242-5f368e1d5981";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1721,7 +1745,7 @@
 					"/Users/dna/Desktop/latest\\ code\\ asghal/CTSiPad",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6d8525e6-e88d-48a2-8fa1-a97b940c8034";
+				PROVISIONING_PROFILE = "d9554611-ebac-43fb-8242-5f368e1d5981";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

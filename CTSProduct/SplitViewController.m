@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 @interface SplitViewController (){
     AppDelegate *appDelegate;
-
+    
 }
 
 @end
@@ -42,7 +42,7 @@
 {
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     [self adjustButtons:orientation];
-    }
+}
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     [UIView setAnimationsEnabled:NO];
 }
@@ -67,22 +67,22 @@
             
         }
         else{
-
+            
             masterViewController.view.frame = masterViewFrame;
-
+            
         }
         detailViewController.view.frame = detailViewFrame;
-
+        
     }
     else{
         
         
         if (detailViewController.view.frame.origin.x > 0.0) {
-            detailViewFrame.origin.x = masterViewFrame.size.width;            
+            detailViewFrame.origin.x = masterViewFrame.size.width;
         }
         masterViewController.view.frame = masterViewFrame;
         detailViewController.view.frame = detailViewFrame;
-
+        
     }
     [masterViewController.view setNeedsLayout];
     [detailViewController.view setNeedsLayout];

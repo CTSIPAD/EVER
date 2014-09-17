@@ -205,7 +205,7 @@
 		self.userInteractionEnabled = YES;
 		self.contentMode = UIViewContentModeRedraw;
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-		self.backgroundColor = [UIColor colorWithRed:3/255.0f green:3/255.0f  blue:3/255.0f  alpha:0.8];
+		self.backgroundColor = [UIColor colorWithRed:1/255.0f green:49/255.0f  blue:97/255.0f  alpha:1.0];
         
                 
         
@@ -870,10 +870,10 @@
 		self.backgroundColor = [UIColor clearColor];
 
 		CAGradientLayer *layer = (CAGradientLayer *)self.layer;
-//		UIColor *blackColor = [UIColor colorWithWhite:0.42f alpha:1.0f];
-//		UIColor *clearColor = [UIColor colorWithWhite:0.42f alpha:0.0f];
-        UIColor *blackColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
-		UIColor *clearColor = [UIColor colorWithWhite:0.1f alpha:0.8f];
+		UIColor *blackColor = [UIColor colorWithWhite:0.42f alpha:1.0f];
+		UIColor *clearColor = [UIColor colorWithWhite:0.42f alpha:0.0f];
+//        UIColor *blackColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
+//		UIColor *clearColor = [UIColor colorWithWhite:0.1f alpha:0.8f];
 		layer.colors = [NSArray arrayWithObjects:(id)clearColor.CGColor, (id)blackColor.CGColor, nil];
 	}
 

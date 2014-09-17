@@ -49,6 +49,24 @@
     return self;
 
 }
+-(id) initWithTitle:(NSString*)title docId:(NSString*)did url:(NSString*)url  AttachmentId:(NSString*)AttachmentId ThubnailUrl:(NSString *)ThubnailUrl isOriginalMail:(NSString*)isOriginalMail FolderName:(NSString*)FolderName{
+    self.NoteAnnotations=[[NSMutableArray alloc]init];
+    self.HighlightAnnotations=[[NSMutableArray alloc]init];
+    
+    if ((self = [super init])) {
+        self.title=title;
+        self.docId=did;
+        self.url=url;
+        self.location=title;
+        self.AttachmentId=AttachmentId;
+        self.ThubnailUrl = ThubnailUrl;
+        self.isOriginalMail=isOriginalMail;
+        self.FolderName = FolderName;
+    }
+    
+    
+    return self;
+}
 -(id) initWithTitle:(NSString*)title docId:(NSString*)did url:(NSString*)url  location:(NSString*)location SiteId:(NSString*)SiteId WebId:(NSString*)WebId FileId:(NSString*)FileId AttachmentId:(NSString*)AttachmentId FileUrl:(NSString *)FileUrl ThubnailUrl:(NSString*)ThubnailUrl isOriginalMail:(NSString*)isOriginalMail FolderName:(NSString *)FolderName{
     
     self.NoteAnnotations=[[NSMutableArray alloc]init];

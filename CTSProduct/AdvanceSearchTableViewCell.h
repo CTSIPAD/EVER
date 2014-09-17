@@ -20,9 +20,12 @@
 
 
 @property(nonatomic,strong)UITextField* txtCriteria;
+@property(nonatomic,assign)int tag;
+@property(nonatomic,retain)LookUpObject* listobj;
 @property(nonatomic,strong)UILabel *lbltitle;
 @property (nonatomic, strong) PMCalendarController *pmCC;
 @property (nonatomic, strong) CSearchCriteria* criteria;
+
 
 
 -(void)updateCellwithCriteria:(CSearchCriteria*)searchCriteria;

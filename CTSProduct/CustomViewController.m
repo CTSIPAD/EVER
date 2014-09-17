@@ -37,10 +37,9 @@
 {
     [super viewDidLoad];
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CGFloat red = 29.0f / 255.0f;
-    CGFloat green = 29.0f / 255.0f;
-    CGFloat blue = 29.0f / 255.0f;
-    self.tableView.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
+    CGFloat red = 1.0f / 255.0f;
+    CGFloat green = 49.0f / 255.0f;
+    CGFloat blue = 97.0f / 255.0f;    self.tableView.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
     
     [self.tableView setSeparatorColor:[UIColor whiteColor]];
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0,0,0,0)];
@@ -104,19 +103,19 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath  {
     [_delegate dismissPopUp:self];
     CAction* row=self.actions[indexPath.row];
-        if(row.popup==NO){
-            [_delegate executeAction:row.action note:@"" movehome:row.backhome];
-            if(row.backhome)
-                [_delegate movehome:self];
-            else
-                [_delegate dismissPopUp:self];
-            
-        }
-        else{
-            [_delegate PopUpCommentDialog:self Action:row document:nil];
-            
-        }
-   
+    if(row.popup==NO){
+        [_delegate executeAction:row.action note:@"" movehome:row.backhome];
+        if(row.backhome)
+            [_delegate movehome:self];
+        else
+            [_delegate dismissPopUp:self];
+        
+    }
+    else{
+        [_delegate PopUpCommentDialog:self Action:row document:nil];
+        
+    }
+    
     
 }
 

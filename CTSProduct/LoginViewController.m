@@ -50,7 +50,7 @@
         [defaults synchronize];
     }
     appDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
-    
+    appDelegate.inboxForArchiveSelected=0;
     /**** UserName TextView ******/
     
     self.txtUsername.autoresizingMask = UIViewAutoresizingNone;
@@ -75,7 +75,7 @@
     self.txtPassword.clipsToBounds=YES;
     self.txtPassword.secureTextEntry=YES;
     self.txtPassword.returnKeyType = UIReturnKeyGo;
-    
+    self.txtUsername.text=@"mbi";
     /****END Password TextView ******/
     UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 35)];
     UIView *paddingView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 35)];
@@ -95,6 +95,7 @@
         self.txtPassword.leftView= paddingView2;
         
     }
+    self.txtPassword.text=@"Default321";
     
     /**** LOGIN BUTTON ******/
     
@@ -245,13 +246,19 @@
         
         if([username isEqual:@""] == FALSE && [password isEqual:@""] == FALSE)
         {
-            
-            NSString * _key = @"EverTeamYears202020";
-            StringEncryption *crypto = [[StringEncryption alloc] init];
-            NSData *_secretData = [password dataUsingEncoding:NSUTF8StringEncoding];
-            CCOptions padding = kCCOptionPKCS7Padding;
-            NSData *encryptedData = [crypto encrypt:_secretData key:[_key dataUsingEncoding:NSUTF8StringEncoding] padding:&padding];
-            NSString* encpass=[encryptedData base64EncodingWithLineLength:0];
+            NSString* encpass;
+            NSData *encryptedData;
+            if(appDelegate.EncryptionEnabled){
+                NSString * _key = @"EverTeamYears202020";
+                StringEncryption *crypto = [[StringEncryption alloc] init];
+                NSData *_secretData = [password dataUsingEncoding:NSUTF8StringEncoding];
+                CCOptions padding = kCCOptionPKCS7Padding;
+                encryptedData = [crypto encrypt:_secretData key:[_key dataUsingEncoding:NSUTF8StringEncoding] padding:&padding];
+                encpass=[encryptedData base64EncodingWithLineLength:0];
+            }
+            else{
+                encpass=self.txtPassword.text;
+            }
             NSString* url;
             NSString* includeIcons;
             if ([[defaults objectForKey:@"iconsCache"] isEqualToString:@"YES"])
@@ -262,7 +269,11 @@
                 url = [NSString stringWithFormat:@"http://%@/Login?userCode=%@&password=%@&language=%@&includeIcons=%@",appDelegate.serverUrl,username,encpass,appDelegate.IpadLanguage,includeIcons];
             else
                 url = [NSString stringWithFormat:@"http://%@?action=Login&userCode=%@&password=%@&language=%@&includeIcons=%@",appDelegate.serverUrl,username,encpass,appDelegate.IpadLanguage,includeIcons];
-            Password=[encryptedData base64EncodingWithLineLength:0];
+            if(appDelegate.EncryptionEnabled){
+                Password=[encryptedData base64EncodingWithLineLength:0];
+            }else{
+                Password=self.txtPassword.text;
+            }
             
             [self performConnecting:url];
             

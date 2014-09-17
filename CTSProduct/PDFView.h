@@ -59,6 +59,7 @@
 @property (nonatomic, readwrite) BOOL btnHighlight;
 @property (nonatomic, readwrite) BOOL btnErase;
 @property (nonatomic, readwrite) BOOL btnSign;
+@property (nonatomic, readwrite) BOOL handsign;
 @property (nonatomic, readwrite) BOOL FreeSignAll;
 @property (nonatomic, readwrite) int DocumentPagesNb;
 @property (nonatomic, strong) NSString* annotationNoteMsg;

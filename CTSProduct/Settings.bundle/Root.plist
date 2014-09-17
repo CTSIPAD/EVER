@@ -13,6 +13,14 @@
 			<string>url_preference</string>
 		</dict>
 		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Request TimeOut</string>
+			<key>Key</key>
+			<string>timeout_preference</string>
+		</dict>
+		<dict>
 			<key>Key</key>
 			<string>licencekey_preference</string>
 			<key>IsSecure</key>
@@ -32,6 +40,14 @@
 		</dict>
 		<dict>
 			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Search After Char Nb</string>
+			<key>Key</key>
+			<string>charNumber_preference</string>
+		</dict>
+		<dict>
+			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
 			<string>Offline Mode</string>
@@ -39,6 +55,26 @@
 			<string>offline_mode</string>
 			<key>DefaultValue</key>
 			<false/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Enable Encryption</string>
+			<key>Key</key>
+			<string>enable_encryption</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Enable PinCode</string>
+			<key>Key</key>
+			<string>enable_pincode</string>
+			<key>DefaultValue</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>Type</key>

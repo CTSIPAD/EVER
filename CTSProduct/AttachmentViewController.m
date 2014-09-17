@@ -14,12 +14,13 @@
 #import "CFPendingAction.h"
 #import "AppDelegate.h"
 #import "FileManager.h"
+#import "SVProgressHUD.h"
 @interface AttachmentViewController ()
 
 @end
 
 @implementation AttachmentViewController{
-AppDelegate *mainDelegate;
+    AppDelegate *mainDelegate;
 }
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -34,9 +35,9 @@ AppDelegate *mainDelegate;
 {
     [super viewDidLoad];
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CGFloat red = 29.0f / 255.0f;
-    CGFloat green = 29.0f / 255.0f;
-    CGFloat blue = 29.0f / 255.0f;
+    CGFloat red = 1.0f / 255.0f;
+    CGFloat green = 49.0f / 255.0f;
+    CGFloat blue = 97.0f / 255.0f;
     self.tableView.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
     
     [self.tableView setSeparatorColor:[UIColor whiteColor]];
@@ -104,30 +105,69 @@ AppDelegate *mainDelegate;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath  {
-    [_delegate dismissPopUp:self];
-    CAction* row=self.actions[indexPath.row];
-    if(row.Custom){
-        if(row.popup==NO){
-            [_delegate executeAction:row.action note:@"" movehome:row.backhome];
-            if(row.backhome)
+    if(mainDelegate.QuickActionClicked){
+        [self.notePopController dismissPopoverAnimated:NO];
+        
+        
+        CAction* row=self.actions[indexPath.row];
+        if(row.Custom){
+            if(row.popup==NO){
+                [NSThread detachNewThreadSelector:@selector(increaseLoading) toTarget:self withObject:nil];
+                
+                [_delegate executeAction:row.action note:@"" movehome:row.backhome];
                 [_delegate movehome:self];
-            else
-                [_delegate dismissPopUp:self];
+                
+                [NSThread detachNewThreadSelector:@selector(dismiss) toTarget:self withObject:nil];
+                mainDelegate.QuickActionClicked=false;
+                
+            }
+            else{
+                [_delegate PopUpCommentDialog:self Action:row document:nil];
+                //[_delegate movehome:self];
+                
+            }
             
         }
         else{
-            [_delegate PopUpCommentDialog:self Action:row document:nil];
-            
-        }    }
-    else{
-    if([row.action isEqualToString:@"ShowAttachments"]){
-        [_delegate ShowHidePageBar];
+            if([row.action isEqualToString:@"Transfer"]){
+                [_delegate PopUpTransferDialog];
+            }
+            else{
+                if([row.action isEqualToString:@"AddNew"])
+                    [_delegate ShowUploadAttachmentDialog:self.index];
+                mainDelegate.QuickActionClicked=false;
+                
+            }
+        }
+        
     }
     else{
-        [_delegate ShowUploadAttachmentDialog];
+        [_delegate dismissPopUp:self];
+        
+        CAction* row=self.actions[indexPath.row];
+        if(row.Custom){
+            if(row.popup==NO){
+                [_delegate executeAction:row.action note:@"" movehome:row.backhome];
+                if(row.backhome)
+                    [_delegate movehome:self];
+                else
+                    [_delegate dismissPopUp:self];
+                
+            }
+            else{
+                [_delegate PopUpCommentDialog:self Action:row document:nil];
+                
+            }    }
+        else{
+            if([row.action isEqualToString:@"ShowAttachments"]){
+                [_delegate ShowHidePageBar];
+            }
+            else{
+                if([row.action isEqualToString:@"AddNew"])
+                    [_delegate ShowUploadAttachmentDialog];
+            }
+        }
     }
-    }
-    
 }
 
 -(void)ShowMessage:(NSString*)message{
@@ -142,6 +182,12 @@ AppDelegate *mainDelegate;
     [alert show];
     
     
+}
+-(void)increaseLoading{
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Loading", @"Loading...") maskType:SVProgressHUDMaskTypeBlack];
+}
+-(void)dismiss{
+    [SVProgressHUD dismiss];
 }
 
 @end

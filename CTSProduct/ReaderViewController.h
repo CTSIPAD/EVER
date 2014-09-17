@@ -30,7 +30,7 @@
 #import "AnnotationsController.h"
 #import "TransferViewController.h"
 #import "ManageSignatureViewController.h"
-
+#import "DrawLayerView.h"
 #import "MoreTableViewController.h"
 
 @class ReaderViewController;
@@ -57,6 +57,7 @@
     
     UIView *folderPagebar;
     NSMutableArray *folderarray;
+    BOOL Annot;
 }
 
 @property(nonatomic,strong)UILabel *counter;
@@ -64,7 +65,7 @@
 @property(nonatomic,assign) NSInteger menuId;
 @property(nonatomic,assign) NSInteger correspondenceId;
 @property(nonatomic,assign) NSInteger attachmentId;
-
+@property(nonatomic,strong)DrawLayerView* drawLayer;
 @property (nonatomic,strong)UIButton *openButton;
 @property (nonatomic,strong) UIView *folderPagebar;
 @property (nonatomic,strong)UIButton *numberPages;
@@ -82,4 +83,5 @@
 +(void)closeMetadata;
 -(void)uploadXml:(NSString*) docId;
 -(void)UploadAnnotations:(NSString*) docId;
+-(void)ShowUploadAttachmentDialog;
 @end

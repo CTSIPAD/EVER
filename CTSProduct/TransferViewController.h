@@ -18,7 +18,7 @@
 -(void)destinationSelected:(CDestination*)dest withRouteLabel:(CRouteLabel*)routeLabel routeNote:(NSString*)note withDueDate:(NSString*)date viewController:(TransferViewController*)viewcontroller;
 @end
 
-@interface TransferViewController : UIViewController<UITextViewDelegate,ActionTaskDelegate,PMCalendarControllerDelegate>
+@interface TransferViewController : UIViewController<UITextViewDelegate,ActionTaskDelegate,PMCalendarControllerDelegate,UITextFieldDelegate>
 {
     CGRect originalFrame;
     BOOL isShown;

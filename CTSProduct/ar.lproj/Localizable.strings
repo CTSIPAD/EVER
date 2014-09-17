@@ -34,12 +34,14 @@
 "Menu.Search"="بحث";
 "Menu.sign"="توقيع";
 "Menu.Metadata"="البيانات الوصفية";
-"Menu.Transfer"="نقل";
+"Menu.Transfer"="إحالة";
+"Transfer"="إحالة";
 "Menu.Attachments"="مرفقات";
 "Menu.Comments"="تعليقات";
 "Menu.Annotations"="الشروح";
 "Menu.More"="المزيد ...";
-
+"Menu.Actions"="الإجراءات";
+"Choose"="الرجاء الإختيار";
 "Erase"="محو";
 "Signature.Sign"="توقيع بمكان محدد";
 "Signature.FreeSign"="توقيع";
@@ -57,10 +59,10 @@
 "Signature.Red"="أحمر";
 "Signature.Green"="أخضر";
 "Signature.Blue"="أزرق";
-"Transfer.TransferCorrespondence"="نقل المراسلات";
-"Transfer.TransferTo"="نقل إلى";
+"Transfer.TransferCorrespondence"="إحالة المراسلات";
+"Transfer.TransferTo"="إحالة إلى";
 "Transfer.Direction"="اتجاه";
-"Transfer.Purpose"="السبب";
+"Transfer.Purpose"="الاجراء";
 "Transfer.DueDate"="تاريخ";
 "Transfer.Note"="ملاحظة";
 "Transfer.PublicNote"="ملاحظة عامة";
@@ -127,6 +129,7 @@
 "Alert.Success"="تم الحفظ بنجاح";
 "Alert.Downloading"="تحميل ...";
 
+"menu.show"="قائمة العمل";
 "ShowAttachments"="عرض المرفقات";
 "AddNew"="إضافة جديد";
 "UploadAttachment"="تحميل المرفقات";

@@ -19,6 +19,7 @@ NSString* action;
 @property (nonatomic, retain) NSString* label;
 @property (nonatomic, retain) NSString* icon;
 @property (nonatomic, retain) NSString* action;
+@property (nonatomic, retain) NSString * LookupId;
 @property (nonatomic, assign) BOOL Custom;
 @property (nonatomic, assign) BOOL popup;
 @property (nonatomic, assign) BOOL backhome;

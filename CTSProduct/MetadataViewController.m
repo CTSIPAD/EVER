@@ -36,7 +36,7 @@
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"metadataCell"];
     
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
+    
     
 }
 
@@ -44,17 +44,17 @@
     properties = [[NSMutableDictionary alloc] init];
     
     NSMutableDictionary *subDictionary;
-        
+    
     for (int j=0;j< self.currentCorrespondence.properties.count;j++) {
         NSMutableDictionary *mainDictionary=[[NSMutableDictionary alloc] init];
-         NSString *s1=[NSString stringWithFormat:@"%d",j];
+        NSString *s1=[NSString stringWithFormat:@"%d",j];
         subDictionary = [self.currentCorrespondence.properties objectForKey:s1];
-       NSString *s=[NSString stringWithFormat:@"%d",j];
+        NSString *s=[NSString stringWithFormat:@"%d",j];
         [mainDictionary setObject:subDictionary forKey:s];
         [properties setObject:mainDictionary forKey:s];
-       
+        
     }
-
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -67,13 +67,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-
+    
     return properties.count ;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
+    
     return 1;
 }
 
@@ -116,19 +116,19 @@
     
     UILabel *lblTitle=[[UILabel alloc]initWithFrame:CGRectMake(10, 10, 200, 30)];
     [lblTitle setBackgroundColor:[UIColor clearColor]];
-  //lblTitle.font = [UIFont fontWithName:@"Helvetica" size:20];
+    //lblTitle.font = [UIFont fontWithName:@"Helvetica" size:20];
     lblTitle.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
     NSString *key=[NSString stringWithFormat:@"%d",section];
     NSDictionary *subDictionary = [properties objectForKey:key];
     NSArray *keys=[subDictionary allKeys];
-     NSDictionary *subSubDictionary=[subDictionary objectForKey:[keys objectAtIndex:0]];
+    NSDictionary *subSubDictionary=[subDictionary objectForKey:[keys objectAtIndex:0]];
     lblTitle.text=[[subSubDictionary allKeys] objectAtIndex:0];
     
-     if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
-         lblTitle.textAlignment=NSTextAlignmentRight;
-   
+    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
+        lblTitle.textAlignment=NSTextAlignmentRight;
+    
     [view addSubview:lblTitle];
-
+    
     return view;
 }
 
@@ -146,7 +146,7 @@
     NSString *key=[NSString stringWithFormat:@"%d",indexPath.section];
     NSDictionary *subDictionary = [properties objectForKey:key];
     
-   NSArray *keys=[subDictionary allKeys];
+    NSArray *keys=[subDictionary allKeys];
     cell.textLabel.numberOfLines=0;
     NSDictionary *subSubDictionary=[subDictionary objectForKey:[keys objectAtIndex:0]];
     NSArray *subkeys=[subSubDictionary allKeys];

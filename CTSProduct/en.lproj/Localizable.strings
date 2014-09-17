@@ -17,9 +17,11 @@
 "Retry"="Retry";
 "YES"="YES";
 "NO"="NO";
+"Choose"="Please Choose";
 
 "Login.Licence"="License Key";
 "Login"="Login";
+"menu.show"="Click to see the Menu";
 "Menu.Home"="Home";
 "Menu.Hide"="Hide";
 "Menu.Next"="Next";

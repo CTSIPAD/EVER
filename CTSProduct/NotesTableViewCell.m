@@ -18,7 +18,7 @@
         
         self.backgroundColor=[UIColor clearColor];
         
-       
+        
         
         author=[[UILabel alloc]initWithFrame:CGRectMake(25, 10, 475, 25)];
         author.backgroundColor=[UIColor clearColor];
@@ -35,13 +35,13 @@
         note.font=[UIFont fontWithName:@"Helvetica-Bold" size:16];
         [note setNumberOfLines:0];
         
-          AppDelegate *mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        AppDelegate *mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
             note.textAlignment=NSTextAlignmentRight;
-           // author.frame=CGRectMake(520-120, 10, 100, 25);
+            // author.frame=CGRectMake(520-120, 10, 100, 25);
             author.textAlignment =NSTextAlignmentRight;
-           // creationDate.frame=CGRectMake(400-self.author.frame.size.width-2-150, 10, 150, 25);
-           // creationDate.textAlignment =NSTextAlignmentRight;
+            // creationDate.frame=CGRectMake(400-self.author.frame.size.width-2-150, 10, 150, 25);
+            // creationDate.textAlignment =NSTextAlignmentRight;
         }
         [self addSubview:btnDelete];
         [self addSubview:author];
@@ -55,7 +55,7 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
@@ -77,7 +77,7 @@
 }
 
 -(void)resizeToStretchHeight{
-
+    
     float height = [self expectedHeight];
     CGRect newFrame = [self frame];
     newFrame.size.height = height;
@@ -89,11 +89,11 @@
     
     CGSize maximumLabelSize = CGSizeMake(self.frame.size.width, FLT_MAX);
     CGRect expectedLabelSize = [[self text] boundingRectWithSize:maximumLabelSize
-                                            options:NSStringDrawingUsesLineFragmentOrigin
-                                             attributes:@{NSFontAttributeName:[self font]}
-                                         context:nil];
-   
- //   CGSize expectedLabelSize = [[self text] sizeWithFont:[self font] constrainedToSize:maximumLabelSize lineBreakMode:[self lineBreakMode]];
+                                                         options:NSStringDrawingUsesLineFragmentOrigin
+                                                      attributes:@{NSFontAttributeName:[self font]}
+                                                         context:nil];
+    
+    //   CGSize expectedLabelSize = [[self text] sizeWithFont:[self font] constrainedToSize:maximumLabelSize lineBreakMode:[self lineBreakMode]];
     
     return expectedLabelSize.size.height;
 }

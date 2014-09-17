@@ -9,8 +9,7 @@
 #import <UIKit/UIKit.h>
 @protocol UserDelegate <NSObject>
 -(void)dismissPopUp:(UITableViewController*)viewcontroller;
--(void)movehome:(UITableViewController*)viewcontroller;
--(void)executeAction:(NSString*)action note:(NSString*)Note movehome:(BOOL)movehome;
+-(void)SetDepartment:(int)departmentId;
 @required
 
 @end

@@ -7,19 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LookUpObject.h"
 @class CDestination;
 @class CRouteLabel;
 
 @protocol ActionTaskDelegate
 - (void)actionSelectedDirection:(CRouteLabel*)route;
 - (void)actionSelectedDestination:(CDestination*)destination;
--(void)actionSelectedDestinationSection:(NSString *)destination;
-
+-(void)actionSelectedDestinationSection:(LookUpObject *)destination;
+-(void)actionSelectedLookup:(LookUpObject *)destination;
 @end
 
 @interface ActionTaskController : UITableViewController<UITextViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate>{
 	NSMutableArray *actions;
     NSMutableArray *searchData;
+    NSMutableDictionary *searchDataDic;
+
 	BOOL displayingLabel;
 	UISearchBar * searchBar;
     UISearchDisplayController *searchDisplayController;
@@ -28,6 +31,7 @@
 @property (nonatomic, assign)CGRect rectFrame;
 @property (nonatomic, assign)BOOL isDirection;
 @property (nonatomic, assign)BOOL isDestinationSection;
+@property (nonatomic, retain) NSMutableDictionary *Lookup;
 
 @property (nonatomic, retain) NSMutableArray *actions;
 @property (nonatomic, assign) id<ActionTaskDelegate> delegate;

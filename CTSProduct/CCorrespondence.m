@@ -16,6 +16,7 @@
 
 -(id) initWithId:(NSString*)correspondenceId Priority:(BOOL)priority New:(BOOL)isNew  SHOWLOCK:(BOOL)showlock {
     if ((self = [super init])) {
+        self.QuickActions=[[NSMutableArray alloc]init];
         self.Id=correspondenceId;
         self.Priority=priority;
         self.New=isNew;
@@ -34,9 +35,10 @@
         url=[NSString stringWithFormat:@"http://%@?action=%@&token=%@&transferId=%@",appDelegate.serverUrl,action,appDelegate.user.token,self.TransferId];
     else
         url=[NSString stringWithFormat:@"http://%@/%@?token=%@&transferId=%@",appDelegate.serverUrl,action,appDelegate.user.token,self.TransferId];
-
-    NSURL *xmlUrl = [NSURL URLWithString:url];
-    NSData *lockXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+    NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:0 timeoutInterval:appDelegate.Request_timeOut];
+    NSData *lockXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    //NSURL *xmlUrl = [NSURL URLWithString:url];
+  //  NSData *lockXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
     
     NSString *validationResult=[CParser ValidateWithData:lockXmlData];
     if(![validationResult isEqualToString:@"OK"]){

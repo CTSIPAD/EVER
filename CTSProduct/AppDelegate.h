@@ -24,6 +24,7 @@
 @property(nonatomic,assign)BOOL isOfflineMode;
 @property(nonatomic,assign)BOOL Downloading;
 @property(nonatomic,assign)BOOL Sync;
+@property(nonatomic,assign)BOOL EmptyDoc;
 @property (strong, nonatomic) CSearch *searchModule;
 @property (assign, nonatomic) NSInteger selectedInbox;
 @property (assign, nonatomic) NSInteger InboxTotalCorr;
@@ -34,6 +35,8 @@
 @property(nonatomic,assign)NSInteger CounterSync;
 @property(nonatomic,assign)BOOL highlightNow;
 @property(nonatomic,assign)BOOL SearchActive;
+@property(nonatomic,assign)BOOL EncryptionEnabled;
+@property(nonatomic,assign)BOOL PinCodeEnabled;
 @property (strong,nonatomic)NSString* docUrl;
 @property (strong,nonatomic)NSString* SiteId;
 @property (strong,nonatomic)NSString* WebId;
@@ -47,14 +50,18 @@
 @property(nonatomic,assign)BOOL isBasketSelected;
 @property (assign, nonatomic) NSInteger attachmentSelected;
 @property (assign, nonatomic) NSInteger searchSelected;
+@property (assign, nonatomic) NSInteger Request_timeOut;
 @property(nonatomic,assign)BOOL isSigned;
+@property(nonatomic,assign)int QuickActionIndex;
 @property (assign, nonatomic)NSInteger inboxForArchiveSelected;
+@property (assign, nonatomic)NSInteger Char_count;
 @property (strong, nonatomic)SplitViewController *splitViewController;
 @property (nonatomic, retain) NSData *logo;
 @property (nonatomic, retain) SearchResultViewController *searchResultViewController;
 @property (nonatomic, retain)UIActivityIndicatorView *activityIndicatorObject;
 @property (nonatomic, assign) BOOL ShowThumbnail;
 @property (nonatomic, assign) BOOL SupportsServlets;
+@property (nonatomic, assign) BOOL QuickActionClicked;
 @property (nonatomic, assign) NSString* SignMode;
 @property (nonatomic, assign) NSString* AnnotationsMode;
 @property (nonatomic, assign) NSString* Signaction;
@@ -66,8 +73,9 @@
 @property (retain,nonatomic) NSMutableArray* IncomingHighlights;
 @property (retain,nonatomic) NSMutableArray* IncomingNotes;
 @property (retain,nonatomic) NSMutableArray* folderNames;
+@property (retain,nonatomic) NSMutableDictionary* Lookups;
 @property (strong,nonatomic)NSString* attachmentType;
-@property (strong,nonatomic)NSString* SectionSelected;
+@property (retain,nonatomic) NSMutableDictionary* DrawLayerViews;
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;

@@ -29,7 +29,7 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-      self.clearsSelectionOnViewWillAppear = NO;
+        self.clearsSelectionOnViewWillAppear = NO;
     }
     return self;
 }
@@ -37,7 +37,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
- mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     CGFloat red = 29.0f / 255.0f;
     CGFloat green = 29.0f / 255.0f;
     CGFloat blue = 29.0f / 255.0f;
@@ -91,9 +91,9 @@
     labelTitle.numberOfLines=3;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     labelTitle.lineBreakMode = NSLineBreakByWordWrapping;
-
+    
     //NSString* imagename=[NSString stringWithFormat:@"%@.png",actionProperty.label];
-        cellImage =  [UIImage imageWithData:[CParser LoadCachedIcons:actionProperty.action]];
+    cellImage =  [UIImage imageWithData:[CParser LoadCachedIcons:actionProperty.action]];
     
     [imageView setImage:cellImage];
     if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
@@ -102,34 +102,44 @@
     }
     [cell addSubview:imageView];
     [cell addSubview:labelTitle];
-   
-   
+    
+    
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath  {
     
-//    CAction *actionProperty=self.actions[indexPath.row];
-//    if([actionProperty.action isEqualToString:@"Archive"]){
-//    [self executeAction:actionProperty.action];
-//        [_delegate movehome:self];
-//    }
-//    else{
-//        [_delegate PopUpCommentDialog:self Action:actionProperty.action document:nil];
-//
-//    }
+    //    CAction *actionProperty=self.actions[indexPath.row];
+    //    if([actionProperty.action isEqualToString:@"Archive"]){
+    //    [self executeAction:actionProperty.action];
+    //        [_delegate movehome:self];
+    //    }
+    //    else{
+    //        [_delegate PopUpCommentDialog:self Action:actionProperty.action document:nil];
+    //
+    //    }
+    @try
+    {
     CAction *actionProperty=self.actions[indexPath.row];
     if(actionProperty.popup==NO){
         [_delegate executeAction:actionProperty.action note:@"" movehome:actionProperty.backhome];
-        if(actionProperty.backhome)
-            [_delegate movehome:self];
-        else
-            [_delegate dismissPopUp:self];
-
-    }
-    else{
-        [_delegate PopUpCommentDialog:self Action:actionProperty document:nil];
+            if(actionProperty.backhome){
+                
+                [_delegate movehome:self];
+            }
+            else
+                [_delegate dismissPopUp:self];
+            
+        }
+        else{
+            [_delegate PopUpCommentDialog:self Action:actionProperty document:nil];
+            
+        }
         
+    }
+    @catch (NSException *exception)
+    {
+        NSLog(@"Exception: %@", exception);
     }
 }
 

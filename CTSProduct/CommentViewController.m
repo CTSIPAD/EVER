@@ -33,12 +33,15 @@
     self.view.superview.bounds = _realBounds;
 }
 
-- (void)viewDidLoad { _realBounds = self.view.bounds; [super viewDidLoad]; }
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    _realBounds=self.view.bounds;
+}
 - (id)initWithActionName:(CGRect)frame Action:(CAction *)action {
     
-        self.Action =action;
+    self.Action =action;
     self = [self initWithFrame:frame];
-
+    
     return self;
 }
 - (id)initWithFrame:(CGRect)frame
@@ -51,7 +54,12 @@
         self.view.clipsToBounds=YES;
         self.view.layer.borderWidth=1.0;
         self.view.layer.borderColor=[[UIColor grayColor]CGColor];
-        self.view.backgroundColor= [UIColor colorWithRed:29/255.0f green:29/255.0f  blue:29/255.0f  alpha:1.0];
+        // self.view.backgroundColor= [UIColor colorWithRed:29/255.0f green:29/255.0f  blue:29/255.0f  alpha:1.0];
+        CGFloat red = 1.0f / 255.0f;
+        CGFloat green = 49.0f / 255.0f;
+        CGFloat blue = 97.0f / 255.0f;
+        self.view.backgroundColor= [UIColor colorWithRed:red green:green  blue:blue  alpha:1.0];
+        
         UILabel *Titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, frame.size.width-20, 20)];
         NSString* local;
         if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
@@ -59,18 +67,18 @@
         else
             local=@"Correspondence";
         NSString * nameAct=[NSString stringWithFormat:@"%@ %@",self.Action.label,local];
-
-
-
+        
+        
+        
         Titlelabel.text = nameAct;
         Titlelabel.textAlignment=NSTextAlignmentCenter;
         Titlelabel.backgroundColor = [UIColor clearColor];
         Titlelabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
         Titlelabel.textColor=[UIColor whiteColor];
         
-      
         
-               UILabel *lblNote = [[UILabel alloc] initWithFrame:CGRectMake(10, 30, frame.size.width-20, 20)];
+        
+        UILabel *lblNote = [[UILabel alloc] initWithFrame:CGRectMake(10, 30, frame.size.width-20, 20)];
         lblNote.text = NSLocalizedString(@"Note",@"Note");
         lblNote.textAlignment=NSTextAlignmentLeft;
         lblNote.backgroundColor = [UIColor clearColor];
@@ -107,6 +115,7 @@
         
         if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
             lblNote.textAlignment=NSTextAlignmentRight;
+            txtNote.textAlignment=NSTextAlignmentRight;
         }
         
         
@@ -161,10 +170,10 @@
 }
 - (void)hide
 {
-  //  [delegate ActionMoveHome:self];//Use to move home
-
-   [self dismissViewControllerAnimated:YES completion:nil];
-   
+    //  [delegate ActionMoveHome:self];//Use to move home
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
 }
 
 - (BOOL)disablesAutomaticKeyboardDismissal { return NO; }
@@ -192,42 +201,24 @@
         [delegate executeAction:Action.action note:[self.txtNote.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] movehome:Action.backhome];
     }
     [NSThread detachNewThreadSelector:@selector(dismiss) toTarget:self withObject:nil];
-
+    
     [self dismissViewControllerAnimated:YES  completion:^{
-        if(Action.backhome)
-            [delegate ActionMoveHome:self];
+            if(Action.backhome){
+                if(mainDelegate.QuickActionClicked){
+                    mainDelegate.QuickActionClicked=false;
+                    
+                    [delegate dismissUpload:self];
+                    [delegate ActionMoveHome:self];
+                    
+                }
+                else
+                    [delegate ActionMoveHome:self];
+            }
     }];
     
-
+    
 }
 
-#pragma mark delegate methods
-
--(void)actionSelectedDirection:(CRouteLabel*)route{
-    
-    
-    routeLabel=route;
-    
-    for (UIView *view in self.view.subviews)
-    {
-        if ([view isKindOfClass:[UITableView class]]){
-            [view removeFromSuperview];
-        }
-        
-    }
-}
--(void)actionSelectedDestination:(CDestination *)destination{
-    
-    
-    
-    for (UIView *view in self.view.subviews)
-    {
-        if ([view isKindOfClass:[UITableView class]]){
-            [view removeFromSuperview];
-        }
-        
-    }
-}
 
 -(void)increaseLoading{
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Loading", @"Loading...") maskType:SVProgressHUDMaskTypeBlack];
