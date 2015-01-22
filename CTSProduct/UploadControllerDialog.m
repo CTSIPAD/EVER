@@ -14,6 +14,8 @@
 #import "FileManager.h"
 #import "Base64.h"
 #import "GDataXMLElement-Extras.h"
+#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch]== NSOrderedAscending)
+static int count;
 @interface UploadControllerDialog ()
 {
     CGRect _realBounds;
@@ -22,6 +24,10 @@
     BOOL isTransferToDropDownOpened;
     CGPoint centerPoint;
     NSString* imageData;
+    UIImageView *imageView;
+    NSMutableArray* mutableArray;
+    NSArray* imageArray;
+    ALAssetsLibrary* library;
     
 }
 @end
@@ -55,7 +61,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.view.superview.bounds = _realBounds;
-    self.view.superview.frame=CGRectMake(300, 200, 150, 400);
+    self.view.superview.frame=CGRectMake(300, 200, 400, 400);
 }
 - (id)initWithActionName:(CGRect)frame {
     
@@ -71,85 +77,111 @@
     if (self) {
         originalFrame = frame;
         mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        
+        if (UIInterfaceOrientationIsPortrait([[UIDevice currentDevice]orientation])) {
+            centerPoint=CGPointMake(400, 500);
+        }
+        else
         centerPoint=CGPointMake(500, 400);
-        // self.view.alpha = 1;
         self.view.layer.cornerRadius=5;
         self.view.clipsToBounds=YES;
         self.view.layer.borderWidth=1.0;
         self.view.layer.borderColor=[[UIColor grayColor]CGColor];
-        //self.view.backgroundColor= [UIColor colorWithRed:29/255.0f green:29/255.0f  blue:29/255.0f  alpha:1.0];
-        CGFloat red = 1.0f / 255.0f;
-        CGFloat green = 49.0f / 255.0f;
-        CGFloat blue = 97.0f / 255.0f;
-        self.view.backgroundColor= [UIColor colorWithRed:red green:green  blue:blue  alpha:1.0];
-        
+ 
+        self.view.backgroundColor=mainDelegate.bgBlueColor;
         UILabel *Titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, frame.size.width-20, 20)];
-        
         
         Titlelabel.text = NSLocalizedString(@"UploadAttachment",@"Upload Attachment");
         Titlelabel.textAlignment=NSTextAlignmentCenter;
         Titlelabel.backgroundColor = [UIColor clearColor];
         Titlelabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
         Titlelabel.textColor=[UIColor whiteColor];
+     
         
         NSInteger btnWidth=115;
         
         
         UIButton *Camerabtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        Camerabtn.frame =CGRectMake(frame.size.width-65,62,35, 35);
+        Camerabtn.frame =CGRectMake(frame.size.width-80,150,35, 35);
         Camerabtn.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
         [Camerabtn setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"camera.png"]]forState:UIControlStateNormal];
         [Camerabtn addTarget:self action:@selector(ChooseExisting) forControlEvents:UIControlEventTouchUpInside];
-        [Camerabtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [Camerabtn setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
         
         
+        UIButton* takePhotobtn=[UIButton buttonWithType:UIButtonTypeRoundedRect];
+        takePhotobtn.frame =CGRectMake(40,150,40, 40);
+        [takePhotobtn setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"IMGtakephoto.png"]]forState:UIControlStateNormal];
+        [takePhotobtn addTarget:self action:@selector(takePhoto) forControlEvents:UIControlEventTouchUpInside];
         
         UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        closeButton.frame =CGRectMake(((frame.size.width-(2*btnWidth +50))/2)+btnWidth+50, frame.size.height-45, btnWidth, 35);
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+            closeButton.frame = CGRectMake((frame.size.width-(2*btnWidth +50))/2, frame.size.height-65, btnWidth, 35);
+        }
+        else
+            closeButton.frame =CGRectMake(((frame.size.width-(2*btnWidth +50))/2)+btnWidth+60, frame.size.height-65, btnWidth, 35);
         closeButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
         [closeButton setTitle:NSLocalizedString(@"Cancel",@"Cancel") forState:UIControlStateNormal];
         [closeButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
-        [closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        
+        [closeButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+        closeButton.backgroundColor=mainDelegate.buttonColor;
         
         UIButton *uploadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        uploadButton.frame = CGRectMake((frame.size.width-(2*btnWidth +50))/2-50, frame.size.height-45, btnWidth, 35);
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+            uploadButton.frame =CGRectMake(((frame.size.width-(2*btnWidth +50))/2)+btnWidth+50, frame.size.height-65, btnWidth, 35);
+        }
+        else
+            uploadButton.frame = CGRectMake((frame.size.width-(2*btnWidth +50))/2-10, frame.size.height-65, btnWidth, 35);
         uploadButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
         [uploadButton setTitle:NSLocalizedString(@"Upload",@"Upload") forState:UIControlStateNormal];
         [uploadButton addTarget:self action:@selector(upload) forControlEvents:UIControlEventTouchUpInside];
-        [uploadButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [uploadButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+        uploadButton.backgroundColor=mainDelegate.buttonColor;
         
-        UILabel *attachment = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 200, 40)];
+
+        UILabel *attachment=[[UILabel alloc] initWithFrame:CGRectMake(15, 220, 200, 40)];
         attachment.textColor = [UIColor whiteColor];
-        
         attachment.backgroundColor = [UIColor clearColor];
         attachment.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
-        
-        txtAttachmentName = [[UITextField alloc] initWithFrame:CGRectMake(10, 60, 300, 40)];
-        txtAttachmentName.borderStyle = UITextBorderStyleRoundedRect;
+
+        txtAttachmentName = [[UITextField alloc] initWithFrame:CGRectMake(10, 260, 375, 40)];
         txtAttachmentName.font = [UIFont systemFontOfSize:15];
         txtAttachmentName.placeholder = NSLocalizedString(@"AttachmentName",@"Attachment Name");
         txtAttachmentName.autocorrectionType = UITextAutocorrectionTypeNo;
-        txtAttachmentName.keyboardType = UIKeyboardTypeNumberPad;
+        txtAttachmentName.keyboardType = UIKeyboardAppearanceDefault;
         txtAttachmentName.returnKeyType = UIReturnKeyDone;
         txtAttachmentName.clearButtonMode = UITextFieldViewModeWhileEditing;
         txtAttachmentName.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-        
+        txtAttachmentName.backgroundColor=mainDelegate.textColor;
+        UIView *paddingView=[[UIView alloc] initWithFrame:CGRectMake(0, 0,10 ,35)];
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+            txtAttachmentName.rightViewMode=UITextFieldViewModeAlways;
+            txtAttachmentName.rightView=paddingView;
+        }
+        else
+        {
+        txtAttachmentName.leftViewMode=UITextFieldViewModeAlways;
+        txtAttachmentName.leftView=paddingView;
+        }
         
         attachment.text =NSLocalizedString(@"AttachmentName",@"Attachment Name:");
         if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
             attachment.textAlignment=NSTextAlignmentRight;
             txtAttachmentName.textAlignment=NSTextAlignmentRight;
-            attachment.frame=CGRectMake(((frame.size.width-(2*btnWidth +50))/2)+50, 20, 200, 40);
+  
+        attachment.frame=CGRectMake(((frame.size.width-(2*btnWidth +50))/2)+130, 210, 200, 40);
         }
         else
             attachment.textAlignment=NSTextAlignmentLeft;
         
+        imageView=[[UIImageView alloc] initWithFrame:CGRectMake(110, 45, 180, 180)];
+        imageView.backgroundColor=[UIColor whiteColor];
+        imageView.layer.cornerRadius=10;
+        [self.view addSubview:imageView];
+        
         [self.view addSubview:Titlelabel];
         [self.view addSubview:txtAttachmentName];
-        [self.view addSubview:attachment];
         [self.view addSubview:Camerabtn];
+        [self.view addSubview:takePhotobtn];
         [self.view addSubview:uploadButton];
         [self.view addSubview:closeButton];
         
@@ -179,6 +211,7 @@
 - (void)hide
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
 }
 
@@ -192,11 +225,21 @@
     picker.delegate=self;
     [picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
     [self presentViewController:picker animated:YES completion:NULL];
+
+}
+-(void) takePhoto
+{
+    UIImagePickerController* picker;
+    picker=[[UIImagePickerController alloc]init];
+    picker.delegate=self;
+    picker.allowsEditing=YES;
+    [picker setSourceType:UIImagePickerControllerSourceTypeCamera];
+    [self presentViewController:picker animated:YES completion:NULL];
 }
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     
     UIImage* image=[info objectForKey:UIImagePickerControllerOriginalImage];
-    
+    imageView.image=image;
     
     NSData* imgData=UIImageJPEGRepresentation(image,0.2);
     [Base64 initialize];
@@ -204,12 +247,13 @@
     imageData =[Base64 encode:imgData];
     
     [self dismissViewControllerAnimated:YES completion:nil];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
     centerPoint=CGPointMake(400, 500);
     [self dismissViewControllerAnimated:YES completion:nil];
-    
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 - (void)appendXml:(NSString *)filename {
     
@@ -244,6 +288,7 @@
             [signatureXML2 removeChild:pinXML2];
         }
         GDataXMLElement * pinElement = [GDataXMLNode elementWithName:@"FileName" stringValue:txtAttachmentName.text];
+       
         NSArray *corrId = [signatureXML2 elementsForName:@"CorrespondenceId"];
         if (corrId.count > 0) {
             GDataXMLElement *corrXML=  [corrId objectAtIndex:0];
@@ -252,6 +297,27 @@
             [signatureXML2 removeChild:corrXML];
         }
         GDataXMLElement * CorrElement = [GDataXMLNode elementWithName:@"CorrespondenceId" stringValue:self.CorrespondenceId];
+        
+        NSArray *tokenArray = [signatureXML2 elementsForName:@"token"];
+        if (tokenArray.count > 0) {
+            GDataXMLElement *corrXML=  [tokenArray objectAtIndex:0];
+            GDataXMLNode *corrchild2 = [corrXML.children objectAtIndex:0];
+            [signatureXML2 removeChild:corrchild2];
+            [signatureXML2 removeChild:corrXML];
+        }
+        GDataXMLElement * TokenElement = [GDataXMLNode elementWithName:@"Token" stringValue:mainDelegate.user.token];
+        
+        NSArray *LanguageArray = [signatureXML2 elementsForName:@"Language"];
+        if (LanguageArray.count > 0) {
+            GDataXMLElement *langXML=  [LanguageArray objectAtIndex:0];
+            GDataXMLNode *langchild2 = [langXML.children objectAtIndex:0];
+            [signatureXML2 removeChild:langchild2];
+            [signatureXML2 removeChild:langXML];
+        }
+        GDataXMLElement * LanguageElement = [GDataXMLNode elementWithName:@"Language" stringValue:mainDelegate.IpadLanguage];
+        
+        [signatureXML2 addChild:TokenElement];
+        [signatureXML2 addChild:LanguageElement];
         [signatureXML2 addChild:CorrElement];
         [signatureXML2 addChild:pinElement];
         
@@ -280,16 +346,54 @@
 }
 
 -(void)upload{
-    if([txtAttachmentName.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length>0){
+    BOOL isValid=[self checkText:txtAttachmentName.text];
+    if([txtAttachmentName.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length>0 && imageView.image!=nil){
+        if (isValid) {
+
         [self appendXml:imageData];
         [_delegate dismissUpload:self];
+        }
+        else
+        {
+            [self ShowMessage:NSLocalizedString(@"Alert.InvalidCharacter", @"attachment name contain invalid character")];
+        }
     }
     else{
-        UIAlertView *alertKO;
-        alertKO=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Fields Missing",@"Fields Missing") message:NSLocalizedString(@"Please fill fileName field.",@"Please fill fileName field.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK",@"OK") otherButtonTitles: nil];
+         UIAlertView *alertKO;
+        if(imageView.image==nil){
+
+            [self ShowMessage:NSLocalizedString(@"Upload_attachment_Field",@"Please upload a file.")];
+            
+ 
+        }
+        else if(![txtAttachmentName.text  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length>0){
+
+            [self ShowMessage:NSLocalizedString(@"FillAttachmentName",@"Please fill Attachment Name field.") ];
+        }
         [alertKO show];
-        
+
     }
+    
+}
+-(void) showMessage:(NSString*)message
+{
+     UIAlertView *alertKO;
+    alertKO=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Fields Missing",@"Fields Missing") message:NSLocalizedString(@"Upload_attachment_Field",@"Please upload a file.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK",@"OK") otherButtonTitles: nil];
+     [alertKO show];
+
+}
+-(BOOL) checkText:(NSString*)text
+{
+
+    NSString *specialCharacterString = @"~ # % & * : < > ? / \\ { | } . \" ؟ ٪ ";
+    NSCharacterSet *specialCharacterSet = [NSCharacterSet
+                                           characterSetWithCharactersInString:specialCharacterString];
+    
+    if ([text.lowercaseString rangeOfCharacterFromSet:specialCharacterSet].length) {
+        return NO;
+    }
+    else
+    return YES;
     
 }
 -(void)uploadImage:(NSData*)image{
@@ -297,54 +401,65 @@
     @try{
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             
-                       NSString* urlString;
-                        if(mainDelegate.SupportsServlets)
-                            urlString = [NSString stringWithFormat:@"http://%@",mainDelegate.serverUrl];
-                        else
-                            urlString = [NSString stringWithFormat:@"http://%@/UploadAttachment",mainDelegate.serverUrl];
+            NSString* urlString;
+            if(mainDelegate.SupportsServlets)
+                urlString = [NSString stringWithFormat:@"http://%@",mainDelegate.serverUrl];
+            else
+                urlString = [NSString stringWithFormat:@"http://%@/UploadAttachment",mainDelegate.serverUrl];
             
             
-                        // setting up the request object now
-                        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-                        [request setURL:[NSURL URLWithString:urlString]];
-                        [request setHTTPMethod:@"POST"];
+            // setting up the request object now
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+            [request setURL:[NSURL URLWithString:urlString]];
+            [request setHTTPMethod:@"POST"];
             
             
-                        NSString *boundary = @"---------------------------14737809831466499882746641449";
-                        NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
-                        [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+            NSString *boundary = @"---------------------------14737809831466499882746641449";
+            NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
+            [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
             
-                        NSMutableData *body = [NSMutableData data];
-                        if(mainDelegate.SupportsServlets){
-                            // action parameter
-                            [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-                            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"action\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-                            [body appendData:[@"UploadAttachment" dataUsingEncoding:NSUTF8StringEncoding]];
-                            [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            NSMutableData *body = [NSMutableData data];
+            if(mainDelegate.SupportsServlets){
+                // action parameter
+                [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+                [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"action\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+                [body appendData:[@"UploadAttachment" dataUsingEncoding:NSUTF8StringEncoding]];
+                [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+                
+                
+            }
+            // file
+            [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[@"Content-Disposition: form-data; name=\"image\"; filename=\".xml\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[NSData dataWithData:image]];
+            [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
             
+            // text parameter
+            [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"correspondenceId\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[self.CorrespondenceId dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
             
-                        }
-                        // file
-                        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-                        [body appendData:[@"Content-Disposition: form-data; name=\"image\"; filename=\".xml\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-                        [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-                        [body appendData:[NSData dataWithData:image]];
-                        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            // token parameter
+            [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"Token\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[mainDelegate.user.token dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
             
-                        // text parameter
-                        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-                        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"correspondenceId\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-                        [body appendData:[self.CorrespondenceId dataUsingEncoding:NSUTF8StringEncoding]];
-                        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            // Language parameter
+            [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"Language\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[mainDelegate.IpadLanguage dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            // close form
+            [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
             
-                        // close form
-                        [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            // set request body
+            [request setHTTPBody:body];
+            [request setTimeoutInterval:mainDelegate.Request_timeOut];
+            NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
             
-                        // set request body
-                        [request setHTTPBody:body];
-                        [request setTimeoutInterval:mainDelegate.Request_timeOut];
-                        NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-          
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [SVProgressHUD dismiss];
@@ -363,18 +478,25 @@
                         if(!self.quickActionSelected){
                             CAttachment* res=[CParser LoadNewAttachmentResults:returnData docId:[NSString stringWithFormat:@"%d",correspondenceIndex]];
                             if(res==nil){
-                                [self ShowMessage:NSLocalizedString(@"Check XML", @"Saved Successfully")];
+                                [self ShowMessage:NSLocalizedString(@"Check XML", @"Errorr")];
                             }
                             else{
+                                CCorrespondence* corr=((CCorrespondence*)mainDelegate.searchModule.correspondenceList[res.docId.intValue]);
+                                if (corr.attachmentsList.count==1)
+                                    [_delegate refreshDocument:res.url attachmentId:res.AttachmentId correspondence:corr];
+                                else
+                                    [_delegate refreshDocument:nil attachmentId:nil correspondence:nil];
                                 
-                                if (((CCorrespondence*)mainDelegate.searchModule.correspondenceList[res.docId.intValue]).attachmentsList.count==1)
-                                    [_delegate refreshDocument:res.url attachmentId:res.AttachmentId];
                             }
                         }
                         [self ShowMessage:NSLocalizedString(@"Alert.Success", @"Saved Successfully")];
+                        if(!self.quickActionSelected)
+                            [_delegate refreshFolderPageBar];
                     }
                 }else{
                     [self ShowMessage:NSLocalizedString(@"Alert.Success", @"Saved Successfully")];
+                    if(!self.quickActionSelected)
+                        [_delegate refreshFolderPageBar];
                 }
                 
             });
@@ -410,4 +532,6 @@
 -(void)dismiss{
     [SVProgressHUD dismiss];
 }
+
+
 @end

@@ -95,11 +95,7 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     [_responseData appendData:data];
-    AppDelegate* mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(mainDelegate.Downloading){
-        [CParser Download:data];
-    }
-}
+   }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     NSLog(@"Action=%@ ",self.Action);
@@ -127,7 +123,7 @@
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         }
         if(DidAccess==NO){
-            [mainDelegate.searchResultViewController didFinishLoad:_responseData];
+            [mainDelegate.HeaderViewController didFinishLoad:_responseData];
         }
         
     }
@@ -149,7 +145,7 @@
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             }
             if(DidAccess==NO){
-                [mainDelegate.searchResultViewController didFinishLoad:_responseData];
+                [mainDelegate.HeaderViewController didFinishLoad:_responseData];
             }
             
         }}
@@ -160,7 +156,10 @@
     //    UIImage *img = [[UIImage alloc] initWithData:_responseData];
     //    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:img, @"img", _urlToLoad, @"url", nil];
     AppDelegate* mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
+    if(mainDelegate.Downloading){
+        [CParser Download:_responseData];
+    }
+
     BOOL DidAccess=NO;
     
     if(mainDelegate.Downloading){
@@ -174,7 +173,7 @@
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         }
         if(DidAccess==NO){
-            [mainDelegate.searchResultViewController didFinishLoad:_responseData];
+            [mainDelegate.HeaderViewController didFinishLoad:_responseData];
         }
     }else{
         OfflineResult *OR=[[OfflineResult alloc]init];
@@ -191,7 +190,7 @@
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             }
             if(DidAccess==NO){
-                [mainDelegate.searchResultViewController didFinishLoad:_responseData];
+                [mainDelegate.HeaderViewController didFinishLoad:_responseData];
             }
             
         }

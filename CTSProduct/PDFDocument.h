@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "PDFView.h"
-
+#import "CAttachment.h"
+#import "CCorrespondence.h"
 @interface PDFDocument : NSObject {
 	//A full path of PDF file.
     const char* m_pfilepath;
@@ -41,6 +42,8 @@
 }
 @property(nonatomic)  CGPoint annotPoint;
 @property(nonatomic,strong)NSData* signatureData;
+@property(nonatomic,strong)CCorrespondence* Correspondence;
+@property(nonatomic,strong)CAttachment* Attachment;
 
 //Open the PDF document.
 - (BOOL) openPDFDocument:(const char*) file; 

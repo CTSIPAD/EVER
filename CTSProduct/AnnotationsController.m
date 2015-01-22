@@ -32,11 +32,9 @@
     [super viewDidLoad];
     mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    CGFloat red = 1.0f / 255.0f;
-    CGFloat green = 49.0f / 255.0f;
-    CGFloat blue = 97.0f / 255.0f;
-    self.tableView.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
-    
+
+    self.tableView.backgroundColor=mainDelegate.cellColor;
+    self.tableView.layer.borderColor=[[UIColor whiteColor]CGColor];
     [self.tableView setSeparatorColor:[UIColor whiteColor]];
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0,0,0,0)];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"annotationCell"];
@@ -67,12 +65,8 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if([mainDelegate.SignMode isEqualToString:@"BuiltInSign"])
         return self.properties.count+1;//1 for erase
-    else
-        return self.properties.count+2;// 2 for erase and save buttons
-    
-}
+  }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -80,23 +74,14 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 37, 37)];
-    
-    UILabel *labelTitle= [[UILabel alloc] initWithFrame:CGRectMake(70, 5,cell.frame.size.width-140, 40)];
+    UILabel *labelTitle= [[UILabel alloc] init];
     labelTitle.textColor = [UIColor whiteColor];
-    labelTitle.backgroundColor = [UIColor clearColor];
     
     if(indexPath.row==self.properties.count){
         labelTitle.text=NSLocalizedString(@"Erase",@"Erase");
         imageView.image=[UIImage imageNamed:@"erase.png"];
     }
-    else if(indexPath.row==self.properties.count+1){
-        if(!mainDelegate.isAnnotated){
-            cell.userInteractionEnabled=NO;
-            cell.backgroundColor=[UIColor grayColor];
-        }
-        labelTitle.text=NSLocalizedString(@"Save",@"Save");
-        imageView.image=[UIImage imageNamed:@"save.png"];
-    }
+    
     else{
         CAction* action=self.properties[indexPath.row];
         NSString *string1;
@@ -114,18 +99,21 @@
             if([action.action isEqualToString:@"Highlight"]){
                 imageView.image=[UIImage imageNamed:@"highlight.png"];
             }else if([action.action isEqualToString:@"Note"]){
-                imageView.image=[UIImage imageNamed:@"note.png"];
+                imageView.image=[UIImage imageNamed:@"Note.png"];
             }
         }
     }
     if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
+         labelTitle.Frame=CGRectMake(0, 5,cell.frame.size.width-55, 40);
         labelTitle.textAlignment=NSTextAlignmentRight;
         imageView.frame=CGRectMake(cell.frame.size.width-45, 5, 37, 37);
     }
+    else
+         labelTitle.Frame=CGRectMake(70, 5,cell.frame.size.width, 40);
     
     [cell addSubview:imageView];
     [cell addSubview:labelTitle];
-    
+    cell.backgroundColor=mainDelegate.cellColor;
     return cell;
 }
 typedef enum{
@@ -154,8 +142,6 @@ typedef enum{
         else{
             if([action.action isEqualToString:@"Highlight"]){
                 annotation=Highlight;
-            }else if([action.action isEqualToString:@"Sign"]){
-                annotation=Sign;
             }else if([action.action isEqualToString:@"Note"]){
                 annotation=Note;
             }

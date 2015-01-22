@@ -38,10 +38,7 @@
 {
     [super viewDidLoad];
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CGFloat red = 29.0f / 255.0f;
-    CGFloat green = 29.0f / 255.0f;
-    CGFloat blue = 29.0f / 255.0f;
-    self.tableView.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
+    self.tableView.backgroundColor=mainDelegate.cellColor;
     
     [self.tableView setSeparatorColor:[UIColor whiteColor]];
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0,0,0,0)];
@@ -81,7 +78,16 @@
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 37, 37)];
     
-    UILabel *labelTitle= [[UILabel alloc] initWithFrame:CGRectMake(70, 5,cell.frame.size.width-140, 40)];
+    UILabel *labelTitle= [[UILabel alloc] init];
+    if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+        labelTitle.Frame=CGRectMake(20, 5,cell.frame.size.width-80, 40);
+        imageView.frame=CGRectMake(cell.frame.size.width-45, 5, 37, 37);
+        labelTitle.textAlignment=NSTextAlignmentRight;
+    }
+    else{
+        labelTitle.Frame=CGRectMake(50, 5,cell.frame.size.width-50, 40);
+        labelTitle.textAlignment=NSTextAlignmentLeft;
+    }
     labelTitle.textColor = [UIColor whiteColor];
     labelTitle.backgroundColor = [UIColor clearColor];
     
@@ -92,18 +98,14 @@
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
     labelTitle.lineBreakMode = NSLineBreakByWordWrapping;
     
-    //NSString* imagename=[NSString stringWithFormat:@"%@.png",actionProperty.label];
     cellImage =  [UIImage imageWithData:[CParser LoadCachedIcons:actionProperty.action]];
     
     [imageView setImage:cellImage];
-    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
-        labelTitle.textAlignment=NSTextAlignmentRight;
-        imageView.frame=CGRectMake(cell.frame.size.width-45, 5, 37, 37);
-    }
+    
     [cell addSubview:imageView];
     [cell addSubview:labelTitle];
-    
-    
+    cell.backgroundColor=mainDelegate.cellColor;
+
     return cell;
 }
 

@@ -18,15 +18,17 @@
 #import "FileManager.h"
 #import "StringEncryption.h"
 #import "NSData+Base64.h"
-
+#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch]== NSOrderedAscending)
 @interface SignatureViewController ()
 
 @end
-
 @implementation SignatureViewController
 {
     AppDelegate *mainDelegate ;
     CGRect _realBounds;
+
+    
+    
     
 }
 
@@ -55,6 +57,9 @@
     if (self) {
         //originalFrame = frame;
         // self.view.alpha = 1;
+        
+                mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        
         self.view.layer.cornerRadius=5;
         self.view.clipsToBounds=YES;
         self.view.layer.borderWidth=1.0;
@@ -64,9 +69,14 @@
         CGFloat blue = 97.0f / 255.0f;
         
         [self.view setBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
-        
-        mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        
+        CGFloat textWidth;
+        if (SYSTEM_VERSION_LESS_THAN(@"8.0"))
+           textWidth=(self.view.frame.size.width/2)-10;
+        else
+         textWidth=380;
+        UIView *paddingView=[[UIView alloc] initWithFrame:CGRectMake(0, 0,10 ,35)];
+        UIView *paddingView1=[[UIView alloc] initWithFrame:CGRectMake(0, 0,10 ,35)];
+        UIView *paddingView2=[[UIView alloc] initWithFrame:CGRectMake(0, 0,10 ,35)];
         
         
         UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, frame.size.width, 25)];
@@ -76,7 +86,11 @@
         lblTitle.backgroundColor = [UIColor clearColor];
         lblTitle.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
         
+        int buttonsY;
+        int signViewY;
         if(mainDelegate.PinCodeEnabled){
+            signViewY=60;
+            buttonsY=450;
             UILabel *lblOldPin = [[UILabel alloc] initWithFrame:CGRectMake(20, 350, 150, 40)];
             lblOldPin.textColor = [UIColor whiteColor];
             lblOldPin.text =NSLocalizedString(@"Signature.OldPinCode",@"Old Pin Code");
@@ -84,8 +98,7 @@
             lblOldPin.backgroundColor = [UIColor clearColor];
             lblOldPin.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
             
-            txtOldPin = [[UITextField alloc] initWithFrame:CGRectMake((frame.size.width-300)/2, 270, 300, 40)];
-            txtOldPin.borderStyle = UITextBorderStyleRoundedRect;
+            txtOldPin = [[UITextField alloc] initWithFrame:CGRectMake(10, 270, textWidth, 40)];
             txtOldPin.font = [UIFont systemFontOfSize:15];
             txtOldPin.placeholder = NSLocalizedString(@"Signature.OldPinCode",@"Old Pin Code");
             txtOldPin.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -95,6 +108,7 @@
             txtOldPin.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
             txtOldPin.secureTextEntry = YES;
             txtOldPin.delegate=self;
+            txtOldPin.backgroundColor=mainDelegate.textColor;
             
             UILabel *lblNewPin = [[UILabel alloc] initWithFrame:CGRectMake(20, 400, 150, 40)];
             lblNewPin.textColor = [UIColor whiteColor];
@@ -103,8 +117,7 @@
             lblNewPin.backgroundColor = [UIColor clearColor];
             lblNewPin.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
             
-            txtPin = [[UITextField alloc] initWithFrame:CGRectMake((frame.size.width-300)/2, 320, 300, 40)];
-            txtPin.borderStyle = UITextBorderStyleRoundedRect;
+            txtPin=[[UITextField alloc] initWithFrame:CGRectMake(10, 320,textWidth, 40)];
             txtPin.font = [UIFont systemFontOfSize:15];
             txtPin.placeholder = NSLocalizedString(@"Signature.PinCode",@"Pin Code");
             txtPin.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -114,6 +127,7 @@
             txtPin.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
             txtPin.secureTextEntry = YES;
             txtPin.delegate=self;
+            txtPin.backgroundColor=mainDelegate.textColor;
             
             UILabel *lblConfirmPin = [[UILabel alloc] initWithFrame:CGRectMake(20, 450, 150, 40)];
             lblConfirmPin.textColor = [UIColor whiteColor];
@@ -122,8 +136,7 @@
             lblConfirmPin.backgroundColor = [UIColor clearColor];
             lblConfirmPin.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
             
-            txtConfirmPin = [[UITextField alloc] initWithFrame:CGRectMake((frame.size.width-300)/2, 370, 300, 40)];
-            txtConfirmPin.borderStyle = UITextBorderStyleRoundedRect;
+            txtConfirmPin = [[UITextField alloc] initWithFrame:CGRectMake(10, 370, textWidth, 40)];
             txtConfirmPin.font = [UIFont systemFontOfSize:15];
             txtConfirmPin.placeholder = NSLocalizedString(@"Signature.PinCodeConfirmation",@"Pin Code Confirmation");
             txtConfirmPin.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -133,38 +146,63 @@
             txtConfirmPin.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
             txtConfirmPin.secureTextEntry = YES;
             txtConfirmPin.delegate=self;
+            txtConfirmPin.backgroundColor=mainDelegate.textColor;
+            
+            if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+                
+                txtOldPin.rightViewMode=UITextFieldViewModeAlways;
+                txtPin.rightViewMode=UITextFieldViewModeAlways;
+                txtConfirmPin.rightViewMode=UITextFieldViewModeAlways;
+                
+                txtOldPin.rightView=paddingView;
+                txtPin.rightView=paddingView1;
+                txtConfirmPin.rightView=paddingView2;
+                
+                
+            }
+            else{
+                txtOldPin.leftViewMode=UITextFieldViewModeAlways;
+                txtPin.leftViewMode=UITextFieldViewModeAlways;
+                txtConfirmPin.leftViewMode=UITextFieldViewModeAlways;
+                
+                txtOldPin.leftView=paddingView;
+                txtPin.leftView=paddingView1;
+                txtConfirmPin.leftView=paddingView2;
+            }
         }
-        sigView=[[Signature alloc]initWithFrame:CGRectMake((frame.size.width-175)/2, 60, 175, 175) signature:mainDelegate.user.signature];
-        CGFloat selectedRed = 52.0f / 255.0f;
-        CGFloat selectedGreen = 52.0f / 255.0f;
-        CGFloat selectedBlue = 52.0f / 255.0f;
-        
-        
+        else
+        {
+            signViewY=100;
+            buttonsY=330;
+        }
+        sigView=[[Signature alloc]initWithFrame:CGRectMake((frame.size.width-175)/2, signViewY, 175, 175) signature:mainDelegate.user.signature];
         UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        saveButton.frame =CGRectMake((frame.size.width-385)/3, 450, 115, 35);
-        saveButton.layer.cornerRadius=5;
-        [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        saveButton.frame =CGRectMake((frame.size.width-385)/3, buttonsY, 115, 35);
+        [saveButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
         [saveButton setTitle:NSLocalizedString(@"Save",@"Save") forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
-        
-        // saveButton.backgroundColor = [UIColor colorWithRed:selectedRed green:selectedGreen blue:selectedBlue alpha:1.0];
-        
+        saveButton.backgroundColor=mainDelegate.buttonColor;
+
         UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        clearButton.frame = CGRectMake(saveButton.frame.origin.x+115+20, 450, 115, 35);
+        clearButton.frame = CGRectMake(saveButton.frame.origin.x+115+20, buttonsY, 115, 35);
         [clearButton setTitle:NSLocalizedString(@"Clear",@"Clear") forState:UIControlStateNormal];
-        [clearButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [clearButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
         [clearButton addTarget:self action:@selector(clear) forControlEvents:UIControlEventTouchUpInside];
-        clearButton.layer.cornerRadius=5;
-        // clearButton.backgroundColor = [UIColor colorWithRed:selectedRed green:selectedGreen blue:selectedBlue alpha:1.0];
+        clearButton.backgroundColor=mainDelegate.buttonColor;
         
         
         UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        cancelButton.frame = CGRectMake(clearButton.frame.origin.x+115+20, 450, 115, 35);
-        cancelButton.layer.cornerRadius=5;
-        [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        cancelButton.frame = CGRectMake(clearButton.frame.origin.x+115+20, buttonsY, 115, 35);
+        [cancelButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
         [cancelButton setTitle:NSLocalizedString(@"Close",@"Close") forState:UIControlStateNormal];
         [cancelButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
-        //  cancelButton.backgroundColor = [UIColor colorWithRed:selectedRed green:selectedGreen blue:selectedBlue alpha:1.0];
+        cancelButton.backgroundColor=mainDelegate.buttonColor;
+        
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+            cancelButton.frame=CGRectMake((frame.size.width-385)/3, buttonsY, 115, 35);
+            clearButton.frame = CGRectMake(cancelButton.frame.origin.x+115+20, buttonsY, 115, 35);
+            saveButton.frame=CGRectMake(clearButton.frame.origin.x+115+20, buttonsY, 115, 35);
+        }
         
         [self.view addSubview:lblTitle];
         if(mainDelegate.PinCodeEnabled){
@@ -212,6 +250,8 @@
     
     
     UIAlertView *alertKO;
+    if (sigView.sigView.image !=nil) {
+
     if((txtPin.text.length==0 || txtConfirmPin.text.length==0)&& mainDelegate.PinCodeEnabled)
     {
         alertKO=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Info",@"Info") message:NSLocalizedString(@"Alert.RequiredFields",@"PLease fill all required fields.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK",@"OK") otherButtonTitles: nil];
@@ -221,6 +261,7 @@
     else{
         if([txtPin.text isEqualToString:txtConfirmPin.text]|| !mainDelegate.PinCodeEnabled)
         {
+             [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Updating",@"Updating ...") maskType:SVProgressHUDMaskTypeBlack];
             NSString *str = txtPin.text;
             NSString * _key = @"EverTeamYears202020";
             StringEncryption *crypto = [[StringEncryption alloc] init];
@@ -233,6 +274,7 @@
             
             
             if([mainDelegate.user.pincode isEqualToString:@""]||mainDelegate.user.pincode ==nil || [mainDelegate.user.pincode isEqualToString:b64EncStrOld] || !mainDelegate.PinCodeEnabled){
+                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                 @try {
                     
                     NSData *myImageData=UIImagePNGRepresentation([sigView signatureImage]);
@@ -258,24 +300,28 @@
                     }
                     
                     NSString *saveString=[self appendXmlSignature:encodedImage withPincode:b64EncStr];
-                    
-                    if(![saveString isEqualToString:@""]){
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [SVProgressHUD dismiss];
+                    if([saveString isEqualToString:@"OK"]){
                         mainDelegate.user.signature=encodedImage;
                         mainDelegate.user.pincode=b64EncStr;
                         [FileManager deleteFileName:@"signature.xml"];
                         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Info",@"Info") message:NSLocalizedString(@"Alert.SignatureSaved",@"Signature Saved Successfully") delegate:self cancelButtonTitle:NSLocalizedString(@"OK",@"OK") otherButtonTitles: nil];
                         [alert show];
                     }else {
-                        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Warning",@"Warning") message:NSLocalizedString(@"Retry",@"Retry") delegate:self cancelButtonTitle:NSLocalizedString(@"OK",@"OK") otherButtonTitles: nil];
+                        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Error",@"Error") message:NSLocalizedString(saveString,@"Retry") delegate:self cancelButtonTitle:NSLocalizedString(@"OK",@"OK") otherButtonTitles: nil];
                         [alert show];
                     }
+                });
                 }
+                 
                 @catch (NSException *ex) {
                     [FileManager appendToLogView:@"SignatureViewController" function:@"save" ExceptionTitle:[ex name] exceptionReason:[ex reason]];
                 }
                 @finally {
                     
                 }
+                 });
             }else {
                 UIAlertView *alert=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Warning",@"Warning")  message:NSLocalizedString(@"Alert.WrongPin",@"Wrong Pincode") delegate:self cancelButtonTitle:NSLocalizedString(@"OK",@"OK") otherButtonTitles: nil];
                 [alert show];
@@ -289,7 +335,13 @@
             
         }
     }
+       }
+    else
+    {
+        alertKO=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Warning",@"Warning")  message:NSLocalizedString(@"Alert.SignView",@"Empty Sign View") delegate:self cancelButtonTitle:NSLocalizedString(@"OK",@"OK") otherButtonTitles: nil];
+        [alertKO show];
     
+    }
 }
 
 
@@ -326,6 +378,18 @@
             [signatureXML2 removeChild:SignXML2];
         }
         [signatureXML2 addChild:nameElement2];
+        
+        GDataXMLElement * signatureId = [GDataXMLNode elementWithName:@"SignatureId" stringValue:mainDelegate.user.signatureId];
+        NSArray *signid = [signatureXML2 elementsForName:@"SignatureId"];
+        if (signid.count > 0) {
+            GDataXMLElement *SignXML2=  [signid objectAtIndex:0];
+            GDataXMLNode *Schild2 = [SignXML2.children objectAtIndex:0];
+            [signatureXML2 removeChild:Schild2];
+            [signatureXML2 removeChild:SignXML2];
+        }
+        [signatureXML2 addChild:signatureId];
+        
+        
         if(mainDelegate.PinCodeEnabled){
             
             NSArray *pincodes2 = [signatureXML2 elementsForName:@"pinCode"];
@@ -423,7 +487,7 @@
         [request setHTTPBody:body];
         [request setTimeoutInterval:mainDelegate.Request_timeOut];
         NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-        returnString = [[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding];
+        returnString = [CParser ValidateWithData:returnData];
     }
     @catch (NSException *ex) {
         [FileManager appendToLogView:@"SignatureViewController" function:@"saveSignature" ExceptionTitle:[ex name] exceptionReason:[ex reason]];

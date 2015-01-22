@@ -11,7 +11,7 @@
 @implementation note
 @synthesize note,ordinate,abscissa,status,PageNb,AttachmentId;
 
--(id)initWithName:(double )abscisa ordinate:(double )ordinat note:(NSString *)notes PageNb:(int)Pagenb AttachmentId:(int)Attachmentid
+-(id)initWithName:(double )abscisa ordinate:(double )ordinat note:(NSString *)notes PageNb:(int)Pagenb AttachmentId:(int)Attachmentid Id:(NSString*)Id
 {
     self = [super init];
     if (self) {
@@ -21,12 +21,14 @@
         self.note = notes;
         self.status=@"NEW";
         self.AttachmentId=Attachmentid;
+        self.Id=Id;
     }
     return self;
 }
 -(void) encodeWithCoder: (NSCoder *) encoder
 {
     [encoder encodeObject: self.status];
+    [encoder encodeObject: self.Id];
     [encoder encodeObject: self.note];
     [encoder encodeObject: [NSNumber numberWithInt:self.abscissa]];
     [encoder encodeObject:[NSNumber numberWithInt:self.ordinate]];
@@ -40,6 +42,7 @@
 -(id) initWithCoder: (NSCoder *) decoder
 {
     self.status=[decoder decodeObject];
+    self.Id=[decoder decodeObject];
     self.note=[decoder decodeObject];
     self.abscissa=[[decoder decodeObject]doubleValue];
     self.ordinate=[[decoder decodeObject]doubleValue];

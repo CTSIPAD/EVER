@@ -118,6 +118,7 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
 
 @implementation PDFDocument{
     AppDelegate *mainDelegate;
+    BOOL isOpened;
 }
 @synthesize annotPoint;
 - (void)dealloc
@@ -331,6 +332,7 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
     
     NSString* dir  = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
     NSString* path = [dir stringByAppendingString:@"/FoxitSaveAnnotation.pdf"];
+    
     const char* file = [path UTF8String];
     
     FILE* fp = fopen(file, "wb");
@@ -914,7 +916,10 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
         if(pt.x<=obj.abscissa+12 && pt.x>=obj.abscissa-12 && pt.y<=obj.ordinate+16 && pt.y>=obj.ordinate-16){
             CGPoint pt1=CGPointMake(obj.abscissa,obj.ordinate);
             if([state isEqualToString:@"erase.."]){
-                [mainDelegate.Notes removeObject:obj];
+                if([obj.status isEqualToString:@"NEW"])
+                    [mainDelegate.Notes removeObject:obj];
+                else
+                     obj.status=@"DELETE";
                 mainDelegate.isAnnotated=YES;
 
             }
@@ -929,9 +934,10 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
   return pt1;
   }
   }
+    CGPoint pt1=pt;
    for(note* obj in mainDelegate.IncomingNotes){
         if(pt.x<=obj.abscissa+12 && pt.x>=obj.abscissa-12 && pt.y<=obj.ordinate+16 && pt.y>=obj.ordinate-16){
-            CGPoint pt1=CGPointMake(obj.abscissa,obj.ordinate);
+            pt1=CGPointMake(obj.abscissa,obj.ordinate);
             
             if([state isEqualToString:@"erase.."]){
                 obj.status=@"DELETE";
@@ -946,12 +952,12 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
                 [mainDelegate.IncomingNotes removeObject:obj];
                 mainDelegate.isAnnotated=YES;
             }
-            
             return pt1;
+
         }
     }
-
-    return pt;
+return pt1;
+    
 }
 -(void)SignAll:(CGPoint)ptLeftTop secondPoint:(CGPoint)ptRightBottom previousPoint:(CGPoint)prevPt{
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -1073,7 +1079,7 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
         [self FreeSignAll:ptLeftTop secondPoint:ptRightBottom previousPoint:prevPt];
     }
     
-    else if ([mainDelegate.Signaction isEqualToString:@"Sign"]){
+    else if ([mainDelegate.Signaction isEqualToString:@"Signature"]){
         [self Sign:ptLeftTop secondPoint:ptRightBottom previousPoint:prevPt];
     }
     
@@ -1089,6 +1095,7 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
 
 -(void)extractText:(CGPoint)pt1
 {
+
     @try {
 //       AppDelegate* mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         pt1=[self searchNotesArray:pt1 state:@"search.."];
@@ -1103,6 +1110,8 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
         
         int buf_size;
         if (res==FS_ERR_SUCCESS) {
+            if (!isOpened) {
+            isOpened=YES;
             FPDF_Annot_GetInfo(m_current_page, annot, FPDF_ANNOTINFO_CONTENTS, NULL, (FS_LPDWORD)&buf_size);
             
             FS_WCHAR* char_buffer = new FS_WCHAR[buf_size];
@@ -1116,8 +1125,9 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
             if (![achived_string isEqualToString:@""]) {
                 
                 
-                UIView *myCustomView = [[UIView alloc] initWithFrame:CGRectMake(20, 100, 280, 300)];
-                [myCustomView setBackgroundColor:[UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.8f]];
+                UIView *myCustomView = [[UIView alloc] initWithFrame:CGRectMake(180, 150, 380, 250)];
+            
+                [myCustomView setBackgroundColor:mainDelegate.bgBlueColor];
                 [myCustomView setAlpha:0.0f];
                 
                 
@@ -1125,18 +1135,30 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
                 UIButton *saveNote = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                 [saveNote addTarget:self action:@selector(saveCustomView:) forControlEvents:UIControlEventTouchUpInside];
                 [saveNote setTitle:@"Save" forState:UIControlStateNormal];
-                [saveNote setFrame:CGRectMake(20, 200, 240, 40)];
+                [saveNote setFrame:CGRectMake(20, 200, 100, 40)];
+                [saveNote setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+                saveNote.backgroundColor=mainDelegate.buttonColor;
                 [myCustomView addSubview:saveNote];
                 
+                
+                UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                [clearButton addTarget:self action:@selector(clear) forControlEvents:UIControlEventTouchUpInside];
+                [clearButton setTitle:@"Clear" forState:UIControlStateNormal];
+                [clearButton setFrame:CGRectMake(saveNote.frame.origin.x+saveNote.frame.size.width+15, saveNote.frame.origin.y, saveNote.frame.size.width, 40)];
+                [clearButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+                clearButton.backgroundColor=mainDelegate.buttonColor;
+                [myCustomView addSubview:clearButton];
                 
                 UIButton *dismissButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                 [dismissButton addTarget:self action:@selector(dismissCustomView:) forControlEvents:UIControlEventTouchUpInside];
                 [dismissButton setTitle:@"Close" forState:UIControlStateNormal];
-                [dismissButton setFrame:CGRectMake(20, 250, 240, 40)];
+                [dismissButton setFrame:CGRectMake(clearButton.frame.origin.x+clearButton.frame.size.width+15, saveNote.frame.origin.y, saveNote.frame.size.width, 40)];
+                [dismissButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+                dismissButton.backgroundColor=mainDelegate.buttonColor;
                 [myCustomView addSubview:dismissButton];
                 
                 
-                textView = [[UITextView alloc] initWithFrame:CGRectMake(20, 20, 240, 150)];
+                textView = [[UITextView alloc] initWithFrame:CGRectMake(20, 20, 340, 150)];
                 [textView setText:achived_string];
                 [myCustomView addSubview:textView];
                 
@@ -1148,7 +1170,7 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
                 
                 
             }
-            
+        }
         }
     }  @catch (NSException *exception) {
         NSLog(@"%@",exception);
@@ -1156,10 +1178,15 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
     @finally {
         
         
-    }
+    
+        }
     
 }
 
+-(void) clear
+{
+textView.text=@"";
+}
 - (void)dismissCustomView:(UIButton *)sender
 {
     [UIView animateWithDuration:0.2f animations:^{
@@ -1167,10 +1194,16 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
     }completion:^(BOOL done){
         [sender.superview removeFromSuperview];
     }];
+    isOpened=NO;
+    
 }
 
 - (void)saveCustomView:(UIButton *)sender
 {
+    
+    if (![textView.text isEqualToString:@""]) {
+        
+    
     int annot_count = 0;
     FPDF_Annot_GetCount(m_current_page, &annot_count);
     FPDF_ANNOT annot;
@@ -1186,14 +1219,23 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
     for(HighlightClass* obj in mainDelegate.IncomingHighlights){
         XH=CGPointMake(obj.abscissa, obj.ordinate);
         YH=CGPointMake(obj.x1, obj.y1);
+        
+        FPDF_PAGE temp_curPage = [self getPDFPage:obj.PageNb];
+        
+        [self setCurPage:temp_curPage];
+         if(![obj.status isEqualToString:@"DELETE"]){
         [obj setIndex:([mainDelegate.IncomingHighlights indexOfObject:obj])];
         [self AddHighlightAnnot:XH secondPoint:YH previousPoint:ZH];
+         }
         mainDelegate.highlightNow=NO;
     }
 
     for(HighlightClass* obj in mainDelegate.Highlights){
         XH=CGPointMake(obj.abscissa, obj.ordinate);
         YH=CGPointMake(obj.x1, obj.y1);
+        FPDF_PAGE temp_curPage = [self getPDFPage:obj.PageNb];
+        
+        [self setCurPage:temp_curPage];
         if(![obj.status isEqualToString:@"DELETE"]){
             [obj setIndex:([mainDelegate.Highlights indexOfObject:obj]+[mainDelegate.IncomingHighlights count])];
             [self AddHighlightAnnot:XH secondPoint:YH previousPoint:ZH];
@@ -1203,15 +1245,21 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
     
     for(note* obj in mainDelegate.Notes){
         CGPoint point=CGPointMake(obj.abscissa, obj.ordinate);
+        FPDF_PAGE temp_curPage = [self getPDFPage:obj.PageNb];
+        
+        [self setCurPage:temp_curPage];
         if(![obj.status isEqualToString:@"DELETE"])
             [self AddNote:point secondPoint:point  note:obj.note];
         mainDelegate.highlightNow=NO;
     }
         for(note* obj in mainDelegate.IncomingNotes){
         CGPoint point=CGPointMake(obj.abscissa, obj.ordinate);
+            FPDF_PAGE temp_curPage = [self getPDFPage:obj.PageNb];
+            [self setCurPage:temp_curPage];
         [self AddNote:point secondPoint:point  note:obj.note];
         mainDelegate.highlightNow=NO;
     }
+        [self setCurPage:m_current_page];
     [m_pdfview setNeedsDisplay];
 
    // [self AddReplaceNote:annotPoint note:textView.text];
@@ -1222,6 +1270,14 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
     }completion:^(BOOL done){
         [sender.superview removeFromSuperview];
     }];
+    
+    }
+    else
+    {
+        UIAlertView *alertview=[[UIAlertView alloc] initWithTitle:@"Warning" message:NSLocalizedString(@"NoteFieldEmpty", @"note text is empty") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil];
+        [alertview show];
+    }
+    isOpened=NO;
 }
 
 -(void)AddReplaceNote:(CGPoint)pt1  note:(NSString*)msg
@@ -1347,6 +1403,12 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
             if([state isEqualToString:@"erase.."]){
                 if(![obj.status isEqualToString:@"DELETE"])
                     [mainDelegate.Highlights removeObject:obj];
+//                else{
+//                    HighlightClass* tempobj=[[HighlightClass alloc]init];
+//                    tempobj=obj;
+//                    tempobj.status=@"NEW";
+//                    [mainDelegate.IncomingHighlights removeObject:tempobj];
+//                }
                 mainDelegate.isAnnotated=YES;
                 
             }
@@ -1373,16 +1435,23 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
 }
 - (void)deleteAllAnnot
 {
+    
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSError *error = nil;
+    NSFileManager *fm = [NSFileManager defaultManager];
+    [fm removeItemAtPath:[NSString stringWithFormat:@"%@/FoxitSaveAnnotation.pdf", documentsDirectory] error:&error];
+    for (int i=0; i<m_pageCount; i++) {
+        
     int count=0;
-    FPDF_Annot_GetCount(m_current_page, &count);
+    FPDF_Annot_GetCount([self getPDFPage:i], &count);
  while(count>0){
 	count--;
-    FPDF_Annot_Delete(m_current_page,(FPDF_ANNOT)count);
+    FPDF_Annot_Delete([self getPDFPage:i],(FPDF_ANNOT)count);
 	[m_pdfview setNeedsDisplay];
     
    }
     m_nAnnotIndex=count;
-
+    }
 }
 -(void)eraseAnnotation:(CGPoint)pt1 secondPoint:(CGPoint)pt2 {
     FPDF_ANNOT annot;
@@ -1401,6 +1470,8 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
     for(HighlightClass* obj in mainDelegate.IncomingHighlights){
         XH=CGPointMake(obj.abscissa, obj.ordinate);
         YH=CGPointMake(obj.x1, obj.y1);
+        FPDF_PAGE temp_curPage = [self getPDFPage:obj.PageNb];
+        [self setCurPage:temp_curPage];
         [obj setIndex:[mainDelegate.IncomingHighlights indexOfObject:obj]];
         
         [self AddHighlightAnnot:XH secondPoint:YH previousPoint:ZH];
@@ -1409,6 +1480,8 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
     for(HighlightClass* obj in mainDelegate.Highlights){
         XH=CGPointMake(obj.abscissa, obj.ordinate);
         YH=CGPointMake(obj.x1, obj.y1);
+        FPDF_PAGE temp_curPage = [self getPDFPage:obj.PageNb];
+        [self setCurPage:temp_curPage];
         if(![obj.status isEqualToString:@"DELETE"]){
             [obj setIndex:([mainDelegate.Highlights indexOfObject:obj]+[mainDelegate.IncomingHighlights count])];
             [self AddHighlightAnnot:XH secondPoint:YH previousPoint:ZH];
@@ -1418,6 +1491,8 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
     
     for(note* obj in mainDelegate.Notes){
         CGPoint point=CGPointMake(obj.abscissa, obj.ordinate);
+        FPDF_PAGE temp_curPage = [self getPDFPage:obj.PageNb];
+        [self setCurPage:temp_curPage];
         if(![obj.status isEqualToString:@"DELETE"])
             [self AddNote:point secondPoint:point  note:obj.note];
         mainDelegate.highlightNow=NO;
@@ -1425,10 +1500,15 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
     
     for(note* obj in mainDelegate.IncomingNotes){
         CGPoint point=CGPointMake(obj.abscissa, obj.ordinate);
+        FPDF_PAGE temp_curPage = [self getPDFPage:obj.PageNb];
+        [self setCurPage:temp_curPage];
         [self AddNote:point secondPoint:point  note:obj.note];
         mainDelegate.highlightNow=NO;
     }
-
+    [self setCurPage:m_current_page];
+   NSString* dir  = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+   NSString* path = [dir stringByAppendingString:@"/FoxitSaveAnnotation.pdf"];
+    [self.Attachment saveinDirectory:self.Correspondence.Id strUrl:path];
 }
 
 @end

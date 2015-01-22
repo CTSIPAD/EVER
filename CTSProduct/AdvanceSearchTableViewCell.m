@@ -11,12 +11,16 @@
 #import "PMCalendar.h"
 #import "DropDownView.h"
 #import "AppDelegate.h"
+#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch]== NSOrderedAscending)
 @implementation AdvanceSearchTableViewCell{
     UIButton *button;
     DropDownView* dropDownView;
     CSearchCriteria* criteria;
     AppDelegate* appDelegate;
     ActionTaskController *actionController;
+    UIView *calendarView;
+    BOOL ShowCalender;
+    int mywidth;
 }
 @synthesize txtCriteria,pmCC,criteria,lbltitle;
 
@@ -25,33 +29,57 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UIInterfaceOrientation orientation=[[UIApplication sharedApplication]statusBarOrientation];
+        lbltitle=[[UILabel alloc]init];
+        if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+            mywidth=120;
+        }else{
+            if (UIInterfaceOrientationIsPortrait(orientation)) {
+                mywidth=120;
+            }
+            else
+                mywidth=360;
+            
+        }
         
-        self.backgroundColor=[UIColor clearColor];
-        lbltitle=[[UILabel alloc]initWithFrame:CGRectMake(0, 5, 445, 25)];
-        lbltitle.backgroundColor=[UIColor clearColor];
-        lbltitle.textColor=[UIColor whiteColor];
-        //lbltitle.font=[UIFont fontWithName:@"Helvetica" size:16.0];
+        UIColor *textColor=[UIColor colorWithRed:195.0/255.0f green:224.0/255.0f blue:242.0/255.0f alpha:1.0f];
+        
+        self.backgroundColor=[UIColor blackColor];
+        if ([appDelegate.IpadLanguage isEqualToString:@"ar"]) {
+            if (!SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+                lbltitle.Frame=CGRectMake(self.frame.size.width-30, 5, 445, 25);
+            }
+            else
+            {
+                
+                lbltitle.Frame=CGRectMake(self.frame.size.width-35, 5, 445, 25);
+            }
+            
+            
+        }
+        else
+        {
+            if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+                lbltitle.Frame=CGRectMake(50, 5, 445, 25);
+            }
+            else
+                lbltitle.Frame=CGRectMake(50, 5, 445, 25);
+            
+        }
+        
+        
+        lbltitle.textColor=[UIColor colorWithRed:1.0f/255.0f green:50.0f/255.0f blue:102.0f/255.0f alpha:1.0f];
         lbltitle.font=[UIFont fontWithName:@"Helvetica-Bold" size:16.0];
-        if([appDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
-            lbltitle.textAlignment=NSTextAlignmentRight;
         [self addSubview:lbltitle];
-        
-        txtCriteria=[[UITextField alloc]initWithFrame:CGRectMake(0, 30, 445, 45)];
-        txtCriteria.backgroundColor=[UIColor whiteColor];
+        txtCriteria=[[UITextField alloc]initWithFrame:CGRectMake(20, 30, [UIScreen mainScreen].bounds.size.width-70, 45)];
+        txtCriteria.backgroundColor=textColor;
         txtCriteria.textColor=[UIColor blackColor];
         
-        CGFloat red = 0.0f / 255.0f;
-        CGFloat green = 155.0f / 255.0f;
-        CGFloat blue = 213.0f / 255.0f;
-        
-        //        [txtCriteria.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.5] CGColor]];
-        [txtCriteria.layer setBorderColor:[[[UIColor colorWithRed:red green:green blue:blue alpha:1.0] colorWithAlphaComponent:0.5] CGColor]];
-        [txtCriteria.layer setBorderWidth:1.0];
-        if([appDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
+        if([appDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
             txtCriteria.textAlignment=NSTextAlignmentRight;
-        txtCriteria.layer.cornerRadius = 5;
-        txtCriteria.clipsToBounds = YES;
-        
+            lbltitle.textAlignment=NSTextAlignmentRight;
+            
+        }
         
         
         [self addSubview:txtCriteria];
@@ -60,50 +88,75 @@
     return self;
 }
 
+
 -(void)updateCellwithCriteria:(CSearchCriteria*)searchCriteria{
     if(searchCriteria !=nil){
         criteria=searchCriteria;
+        
+        if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+            if([appDelegate.IpadLanguage isEqualToString:@"en"]){
+                
+                txtCriteria.frame=CGRectMake(50, 30, [UIScreen mainScreen].bounds.size.width-110, 45);
+            }
+            else{
+                txtCriteria.frame=CGRectMake(35, 30, [UIScreen mainScreen].bounds.size.width-70, 45);
+                
+            }
+        }
+        else{
+            if([appDelegate.IpadLanguage isEqualToString:@"en"])
+            {
+                txtCriteria.frame=CGRectMake(50, 30, [UIScreen mainScreen].bounds.size.width-mywidth+15, 45);
+            }
+            else{
+                txtCriteria.frame=CGRectMake(35, 30, [UIScreen mainScreen].bounds.size.width-(mywidth-50), 45);
+            }
+        }
+        txtCriteria.enabled=true;
         lbltitle.text=searchCriteria.label;
         button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(0, 0, 30, 30);
+        button.frame = CGRectMake(2, 2, 50, 45);
+        
         txtCriteria.tag=self.tag;
         if([ criteria.type.lowercaseString isEqualToString:@"date"]){
+            if([appDelegate.IpadLanguage isEqualToString:@"en"]){
+                txtCriteria.frame=CGRectMake(50, 30, [UIScreen mainScreen].bounds.size.width-mywidth-35, 45);
+            }
+            else{
+                txtCriteria.frame=CGRectMake(35, 30, [UIScreen mainScreen].bounds.size.width-mywidth, 45);
+            }
+            calendarView=[[UIView alloc] initWithFrame:CGRectMake(txtCriteria.frame.origin.x+txtCriteria.frame.size.width,30, 50, 45)];
+            calendarView.backgroundColor=appDelegate.buttonColor;
+            [calendarView addSubview:button];
+            txtCriteria.enabled=false;
             txtCriteria.clearButtonMode = UITextFieldViewModeWhileEditing;
             [button setImage:[UIImage imageNamed:@"calendar.png"] forState:UIControlStateNormal];
             [button addTarget:self action:@selector(ShowCalendar) forControlEvents:UIControlEventTouchUpInside];
             
-            txtCriteria.rightView = button;
+            [self addSubview:calendarView];
             txtCriteria.rightViewMode = UITextFieldViewModeUnlessEditing;
             
         }
         else if([criteria.type.lowercaseString isEqualToString:@"list"]){
-            txtCriteria.clearButtonMode = UITextFieldViewModeWhileEditing;
-            [button setImage:[UIImage imageNamed:@"down-arrow.png"] forState:UIControlStateNormal];
-            [button addTarget:self action:@selector(Showlist) forControlEvents:UIControlEventTouchUpInside];
             
-            txtCriteria.rightView = button;
+            txtCriteria.clearButtonMode = UITextFieldViewModeWhileEditing;
+            [button setImage:[UIImage imageNamed:@"dropDownTag.png"] forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(Showlist) forControlEvents:UIControlEventTouchUpInside];
+            button.backgroundColor=[UIColor colorWithRed:149.0/255.0f green:194.0/255.0f blue:233.0/255.0f alpha:1.0f];
+            txtCriteria.enabled=false;
+            if([appDelegate.IpadLanguage isEqualToString:@"en"]){
+                txtCriteria.frame=CGRectMake(50, 30, [UIScreen mainScreen].bounds.size.width-mywidth-35, 45);
+            }
+            else{
+                txtCriteria.frame=CGRectMake(35, 30, [UIScreen mainScreen].bounds.size.width-mywidth, 45);
+            }
+            button.frame=CGRectMake(txtCriteria.frame.origin.x+txtCriteria.frame.size.width,30, 50, 45);
+            
+            [self addSubview:button];
             txtCriteria.rightViewMode = UITextFieldViewModeUnlessEditing;
-            //            NSArray *array=[searchCriteria.options allValues];
-            //
-            //            //jen dropdownview
-            //            dropDownView = [[DropDownView alloc] initWithData:array cellHeight:30 heightTableView:200 paddingTop:-8 paddingLeft:-5 paddingRight:-10 refView:txtCriteria animation:BLENDIN openAnimationDuration:2 closeAnimationDuration:2];
-            //
+            
             self.criteria=searchCriteria;
             dropDownView.myDelegate = self;
-            
-            // [self.superview addSubview:dropDownView.view];
-            
-            
-            
-            
-            //            actionController = [[ActionTaskController alloc] initWithStyle:UITableViewStyleGrouped];
-            //            actionController.rectFrame=CGRectMake(0, 80, 300,200) ;
-            //            actionController.isDirection=YES;
-            //            actionController.actions =[NSMutableArray  arrayWithArray:array];
-            //            [self addSubview:actionController.view];
-            
-            
-            
             
         }
     }
@@ -121,12 +174,18 @@
         if ([view isMemberOfClass:[UITableView class]]){
             [view removeFromSuperview];
             opened=YES;
+            
         }
         
     }
     if (!opened) {
         actionController = [[ActionTaskController alloc] initWithStyle:UITableViewStyleGrouped];
-        actionController.rectFrame=CGRectMake(self.frame.origin.x, self.frame.origin.y+65, self.frame.size.width-5,500) ;
+        if ([appDelegate.IpadLanguage isEqualToString:@"ar"]) {
+            actionController.rectFrame=CGRectMake(self.frame.origin.x+35, self.frame.origin.y+txtCriteria.frame.origin.y+txtCriteria.frame.size.height, txtCriteria.frame.size.width,500) ;
+        }
+        else
+            actionController.rectFrame=CGRectMake(self.frame.origin.x+48, self.frame.origin.y+txtCriteria.frame.origin.y+txtCriteria.frame.size.height, txtCriteria.frame.size.width,500) ;
+        
         actionController.isDirection=NO;
         actionController.isDestinationSection=NO;
         actionController.delegate = self;
@@ -149,15 +208,14 @@
         
     }
 }
+
 - (void)setFrame:(CGRect)frame {
     NSInteger i=0;
     if (self.superview){
         i=self.superview.frame.size.width;
-        float cellWidth = 450.0;
-        
+        float cellWidth = self.frame.size.width;
         frame.origin.x = (i - cellWidth) / 2;
         frame.size.width = cellWidth;
-        txtCriteria.frame=CGRectMake(0, 30, cellWidth-5, 40);
     }
     
     [super setFrame:frame];
@@ -166,38 +224,34 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-    
-    // Configure the view for the selected state
 }
 -(void)ShowCalendar{
-    
+    ShowCalender=YES;
     if ([self.pmCC isCalendarVisible])
     {
         [self.pmCC dismissCalendarAnimated:NO];
     }
     
-    BOOL isPopover = YES;
     self.pmCC = [[PMCalendarController alloc] initWithThemeName:@"default"];
     self.pmCC.delegate = self;
     self.pmCC.mondayFirstDayOfWeek = NO;
-    [self.pmCC presentCalendarFromView:button.superview.superview.superview
-              permittedArrowDirections:PMCalendarArrowDirectionUp
-                             isPopover:isPopover
-                              animated:YES custom:YES];
-    
+    //((self.tag+1)*90)
+    [self.pmCC presentCalendarFromRect:CGRectMake(calendarView.frame.origin.x,self.frame.origin.y+30 , calendarView.frame.size.width, calendarView.frame.size.height) inView:self.superview.superview permittedArrowDirections:PMCalendarArrowDirectionRight|PMCalendarArrowDirectionLeft animated:YES];
     
     self.pmCC.period = [PMPeriod oneDayPeriodWithDate:[NSDate date]];
     [self calendarController:pmCC didChangePeriod:pmCC.period];
     [self bringSubviewToFront:self.pmCC.view];
+    ShowCalender=NO;
 }
 
 - (void)calendarController:(PMCalendarController *)calendarController didChangePeriod:(PMPeriod *)newPeriod
 {
-    NSString *currentDate = [[NSDate date] dateStringWithFormat:@"yyyy-MM-dd"];
+    //  NSString *currentDate = [[NSDate date] dateStringWithFormat:@"yyyy-MM-dd"];
     NSString *newPeriodDate = [newPeriod.endDate dateStringWithFormat:@"yyyy-MM-dd"];
-    if(![newPeriodDate isEqualToString:currentDate])
+    txtCriteria.text = [NSString stringWithFormat:@"%@",newPeriodDate];
+    if(!ShowCalender)
     {
-        txtCriteria.text = [NSString stringWithFormat:@"%@",newPeriodDate];
+        
         
         [pmCC dismissCalendarAnimated:YES];
     }

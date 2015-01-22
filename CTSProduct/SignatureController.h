@@ -28,6 +28,7 @@
 -(void)PopUpCommentDialog:(UITableViewController*)viewcontroller Action:(CAction *)action document:(ReaderDocument*)document;
 -(void)executeAction:(NSString*)action note:(NSString*)Note movehome:(BOOL)movehome;
 -(void)HandSign;
+-(void)Sign;
 @end
 
 @interface SignatureController : UITableViewController{

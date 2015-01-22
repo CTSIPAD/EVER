@@ -28,7 +28,7 @@
     NSInteger menuItemsCount;
     NSInteger totalMenuItemsCount;
     BOOL canFound;
-    
+    int x;
 }
 @end
 
@@ -51,24 +51,31 @@
     CGFloat redsep = 12.0f / 255.0f;
     CGFloat greensep = 93.0f / 255.0f;
     CGFloat bluesep = 174.0f / 255.0f;
+    
+    UIColor *color=[UIColor colorWithRed:redsep green:greensep blue:bluesep alpha:1.0];
+    
     self.tableView.opaque=NO;
-    
-    [self.tableView setSeparatorColor:[UIColor colorWithRed:redsep green:greensep blue:bluesep alpha:1.0]];
-    self.tableView.backgroundColor =[UIColor colorWithRed:redsep green:greensep blue:bluesep alpha:1.0];
-    
-    
-    
+
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0,0,0,0)];
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     menuItemsCount=mainDelegate.user.menu.count;
-    totalMenuItemsCount=menuItemsCount+2;//logo+search
+    if (mainDelegate.isOfflineMode) {
+        totalMenuItemsCount=menuItemsCount;
+        x=0;
+    }
+    else
+    {
+    totalMenuItemsCount=menuItemsCount+1;//search
+        x=1;
+    }
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     
-    //self.tableView.backgroundColor = [UIColor blackColor];
+    self.tableView.backgroundColor =color;
     
     self.tableView.layer.borderWidth=2;
-    self.tableView.layer.borderColor=[[UIColor colorWithRed:redsep green:greensep blue:bluesep alpha:1.0]CGColor];
+    self.tableView.layer.borderColor=[color CGColor];
+    
     
     
 }
@@ -100,13 +107,14 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    if(menuItemsCount>4)
-        return (764-20)/6;
-    else{
-        if(indexPath.section==0)//logo
-            return (764-20)/6;
-        else  return 764/totalMenuItemsCount;
-    }
+//    if(menuItemsCount>4)
+//        return (764-20)/6;
+//    else{
+//        if(indexPath.section==0)//logo
+//            return (764-20)/6;
+//        else  return 764/totalMenuItemsCount;
+//    }
+    return 155;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -132,107 +140,71 @@
     labelText.lineBreakMode = NSLineBreakByWordWrapping;
     labelText.numberOfLines = 0;
     UIView *bgColorView = [[UIView alloc] init];
-    
-    
     NSInteger rowsNumber=totalMenuItemsCount;
-    if(indexPath.row==0){//logo
-        CGFloat redview = 12.0f / 255.0f;
-        CGFloat greenview = 93.0f / 255.0f;
-        CGFloat blueview= 174.0f / 255.0f;
-        
-        CGFloat red = 1.0f / 255.0f;
-        CGFloat green= 49.0f / 255.0f;
-        CGFloat blue= 97.0f / 255.0f;
-        
-        UIView *bl = [[UIView alloc] initWithFrame:CGRectMake(5, 5, self.tableView.frame.size.width-10, 114)];
-        UIImage *Logo = [UIImage imageWithData:mainDelegate.logo];
-        bl.backgroundColor = [UIColor colorWithRed:redview green:greenview blue:blueview alpha:1.0];
-        bl.layer.contents = (id)Logo.CGImage;
-        cell.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
-        [cell.contentView addSubview:bl];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.userInteractionEnabled = NO;
-        
+    if (indexPath.row==rowsNumber-x) {
+        imageView.image=[UIImage imageNamed:[NSString stringWithFormat:@"MainSearchimg.png"]];
+        labelText.text=NSLocalizedString(@"Search",@"Search");
+        cell.backgroundColor = mainDelegate.cellColor;
         
     }
     else
-        if(indexPath.row==rowsNumber-1){//search
-            imageView.image=[UIImage imageNamed:[NSString stringWithFormat:@"cts_Search.png"]];
-            labelText.text=NSLocalizedString(@"Search",@"Search");
-            CGFloat red = 12.0f / 255.0f;
-            CGFloat green = 93.0f / 255.0f;
-            CGFloat blue= 174.0f / 255.0f;
-            cell.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
-            
-        }
-        else {
-            CGFloat red = 12.0f / 255.0f;
-            CGFloat green = 93.0f / 255.0f;
-            CGFloat blue= 174.0f / 255.0f;
-            cell.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
-            if(indexPath.row == 3){
-                NSData * data= [NSData dataWithBase64EncodedString:((CMenu*)mainDelegate.user.menu[indexPath.row-1]).icon];
-                UIImage *cellImage = [UIImage imageWithData:data];
-                [imageView setImage:cellImage];
-                //imageView.image=[UIImage imageNamed:[NSString stringWithFormat:@"cts_Inbound.png"]];
-            }
-            else
-                if(indexPath.row==2){
-                    NSData * data= [NSData dataWithBase64EncodedString:((CMenu*)mainDelegate.user.menu[indexPath.row-1]).icon];
-                    UIImage *cellImage = [UIImage imageWithData:data];
-                    [imageView setImage:cellImage];
-                    
-                }
-                else{
-                    
-                    NSData * data= [NSData dataWithBase64EncodedString:((CMenu*)mainDelegate.user.menu[indexPath.row-1]).icon];
-                    UIImage *cellImage = [UIImage imageWithData:data];
-                    [imageView setImage:cellImage];
-                    
-                }
-            labelText.text=((CMenu*)mainDelegate.user.menu[indexPath.row-1]).name;
-            
-            
-        }
-    
+    {
+        cell.backgroundColor = mainDelegate.cellColor;
+        NSData * data= [NSData dataWithBase64EncodedString:((CMenu*)mainDelegate.user.menu[indexPath.row]).icon];
+        UIImage *cellImage = [UIImage imageWithData:data];
+        [imageView setImage:cellImage];
+        labelText.text=((CMenu*)mainDelegate.user.menu[indexPath.row]).name;
+        
+    }
+  
+
     [cell.contentView addSubview:imageView];
     [cell.contentView addSubview:labelText];
-    bgColorView.backgroundColor = [UIColor colorWithRed:1.0f / 255.0f green:49.0f / 255.0f blue:97.0f / 255.0f alpha:1.0];//blue
+     bgColorView.backgroundColor = [UIColor colorWithRed:47.0f / 255.0f green:129.0f / 255.0f blue:211.0f / 255.0f alpha:1.0];
     bgColorView.layer.masksToBounds = YES;
-    cell.selectedBackgroundView = bgColorView;
+   cell.selectedBackgroundView = bgColorView;
     
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath  {
     @try{
-        
+        NSLog(@"Info: Entering didSelectRowAtIndexPath method in MainMenuViewController.");
+        mainDelegate.SearchClicked=NO;
         UINavigationController *navController=[mainDelegate.splitViewController.viewControllers objectAtIndex:1];
         [navController setNavigationBarHidden:YES animated:YES];
         mainDelegate.inboxForArchiveSelected = indexPath.row;
-        
-        if(indexPath.row!=0){
+
             /***** search button *****/
-            if(indexPath.row==totalMenuItemsCount-1){
-                mainDelegate.selectedInbox=4;
+           
+            if(indexPath.row==totalMenuItemsCount-x){
+                NSLog(@"Info: Clicked Search button in grid.");
+                mainDelegate.selectedInbox=-1;
                 if(mainDelegate.searchModule ==nil){
                     NSString* searchUrl;
+                    NSLog(@"Info:preparing URL");
+
                     if(mainDelegate.SupportsServlets)
                         searchUrl = [NSString stringWithFormat:@"http://%@?action=BuildAdvancedSearch&token=%@&language=%@",mainDelegate.serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
                     else
                         searchUrl = [NSString stringWithFormat:@"http://%@/BuildAdvancedSearch?token=%@&language=%@",mainDelegate.serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
-                    // NSURL *xmlUrl = [NSURL URLWithString:searchUrl];
-                    //  NSData *searchXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+                    NSLog(@"Info:URL=%@",searchUrl);
+                    NSLog(@"Info:preparing Request");
+
                     NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:searchUrl] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
+                    NSLog(@"Info:Calling Request");
+                    NSLog(@"Info: Getting search components .");
+
                     NSData *searchXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
                     
                     NSString *validationResult=[CParser ValidateWithData:searchXmlData];
                     if(![validationResult isEqualToString:@"OK"]){
+                        NSLog(@"Error: failed to get search components .");
+                        NSLog(@"Error:%@",validationResult);
                         [self ShowMessage:validationResult];
                     }
-                    else{
-                        
-                        
+                    else
+                    {
                         mainDelegate.searchModule=[CParser loadSearchWithData:searchXmlData];
                     }
                     
@@ -245,10 +217,14 @@
             /*****end search button *****/
             
             else{
-                
+                NSLog(@"Info:Inbox Clicked");
                 
                 mainDelegate.isBasketSelected = YES;
-                CMenu* currentInbox=((CMenu*)mainDelegate.user.menu[indexPath.row-1]);
+                /// must change
+                //int realindex=indexPath.row;
+                //NSMutableArray *arayTest=(CMenu*)mainDelegate.user.menu;
+              //  CMenu* currentInbox=((CMenu*)mainDelegate.user.menu[indexPath.row]);
+                CMenu* currentInbox=((CMenu*)mainDelegate.user.menu[indexPath.row]);
                 
                 
                 //                if(mainDelegate.isOfflineMode){
@@ -260,7 +236,6 @@
                 //[NSThread detachNewThreadSelector:@selector(increaseLoading) toTarget:self withObject:nil];
                 [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Loading",@"Loading ...") maskType:SVProgressHUDMaskTypeBlack];
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                    
                     NSMutableDictionary *correspondences;
                     if(!mainDelegate.isOfflineMode){
                         NSString* correspondenceUrl;
@@ -269,20 +244,28 @@
                             showthumb=@"true";
                         else
                             showthumb=@"false";
+                        NSLog(@"Info:Preparing Request");
                         if(mainDelegate.SupportsServlets)
                             correspondenceUrl = [NSString stringWithFormat:@"http://%@?action=GetCorrespondences&token=%@&inboxId=%d&index=%d&pageSize=%d&language=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,currentInbox.menuId,0,mainDelegate.SettingsCorrNb,mainDelegate.IpadLanguage,showthumb];
                         else
                             correspondenceUrl = [NSString stringWithFormat:@"http://%@/GetCorrespondences?token=%@&inboxId=%d&index=%d&pageSize=%d&language=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,currentInbox.menuId,0,mainDelegate.SettingsCorrNb,mainDelegate.IpadLanguage,showthumb];
+                        
+                    
+                        NSLog(@"Info:URl=%@",correspondenceUrl);
+                        NSLog(@"Info:Getting Correspondences");
+
                         // NSURL *xmlUrl = [NSURL URLWithString:correspondenceUrl];
                         // NSData *menuXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
                         NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:correspondenceUrl] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
+
                         NSData *menuXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+                        
                         correspondences=[CParser loadCorrespondencesWithData:menuXmlData];
                     }
                     else{
                         correspondences=[CParser LoadCorrespondences:currentInbox.menuId];
                     }
-                    
+                    if(correspondences!=nil){
                     
                     if(!mainDelegate.isOfflineMode){
                         
@@ -290,6 +273,8 @@
                             
                             
                             NSString* searchUrl;
+                            NSLog(@"Info:Preparing Request");
+
                             if(mainDelegate.SupportsServlets)
                                 searchUrl= [NSString stringWithFormat:@"http://%@?action=BuildAdvancedSearch&token=%@&language=%@",mainDelegate.serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
                             else
@@ -298,11 +283,15 @@
                             NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:searchUrl] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
                             // NSData *menuXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
                             NSData *searchXmlData;
+                            NSLog(@"Info:URl=%@",searchUrl);
+                            NSLog(@"Info:Getting search components");
                             if(!mainDelegate.isOfflineMode){
                                 //  searchXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
                                 searchXmlData =[NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
                                 NSString *validationResult=[CParser ValidateWithData:searchXmlData];
                                 if(![validationResult isEqualToString:@"OK"]){
+                                    NSLog(@"Error: failed to get search components .");
+                                    NSLog(@"Error: %@",validationResult);
                                     [self ShowMessage:validationResult];
                                 }
                                 else{
@@ -316,7 +305,8 @@
                                 
                             }
                         }
-                    }else{
+                    }
+                    else{
                         mainDelegate.searchModule=[[CSearch alloc]init];
                     }
                     // mainDelegate.searchModule.correspondenceList = [CParser loadSearchCorrespondencesWithData:menuXmlData];
@@ -324,16 +314,14 @@
                     mainDelegate.searchModule.correspondenceList = [correspondences objectForKey:[NSString stringWithFormat:@"%ld",(long)currentInbox.menuId]];
                     
                     
+                    // changed
+                    NSMutableArray* res= ((CMenu*)mainDelegate.user.menu[indexPath.row]).correspondenceList=[correspondences objectForKey:[NSString stringWithFormat:@"%d",currentInbox.menuId]];
                     
-                    ((CMenu*)mainDelegate.user.menu[indexPath.row-1]).correspondenceList=[correspondences objectForKey:[NSString stringWithFormat:@"%d",currentInbox.menuId]];
                     
                     
-                    
-                    if(((CMenu*)mainDelegate.user.menu[indexPath.row-1]).correspondenceList.count ==0){
+                    if(res.count ==0){
                         canFound=NO;
-                        NorecordsViewController *norecordsView=[[NorecordsViewController alloc] init];
-                        [navController pushViewController:norecordsView animated:YES];
-                        mainDelegate.selectedInbox=((CMenu*)mainDelegate.user.menu[tableView.indexPathForSelectedRow.row-1]).menuId;
+                        
                         
                         //   [self ShowMessage:[correspondences objectForKey:@"error"]];
                         
@@ -341,20 +329,30 @@
                     else{
                         canFound=YES;
                     }
+                }
+                    else{
+                        NSLog(@"Info:No correspondence found");
+                        canFound=NO;
+                    }
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if(canFound){
-                            mainDelegate.selectedInbox=((CMenu*)mainDelegate.user.menu[indexPath.row-1]).menuId;
+                            // changed
+                            mainDelegate.selectedInbox=((CMenu*)mainDelegate.user.menu[indexPath.row]).menuId;
                             SearchResultViewController *searchResultViewController = [[SearchResultViewController alloc]initWithStyle:UITableViewStylePlain];
                             
                             mainDelegate.menuSelectedItem=indexPath.row-1;
                             [navController pushViewController:searchResultViewController animated:YES];
+                            mainDelegate.searchResultViewController=searchResultViewController;
                             
                         }
                         else{
-                            
-                            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:mainDelegate.selectedInbox inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
-                            
+                            // changed
+                            mainDelegate.selectedInbox=((CMenu*)mainDelegate.user.menu[tableView.indexPathForSelectedRow.row]).menuId;
+
+                            //[self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:mainDelegate.selectedInbox inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+                            NorecordsViewController *norecordsView=[[NorecordsViewController alloc] init];
+                            [navController pushViewController:norecordsView animated:YES];
                             
                         }
                         
@@ -368,90 +366,21 @@
             }
             
             
-        }
+       //}
     }
     @catch (NSException *ex) {
-        [FileManager appendToLogView:@"MainMenuViewController" function:@"didSelectRowAtIndexPath" ExceptionTitle:[ex name] exceptionReason:[ex reason]];
+        NSLog(@"Error: Error occured in MainMenuViewController Class in method didSelectRowAtIndexPAth.\n Exception Name:%@ Exception Reason: %@",[ex name],[ex reason]);
     }
     
 }
 
--(void)performSync{
-    [self performSelectorOnMainThread:@selector(increaseProgress) withObject:@"" waitUntilDone:YES];
-    [self performSelectorInBackground:@selector(synchronization) withObject:nil];
-}
 
--(void)synchronization
-{
-    
-    @try {
-        
-        if ([mainDelegate.user processPendingActions]) {
-            
-            //upload signature document
-            // [self uploadSignatureXml];
-            
-            //upload pending documents
-            //  [self uploadPendingXml];
-            
-            
-            //reload baskets if no pendings left
-            NSString *inboxIds=@"";
-            for(CMenu *menu in mainDelegate.user.menu){
-                inboxIds=[NSString stringWithFormat:@"%@%d,",inboxIds,menu.menuId];
-            }
-            NSString* homeUrl;
-            NSString* showthumb;
-            if (mainDelegate.ShowThumbnail)
-                showthumb=@"true";
-            else
-                showthumb=@"false";
-            if(mainDelegate.SupportsServlets)
-                homeUrl = [NSString stringWithFormat:@"http://%@?action=GetCorrespondences&token=%@&inboxId=%@&index=%d&pageSize=%d&language=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,inboxIds,0,mainDelegate.SettingsCorrNb,mainDelegate.IpadLanguage,showthumb];
-            else
-                homeUrl = [NSString stringWithFormat:@"http://%@/GetCorrespondences?token=%@&inboxId=%@&index=%d&pageSize=%d&language=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,inboxIds,0,mainDelegate.SettingsCorrNb,mainDelegate.IpadLanguage,showthumb];
-            
-            // NSURL *xmlUrl = [NSURL URLWithString:homeUrl];
-            // NSData *homeXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
-            
-            NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:homeUrl] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
-            NSData *homeXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-            NSMutableDictionary *correspondences=[CParser loadCorrespondencesWithData:homeXmlData];
-            for (CMenu* menu in mainDelegate.user.menu)
-            {
-                menu.correspondenceList=[correspondences objectForKey:[NSString stringWithFormat:@"%d",menu.menuId]];
-                
-            }
-            mainDelegate.selectedInbox=((CMenu*)mainDelegate.user.menu[0]).menuId;
-            
-            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:mainDelegate.selectedInbox inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
-            
-            [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:mainDelegate.selectedInbox inSection:0]] ;
-            [self performSelectorOnMainThread:@selector(dismiss) withObject:nil waitUntilDone:YES];
-        }
-        else {
-            [self performSelectorOnMainThread:@selector(dismiss) withObject:nil waitUntilDone:YES];
-            [self ShowMessage:NSLocalizedString(@"Alert.Connection",@"Connection not found")];
-        }
-        
-        
-        
-        
-    }
-    @catch (NSException *ex) {
-        [FileManager appendToLogView:@"MainMenuViewController" function:@"synchronization" ExceptionTitle:[ex name] exceptionReason:[ex reason]];
-    }
-    
-    
-}
 -(void)settings{
     SignatureViewController *signatureView = [[SignatureViewController alloc] initWithFrame:CGRectMake(310, 100, 400, 500)];
     signatureView.modalPresentationStyle = UIModalPresentationFormSheet;
     signatureView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:signatureView animated:YES completion:nil];
-    signatureView.view.superview.frame = CGRectMake(310, 100, 400, 500); //it's important to do this after presentModalViewController
-    // noteView.view.superview.center = self.view.center;
-    // transferView.delegate=self;
+    signatureView.view.superview.frame = CGRectMake(310, 100, 400, 500); //it's important to do this after
 }
 
 

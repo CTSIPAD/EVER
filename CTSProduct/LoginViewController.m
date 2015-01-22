@@ -9,7 +9,6 @@
 #import "LoginViewController.h"
 #import "AppDelegate.h"
 #import "SVProgressHUD.h"
-#import "FileManager.h"
 #import "StringEncryption.h"
 #import "NSData+Base64.h"
 #import "CUser.h"
@@ -19,9 +18,10 @@
 #import "CAttachment.h"
 #import "MainMenuViewController.h"
 #import "SearchResultViewController.h"
-
+#import "containerView.h"
 #define TAG_OK 1
 #define TAG_NO 2
+#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch]== NSOrderedAscending)
 @interface LoginViewController (){
     NSUserDefaults *defaults;
     NSString* IconsCached;
@@ -61,6 +61,7 @@
     self.txtUsername.clipsToBounds=YES;
     self.txtUsername.returnKeyType = UIReturnKeyGo;
     self.txtUsername.autocorrectionType=FALSE;
+    self.txtUsername.text=@"mbi";
     
     /**** END  UserName TextView ******/
     
@@ -75,7 +76,6 @@
     self.txtPassword.clipsToBounds=YES;
     self.txtPassword.secureTextEntry=YES;
     self.txtPassword.returnKeyType = UIReturnKeyGo;
-    self.txtUsername.text=@"mbi";
     /****END Password TextView ******/
     UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 35)];
     UIView *paddingView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 35)];
@@ -112,6 +112,7 @@
         [self.btnLogin.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:18]];
     else
         [self.btnLogin.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:24]];
+    
     
     /**** END LOGIN BUTTON ******/
     
@@ -157,16 +158,17 @@
     [self adjustControls:interfaceOrientation];
 }
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
-    
+    [txtPassword resignFirstResponder];
+    [txtUsername resignFirstResponder];
 	if(interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown){
         
-        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginPortrait.jpg"]];
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginPortrait.png"]];
         
         
     }
     else if(interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight){
         
-        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginLandscape.jpg"]];
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginLandscape.png"]];
         
     }
 	
@@ -231,12 +233,16 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)Login:(id)sender{
+    [self.txtPassword resignFirstResponder];
+    [self.txtUsername resignFirstResponder];
     [self connect];
 }
 
 -(void)connect{
     @try
     {
+        NSLog(@"Info: Enter Connect Method.");
+        
         [NSThread detachNewThreadSelector:@selector(startIndicator) toTarget:self withObject:nil];
         
         NSString *username = self.txtUsername.text;
@@ -249,6 +255,7 @@
             NSString* encpass;
             NSData *encryptedData;
             if(appDelegate.EncryptionEnabled){
+                NSLog(@"Info: Encrypting Password.");
                 NSString * _key = @"EverTeamYears202020";
                 StringEncryption *crypto = [[StringEncryption alloc] init];
                 NSData *_secretData = [password dataUsingEncoding:NSUTF8StringEncoding];
@@ -265,6 +272,7 @@
                 includeIcons=@"false";
             else
                 includeIcons=@"true";
+            
             if(!appDelegate.SupportsServlets)
                 url = [NSString stringWithFormat:@"http://%@/Login?userCode=%@&password=%@&language=%@&includeIcons=%@",appDelegate.serverUrl,username,encpass,appDelegate.IpadLanguage,includeIcons];
             else
@@ -280,7 +288,11 @@
         }
         else
         {
-            [self ShowMessage:NSLocalizedString(@"Alert.EmptyUser",@"Username or password is Empty")];
+            if ([username isEqual:@""])
+                [self ShowMessage:NSLocalizedString(@"EmptyUserName", @"Empty username")];
+ 
+            else if ([password isEqual:@""])
+            [self ShowMessage:NSLocalizedString(@"EmptyPassword",@"EmptyPassword")];
             [self stopIndicator];
             if(!appDelegate.isOfflineMode){
                 [defaults setObject:@"NO" forKey:@"LoginSuccess"];
@@ -289,7 +301,8 @@
         }
     }
     @catch (NSException *ex) {
-        [FileManager appendToLogView:@"LoginViewController" function:@"Connect" ExceptionTitle:[ex name] exceptionReason:[ex reason]];
+        NSLog(@"Error: Error occured in LoginViewController Class in method Connect.\n Exception Name:%@ Exception Reason: %@",[ex name],[ex reason]);
+        
     }
     
 }
@@ -299,19 +312,19 @@
         if(appDelegate.isOfflineMode){
             if([[defaults objectForKey:@"LoginSuccess"] isEqualToString:@"NO"]){
                 
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Application Error" message:@"You Must Login in online before!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"You Must Login in online before!" delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"ok") otherButtonTitles:nil];
                 [alert show];
-                self.txtUsername.text=@"";
-                self.txtPassword.text=@"";
+              //  self.txtUsername.text=@"";
+               // self.txtPassword.text=@"";
                 [self stopIndicator];
                 return;
                 
             }else
                 if([CParser LoadLogin:[self.txtUsername.text lowercaseString] password:Password]<=0){
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Application Error" message:@"Wrong username or password please try again" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"Wrong username or password please try again" delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"ok") otherButtonTitles:nil];
                     [alert show];
-                    self.txtUsername.text=@"";
-                    self.txtPassword.text=@"";
+                   // self.txtUsername.text=@"";
+                   // self.txtPassword.text=@"";
                     [self stopIndicator];
                     return;
                 }
@@ -319,21 +332,17 @@
         CUser * user = [CParser loadUserWithData:url];
         
         if(![user.ServerMessage isEqualToString:@"OK"]){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:user.ServerMessage delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"error") message:user.ServerMessage delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
             [alert show];
             [defaults synchronize];
-            self.txtUsername.text=@"";
-            self.txtPassword.text=@"";
+          //  self.txtUsername.text=@"";
+          //  self.txtPassword.text=@"";
             [self stopIndicator];
             return;
         }
         else{
             
             user.loginName=self.txtUsername.text;
-            if([user.serviceType.lowercaseString isEqualToString:@"sharepoint"])
-            {
-                appDelegate.isSharepoint=YES;
-            }
             if(user.menu.count>0)
             {
                 NSString *inboxIds=@"";
@@ -350,11 +359,7 @@
                 }
                 
                 appDelegate.user=user;
-                
-                if(appDelegate.isOfflineMode)
-                {
-                    [self SaveDocsBaskets:user ];
-                }
+           
                 if(!appDelegate.isOfflineMode){
                     IconsCached=@"YES";
                     [defaults setObject:IconsCached forKey:@"iconsCache"];
@@ -367,8 +372,9 @@
                 appDelegate.splitViewController= [storyboard instantiateViewControllerWithIdentifier:@"SplitViewController"];
                 UINavigationController* navigationController = [self.splitViewController.viewControllers lastObject];
                 self.splitViewController.delegate = (id)navigationController.topViewController;
-                self.splitViewController.view.backgroundColor = [UIColor grayColor];
-                self.view.window.rootViewController = appDelegate.splitViewController;
+                containerView *container=[[containerView alloc] init];
+                self.view.window.rootViewController=container;
+                
                 
             }
             else{
@@ -379,31 +385,12 @@
         }
     }
     @catch (NSException *ex) {
-        [FileManager appendToLogView:@"LoginViewController" function:@"performConnecting" ExceptionTitle:[ex name] exceptionReason:[ex reason]];
-        
+        NSLog(@"Error: Error occured in LoginViewController Class in method performConnecting.\n Exception Name:%@ Exception Reason: %@",[ex name],[ex reason]);
     }
     
 }
 
--(void)SaveDocsBaskets:(CUser*) user
-{
-    for(CMenu* inbox in user.menu )
-	{
-		if (inbox.correspondenceList.count>0)
-        {
-            for(CCorrespondence* correspondence in inbox.correspondenceList)
-            {
-                if (correspondence.attachmentsList.count>0)
-                {
-                    for(CAttachment* doc in correspondence.attachmentsList)
-                    {
-                        [self saveDocInCache:doc inDirectory:correspondence.Id];
-                    }
-                }
-            }
-        }
-	}
-}
+
 -(void)saveDocInCache:(CAttachment*)firstDoc inDirectory:(NSString*)dirName
 {
 	[firstDoc saveInCacheinDirectory:dirName fromSharepoint:appDelegate.isSharepoint];
@@ -467,9 +454,19 @@
             [UIView setAnimationBeginsFromCurrentState: YES];
             [UIView setAnimationDuration: movementDuration];
             if(up)
-                self.view.frame = CGRectOffset(self.view.frame,140, 0);
+            {
+                if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+                    self.view.frame = CGRectOffset(self.view.frame,140, 0);
+                }
+                else
+                    self.view.frame = CGRectOffset(self.view.frame,0, -140);
+            }
+                else
+                    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+                        self.view.frame = CGRectOffset(self.view.frame,-140, 0);
+                    }
             else
-                self.view.frame = CGRectOffset(self.view.frame,-140, 0);
+                    self.view.frame = CGRectOffset(self.view.frame,0, 140);
             
             [UIView commitAnimations];
         }
@@ -479,10 +476,20 @@
             [UIView beginAnimations: @"animateTextField" context: nil];
             [UIView setAnimationBeginsFromCurrentState: YES];
             [UIView setAnimationDuration: movementDuration];
-            if(up)
-                self.view.frame = CGRectOffset(self.view.frame, -140, 0);
-            else
-                self.view.frame = CGRectOffset(self.view.frame, 140, 0);
+            if(up){
+                if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+                    self.view.frame = CGRectOffset(self.view.frame, -140, 0);
+                }
+                else
+                    self.view.frame = CGRectOffset(self.view.frame, 0, -140);
+            }
+            else{
+                if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+                    self.view.frame = CGRectOffset(self.view.frame, 140, 0);
+                }
+                else
+                    self.view.frame = CGRectOffset(self.view.frame, 0, 140);
+            }
             
             [UIView commitAnimations];
         }}
@@ -493,7 +500,7 @@
 -(void)adjustControls:(UIInterfaceOrientation)interfaceOrientation{
     if(interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)
     {
-        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginPortrait.jpg"]];
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginPortrait.png"]];
         self.txtUsername.frame=CGRectMake(220, 410, 350, 40);
         self.txtPassword.frame=CGRectMake(220, 475, 350, 40);
         if([appDelegate.IpadLanguage isEqualToString:@"en"])
@@ -503,7 +510,7 @@
         
     }
     else if(interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight){
-        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginLandscape.jpg"]];
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginLandscape.png"]];
         self.txtUsername.frame=CGRectMake(350, 280, 350, 40);
         self.txtPassword.frame=CGRectMake(350, 340, 350, 40);
         if([appDelegate.IpadLanguage isEqualToString:@"en"])
@@ -513,6 +520,7 @@
         
     }
 }
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

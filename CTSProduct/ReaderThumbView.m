@@ -24,7 +24,7 @@
 //
 
 #import "ReaderThumbView.h"
-
+#import "AppDelegate.h"
 @implementation ReaderThumbView
 {
 	NSOperation *_operation;
@@ -58,7 +58,7 @@
 
 		[self addSubview:imageView];
         
-        labelview = [[UILabel alloc] initWithFrame:CGRectMake(20, 85, self.frame.size.width-20, self.frame.size.height)];
+        labelview = [[UILabel alloc] initWithFrame:CGRectMake(20, 70, self.frame.size.width-20, self.frame.size.height)];
 //        CGFloat red = 0.0f / 255.0f;
 //        CGFloat green = 155.0f / 255.0f;
 //        CGFloat blue = 213.0f / 255.0f;
@@ -78,6 +78,12 @@
 
 - (void)showImage:(UIImage *)image
 {
+    AppDelegate* mainDelegate=(AppDelegate*)[[UIApplication sharedApplication]delegate];
+    if (mainDelegate.thumbnailDefined) {
+        imageView.frame=CGRectMake(0, 0, 120, 120);
+    }
+    else
+    imageView.frame=CGRectMake(10, 10, image.size.width, image.size.height);
 	imageView.image = image; // Show image
 }
 

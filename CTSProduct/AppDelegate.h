@@ -12,10 +12,13 @@
 #import "CSearch.h"
 #import "SplitViewController.h"
 #import "SearchResultViewController.h"
+#import "HeaderView.h"
+#import "containerView.h"
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
+@property (strong,nonatomic) UIView *indicatorView;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
@@ -34,7 +37,6 @@
 @property(nonatomic,assign)NSInteger CountOfflineActions;
 @property(nonatomic,assign)NSInteger CounterSync;
 @property(nonatomic,assign)BOOL highlightNow;
-@property(nonatomic,assign)BOOL SearchActive;
 @property(nonatomic,assign)BOOL EncryptionEnabled;
 @property(nonatomic,assign)BOOL PinCodeEnabled;
 @property (strong,nonatomic)NSString* docUrl;
@@ -44,7 +46,9 @@
 @property (strong,nonatomic)NSString* AttachmentId;
 @property (strong,nonatomic)NSString* FileUrl;
 @property (strong,nonatomic)NSString *serverUrl;
+@property (strong,nonatomic)NSString *logFilePath;
 @property (assign,nonatomic) NSString* FolderName;
+@property (assign,nonatomic) NSString* FolderId;
 @property(nonatomic,assign)BOOL isAnnotated;
 @property(nonatomic,assign)BOOL isAnnotationSaved;
 @property(nonatomic,assign)BOOL isBasketSelected;
@@ -52,12 +56,17 @@
 @property (assign, nonatomic) NSInteger searchSelected;
 @property (assign, nonatomic) NSInteger Request_timeOut;
 @property(nonatomic,assign)BOOL isSigned;
+@property(nonatomic,assign)BOOL SearchClicked;
+
 @property(nonatomic,assign)int QuickActionIndex;
 @property (assign, nonatomic)NSInteger inboxForArchiveSelected;
 @property (assign, nonatomic)NSInteger Char_count;
 @property (strong, nonatomic)SplitViewController *splitViewController;
 @property (nonatomic, retain) NSData *logo;
 @property (nonatomic, retain) SearchResultViewController *searchResultViewController;
+@property (nonatomic, retain) HeaderView *HeaderViewController;
+@property (strong,nonatomic) UIView *barView;
+@property (strong,nonatomic) UIImageView *logoView;
 @property (nonatomic, retain)UIActivityIndicatorView *activityIndicatorObject;
 @property (nonatomic, assign) BOOL ShowThumbnail;
 @property (nonatomic, assign) BOOL SupportsServlets;
@@ -73,11 +82,22 @@
 @property (retain,nonatomic) NSMutableArray* IncomingHighlights;
 @property (retain,nonatomic) NSMutableArray* IncomingNotes;
 @property (retain,nonatomic) NSMutableArray* folderNames;
+@property (retain,nonatomic) NSMutableArray* DocumentsPath;
 @property (retain,nonatomic) NSMutableDictionary* Lookups;
 @property (strong,nonatomic)NSString* attachmentType;
 @property (retain,nonatomic) NSMutableDictionary* DrawLayerViews;
-
+@property(nonatomic,assign)BOOL downloadSuccess;
+@property(nonatomic,assign)BOOL IsInside;
+@property(nonatomic,assign) BOOL enableAction;
+@property(nonatomic,strong) UIColor *textColor;
+@property(nonatomic,strong) UIColor *bgColor;
+@property (nonatomic,strong) UIColor *buttonColor;
+@property(nonatomic,strong) UIColor *titleColor;
+@property(nonatomic,strong) UIColor *bgBlueColor;
+@property(nonatomic,strong) UIColor *cellColor;
+@property(nonatomic,assign) BOOL thumbnailDefined;
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
-
+-(void) RunIndicator:(UIButton*)button;
+-(void) stopIndicator;
 @end

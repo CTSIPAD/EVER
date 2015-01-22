@@ -14,6 +14,7 @@
 #import "CRouteLabel.h"
 #import "CDestination.h"
 #import "SVProgressHUD.h"
+#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch]== NSOrderedAscending)
 @interface CommentViewController ()
 
 @end
@@ -54,20 +55,10 @@
         self.view.clipsToBounds=YES;
         self.view.layer.borderWidth=1.0;
         self.view.layer.borderColor=[[UIColor grayColor]CGColor];
-        // self.view.backgroundColor= [UIColor colorWithRed:29/255.0f green:29/255.0f  blue:29/255.0f  alpha:1.0];
-        CGFloat red = 1.0f / 255.0f;
-        CGFloat green = 49.0f / 255.0f;
-        CGFloat blue = 97.0f / 255.0f;
-        self.view.backgroundColor= [UIColor colorWithRed:red green:green  blue:blue  alpha:1.0];
-        
+        self.view.backgroundColor=mainDelegate.bgBlueColor;
         UILabel *Titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, frame.size.width-20, 20)];
-        NSString* local;
-        if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
-            local=@"المراسلة";
-        else
-            local=@"Correspondence";
-        NSString * nameAct=[NSString stringWithFormat:@"%@ %@",self.Action.label,local];
-        
+
+        NSString * nameAct=[NSString stringWithFormat:@"%@",self.Action.label];
         
         
         Titlelabel.text = nameAct;
@@ -75,21 +66,23 @@
         Titlelabel.backgroundColor = [UIColor clearColor];
         Titlelabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
         Titlelabel.textColor=[UIColor whiteColor];
-        
-        
-        
-        UILabel *lblNote = [[UILabel alloc] initWithFrame:CGRectMake(10, 30, frame.size.width-20, 20)];
+
+        UILabel *lblNote = [[UILabel alloc] initWithFrame:CGRectMake(10, 30, frame.size.width-40, 20)];
+
         lblNote.text = NSLocalizedString(@"Note",@"Note");
         lblNote.textAlignment=NSTextAlignmentLeft;
         lblNote.backgroundColor = [UIColor clearColor];
-        //lblNote.font = [UIFont fontWithName:@"Helvetica" size:16];
         lblNote.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
         lblNote.textColor=[UIColor whiteColor];
-        
-        txtNote = [[UITextView alloc] initWithFrame:CGRectMake(10, 55, frame.size.width-20, frame.size.height-150)];
+
+        txtNote = [[UITextView alloc] init];
+        if (SYSTEM_VERSION_LESS_THAN(@"8.0"))
+            txtNote.frame= CGRectMake(10, 55, frame.size.width-50, frame.size.height-150);
+            else
+            txtNote.frame= CGRectMake(10, 55, frame.size.width-35, frame.size.height-150);
         txtNote.font = [UIFont systemFontOfSize:15];
         txtNote.delegate = self;
-        
+        txtNote.backgroundColor=mainDelegate.textColor;
         txtNote.autocorrectionType = UITextAutocorrectionTypeNo;
         txtNote.keyboardType = UIKeyboardTypeDefault;
         txtNote.returnKeyType = UIReturnKeyDone;
@@ -98,20 +91,30 @@
         NSInteger btnWidth=115;
         
         UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+            closeButton.frame = CGRectMake((frame.size.width-(2*btnWidth +50))/2, 310, btnWidth, 35);
+        }
+        else
         closeButton.frame =CGRectMake(((frame.size.width-(2*btnWidth +50))/2)+btnWidth+50, 310, btnWidth, 35);
         closeButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
         [closeButton setTitle:NSLocalizedString(@"Cancel",@"Cancel") forState:UIControlStateNormal];
         [closeButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
-        [closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        
+        //[closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [closeButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+        closeButton.backgroundColor=mainDelegate.buttonColor;
         
         UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+            saveButton.frame =CGRectMake(((frame.size.width-(2*btnWidth +50))/2)+btnWidth+50, 310, btnWidth, 35);
+        }
+        else
         saveButton.frame = CGRectMake((frame.size.width-(2*btnWidth +50))/2, 310, btnWidth, 35);
         saveButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
         [saveButton setTitle:NSLocalizedString(self.Action.label,@"Save") forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
-        [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        
+        //[saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [saveButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+        saveButton.backgroundColor=mainDelegate.buttonColor;
         
         if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
             lblNote.textAlignment=NSTextAlignmentRight;

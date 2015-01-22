@@ -91,7 +91,6 @@
     Reason.textColor = [UIColor redColor];
     Reason.backgroundColor = [UIColor clearColor];
     OfflineResult *row=self.Results[indexPath.row];
-    //cell.textLabel.text=row.Name;
     labelTitle.font=[UIFont fontWithName:@"Helvetica-Bold" size:16.0];
     labelTitle.font = [UIFont boldSystemFontOfSize:18];
 	labelTitle.numberOfLines = ceilf([[NSString stringWithFormat:@"%@",row.Name] sizeWithFont:[UIFont boldSystemFontOfSize:18] constrainedToSize:CGSizeMake(300, MAXFLOAT) lineBreakMode:NSLineBreakByWordWrapping].height/20.0);

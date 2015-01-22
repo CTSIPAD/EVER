@@ -8,6 +8,7 @@
 
 #import "SplitViewController.h"
 #import "AppDelegate.h"
+#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch]== NSOrderedAscending)
 @interface SplitViewController (){
     AppDelegate *appDelegate;
     
@@ -45,6 +46,7 @@
 }
 -(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
     [UIView setAnimationsEnabled:NO];
+    [appDelegate.searchResultViewController.tableView reloadData];
 }
 -(void)adjustButtons:(UIInterfaceOrientation)orientation{
     UIViewController *masterViewController = [self.viewControllers objectAtIndex:0];
@@ -52,18 +54,47 @@
     CGRect masterViewFrame = masterViewController.view.frame;
     CGRect detailViewFrame = detailViewController.view.frame;
     
-    masterViewFrame.size.width=masterViewFrame.size.width-100;
-    detailViewFrame.size.width=detailViewFrame.size.width+100;
+    
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+        if ([appDelegate.IpadLanguage isEqualToString:@"ar"]) {
+            masterViewFrame.size.width=masterViewFrame.size.width-100;
+        }
+        else{
+            masterViewFrame.size.width=masterViewFrame.size.width-100;
+            detailViewFrame.size.width=detailViewFrame.size.width+100;
+        }
+    }else{
+        if (UIInterfaceOrientationIsPortrait(orientation)) {
+            masterViewFrame.size.width=masterViewFrame.size.width-80;
+            detailViewFrame.size.width=detailViewFrame.size.width+20;
+        }
+        else
+        {
+            masterViewFrame.size.width=masterViewFrame.size.width-80;
+            detailViewFrame.size.width=detailViewFrame.size.width+100;
+        }
+    }
     
     if([appDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
         
         
         if (detailViewController.view.frame.origin.x > 0.0) {
+            if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+                
+                masterViewFrame.origin.x= detailViewFrame.size.width+100;
+                masterViewController.view.frame = masterViewFrame;
+                detailViewFrame.origin.x -= masterViewFrame.size.width+100;
+                detailViewFrame.size.width+=100;
+                
+            }
+            else
+            {
+                masterViewFrame.origin.x+= detailViewFrame.size.width;
+                masterViewController.view.frame = masterViewFrame;
+                
+                detailViewFrame.origin.x -= masterViewFrame.size.width+80;
+            }
             
-            masterViewFrame.origin.x+= detailViewFrame.size.width;
-            masterViewController.view.frame = masterViewFrame;
-            
-            detailViewFrame.origin.x -= masterViewFrame.size.width+101;
             
         }
         else{
@@ -87,4 +118,16 @@
     [masterViewController.view setNeedsLayout];
     [detailViewController.view setNeedsLayout];
 }
+
+// new
+-(void) willMoveToParentViewController:(UIViewController *)parent
+{
+}
+// new
+-(void) didMoveToParentViewController:(UIViewController *)parent
+{
+    
+    self.view.frame=CGRectMake(0,100, parent.view.frame.size.width, parent.view.frame.size.height-100);
+}
+
 @end

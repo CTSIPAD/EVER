@@ -7,15 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CCorrespondence.h"
+#include <AssetsLibrary/AssetsLibrary.h>
 @class UploadControllerDialog;
 @protocol UploadViewDelegate <NSObject>
 -(void)dismissUpload:(UIViewController*)viewcontroller;
--(void)refreshDocument:(NSString*)PdfLocation attachmentId:(NSString*)attachmentId;
+-(void)refreshDocument:(NSString*)PdfLocation attachmentId:(NSString*)attachmentId correspondence:(CCorrespondence*)corr;
+-(void) refreshFolderPageBar;
 @required
 
 
 @end
-@interface UploadControllerDialog : UIViewController{
+@interface UploadControllerDialog : UIViewController<UIImagePickerControllerDelegate>{
     CGRect originalFrame;
 }
 @property (nonatomic,retain) UITextField *txtAttachmentName ;

@@ -45,7 +45,7 @@
 
 @end
 
-@interface ReaderViewController : UIViewController<NoteAlertViewDelegate,AnnotationsTableDelegate,TransferViewDelegate,ManageSignatureViewDelegate,UIImagePickerControllerDelegate>
+@interface ReaderViewController : UIViewController<NoteAlertViewDelegate,AnnotationsTableDelegate,TransferViewDelegate,ManageSignatureViewDelegate,UIImagePickerControllerDelegate,UIScrollViewDelegate>
 {
     PDFDocument* m_pdfdoc;
 	PDFView* m_pdfview;
@@ -57,7 +57,6 @@
     
     UIView *folderPagebar;
     NSMutableArray *folderarray;
-    BOOL Annot;
 }
 
 @property(nonatomic,strong)UILabel *counter;

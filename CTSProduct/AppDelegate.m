@@ -28,21 +28,31 @@
 @synthesize AnnotationsMode=_AnnotationsMode;
 @synthesize Highlights =_Highlights,Notes=_Notes,attachmentType=_attachmentType,Char_count;
 @synthesize IncomingHighlights =_IncomingHighlights,IncomingNotes=_IncomingNotes;
+@synthesize textColor,bgColor,buttonColor,titleColor,bgBlueColor,cellColor,thumbnailDefined;
+@synthesize barView,logoView,logFilePath;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    
+    /**** Create Log file ****/
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
     
     NSString *documentsDirectory = [paths objectAtIndex:0];
     
-    NSString *fileName =[NSString stringWithFormat:@"%@.log",[NSDate date]];
+    NSString *fileName =[NSString stringWithFormat:@"%@.log",[self CurrentDateStringFromDate:[NSDate date] withFormat:@"dd-MM-yyyy"]];
     
-    NSString *logFilePath = [documentsDirectory stringByAppendingPathComponent:fileName];
-    
+    logFilePath = [documentsDirectory stringByAppendingPathComponent:fileName];
     freopen([logFilePath cStringUsingEncoding:NSASCIIStringEncoding],"a+",stderr);
+
+    /**** End Create Log file ****/
+    
+    self.barView=[[UIView alloc] init];
+    self.logoView=[[UIImageView alloc] init];
     self.highlightNow=NO;
     self.Char_count=3;
     self.searchResultViewController = [[SearchResultViewController alloc]initWithStyle:UITableViewStylePlain];
     self.DrawLayerViews=[[NSMutableDictionary alloc]init];
+    self.DocumentsPath=[[NSMutableArray alloc]init];
     self.IpadLanguage=[[[NSBundle mainBundle] preferredLocalizations]objectAtIndex:0];
     self.serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
     self.isOfflineMode = [[[NSUserDefaults standardUserDefaults] stringForKey:@"offline_mode"] boolValue];
@@ -50,14 +60,14 @@
     self.SupportsServlets=[[[NSUserDefaults standardUserDefaults] stringForKey:@"Support_Servlets"]boolValue];
     self.EncryptionEnabled=[[[NSUserDefaults standardUserDefaults] stringForKey:@"enable_encryption"]boolValue];
     self.PinCodeEnabled=[[[NSUserDefaults standardUserDefaults] stringForKey:@"enable_pincode"]boolValue];
-    
+    self.enableAction=[[[NSUserDefaults standardUserDefaults] stringForKey:@"enable_actions"] boolValue];
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"CorrNbPerPage"]==nil )
         self.SettingsCorrNb =20;
     else{
         self.SettingsCorrNb =[[[NSUserDefaults standardUserDefaults] stringForKey:@"CorrNbPerPage"]intValue];
         
     }
-    NSDictionary* defaults = @{@"timeout_preference":@"30",@"sign_mode": @"BuiltInSign",@"annotations_mode": @"BuiltInAnnotations",@"charNumber_preference":@"3"};
+    NSDictionary* defaults = @{@"timeout_preference":@"30",@"sign_mode": @"CustomSign",@"annotations_mode": @"CustomAnnotations",@"charNumber_preference":@"3"};
     self.Request_timeOut = [[[NSUserDefaults standardUserDefaults] stringForKey:@"timeout_preference"]intValue];
     self.Char_count = [[[NSUserDefaults standardUserDefaults] stringForKey:@"charNumber_preference"]intValue];
 
@@ -66,13 +76,28 @@
     self.AnnotationsMode=[[NSUserDefaults standardUserDefaults]objectForKey:@"annotations_mode"];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     self.Highlights=[[NSMutableArray alloc]init];
-    self.SearchActive=NO;
     self.QuickActionClicked=NO;
     self.Notes=[[NSMutableArray alloc]init];
     
+    CGFloat red = 173.0f / 255.0f;
+    CGFloat green = 208.0f / 255.0f;
+    CGFloat blue = 238.0f / 255.0f;
+    self.textColor=[UIColor colorWithRed:196.0f/255.0f green:223.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
+    self.bgColor=[UIColor colorWithRed:228.0f/255.0f green:243.0f/255.0f blue:249.0f/255.0f alpha:1.0];
+    self.buttonColor=[UIColor colorWithRed:red green:green blue:blue alpha:1.0f];
+    self.titleColor=[UIColor colorWithRed:1.0f/255.0f green:50.0f/255.0f blue:102.0f/255.0f alpha:1.0f];
+    self.cellColor=[UIColor colorWithRed:12/255.0f green:93/255.0f blue:174/255.0f alpha:1.0];;
+    self.bgBlueColor=[UIColor colorWithRed:1.0f/255.0f green:49.0f/255.0f blue:97.0f/255.0f alpha:1.0];
+    thumbnailDefined=NO;
     return YES;
 }
-
+-(NSString*)CurrentDateStringFromDate:(NSDate*)dateTimeInLine withFormat:(NSString*)dateFormat
+{
+    NSDateFormatter* formatter=[[NSDateFormatter alloc]init];
+    [formatter setDateFormat:dateFormat];
+    NSString* convertedString=[formatter stringFromDate:dateTimeInLine];
+    return convertedString;
+}
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -94,7 +119,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     self.IpadLanguage=[[[NSBundle mainBundle] preferredLocalizations]objectAtIndex:0];
     [[NSUserDefaults standardUserDefaults] synchronize];
     self.serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
@@ -195,4 +220,28 @@
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
+-(void) RunIndicator:(UIButton *)button
+{
+    
+    self.indicatorView=[[UIView alloc] init];
+
+    self.indicatorView.frame=CGRectMake(0, 0, button.frame.size.width, button.frame.size.height);
+    self.indicatorView.backgroundColor=[UIColor colorWithRed:12/255.0f green:93/255.0f blue:174/255.0f alpha:1.0];
+    UIActivityIndicatorView *indicator=self.activityIndicatorObject;
+    indicator.frame=CGRectMake(0, 0, button.frame.size.width, button.frame.size.height);
+    [self.activityIndicatorObject startAnimating];
+    [self.indicatorView addSubview:indicator];
+    [button addSubview:self.indicatorView];
+
+    
+}
+
+-(void) stopIndicator
+{
+ [self.activityIndicatorObject stopAnimating];
+ [self.indicatorView removeFromSuperview];
+        //[mainDelegate.activityIndicatorObject stopAnimating];
+
+
+}
 @end

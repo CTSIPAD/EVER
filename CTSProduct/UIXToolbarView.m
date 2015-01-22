@@ -62,7 +62,7 @@
 
 		UIXToolbarShadow *shadowView = [[UIXToolbarShadow alloc] initWithFrame:shadowRect];
 
-		[self addSubview:shadowView]; 
+		//[self addSubview:shadowView];
 	}
 
 	return self;

@@ -13,7 +13,7 @@
 
 #import "SVProgressHUD.h"
 #import <QuartzCore/QuartzCore.h>
-
+#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch]== NSOrderedAscending)
 NSString * const SVProgressHUDDidReceiveTouchEventNotification = @"SVProgressHUDDidReceiveTouchEventNotification";
 NSString * const SVProgressHUDWillDisappearNotification = @"SVProgressHUDWillDisappearNotification";
 NSString * const SVProgressHUDDidDisappearNotification = @"SVProgressHUDDidDisappearNotification";
@@ -416,7 +416,10 @@ CGFloat SVProgressHUDRingThickness = 6;
             newCenter = CGPointMake(posX, posY);
             break;
     } 
-    
+    if (!SYSTEM_VERSION_LESS_THAN(@"8.0")){
+        rotateAngle=0;
+        newCenter=CGPointMake([UIScreen mainScreen].bounds.size.width/2, [UIScreen mainScreen].bounds.size.height/2);
+    }
     if(notification) {
         [UIView animateWithDuration:animationDuration
                               delay:0 

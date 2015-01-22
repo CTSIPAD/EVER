@@ -19,6 +19,7 @@
     UILabel *lblTransferTo;
     UIButton *ddbtnDestination;
     int origin;
+    NSString* laseSection;
 }
 
 @end
@@ -44,6 +45,7 @@
     UILabel *Titlelabel;
     UILabel *Section;
     UIButton *ddbtnDestinationSection;
+    BOOL ShowCalender;
 }
 @synthesize txtDirection,txtDueDate,txtNote,txtTransferTo,isShown,txtTransferToSection;
 @synthesize pmCC;
@@ -60,16 +62,13 @@
     if (self) {
         mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         originalFrame = frame;
-        // self.view.alpha = 1;
         self.view.layer.cornerRadius=5;
         self.view.clipsToBounds=YES;
         self.view.layer.borderWidth=1.0;
         self.view.layer.borderColor=[[UIColor grayColor]CGColor];
-        CGFloat red = 1.0f / 255.0f;
-        CGFloat green = 49.0f / 255.0f;
-        CGFloat blue = 97.0f / 255.0f;
-        self.view.backgroundColor= [UIColor colorWithRed:red green:green  blue:blue  alpha:1.0];
         
+
+        self.view.backgroundColor=mainDelegate.bgBlueColor;
         
         Titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, frame.size.width-20, 20)];
         Titlelabel.text = NSLocalizedString(@"Transfer.TransferCorrespondence",@"Transfer Correspondence");
@@ -77,6 +76,7 @@
         Titlelabel.textAlignment=NSTextAlignmentCenter;
         Titlelabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
         Titlelabel.textColor=[UIColor whiteColor];
+
         
         Section= [[UILabel alloc] initWithFrame:CGRectMake(10, 45, frame.size.width-20, 20)];
         Section.textAlignment=NSTextAlignmentLeft;
@@ -85,7 +85,7 @@
         Section.backgroundColor = [UIColor clearColor];
         Section.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
         Section.textColor=[UIColor whiteColor];
-        
+
         
         lblTransferTo = [[UILabel alloc] initWithFrame:CGRectMake(10, 105, frame.size.width-20, 20)];
         lblTransferTo.textAlignment=NSTextAlignmentLeft;
@@ -96,10 +96,10 @@
         txtTransferTo=[[UITextField alloc]initWithFrame:CGRectMake(10, 130, frame.size.width-20, 30)];
         txtTransferTo.textAlignment=NSTextAlignmentLeft;
         txtTransferTo.backgroundColor = [UIColor whiteColor];
+        
         ddbtnDestination = [UIButton buttonWithType:UIButtonTypeCustom];
-        [ddbtnDestination setImage:[UIImage imageNamed:@"dropdown-button.png"] forState:UIControlStateNormal];
-        ddbtnDestination.frame = CGRectMake(frame.size.width-30, 130, 20, 30);
-        //[txtTransferTo setUserInteractionEnabled:NO];
+        [ddbtnDestination setImage:[UIImage imageNamed:@"dropDownTag.png"] forState:UIControlStateNormal];
+        ddbtnDestination.frame=CGRectMake(frame.size.width-50, 70, 40, 30);
         [txtTransferTo addTarget:self action:@selector(textFieldDidChange:)
                                         forControlEvents:UIControlEventEditingChanged];
         [ddbtnDestination addTarget:self action:@selector(ShowDestinations) forControlEvents:UIControlEventTouchUpInside];
@@ -108,13 +108,15 @@
         
         txtTransferToSection=[[UITextField alloc]initWithFrame:CGRectMake(10, 70, frame.size.width-20, 30)];
         txtTransferToSection.textAlignment=NSTextAlignmentLeft;
-        txtTransferToSection.backgroundColor = [UIColor whiteColor];
+        txtTransferToSection.backgroundColor=mainDelegate.textColor;
         ddbtnDestinationSection = [UIButton buttonWithType:UIButtonTypeCustom];
-        [ddbtnDestinationSection setImage:[UIImage imageNamed:@"dropdown-button.png"] forState:UIControlStateNormal];
-        ddbtnDestinationSection.frame = CGRectMake(frame.size.width-30, 70, 20, 30);
+        [ddbtnDestinationSection setImage:[UIImage imageNamed:@"dropDownTag.png"] forState:UIControlStateNormal];
+        ddbtnDestinationSection.frame = CGRectMake(frame.size.width-50, 70, 40, 30);
+        ddbtnDestinationSection.backgroundColor=mainDelegate.buttonColor;
         [txtTransferToSection setUserInteractionEnabled:NO];
         [ddbtnDestinationSection addTarget:self action:@selector(ShowDestinationsSections) forControlEvents:UIControlEventTouchUpInside];
         txtTransferToSection.rightViewMode = UITextFieldViewModeAlways;
+        
         
         
         
@@ -125,16 +127,19 @@
         lblDirection.backgroundColor = [UIColor clearColor];
         lblDirection.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
         lblDirection.textColor=[UIColor whiteColor];
+
         
         txtDirection=[[UITextField alloc]initWithFrame:CGRectMake(10, 145, frame.size.width/2-20, 30)];
         txtDirection.textAlignment=NSTextAlignmentLeft;
-        txtDirection.backgroundColor = [UIColor whiteColor];
+       // txtDirection.backgroundColor = [UIColor whiteColor];
+        txtDirection.backgroundColor=mainDelegate.textColor;
         [txtDirection setUserInteractionEnabled:NO];
         txtDirection.rightViewMode = UITextFieldViewModeAlways;
         
         ddbtnDirection = [UIButton buttonWithType:UIButtonTypeCustom];
-        [ddbtnDirection setImage:[UIImage imageNamed:@"dropdown-button.png"] forState:UIControlStateNormal];
-        ddbtnDirection.frame = CGRectMake(frame.size.width/2 - 20, 145, 20, 30);
+        [ddbtnDirection setImage:[UIImage imageNamed:@"dropDownTag.png"] forState:UIControlStateNormal];
+        ddbtnDirection.frame = CGRectMake(frame.size.width/2 - 50, 145, 40, 30);
+        ddbtnDirection.backgroundColor=mainDelegate.buttonColor;
         [ddbtnDirection addTarget:self action:@selector(ShowDirections) forControlEvents:UIControlEventTouchUpInside];
         
         
@@ -145,13 +150,17 @@
         lblDueDate.backgroundColor = [UIColor clearColor];
         lblDueDate.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
         lblDueDate.textColor=[UIColor whiteColor];
+
         
         txtDueDate=[[UITextField alloc]initWithFrame:CGRectMake(frame.size.width/2+10, 145, frame.size.width/2-20, 30)];
         txtDueDate.textAlignment=NSTextAlignmentLeft;
-        txtDueDate.backgroundColor = [UIColor whiteColor];
+        txtDueDate.enabled=NO;
+        txtDueDate.backgroundColor=mainDelegate.textColor;
+        
         ddbtnDueDate = [UIButton buttonWithType:UIButtonTypeCustom];
-        [ddbtnDueDate setImage:[UIImage imageNamed:@"dropdown-button.png"] forState:UIControlStateNormal];
-        ddbtnDueDate.frame = CGRectMake(frame.size.width-30, 145, 20, 30);
+        [ddbtnDueDate setImage:[UIImage imageNamed:@"calendar.png"] forState:UIControlStateNormal];
+        ddbtnDueDate.frame = CGRectMake(frame.size.width-45, 145, 40, 30);
+        ddbtnDueDate.backgroundColor=mainDelegate.buttonColor;
         [ddbtnDueDate addTarget:self action:@selector(ShowCalendar:) forControlEvents:UIControlEventTouchUpInside];
         
         
@@ -161,11 +170,12 @@
         lblNote.backgroundColor = [UIColor clearColor];
         lblNote.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
         lblNote.textColor=[UIColor whiteColor];
+
         
         txtNote = [[UITextView alloc] initWithFrame:CGRectMake(10, 260, frame.size.width-20, 100)];
         txtNote.font = [UIFont systemFontOfSize:15];
         txtNote.delegate = self;
-        
+        txtNote.backgroundColor=mainDelegate.textColor;
         txtNote.autocorrectionType = UITextAutocorrectionTypeNo;
         txtNote.keyboardType = UIKeyboardTypeDefault;
         txtNote.returnKeyType = UIReturnKeyDone;
@@ -174,27 +184,36 @@
         btnWidth=115;
         
         closeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+             closeButton.frame = CGRectMake((frame.size.width-(2*btnWidth +50))/2, 370, btnWidth, 35);
+        }
+        else
         closeButton.frame =CGRectMake(((frame.size.width-(2*btnWidth +50))/2)+btnWidth+50, 370, btnWidth, 35);
         closeButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
         [closeButton setTitle:NSLocalizedString(@"Cancel",@"Cancel") forState:UIControlStateNormal];
         [closeButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
-        [closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        
+       // [closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [closeButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+        closeButton.backgroundColor=mainDelegate.buttonColor;
         
         saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+            saveButton.frame =CGRectMake(((frame.size.width-(2*btnWidth +50))/2)+btnWidth+50, 370, btnWidth, 35);
+        }
+        else
         saveButton.frame = CGRectMake((frame.size.width-(2*btnWidth +50))/2, 370, btnWidth, 35);
         saveButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
-        [saveButton setTitle:NSLocalizedString(@"Save",@"Save") forState:UIControlStateNormal];
+        [saveButton setTitle:NSLocalizedString(@"Transfer",@"Transfer") forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
-        [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        
+        //[saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [saveButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+        saveButton.backgroundColor=mainDelegate.buttonColor;
         if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
-            ddbtnDueDate.frame = CGRectMake(frame.size.width/2, 145, 20, 30);
-            ddbtnDestinationSection.frame = CGRectMake(10, 70, 20, 30);
-            ddbtnDirection.frame = CGRectMake(10, 145, 20, 30);
-            ddbtnDestination.frame = CGRectMake(10, 130, 20, 30);
+            // arabic frame
+            ddbtnDueDate.frame = CGRectMake(frame.size.width/2, 145, 40, 30);
+            ddbtnDestinationSection.frame = CGRectMake(10, 70, 40, 30);
+            ddbtnDirection.frame = CGRectMake(10, 145, 40, 30);
+            ddbtnDestination.frame = CGRectMake(10, 130, 40, 30);
             
             txtNote.textAlignment=NSTextAlignmentRight;lblNote.textAlignment=NSTextAlignmentRight;
             txtDueDate.textAlignment=NSTextAlignmentRight;
@@ -252,16 +271,17 @@ if(textField.text.length>=mainDelegate.Char_count){
         NSString* url;
         
         if(!mainDelegate.SupportsServlets)
-            url = [NSString stringWithFormat:@"http://%@/FindRecipient?typeId=%@&criteria=%@",mainDelegate.serverUrl,sect.key,textField.text];
+            url = [NSString stringWithFormat:@"http://%@/FindRecipient?typeId=%@&criteria=%@&token=%@&language=%@",mainDelegate.serverUrl,sect.key,textField.text,mainDelegate.user.token,mainDelegate.IpadLanguage];
         else
-            url = [NSString stringWithFormat:@"http://%@?action=FindRecipient&typeId=%@&criteria=%@",mainDelegate.serverUrl,sect.key,textField.text];
+            url = [NSString stringWithFormat:@"http://%@?action=FindRecipient&typeId=%@&criteria=%@&token=%@&language=%@",mainDelegate.serverUrl,sect.key,textField.text,mainDelegate.user.token,mainDelegate.IpadLanguage];
         CUser* userTemp =  mainDelegate.user;
     
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Loading",@"Loading ...") maskType:SVProgressHUDMaskTypeBlack];
+   // [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Loading",@"Loading ...") maskType:SVProgressHUDMaskTypeBlack];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-          NSMutableArray* dic=[CParser loadRecipients:url];
+          NSMutableArray* dic=[CParser loadRecipients:url section:sect.key];
         dispatch_async(dispatch_get_main_queue(), ^{
             [ userTemp.destinations setObject:dic forKey:sect.key];
+            if(dic.count>0){
                 CUser* userTemp =  mainDelegate.user;
                 actionController = [[ActionTaskController alloc] initWithStyle:UITableViewStyleGrouped];
                 actionController.rectFrame=CGRectMake(10, 160, self.view.frame.size.width-20,150) ;
@@ -272,9 +292,8 @@ if(textField.text.length>=mainDelegate.Char_count){
                 [self addChildViewController:actionController];
                 [self.view addSubview:actionController.view];
                 
-      
-
-            [SVProgressHUD dismiss];
+            }
+           // [SVProgressHUD dismiss];
         });
         
     });
@@ -297,20 +316,23 @@ if(textField.text.length>=mainDelegate.Char_count){
     }
     if (!isTransferToDropDownOpened) {
         CUser* userTemp =  mainDelegate.user;
+         if(userTemp.Sections.count>0){
         actionController = [[ActionTaskController alloc] initWithStyle:UITableViewStyleGrouped];
-        actionController.rectFrame=CGRectMake(10, 100, self.view.frame.size.width-20,150) ;
+        actionController.rectFrame=CGRectMake(10, 100, self.view.frame.size.width-19,150) ;
         actionController.isDirection=NO;
         actionController.isDestinationSection=YES;
         actionController.delegate = self;
         actionController.actions =userTemp.Sections;
         [self addChildViewController:actionController];
         [self.view addSubview:actionController.view];
-        
+         }
         
     }
 }
 
 -(void)ShowDestinations{
+    CUser* userTemp =  mainDelegate.user;
+    if(((NSMutableArray*)[userTemp.destinations objectForKey:sect.key]).count>0){
     mainDelegate.origin=0;
     isTransferToDropDownOpened =NO;
     for (UIView *view in self.view.subviews)
@@ -322,16 +344,21 @@ if(textField.text.length>=mainDelegate.Char_count){
         
     }
     if (!isTransferToDropDownOpened) {
-        CUser* userTemp =  mainDelegate.user;
+        if(userTemp.destinations.count>0){
         actionController = [[ActionTaskController alloc] initWithStyle:UITableViewStyleGrouped];
-        actionController.rectFrame=CGRectMake(10, 160, self.view.frame.size.width-20,150) ;
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+            actionController.rectFrame=CGRectMake(10, 160, self.view.frame.size.width-20,150) ;
+        }
+        else
+        actionController.rectFrame=CGRectMake(10, 160, self.view.frame.size.width-15,150) ;
         actionController.isDirection=NO;
         actionController.isDestinationSection=NO;
         actionController.delegate = self;
         actionController.actions =[NSMutableArray  arrayWithArray:[userTemp.destinations objectForKey:sect.key]];
         [self addChildViewController:actionController];
         [self.view addSubview:actionController.view];
-        
+        }
+    }
     }
 }
 
@@ -350,7 +377,11 @@ if(textField.text.length>=mainDelegate.Char_count){
         //jen dropdown
         CUser* userTemp =  mainDelegate.user;
         actionController = [[ActionTaskController alloc] initWithStyle:UITableViewStyleGrouped];
-        actionController.rectFrame=CGRectMake(10, 225, self.view.frame.size.width/2-20,150) ;
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+            actionController.rectFrame=CGRectMake(10, 225, self.view.frame.size.width/2-20,150) ;
+        }
+        else
+        actionController.rectFrame=CGRectMake(10, 225, self.view.frame.size.width/2-15,150) ;
         actionController.isDirection=YES;
         actionController.delegate = self;
         actionController.actions =[NSMutableArray  arrayWithArray:userTemp.routeLabels];
@@ -362,6 +393,7 @@ if(textField.text.length>=mainDelegate.Char_count){
 }
 
 -(IBAction)ShowCalendar:(id)sender{
+    ShowCalender=YES;
     mainDelegate.origin=50;
     if ([self.pmCC isCalendarVisible])
     {
@@ -380,12 +412,13 @@ if(textField.text.length>=mainDelegate.Char_count){
     
     self.pmCC.period = [PMPeriod oneDayPeriodWithDate:[NSDate date]];
     [self calendarController:pmCC didChangePeriod:pmCC.period];
+    ShowCalender=NO;
+
 }
 
 - (void)show
 {
-    // NSLog(@"show");
-    
+
     isShown = YES;
     self.view.transform = CGAffineTransformMakeScale(0.1, 0.1);
     self.view.alpha = 0;
@@ -417,14 +450,7 @@ if(textField.text.length>=mainDelegate.Char_count){
 }
 - (void)hide
 {
-    //    NSLog(@"hide");
-    //    isShown = NO;
-    //    [UIView beginAnimations:@"hideAlert" context:nil];
-    //    [UIView setAnimationDelegate:self];
-    //    self.view.transform = CGAffineTransformMakeScale(0.1, 0.1);
-    //    self.view.alpha = 0;
-    //    [UIView commitAnimations];
-    
+
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -447,7 +473,7 @@ if(textField.text.length>=mainDelegate.Char_count){
     UIAlertView *alertKO;
     if(txtDirection.text.length==0 || txtTransferTo.text.length==0 || txtDueDate.text.length==0)
     {
-        alertKO=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Alert",@"Alert") message:NSLocalizedString(@"Transfer.Message",@"Please fill all fields.") delegate:nil cancelButtonTitle:NSLocalizedString(@"Ok",@"OK") otherButtonTitles: nil];
+        alertKO=[[UIAlertView alloc]initWithTitle:NSLocalizedString(@"Alert",@"Alert") message:NSLocalizedString(@"Transfer.Message",@"Please fill all fields.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK",@"OK") otherButtonTitles: nil];
         [alertKO show];
     }
     else{
@@ -492,27 +518,50 @@ if(textField.text.length>=mainDelegate.Char_count){
 }
 
 -(void)actionSelectedDestinationSection:(LookUpObject *)section{
-    
-    
+    if (![section.value isEqualToString:laseSection] && ![laseSection isEqualToString:@""]) {
+        txtTransferTo.text=@"";
+    }
+
     txtTransferToSection.text=section.value;
+    laseSection=section.value;
     sect=section;
     [lblTransferTo removeFromSuperview];
     [txtTransferTo removeFromSuperview];
     [ddbtnDestination removeFromSuperview];
-    lblTransferTo.text=[NSString stringWithFormat:@"Select %@",section.value];
+    NSString *selectString=NSLocalizedString(@"select", @"selected section");
+    lblTransferTo.text=[NSString stringWithFormat:@"%@ %@",selectString,section.value];
+    txtTransferTo.backgroundColor=mainDelegate.textColor;
+    if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+        ddbtnDestinationSection.frame = CGRectMake(10, 70, 40, 30);
+    }
+    else
+    {
+        ddbtnDestination.frame= CGRectMake(originalFrame.size.width-40,  130, 35, 30);
+    }
+    ddbtnDestination.backgroundColor=mainDelegate.buttonColor;
     lblDirection.frame =CGRectMake(10, 170, originalFrame.size.width/2-20, 20);
     txtDirection.frame=CGRectMake(10, 195, originalFrame.size.width/2-20, 30);
-    ddbtnDirection.frame = CGRectMake(originalFrame.size.width/2 - 20, 195, 20, 30);
-    lblDueDate.frame = CGRectMake(originalFrame.size.width/2+10, 170, originalFrame.size.width/2-20, 20);
-    txtDueDate.frame=CGRectMake(originalFrame.size.width/2+10, 195, originalFrame.size.width/2-20, 30);
-    ddbtnDueDate.frame = CGRectMake(originalFrame.size.width-30, 195, 20, 30);
+    txtDirection.backgroundColor=mainDelegate.textColor;
+    ddbtnDirection.frame = CGRectMake(originalFrame.size.width/2 - 45, 195, 40, 30);
+    ddbtnDirection.backgroundColor=mainDelegate.buttonColor;
+    lblDueDate.frame = CGRectMake(originalFrame.size.width/2+20, 170, originalFrame.size.width/2-25, 20);
+    txtDueDate.frame=CGRectMake(originalFrame.size.width/2+20, 195, originalFrame.size.width/2-30, 30);
+    txtDueDate.backgroundColor=mainDelegate.textColor;
+    ddbtnDueDate.frame = CGRectMake(originalFrame.size.width-40, 195, 35, 30);
+    ddbtnDueDate.backgroundColor=mainDelegate.buttonColor;
     lblNote.frame = CGRectMake(10, 235, originalFrame.size.width-20, 20);
     txtNote.frame = CGRectMake(10, 260, originalFrame.size.width-20, 100);
-    closeButton.frame =CGRectMake(((originalFrame.size.width-(2*btnWidth +50))/2)+btnWidth+50, 420, btnWidth, 35);
-    saveButton.frame = CGRectMake((originalFrame.size.width-(2*btnWidth +50))/2, 420, btnWidth, 35);
+   
     if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
-        ddbtnDueDate.frame = CGRectMake(originalFrame.size.width/2, 195, 20, 30);
-        ddbtnDirection.frame = CGRectMake(10, 195, 20, 30);
+        saveButton.frame =CGRectMake(((originalFrame.size.width-(2*btnWidth +50))/2)+btnWidth+50, 420, btnWidth, 35);
+        closeButton.frame = CGRectMake((originalFrame.size.width-(2*btnWidth +50))/2, 420, btnWidth, 35);
+        ddbtnDueDate.frame = CGRectMake(originalFrame.size.width/2, 195, 35, 30);
+        ddbtnDirection.frame = CGRectMake(10, 195, 35, 30);
+    }
+    else
+    {
+        closeButton.frame =CGRectMake(((originalFrame.size.width-(2*btnWidth +50))/2)+btnWidth+50, 420, btnWidth, 35);
+        saveButton.frame = CGRectMake((originalFrame.size.width-(2*btnWidth +50))/2, 420, btnWidth, 35);
     }
     origin=50;
     [self.view addSubview:lblTransferTo];
@@ -528,15 +577,16 @@ if(textField.text.length>=mainDelegate.Char_count){
 }
 - (void)calendarController:(PMCalendarController *)calendarController didChangePeriod:(PMPeriod *)newPeriod
 {
-    NSString *currentDate = [[NSDate date] dateStringWithFormat:@"yyyy-MM-dd"];
     NSString *newPeriodDate = [newPeriod.endDate dateStringWithFormat:@"yyyy-MM-dd"];
-    if(![newPeriodDate isEqualToString:currentDate])
+    txtDueDate.text = [NSString stringWithFormat:@"%@",newPeriodDate];
+    if(!ShowCalender)
     {
-        txtDueDate.text = [NSString stringWithFormat:@"%@",newPeriodDate];
+        
         
         [pmCC dismissCalendarAnimated:YES];
     }
     
+
 }
 -(void)increaseLoading{
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Loading", @"Loading...") maskType:SVProgressHUDMaskTypeBlack];

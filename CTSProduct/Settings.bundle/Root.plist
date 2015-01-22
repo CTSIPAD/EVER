@@ -104,7 +104,7 @@
 			<key>Key</key>
 			<string>sign_mode</string>
 			<key>DefaultValue</key>
-			<string>BuiltInSign</string>
+			<string>CustomSign</string>
 			<key>Titles</key>
 			<array>
 				<string>Custom</string>
@@ -124,7 +124,7 @@
 			<key>Key</key>
 			<string>annotations_mode</string>
 			<key>DefaultValue</key>
-			<string>BuiltInAnnotations</string>
+			<string>CustomAnnotations</string>
 			<key>Titles</key>
 			<array>
 				<string>Custom</string>

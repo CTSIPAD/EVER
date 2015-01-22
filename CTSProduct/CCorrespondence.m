@@ -32,13 +32,11 @@
     NSString* url;
     AppDelegate *appDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
     if(appDelegate.SupportsServlets)
-        url=[NSString stringWithFormat:@"http://%@?action=%@&token=%@&transferId=%@",appDelegate.serverUrl,action,appDelegate.user.token,self.TransferId];
+        url=[NSString stringWithFormat:@"http://%@?action=%@&token=%@&transferId=%@&language=%@",appDelegate.serverUrl,action,appDelegate.user.token,self.TransferId,appDelegate.IpadLanguage];
     else
-        url=[NSString stringWithFormat:@"http://%@/%@?token=%@&transferId=%@",appDelegate.serverUrl,action,appDelegate.user.token,self.TransferId];
+        url=[NSString stringWithFormat:@"http://%@/%@?token=%@&transferId=%@&language=%@",appDelegate.serverUrl,action,appDelegate.user.token,self.TransferId,appDelegate.IpadLanguage];
     NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:0 timeoutInterval:appDelegate.Request_timeOut];
     NSData *lockXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    //NSURL *xmlUrl = [NSURL URLWithString:url];
-  //  NSData *lockXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
     
     NSString *validationResult=[CParser ValidateWithData:lockXmlData];
     if(![validationResult isEqualToString:@"OK"]){

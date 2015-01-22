@@ -53,7 +53,7 @@
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar nextButton:(UIButton *)button documentReader:(ReaderDocument*)reader correspondenceId:(NSInteger)correspondenceId attachementId:(NSInteger)attachementId;
 - (void)tappedInToolbar:(ReaderMainToolbar *)toolbar previousButton:(UIButton *)button documentReader:(ReaderDocument*)reader correspondenceId:(NSInteger)correspondenceId attachementId:(NSInteger)attachementId;
 -(void)executeAction:(NSString*)action note:(NSString*)Note movehome:(BOOL)movehome;
-
+-(void) hide;
 @end
 
 @interface ReaderMainToolbar : UIXToolbarView{
@@ -79,7 +79,7 @@
 @property (nonatomic,assign) NSInteger correspondenceId;
 @property (nonatomic,assign) NSInteger attachmentId;
 @property (nonatomic,strong) CUser* user;
-
+@property (nonatomic,assign) NSInteger attachementsCount;
 @property (nonatomic,strong)UILabel *lblTitle;
 @property (nonatomic,strong)UIButton *nextButton;
 @property (nonatomic,strong)UIButton *previousButton;
@@ -98,6 +98,7 @@
 - (id)initWithFrame:(CGRect)frame document:(ReaderDocument *)object CorrespondenceId:(NSInteger)correspondenceId MenuId:(NSInteger)menuId AttachmentId:(NSInteger)attachmentId;
 -(void) updateTitleWithLocation:(NSString*)location withName:(NSString*)name;
 - (void)hideToolbar;
-- (void)showToolbar;
--(void)adjustButtons:(UIInterfaceOrientation)orientation;
+- (void)showToolbar:(NSString*)status;
+-(void)refreshToolbar:(NSString*)state;
+-(void)adjustButtons:(UIInterfaceOrientation)orient;
 @end

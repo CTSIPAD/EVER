@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+
 @class Signature;
 @class CUser;
 
@@ -16,7 +17,9 @@
     UITextField *txtOldPin;
     UITextField *txtPin;
     UITextField *txtConfirmPin;
+    
 }
+
 - (id)initWithFrame:(CGRect)frame;
 -(void)show;
 -(void)hide;

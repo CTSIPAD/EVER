@@ -16,6 +16,6 @@
 @property double ordinate;
 @property (nonatomic, retain) NSString *note;
 @property (nonatomic, retain) NSString *status;
-
--(id)initWithName:(double )abscisa ordinate:(double )ordinat note:(NSString *)notes PageNb:(int)Pagenb AttachmentId:(int)Attachmentid;
+@property (nonatomic, retain) NSString *Id;
+-(id)initWithName:(double )abscisa ordinate:(double )ordinat note:(NSString *)notes PageNb:(int)Pagenb AttachmentId:(int)Attachmentid Id:(NSString*)Id;
 @end

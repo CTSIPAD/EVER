@@ -12,12 +12,12 @@
 "Warning"="تحذير";
 "Info"="معلومات";
 "Close"="أغلق";
-"Clear"="أزل";
+"Clear"="إفراغ الحقل";
 "Save"="حفظ";
 "Retry"="أعد المحاولة";
 "YES"="نعم";
 "NO"="كلا";
-
+"Sign.Clear"="إفراغ";
 "Login.Licence"="مفتاح الترخيص";
 "Login"="دخول";
 "Menu.Home"="الصفحة الرئيسية";
@@ -38,15 +38,17 @@
 "Transfer"="إحالة";
 "Menu.Attachments"="مرفقات";
 "Menu.Comments"="تعليقات";
-"Menu.Annotations"="الشروح";
+"Menu.Annotations"="التعليقات";
 "Menu.More"="المزيد ...";
 "Menu.Actions"="الإجراءات";
 "Choose"="الرجاء الإختيار";
 "Erase"="محو";
-"Signature.Sign"="توقيع بمكان محدد";
+"Error"="خطأ";
+"Signature.Signature"=" توقيع إفتراضي";
 "Signature.FreeSign"="توقيع";
 "Signature.SignAll"="توقيع الكل بمكان محدد";
 "Signature.FreeSignAll"="توقيع الكل";
+"Signature.HandSign"="توقيع يدوي";
 
 "Signature.YourSignature"="التوقيع الخاص";
 "Signature.PinCode"="الرمز السري";
@@ -68,7 +70,7 @@
 "Transfer.PublicNote"="ملاحظة عامة";
 "Transfer.PrivateNote"="ملاحظة خاصة";
 "Transfer.Cancel"="إلغاء";
-"Transfer.Message"="يرجى ملء جميع الحقول";
+"Transfer.Message"="إملء الحقول المطلوبة";
 "Note.AddNote"="إضافة";
 "Note.Private"="خاص";
 "Note.Message"="يرجى ملء حقل الملاحظات.";
@@ -96,11 +98,15 @@
 "Alert.DiscardButton"="نبذ الإجراءات";
 "Alert.NotNowButton"="ليس الأن";
 "Alert.Extension"="نوع الوثيقة غير معتمد.";
+"Alert.Reloading"="إعادة تحميل المستند ";
+
 "Message"="رسالة";
 "Alert.SaveSuccess"="تم الحفظ بنجاح";
 "Alert"="إنذار";
 "ServerError"="يتعذر الوصول إلى الخادم.";
-"Alert.downloadSuccess"="تم التحميل بنجاح";
+"UnkownError"="حدث خطأ مجهول في الخادم.";
+"Alert.downloadSuccess"="تم التحميل بنجاح. سيتم الإنتقال إلى وضع غير متصل بالشبكة";
+"Alert.downloadFailure"="فشل في تحميل البيانات.";
 "Alert.syncSuccess"="تمت المزامنة بنجاح";
 "Alert.Sign"="إنقر على وثيقة PDF للتوقيع";
 "Alert.fileNotFound"="لم يتم العثور على ملف";
@@ -117,6 +123,7 @@
 "Alert.SignatureSaved"="حفظ التوقيع بنجاح";
 "Alert.WrongPin"="الرقم السري غير صحيح";
 "Alert.PinMatch"="لا تتطابق";
+"Alert.Processing"="جاري التحميل";
 "Alert.DeleteNote"="هل أنت متأكد أنك تريد حذف هذه الملاحظة؟";
 "Alert.NoResult"="لا نتائج لبحثك.";
 "Alert.TypeKeyword"="أكتب الكلمة.";
@@ -128,12 +135,44 @@
 "Alert.ActionSuccess"="تمت العملية بنجاح.";
 "Alert.Success"="تم الحفظ بنجاح";
 "Alert.Downloading"="تحميل ...";
-
+"welcome"="مرحبا";
+"select"="إختر";
 "menu.show"="قائمة العمل";
 "ShowAttachments"="عرض المرفقات";
-"AddNew"="إضافة جديد";
+"AddNew"="إضافة مرفق جديد";
 "UploadAttachment"="تحميل المرفقات";
 "AttachmentName"="اسم المرفق:";
 "Upload"="تحميل";
-
-
+"Fields Missing"="حقول فارغة";
+"Fill Fields"="يرجى تعبئة جميع الحقول .";
+"ValideNumber"="الرجاء إدخال رقم صحيح";
+"resetBtn"="إفراغ الحقول";
+"online.verification"="هل أنت متأكد أنك تريد الانتقال إلى وضع الاتصال بالشبكة؟";
+"root.Online"="الاتصال بالشبكة";
+"offline.verification"="هل أنت متأكد أنك تريد الانتقال إلى وضع غير متصل بالشبكة؟";
+"root.Offline"="الانفصال عن الشبكة";
+"Alert.YES"="نعم";
+"Alert.NO"="لا";
+"download.confirmation"="هذا سوف يقوم بتحميل جميع الملفات إلى جهازك. عند الانتهاء، سيتم الإنتقال إلى وضع غير متصل بالشبكة. هل أنت متأكد من أنك تريد المتابعة؟
+";
+"Confirm"="موافق";
+"NoteFieldEmpty"="الرجاء إدخال ملاحظة";
+"InvalidURL"="تعذر فتح المراسلة . السبب : الرابط غير صالح !";
+"Alert.SignView"="حقل الامضاء فارغ، الرجاء إضافة إمضاء";
+"AttachmentNotCached"="الرجاء التنزيل قبل فتح  المراسلة ";
+"AttachmentProblem"="الرجاء التنزيل قبل فتح المرفق";
+"Upload_attachment_Field"="الرجاء تحميل ملف";
+"Upload_attachment"="يجب عليك الاتصال بالشبكة قبل تحميل ملف";
+"Alert.EditSignature"=" يجب عليك الاتصال بالشبكة قبل تحرير التوقيع";
+"Alert.Download"="تحميل";
+"Alert.PredefinedSignature"="قم بإضافة توقيع إفتراضي";
+"Alert.InvalidCharacter"="إسم المرفق يحتوي على أحرف غير صالحة";
+"UnableToConnect"="غير قادر على الإتصال بالخادم";
+"FillAttachmentName"="الرجاء ملء اسم المرفق";
+"EmptyUserName"="إسم المستخدم فارغ ";
+"EmptyPassword"="كلمة المرور فارغة";
+"Sign.Duplicate"=" تكرار التوقيع";
+"RequestTimedOut"="انتهت مهلة الطلب";
+"Sign.ClearDuplicated"="مسح التواقيع المكررة ";
+"NothingToSave"="لا شيء للحفظ";
+"Alert.Updating"="جار التحديث";

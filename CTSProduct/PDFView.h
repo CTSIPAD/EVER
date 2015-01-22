@@ -16,8 +16,8 @@
 
 @class PDFDocument;
 
-@protocol TransferViewtestDelegate <NSObject>
-
+@protocol ReaderViewtestDelegate <NSObject>
+-(void)HideToolbar;
 @required
 - (void)showDocument:(id)object;
 @end
@@ -53,7 +53,7 @@
     FS_FLOAT m_pageHeight;
     
 }
-@property(nonatomic,unsafe_unretained,readwrite) id <TransferViewtestDelegate> delegate;
+@property(nonatomic,unsafe_unretained,readwrite) id <ReaderViewtestDelegate> delegate;
 @property (nonatomic,readwrite) BOOL zooming;
 @property (nonatomic, readwrite) BOOL btnNote;
 @property (nonatomic, readwrite) BOOL btnHighlight;
@@ -71,12 +71,11 @@
 @property (nonatomic,assign) PDFDocument *doc;
 - (void) OnPrevPage;
 - (void) OnNextPage;
--(void) OnZoomIn;
 -(int)GetPageIndex;
--(void) OnZoomOut;
+-(void)InitPageIndex;
 -(FS_FLOAT)getWidth;
 -(FS_FLOAT)getHeight;
-- (void)initPDFDoc: (PDFDocument*)pdoc;
+- (void)initPDFDoc: (PDFDocument*)pdoc pageIndex:(int)index;
 - (CGPoint)PageToDevicePoint:(FPDF_PAGE)page p1:(CGPoint)point;
 - (CGPoint)DeviceToPagePoint:(FPDF_PAGE)page p1:(CGPoint)point;
 @end

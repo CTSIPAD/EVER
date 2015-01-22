@@ -125,15 +125,16 @@
     //    cell.textLabel.text =labelTitle;
     //[cell addSubview:labelTitle];
     
-    
+    cell.backgroundColor=mainDelegate.cellColor;
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath  {
-    NSLog(@"%d",indexPath.row);
-    UserDetail* row=self.UserDetail[indexPath.row];
-    [_delegate dismissPopUp:self];
-    [_delegate SetDepartment:[row.title intValue]];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    NSLog(@"%d",indexPath.row);
+//    UserDetail* row=self.UserDetail[indexPath.row];
+//    [_delegate dismissPopUp:self];
+//    [_delegate SetDepartment:[row.title intValue]];
     
     
 }

@@ -16,6 +16,7 @@
 #import "SVProgressHUD.h"
 #import "FileManager.h"
 #import "NSData+Base64.h"
+#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch]== NSOrderedAscending)
 @interface SimpleSearchViewController ()
 
 @end
@@ -42,125 +43,121 @@
 {
     [super viewDidLoad];
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
+    UIInterfaceOrientation orientation= [[UIApplication sharedApplication]statusBarOrientation];
     self.navigationItem.hidesBackButton=YES;
-    self.navigationController.navigationBarHidden = NO;
+    self.navigationController.navigationBarHidden = YES;
     maindelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    // [self.view setBackgroundColor:[UIColor colorWithRed:88.0f/255.0f green:96.0f/255.0f blue:104.0f/255.0f alpha:1.0]];
- 
-    [self.view setBackgroundColor:[UIColor colorWithRed:173.0f / 255.0f green:208.0f / 255.0f blue:238.0f / 255.0f alpha:1.0]];
-    btnAdvanceSearch=[[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-180-20, 75, 180, 30)];
-    CGFloat red = 0.0f / 255.0f;
-    CGFloat green = 155.0f / 255.0f;
-    CGFloat blue = 213.0f / 255.0f;
-    btnAdvanceSearch.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
-    btnAdvanceSearch.layer.cornerRadius=6;
+    [self.view setBackgroundColor:mainDelegate.bgColor];
+     btnAdvanceSearch=[[UIButton alloc]init];
+    if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+        if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+             btnAdvanceSearch.Frame=CGRectMake(self.view.frame.size.width-232, 30, 220, 50);
+        }
+        else
+        {
+            if (UIInterfaceOrientationIsPortrait(orientation) ){
+                btnAdvanceSearch.Frame=CGRectMake(self.view.frame.size.width-230, 30, 220, 50);
+            }
+            else
+         btnAdvanceSearch.Frame=CGRectMake(self.view.frame.size.width-490, 30, 220, 50);
+    }
+    }
+    else
+    {
+         btnAdvanceSearch.Frame=CGRectMake(self.view.frame.origin.x+20, 30, 220, 50);
+    }
+
+    CGFloat red = 173.0f / 255.0f;
+    CGFloat green = 208.0f / 255.0f;
+    CGFloat blue = 238.0f / 255.0f;
+    btnAdvanceSearch.backgroundColor=mainDelegate.buttonColor;
+
     btnAdvanceSearch.clipsToBounds=YES;
     [btnAdvanceSearch setTitle:NSLocalizedString(@"Search.AdvancedSearch", @"Advanced Search") forState:UIControlStateNormal] ;
-    [btnAdvanceSearch setImage:[UIImage imageNamed:@"littleadvanced.png"] forState:UIControlStateNormal];
+    [btnAdvanceSearch setImage:[UIImage imageNamed:@"Searchimg.png"] forState:UIControlStateNormal];
     [btnAdvanceSearch setImageEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 80)];
-    [btnAdvanceSearch setTitleEdgeInsets:UIEdgeInsetsMake(5,5, 5,0)];
-    
-    [btnAdvanceSearch setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btnAdvanceSearch setTitleEdgeInsets:UIEdgeInsetsMake(7, 0, 0, 0)];
+    [btnAdvanceSearch setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
     btnAdvanceSearch.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
     [btnAdvanceSearch addTarget:self action:@selector(advanceSearchButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnAdvanceSearch];
     
     
     lblTitle = [[UILabel alloc] init];
-    lblTitle.textColor = [UIColor whiteColor];
-    lblTitle.text =NSLocalizedString(@"Search.SearchKeywords", @"Search Keywords");
-    
-    //lblTitle.frame = CGRectMake((self.view.frame.size.width-450)/2, 150, 450, 40);
-    lblTitle.frame = CGRectMake((self.view.frame.size.width-450)/2, 260, 450, 40);
-    
-    lblTitle.backgroundColor = [UIColor clearColor];
-    lblTitle.font =[UIFont fontWithName:@"Helvetica-Bold" size:24.0f];
-    
-    if([maindelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
+    lblTitle.textColor = [UIColor colorWithRed:1.0f/255.0f green:50.0f/255.0f blue:102.0f/255.0f alpha:1.0f];
+    lblTitle.text =NSLocalizedString(@"Search.SearchKeywords", @"Search words");
+    if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+        lblTitle.frame = CGRectMake(self.view.frame.size.width-140, btnAdvanceSearch.frame.origin.y+btnAdvanceSearch.frame.size.height+60, 120, 40);
         lblTitle.textAlignment=NSTextAlignmentRight;
     }
+    else
+    {
+    lblTitle.frame = CGRectMake(self.view.frame.origin.x+20, btnAdvanceSearch.frame.origin.y+btnAdvanceSearch.frame.size.height+60, 280, 40);
+    }
+    lblTitle.font =[UIFont fontWithName:@"Helvetica-Bold" size:16.0f];
+
+   
     [self.view addSubview:lblTitle];
     
-    //    txtKeyword=[[UITextField alloc] initWithFrame:CGRectMake((self.view.frame.size.width-450)/2, 195, 450, 40)];
-    txtKeyword=[[UITextField alloc] initWithFrame:CGRectMake((self.view.frame.size.width-450)/2, 305, 450, 40)];
-    txtKeyword.backgroundColor=[UIColor whiteColor];
+    txtKeyword=[[UITextField alloc] init];
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+       txtKeyword.Frame=CGRectMake(self.view.frame.origin.x+20, lblTitle.frame.origin.y+lblTitle.frame.size.height+10, self.view.frame.size.width-40, 50);
+    }else{
+        if (UIInterfaceOrientationIsPortrait(orientation)) {
+            txtKeyword.Frame=CGRectMake(self.view.frame.origin.x+20, lblTitle.frame.origin.y+lblTitle.frame.size.height+10, self.view.frame.size.width-40, 50);
+        }
+        else
+         txtKeyword.Frame=CGRectMake(self.view.frame.origin.x+20, lblTitle.frame.origin.y+lblTitle.frame.size.height+10, self.view.frame.size.width-300, 50);
+        
+    }
+   
+  
+    txtKeyword.backgroundColor=mainDelegate.textColor;
     txtKeyword.textColor=[UIColor blackColor];
-    [txtKeyword.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.5] CGColor]];
-    [txtKeyword.layer setBorderWidth:1.0];
+
     txtKeyword.returnKeyType = UIReturnKeySearch;
-    //The rounded corner part, where you specify your view's corner radius:
-    txtKeyword.layer.cornerRadius = 7;
-    txtKeyword.clipsToBounds = YES;
+   
     txtKeyword.delegate=self;
-    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, 20)];
-    txtKeyword.leftView = paddingView;
-    txtKeyword.leftViewMode = UITextFieldViewModeAlways;
-    btnSearch = [UIButton buttonWithType:UIButtonTypeCustom];
+     btnSearch = [UIButton buttonWithType:UIButtonTypeCustom];
+    if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+        txtKeyword.textAlignment=NSTextAlignmentRight;
+        UIView *paddingView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0,10, 20)];
+        txtKeyword.rightView = paddingView1;
+        txtKeyword.rightViewMode = UITextFieldViewModeAlways;
+        [btnSearch setFrame:CGRectMake(txtKeyword.frame.origin.x, txtKeyword.frame.origin.y, 60, txtKeyword.frame.size.height)];
+
+    }
+    else{
+        txtKeyword.textAlignment=NSTextAlignmentLeft;
+        UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, 20)];
+        txtKeyword.leftView = paddingView;
+        txtKeyword.leftViewMode = UITextFieldViewModeAlways;
+        [btnSearch setFrame:CGRectMake(txtKeyword.frame.size.width-30, txtKeyword.frame.origin.y, 60, txtKeyword.frame.size.height)];
+
+    }
+   
     
-    //	[btnSearch setFrame:CGRectMake(((self.view.frame.size.width-450)/2)+405, 197, 40, 40)];
-    [btnSearch setFrame:CGRectMake(((self.view.frame.size.width-450)/2)+405, 307, 40, 40)];
-    [btnSearch setImage:[UIImage imageNamed:@"SearchButton.PNG"] forState:UIControlStateNormal];
+  //  [btnSearch setFrame:CGRectMake(((self.view.frame.size.width-450)/2)+405, 307, 40, 40)];
+    [btnSearch setImage:[UIImage imageNamed:@"Searchimg.png"] forState:UIControlStateNormal];
+    [btnSearch setBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
     [btnSearch addTarget:self action:@selector(searchButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     [self.view addSubview:txtKeyword];
     [self.view addSubview:btnSearch];
     
-    int buttonPositionY=380;
-    
-    
-    
+
     
     itemArray = [NSMutableArray arrayWithObjects:nil];
     
     
     for(int i=0;i<maindelegate.searchModule.searchTypes.count;i++){
         CSearchType* searchType= [maindelegate.searchModule.searchTypes objectAtIndex:i];
-        UIButton* btnCustom=[[UIButton alloc]initWithFrame:CGRectMake((self.view.frame.size.width-300)/3, buttonPositionY+i*60, 300, 50)];
-        if(i==0){
-            
-            
-            CGFloat red = 0.0f / 255.0f;
-            CGFloat green = 155.0f / 255.0f;
-            CGFloat blue = 213.0f / 255.0f;
-            
-            
-            btnCustom.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
-        } else{
-            
-            CGFloat red = 53.0f / 255.0f;
-            CGFloat green = 53.0f / 255.0f;
-            CGFloat blue = 53.0f / 255.0f;
-            btnCustom.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
-        }
-        btnCustom.layer.cornerRadius=6;
-        btnCustom.clipsToBounds=YES;
-        btnCustom.tag=searchType.typeId;
-        
         
         
         [itemArray addObject:[NSString stringWithFormat:@"%@",searchType.label]];
         
         
         
-        
-        [btnCustom setTitle:searchType.label forState:UIControlStateNormal] ;
-        if(![searchType.icon isEqualToString:@""]){
-            UIImageView *imageView=[[UIImageView alloc ]initWithFrame:CGRectMake(10, 7, 37, 37)];
-            NSData * data= [NSData dataWithBase64EncodedString:searchType.icon];
-            UIImage *cellImage = [UIImage imageWithData:data];
-            [imageView setImage:cellImage];
-            
-            [btnCustom addSubview:imageView];
-            [btnCustom setTitleEdgeInsets:UIEdgeInsetsMake(10,5, 10,0)];
-        }
-        else [btnCustom setTitleEdgeInsets:UIEdgeInsetsMake(10,50, 10,0)];
-        [btnCustom setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        btnCustom.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
-        [btnCustom addTarget:self action:@selector(customButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        
-        //[self.view addSubview:btnCustom];
         
         
         
@@ -172,13 +169,13 @@
     
     
     segmentedControl = [[UISegmentedControl alloc] initWithItems:itemArray];
-    NSDictionary *highlightedattributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:17],NSFontAttributeName,[UIColor whiteColor],NSForegroundColorAttributeName, nil];
+    NSDictionary *highlightedattributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:17],NSFontAttributeName,mainDelegate.titleColor,NSForegroundColorAttributeName, nil];
     [segmentedControl setTitleTextAttributes:highlightedattributes forState:UIControlStateNormal];
-    segmentedControl.frame = CGRectMake((self.view.frame.size.width-110)/3, 400, 300, 70);
+    segmentedControl.frame = CGRectMake((self.view.frame.size.width-110)/3, lblTitle.frame.origin.y+lblTitle.frame.size.height+100, 300, 70);
     segmentedControl.tintColor = [UIColor colorWithRed:0.0f / 255.0f green:155.0f / 255.0f blue:213.0f / 255.0f alpha:1.0];
     [segmentedControl setSelectedSegmentIndex:0];
     [segmentedControl addTarget:self action:@selector(segmentedControlIndexChanged) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:segmentedControl];
+   [self.view addSubview:segmentedControl];
     
 }
 
@@ -206,46 +203,24 @@
     }
 }
 
-
--(void)customButtonClicked:(UIButton *)btn{
-    //  UIButton *btn=(UIButton*)sender;
-    for(int i=0;i<maindelegate.searchModule.searchTypes.count;i++){
-        NSLog(@"%d",btn.tag);
-        if(((CSearchType*)maindelegate.searchModule.searchTypes[i]).typeId==btn.tag){
-            //    CGFloat red = 53.0f / 255.0f;
-            //    CGFloat green = 53.0f / 255.0f;
-            //    CGFloat blue = 53.0f / 255.0f;
-            
-            CGFloat red = 0.0f / 255.0f;
-            CGFloat green = 155.0f / 255.0f;
-            CGFloat blue = 213.0f / 255.0f;
-            btn.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
-            selectedType=((CSearchType*)maindelegate.searchModule.searchTypes[i]).typeId;
-        }
-        else {
-            UIButton *button = (UIButton *)[self.view viewWithTag:i+1];
-            //        CGFloat red = 33.0f / 255.0f;
-            //        CGFloat green = 33.0f / 255.0f;
-            //        CGFloat blue = 33.0f / 255.0f;
-            
-            CGFloat red = 53.0f / 255.0f;
-            CGFloat green = 53.0f / 255.0f;
-            CGFloat blue = 53.0f / 255.0f;
-            button.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (!SYSTEM_VERSION_LESS_THAN(@"8.0") && [mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+             btnAdvanceSearch.Frame=CGRectMake(self.view.frame.size.width-265, 30, 220, 50);
+    }
+        else
+        {
+         btnAdvanceSearch.Frame=CGRectMake(self.view.frame.size.width-265, 30, 220, 50);
         }
     }
+    
 }
-
-
 -(void)advanceSearchButtonClicked{
+    [txtKeyword resignFirstResponder];
     UINavigationController *navController=[maindelegate.splitViewController.viewControllers objectAtIndex:1];                            [navController setNavigationBarHidden:YES animated:NO];
     AdvanceSearchViewController *advanceViewController = [[AdvanceSearchViewController alloc]initWithStyle:UITableViewStyleGrouped];
     [navController pushViewController:advanceViewController animated:YES];
-}
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)searchButtonTapped:(UIButton *)button
@@ -257,9 +232,6 @@
         
         [self performSelectorInBackground:@selector(performSearch) withObject:nil];
         
-        
-        
-        
     }
     else{
         [self ShowMessage:NSLocalizedString(@"Alert.TypeKeyword",@"Type a keyword.")];
@@ -269,7 +241,7 @@
 -(void)performSearch{
     
     @try{
-        mainDelegate.SearchActive=YES;
+        mainDelegate.SearchClicked=YES;
         NSString* showthumb;
         if (mainDelegate.ShowThumbnail)
             showthumb=@"true";
@@ -327,31 +299,21 @@
         [body appendData:[showthumb dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
         
-        //         // index parameter
-        //         [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        //         [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"index\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-        //         [body appendData:[[NSString stringWithFormat:@"%d",0] dataUsingEncoding:NSUTF8StringEncoding]];
-        //         [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-        //
-        //         // pageSize parameter
-        //         [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        //         [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"pageSize\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-        //         [body appendData:[[NSString stringWithFormat:@"%d", mainDelegate.SettingsCorrNb] dataUsingEncoding:NSUTF8StringEncoding]];
-        //         [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        // language parameter
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"language\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[mainDelegate.IpadLanguage dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
         
-        // close form
+              // close form
         [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
         
         // set request body
         [request setHTTPBody:body];
         [request setTimeoutInterval:mainDelegate.Request_timeOut];
         NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-        // returnString = [[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding];
-        
-        //NSURL *xmlUrl = [NSURL URLWithString:url];
-        //NSData *xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+ 
         NSString *validationResultUser=[CParser ValidateWithData:returnData];
-        // [self performSelectorOnMainThread:@selector(dismiss) withObject:nil waitUntilDone:YES];
         if(![validationResultUser isEqualToString:@"OK"])
         {
             
@@ -375,7 +337,6 @@
         [FileManager appendToLogView:@"SimpleSearchViewController" function:@"searchButtonTapped" ExceptionTitle:[ex name] exceptionReason:[ex reason]];
     }
     @finally {
-        mainDelegate.SearchActive=NO;
         [self performSelectorOnMainThread:@selector(dismiss) withObject:nil waitUntilDone:YES];
     }
     

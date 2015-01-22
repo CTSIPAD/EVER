@@ -24,7 +24,7 @@
     CGPoint XH,YH,ZH;
 }
 @synthesize  startLocation,endLocation,annotationSignHeight,annotationSignWidth,attachmentId,doc;
-- (void)initPDFDoc:(PDFDocument*) pdoc
+- (void)initPDFDoc:(PDFDocument*) pdoc pageIndex:(int)index
 {
     doc=pdoc;
 	m_pDocument = pdoc;
@@ -49,11 +49,12 @@
         
         ptRightBottom.y=obj.y1;
         
-        
+       
+
         
         m_pageIndex=obj.PageNb;
         
-        m_curPage = [m_pDocument getPDFPage:m_pageIndex];
+        m_curPage = [m_pDocument getPDFPage:obj.PageNb];
         
         [m_pDocument setCurPage:m_curPage];
         
@@ -76,7 +77,7 @@
             
             m_pageIndex=notee.PageNb;
             
-            m_curPage = [m_pDocument getPDFPage:m_pageIndex];
+            m_curPage = [m_pDocument getPDFPage:notee.PageNb];
             
             [m_pDocument setCurPage:m_curPage];
             
@@ -89,7 +90,7 @@
         
 
 
-    m_pageIndex = 0;
+    m_pageIndex = index;
     m_zoomLevel = 100;
     m_curPage = [m_pDocument getPDFPage:m_pageIndex];
       FPDF_Page_GetSize(m_curPage, &m_pageWidth, &m_pageHeight);
@@ -139,10 +140,11 @@
     }
     return self;
 }
+
+
+
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-
-    //form fill implemention.
    NSSet *allTouches = [event allTouches];
     if([allTouches count] > 0)
     {
@@ -165,6 +167,7 @@
 
 	}
     [self setNeedsDisplay];
+    
 }
 -(void)searchArray:(HighlightClass*)highlight{
     BOOL found=NO;
@@ -191,8 +194,12 @@
         
     }
 }
+
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [super touchesEnded:touches withEvent:event]; // Message superclass
+
+
     CGPoint pt = [[touches anyObject] locationInView:self];
 	
 	//[[self superview] bringSubviewToFront:self];
@@ -215,14 +222,19 @@
 
     if([self btnHighlight]==YES){
         
-        HighlightClass* obj=[[HighlightClass alloc]initWithName:ptLeftTop.x ordinate:ptLeftTop.y height:ptRightBottom.x width:ptRightBottom.y PageNb:m_pageIndex AttachmentId:self.attachmentId];
+        HighlightClass* obj=[[HighlightClass alloc]initWithName:ptLeftTop.x ordinate:ptLeftTop.y height:ptRightBottom.x width:ptRightBottom.y PageNb:m_pageIndex AttachmentId:self.attachmentId Id:@"0"];
         [mainDelegate.Highlights addObject:obj];
 
         mainDelegate.highlightNow=YES;
         [doc deleteAllAnnot];
+        FPDF_PAGE tempPage=m_curPage;
+        int tempindex=m_pageIndex;
+        
         for(HighlightClass* obj in mainDelegate.IncomingHighlights){
             XH=CGPointMake(obj.abscissa, obj.ordinate);
             YH=CGPointMake(obj.x1, obj.y1);
+            m_curPage = [m_pDocument getPDFPage:obj.PageNb];
+            [m_pDocument setCurPage:m_curPage];
             [obj setIndex:[mainDelegate.IncomingHighlights indexOfObject:obj]];
             
             [m_pDocument AddHighlightAnnot:XH secondPoint:YH previousPoint:ZH];
@@ -231,6 +243,8 @@
         for(HighlightClass* obj in mainDelegate.Highlights){
             XH=CGPointMake(obj.abscissa, obj.ordinate);
             YH=CGPointMake(obj.x1, obj.y1);
+            m_curPage = [m_pDocument getPDFPage:obj.PageNb];
+            [m_pDocument setCurPage:m_curPage];
             if(![obj.status isEqualToString:@"DELETE"]){
                 [obj setIndex:([mainDelegate.Highlights indexOfObject:obj]+[mainDelegate.IncomingHighlights count])];
                 [m_pDocument AddHighlightAnnot:XH secondPoint:YH previousPoint:ZH];
@@ -239,6 +253,8 @@
         }
         
         for(note* obj in mainDelegate.Notes){
+            m_curPage = [m_pDocument getPDFPage:obj.PageNb];
+            [m_pDocument setCurPage:m_curPage];
             CGPoint point=CGPointMake(obj.abscissa, obj.ordinate);
             if(![obj.status isEqualToString:@"DELETE"])
                 [m_pDocument AddNote:point secondPoint:point  note:obj.note];
@@ -246,105 +262,48 @@
         }
         
         for(note* obj in mainDelegate.IncomingNotes){
+            m_curPage = [m_pDocument getPDFPage:obj.PageNb];
+            [m_pDocument setCurPage:m_curPage];
             CGPoint point=CGPointMake(obj.abscissa, obj.ordinate);
             [m_pDocument AddNote:point secondPoint:point  note:obj.note];
             mainDelegate.highlightNow=NO;
         }
-
+        
+        [m_pDocument setCurPage:tempPage];
+        m_pageIndex=tempindex;
 	}
 	
    
-    if ([self btnErase]) {
+    if ([self btnErase])
         [m_pDocument eraseAnnotation:startLoc secondPoint:ptLeftTop];
-    }else
-    if ([self btnSign]) {
-        //jis sign
-	  self.btnErase=FALSE;
-        self.btnSign=NO;
-       mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        
-        if([mainDelegate.SignMode isEqualToString:@"CustomSign"]){
-        
-        
-        
-        NSString *serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
-        NSString *xposition = [NSString stringWithFormat:@"%f",startLoc.x];
-        NSString *yposition = [NSString stringWithFormat:@"%f",startLoc.y];
-        NSString* serverUrl1=[serverUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSString * callMethod;
-        if(![self FreeSignAll])
-            callMethod=@"FreeSignIt";
-        else
-            callMethod=@"FreeSignAll";
-        
-        NSString* signUrl = [NSString stringWithFormat:@"http://%@?action=%@&positionX=%@&positionY=%@&loginName=%@&pdfFilePath=%@&pageNumber=%d&SiteId=%@&FileId=%@&FileUrl=%@",serverUrl1,callMethod,xposition,yposition,mainDelegate.user.loginName,mainDelegate.docUrl,self.DocumentPagesNb,mainDelegate.SiteId,mainDelegate.FileId,[mainDelegate.FileUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-            NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:[signUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
-            NSData *searchXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
     
-      //  NSURL *xmlUrl = [NSURL URLWithString:[signUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-      //  NSData *searchXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
-
-        CParser *p=[[CParser alloc] init];
-        [p john:searchXmlData];
-
-        
-        [_delegate showDocument:nil];
-        
-        
-        CGPoint ptLeftTop;
-        
-        ptLeftTop.x = 279;
-        ptLeftTop.y = 360;
-        
-        
-        [self.doc extractText:ptLeftTop];
-        [self setNeedsDisplay];
-
-
-        
-        NSString *validationResultAction=[CParser ValidateWithData:searchXmlData];
-        
-        if(![validationResultAction isEqualToString:@"OK"])
-        {
-           
-                
-                [self ShowMessage:validationResultAction];
-            
-        }else {
-            
-            [self ShowMessage:@"Action successfuly done."];
-            
-        }
-        }
-        else{
-            [m_pDocument AddStampAnnot:ptLeftTop secondPoint:ptRightBottom previousPoint:ptLeftTop];
-        }
-
-        
-    }else if([self btnNote ])
-    {
-        self.btnErase=FALSE;
-        mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-       	[m_pDocument AddNote:ptLeftTop secondPoint:ptRightBottom note:[self annotationNoteMsg]];
-        note* noteObj=[[note alloc]initWithName:ptLeftTop.x ordinate:ptLeftTop.y note:[self annotationNoteMsg] PageNb:m_pageIndex AttachmentId:self.attachmentId];
-        [mainDelegate.Notes addObject:noteObj];
-       
-    }
-    if([self btnHighlight])
-    {    }
     else
+        if([self btnNote ])
+        {
+            mainDelegate.highlightNow=NO;
+            self.btnErase=FALSE;
+            mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [m_pDocument AddNote:ptLeftTop secondPoint:ptRightBottom note:[self annotationNoteMsg]];
+            note* noteObj=[[note alloc]initWithName:ptLeftTop.x ordinate:ptLeftTop.y note:[self annotationNoteMsg] PageNb:m_pageIndex AttachmentId:self.attachmentId Id:@"0"];
+            [mainDelegate.Notes addObject:noteObj];
+            
+        }
+    
         if ([self btnNote]){
             self.btnNote =FALSE;
         }
         else{
-            if(![self btnErase])
+            if(![self btnErase]&&![self btnHighlight])
                 [m_pDocument extractText:ptLeftTop ];
         }
     [self setNeedsDisplay];
-
+    
 }
 -(int)GetPageIndex{
     return m_pageIndex;
+}
+-(void)InitPageIndex{
+    m_pageIndex=0;
 }
 -(void)ShowMessage:(NSString*)message{
     
@@ -360,27 +319,21 @@
     
 }
 
-- (void) touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event {
-	
-	// Retrieve the touch point
-	//Unused variable CGPoint pt = [[touches anyObject] locationInView:self];
-	
-	//[[self superview] bringSubviewToFront:self];
-	
-//Unused variable	CGPoint startLoc = [self DeviceToPagePoint:m_curPage p1:pt];
-	//form fill implemention.
-   self.startLocation = [[touches anyObject] locationInView:self];
-    //CGPoint ptLeftTop=[self DeviceToPagePoint:m_curPage p1:CGPointMake(startLocation.x, self.startLocation.y)];
 
-	//[m_pdfDoc setNewAnnotation:YES];
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	[super touchesCancelled:touches withEvent:event]; // Message superclass
+}
+
+
+
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+
+    self.startLocation = [[touches anyObject] locationInView:self];
     currentPoint.x=0;
     previousPoint.x=0;
-
-//	FPDF_ANNOT annot;
-//    int index=0;
-//    FPDF_Annot_GetAtPos(m_curPage, ptLeftTop.x,ptLeftTop.y, &annot);
-//    FPDF_Annot_GetIndex(m_curPage, annot, &index);
-
+    [_delegate HideToolbar];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
@@ -496,7 +449,6 @@
         FPDF_Page_Close(m_curPage);
     
 }
-
 -(void) OnPrevPage
 {
     isZooming=NO;
@@ -530,98 +482,5 @@
     rect.size.width = m_mainsize.width;
     [self setNeedsDisplayInRect:rect];
 }
-
--(void) OnZoomIn
-{
-    _zooming=YES;
-    isZooming=YES;
-    if(m_zoomLevel > 200)
-        return;
-    m_nStartX = 0;
-    m_nStartY = 0;
-    
-    m_nSizeX = m_pageWidth * (m_zoomLevel * 1.2) / 100;
-    m_nSizeY = m_pageHeight * (m_zoomLevel * 1.2) / 100;
-    //zoom jen
-    if(m_nSizeY > 763){
-        m_nSizeY=763;
-    }
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown) {
-        
-        if(m_nSizeX > 1027 || m_nSizeY > 1019){
-            m_nSizeX=1027;
-            m_nSizeY=1019;
-        }
-    } else {
-        
-        if(m_nSizeX > 1027 || m_nSizeY > 1452){
-            m_nSizeX=1027;
-            m_nSizeY=1452;
-        }
-        
-    }
-    m_viewRect.size.width = m_nSizeX;
-    m_viewRect.size.height = m_nSizeY;
-    int sizexOriginal = m_viewRect.size.width;
-    int sizeyOriginal = m_viewRect.size.height;
-    if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown){
-        if(sizeyOriginal<1027)
-            sizeyOriginal=1027;
-        if(sizexOriginal<1019)
-            sizexOriginal=1019;
-        self.frame = CGRectMake(0, 0, sizexOriginal,sizeyOriginal);
-    }
-    else
-        self.frame = CGRectMake((self.superview.frame.size.height-sizexOriginal)/2, 5, sizexOriginal,sizeyOriginal);
-    m_viewRect.origin.x = 0;
-    m_viewRect.origin.y = 0;
-    CGRect rect = m_viewRect;
-    rect.size = m_viewRect.size;
-    [self setNeedsDisplay];
-}
--(void) OnZoomOut
-{
-    _zooming=YES;
-    isZooming=YES;
-    if(m_zoomLevel < 100)
-        return;
-    m_nStartX = 0;
-    m_nStartY = 0;
-    
-    m_nSizeX = m_pageWidth * (m_zoomLevel * 0.8) / 100;
-    m_nSizeY = m_pageHeight * (m_zoomLevel * 0.8) / 100;
-    //zoom jen
-    
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    
-    if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown) {
-        //  m_nSizeX=768;
-        //  m_nSizeY=1019;
-        if(m_nSizeX < 768 || m_nSizeY < 1027){
-            m_nSizeX=768;
-            m_nSizeY=1027;
-        }
-    } else {
-        if(m_nSizeX < 585 || m_nSizeY < 763){
-            m_nSizeX=585;
-            m_nSizeY=763;
-        }
-    }
-    m_viewRect.size.width = m_nSizeX;
-    m_viewRect.size.height = m_nSizeY;
-    int sizexOriginal = m_viewRect.size.width;
-    int sizeyOriginal = m_viewRect.size.height;
-    if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown)
-        self.frame = CGRectMake(0, 0, sizexOriginal,sizeyOriginal);
-    else
-        self.frame = CGRectMake((self.superview.frame.size.height-sizexOriginal)/2, 5, sizexOriginal,sizeyOriginal);
-    m_viewRect.origin.x = 0;
-    m_viewRect.origin.y = 0;
-    CGRect rect = m_viewRect;
-    rect.size = m_mainsize;
-    [self setNeedsDisplay];
-}
-
 
 @end

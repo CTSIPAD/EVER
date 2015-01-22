@@ -13,6 +13,7 @@
 @property (nonatomic, retain) NSString *Id;
 @property (nonatomic, retain) NSString *inboxId;
 @property (nonatomic, retain) NSString *TransferId;
+@property (nonatomic, retain) NSString *Status;
 @property (nonatomic, assign) BOOL Priority;
 @property (nonatomic, assign) BOOL New;
 @property (nonatomic, assign) BOOL ShowLocked;

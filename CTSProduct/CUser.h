@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSString *serviceType;
 @property (nonatomic, retain) NSMutableArray *menu;
 @property (nonatomic, retain) NSString *signature;
+@property (nonatomic, retain) NSString *signatureId;
 @property (nonatomic, retain) NSString *pincode;
 @property (nonatomic, retain) NSArray* routeLabels;
 //@property (nonatomic, retain) NSArray* destinations;

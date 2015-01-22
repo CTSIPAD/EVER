@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="12F45" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="13E28" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Attachments" syncable="YES">
         <attribute name="attachmentid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="correspondenceid" optional="YES" attributeType="String" syncable="YES"/>
@@ -7,11 +7,13 @@
         <attribute name="filename" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fileuri" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fileurl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="folderid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="foldername" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="highlightannotations" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="isoriginalmail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="noteannotations" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="siteid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailurl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -30,12 +32,19 @@
         <attribute name="new" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="priority" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="properties" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="quickactions" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="showlock" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="signactions" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="systemproperties" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="thumbnailurl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="toolbaritems" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="transferid" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Destinations" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="section" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="ICONS" syncable="YES">
         <attribute name="key" optional="YES" attributeType="String" syncable="YES"/>
@@ -62,13 +71,14 @@
         <attribute name="xml" optional="YES" attributeType="Binary" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Attachments" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="BuiltInActions" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Correspondences" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="ICONS" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="InboxItems" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Login" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="OfflineActions" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="XMLS" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Attachments" positionX="0" positionY="0" width="128" height="270"/>
+        <element name="BuiltInActions" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="Correspondences" positionX="0" positionY="0" width="128" height="300"/>
+        <element name="Destinations" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="ICONS" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="InboxItems" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="Login" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="OfflineActions" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="XMLS" positionX="0" positionY="0" width="128" height="105"/>
     </elements>
 </model>

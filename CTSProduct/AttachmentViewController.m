@@ -35,11 +35,9 @@
 {
     [super viewDidLoad];
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CGFloat red = 1.0f / 255.0f;
-    CGFloat green = 49.0f / 255.0f;
-    CGFloat blue = 97.0f / 255.0f;
-    self.tableView.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
-    
+
+    self.tableView.backgroundColor=mainDelegate.cellColor;
+    self.tableView.layer.borderColor=[[UIColor whiteColor]CGColor];
     [self.tableView setSeparatorColor:[UIColor whiteColor]];
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0,0,0,0)];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"AttachmentsCell"];
@@ -74,13 +72,22 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"AttachmentsCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
+
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    cell.frame=self.view.frame;
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 37, 37)];
     
-    UILabel *labelTitle= [[UILabel alloc] initWithFrame:CGRectMake(70, 5,cell.frame.size.width-140, 40)];
-    labelTitle.textColor = [UIColor whiteColor];
-    labelTitle.backgroundColor = [UIColor clearColor];
+    UILabel *labelTitle= [[UILabel alloc] init];
+    if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+        labelTitle.Frame=CGRectMake(20, 5,cell.frame.size.width-80, 40);
+        imageView.frame=CGRectMake(cell.frame.size.width-45, 5, 37, 37);
+        labelTitle.textAlignment=NSTextAlignmentRight;
+    }
+    else{
+          labelTitle.Frame=CGRectMake(60, 5,cell.frame.size.width-50, 40);
+          labelTitle.textAlignment=NSTextAlignmentLeft;
+    }
+        labelTitle.textColor = [UIColor whiteColor];
     CAction* row=self.actions[indexPath.row];
     if([row.label isEqualToString:@""]|| row.label==nil)
         labelTitle.text=NSLocalizedString(row.action,row.action);
@@ -93,14 +100,15 @@
     else{
         [imageView setImage:[UIImage imageNamed:row.action]];
     }
-    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
-        labelTitle.textAlignment=NSTextAlignmentRight;
-        imageView.frame=CGRectMake(cell.frame.size.width-45, 5, 37, 37);
-    }
+   
     [cell addSubview:imageView];
     [cell addSubview:labelTitle];
-    
-    
+    cell.backgroundColor=mainDelegate.cellColor;
+    if([row.action isEqualToString:@"AddNew"]&& [[self.NewBtnStatus lowercaseString] isEqualToString:@"readonly"]){
+        cell.userInteractionEnabled=false;
+    }
+    else
+        cell.userInteractionEnabled=true;
     return cell;
 }
 
@@ -123,7 +131,6 @@
             }
             else{
                 [_delegate PopUpCommentDialog:self Action:row document:nil];
-                //[_delegate movehome:self];
                 
             }
             
@@ -133,8 +140,12 @@
                 [_delegate PopUpTransferDialog];
             }
             else{
-                if([row.action isEqualToString:@"AddNew"])
-                    [_delegate ShowUploadAttachmentDialog:self.index];
+                if([row.action isEqualToString:@"AddNew"]){
+                    if(!mainDelegate.isOfflineMode)
+                        [_delegate ShowUploadAttachmentDialog:self.index];
+                    else
+                        [self ShowMessage:NSLocalizedString(@"Upload_attachment", @"connect to upload")];
+                }
                 mainDelegate.QuickActionClicked=false;
                 
             }
@@ -164,7 +175,12 @@
             }
             else{
                 if([row.action isEqualToString:@"AddNew"])
-                    [_delegate ShowUploadAttachmentDialog];
+                {
+                    if(!mainDelegate.isOfflineMode)
+                        [_delegate ShowUploadAttachmentDialog];
+                    else
+                        [self ShowMessage:NSLocalizedString(@"Upload_attachment", @"connect to upload")];
+                }
             }
         }
     }

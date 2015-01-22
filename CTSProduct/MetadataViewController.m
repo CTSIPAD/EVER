@@ -82,9 +82,16 @@
     NSString *key=[NSString stringWithFormat:@"%d",indexPath.section];
     NSDictionary *subDictionary = [properties objectForKey:key];
     NSArray *keys=[subDictionary allKeys];
-    if([[keys objectAtIndex:0] isEqualToString:@"Subject"])
-        return 150;
-    return 50;
+    NSDictionary *subSubDictionary=[subDictionary objectForKey:[keys objectAtIndex:0]];
+    NSArray *subkeys=[subSubDictionary allKeys];
+    NSString* Labeltext= [subSubDictionary objectForKey:[subkeys objectAtIndex:0]];
+    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:Labeltext attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]}];
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){200, CGFLOAT_MAX}
+                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                               context:nil];
+    return rect.size.height+50;
+
     
 }
 
@@ -107,16 +114,13 @@
 - (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *view = [[UIView alloc] init];
-    //jen metadata color
-    CGFloat red=0.0f/255.0f;
-    CGFloat green=155.0f/255.0f;
-    CGFloat blue=213.0f/255.0f;
-    view.backgroundColor=[UIColor colorWithRed:red green:green blue:blue alpha:1.0];
+
+    view.backgroundColor=mainDelegate.bgBlueColor;
     view.frame=CGRectMake(0, 0, 350, 50);
     
-    UILabel *lblTitle=[[UILabel alloc]initWithFrame:CGRectMake(10, 10, 200, 30)];
-    [lblTitle setBackgroundColor:[UIColor clearColor]];
-    //lblTitle.font = [UIFont fontWithName:@"Helvetica" size:20];
+    UILabel *lblTitle=[[UILabel alloc]initWithFrame:CGRectMake(10, 10, cell.frame.size.width-20, 30)];
+    [lblTitle setBackgroundColor:mainDelegate.bgBlueColor];
+    lblTitle.textColor=[UIColor whiteColor];
     lblTitle.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
     NSString *key=[NSString stringWithFormat:@"%d",section];
     NSDictionary *subDictionary = [properties objectForKey:key];
@@ -150,12 +154,11 @@
     cell.textLabel.numberOfLines=0;
     NSDictionary *subSubDictionary=[subDictionary objectForKey:[keys objectAtIndex:0]];
     NSArray *subkeys=[subSubDictionary allKeys];
-    NSLog(@"%@",[subSubDictionary objectForKey:[subkeys objectAtIndex:0]]);
     cell.textLabel.text= [subSubDictionary objectForKey:[subkeys objectAtIndex:0]];
     cell.textLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:14];
     if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
         cell.textLabel.textAlignment=NSTextAlignmentRight;
-    
+
     return cell;
 }
 

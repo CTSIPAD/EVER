@@ -41,7 +41,12 @@
 @required // Delegate protocols
 
 - (void)pagebar:(ReaderMainPagebar *)pagebar gotoPage:(NSInteger)page document:(ReaderDocument*)newDocument fileId:(NSInteger)fileId;
-
+-(void)disableNext;
+-(void)disablePrev;
+-(void)enablePrev;
+-(void)enableNext;
+-(void)setAttachmentIdInToolbar:(int)value;
+-(void)closePagebar;
 @end
 
 @interface ReaderMainPagebar : UIView{
@@ -63,7 +68,8 @@
 
 - (void)hidePagebar;
 - (void)showPagebar;
-
+-(void) adjustToolbar:(UIInterfaceOrientation) tointerfaceOrientation;
+- (void)updatePageNumberText:(NSInteger)page;
 @end
 
 #pragma mark -

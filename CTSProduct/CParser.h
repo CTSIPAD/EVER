@@ -40,6 +40,8 @@
 +(void)DeleteCorrespondence:(NSString*)CorrespondenceId inboxId:(NSString*)InboxId;
 +(void)Download:(NSData*)xmlData;
 +(void)LoadDepartmentChanges:(NSData *) xmlData;
-+(NSMutableArray*)loadRecipients:(NSString*) url ;
++(NSMutableArray*)loadRecipients:(NSString*) url section:(NSString*)section ;
 +(CAttachment*)LoadNewAttachmentResults:(NSData *)xmlData docId:(NSString*)docid;
++(void)ShowMessage:(NSString*)message;
++(CGFloat)pixelToPoints:(CGFloat)px;
 @end

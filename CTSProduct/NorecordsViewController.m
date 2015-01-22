@@ -76,6 +76,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [SVProgressHUD dismiss];
+
     //jis toolbar
     
     //    CGFloat red = 88.0f / 255.0f;
@@ -86,16 +88,18 @@
     CGFloat green = 208.0f / 255.0f;
     CGFloat blue = 238.0f / 255.0f;
     self.navigationItem.hidesBackButton=YES;
-    self.navigationController.navigationBarHidden = NO;
+    self.navigationController.navigationBarHidden = YES;
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    noRecords = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2-50, self.view.frame.size.height/3, 500, 40)];
+    noRecords = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2-350, self.view.frame.size.height/3, self.view.frame.size.width/2, 40)];
+    noRecords.numberOfLines=0;
+    noRecords.lineBreakMode = NSLineBreakByWordWrapping;
     noRecords.font =[UIFont fontWithName:@"Helvetica-Bold" size:25.0f];
     @try {
         if([mainDelegate.IpadLanguage isEqualToString:@"ar"])
-            noRecords.text = [[NSString alloc] initWithFormat:@"لا توجد %@ للعرض",((CMenu*)mainDelegate.user.menu[mainDelegate.inboxForArchiveSelected-1]).name];
+            noRecords.text = [[NSString alloc] initWithFormat:@"لا توجد %@ للعرض",((CMenu*)mainDelegate.user.menu[mainDelegate.inboxForArchiveSelected]).name];
         else
-            noRecords.text = [[NSString alloc] initWithFormat:@"No %@ To Display",((CMenu*)mainDelegate.user.menu[mainDelegate.inboxForArchiveSelected-1]).name];
+	            noRecords.text = [[NSString alloc] initWithFormat:@"No %@ To Display",((CMenu*)mainDelegate.user.menu[mainDelegate.inboxForArchiveSelected]).name];
         
     }
     @catch (NSException *exception) {
@@ -110,11 +114,11 @@
     noRecords.shadowColor = [UIColor colorWithRed:0.0f / 255.0f green:155.0f / 255.0f blue:213.0f / 255.0f alpha:1.0];
     noRecords.shadowOffset = CGSizeMake(0.0, 1.0);
     noRecords.textColor = [UIColor whiteColor];
+    noRecords.textAlignment=NSTextAlignmentCenter;
     //[self.view setBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
     [self.view setBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
     [self.view addSubview:noRecords];
     
-    [SVProgressHUD dismiss];
     
     
     

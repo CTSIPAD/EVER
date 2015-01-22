@@ -91,11 +91,77 @@
     return self;
 }
 
+-(NSString *)replaceDocument:(NSString*)dirName
+{
+    
+    @try {
+        mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        tempPdfLocation=@"";
+        
+        NSString*strUrl;
+        
+        strUrl= [self.url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];//url where the file located
+        mainDelegate.docUrl = strUrl;
+        mainDelegate.SiteId = self.SiteId;
+        mainDelegate.FileId = self.FileId;
+        mainDelegate.FileUrl = self.FileUrl;
+        mainDelegate.AttachmentId=self.AttachmentId;
+        [mainDelegate.IncomingHighlights removeAllObjects];
+        [mainDelegate.IncomingNotes removeAllObjects];
+        [mainDelegate.IncomingHighlights addObjectsFromArray:self.HighlightAnnotations];
+        [mainDelegate.IncomingNotes addObjectsFromArray:self.NoteAnnotations];
+        
+        
+        
+        
+        NSURL *url=[NSURL URLWithString:strUrl];
+        
+        NSString *cachesDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];// /Users/dna/Library/Application Support/iPhone Simulator/7.0.3/Applications/9A637052-BDFD-4567-B3AC-6B01DDFD5430/Library/Caches
+        
+        NSString *path = [cachesDirectory stringByAppendingPathComponent:dirName];//append correspondence number
+        NSError *error;
+        if (![[NSFileManager defaultManager] fileExistsAtPath:path])    //Does directory already exist?
+        {
+            if (![[NSFileManager defaultManager] createDirectoryAtPath:path
+                                           withIntermediateDirectories:NO
+                                                            attributes:nil
+                                                                 error:&error])
+            {
+                NSLog(@"Create directory error: %@", error);
+            }
+        }
+        
+        
+        NSString* pdfCacheName = [self.url lastPathComponent];//take the name of the file
+        
+        tempPdfLocation = [path stringByAppendingPathComponent:pdfCacheName];
+            NSData *data = [NSData dataWithContentsOfURL:url ];
+        if(data.length!=0){
+                [data writeToFile:tempPdfLocation atomically:TRUE];
+            NSString* dir  = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+            dir = [dir stringByAppendingString:@"/FoxitSaveAnnotation.pdf"];
+            [data writeToFile:dir atomically:TRUE];
+        }
+            else tempPdfLocation=@"";
+        
+    }
+    @catch (NSException *ex) {
+        [FileManager appendToLogView:@"CAttachment" function:@"saveInCacheinDirectory" ExceptionTitle:[ex name] exceptionReason:[ex reason]];
+    }
+    @finally {
+        
+    }
+    return tempPdfLocation;
+    
+    
+	
+}
 
 -(NSString *)saveInCacheinDirectory:(NSString*)dirName fromSharepoint:(BOOL)isSharePoint
 {
     
     @try {
+        NSLog(@"Info: Enter saveInCacheinDirectory Method.");
         mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         tempPdfLocation=@"";
        
@@ -111,7 +177,7 @@
         [mainDelegate.IncomingNotes removeAllObjects];
         [mainDelegate.IncomingHighlights addObjectsFromArray:self.HighlightAnnotations];
         [mainDelegate.IncomingNotes addObjectsFromArray:self.NoteAnnotations];
-       
+        NSLog(@"Info: Attachment URl=%@",strUrl);
 
         
         
@@ -136,7 +202,7 @@
         NSString* pdfCacheName = [self.url lastPathComponent];//take the name of the file
         
         tempPdfLocation = [path stringByAppendingPathComponent:pdfCacheName];//compute the full path for the file
-         BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:tempPdfLocation];//check if file if already exists
+         BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:tempPdfLocation];//check if file is already exists
          if(!fileExists){//write file to cache if not exist
         
             NSData *data = [NSData dataWithContentsOfURL:url ];
@@ -146,12 +212,60 @@
          }
     }
     @catch (NSException *ex) {
-        [FileManager appendToLogView:@"CAttachment" function:@"saveInCacheinDirectory" ExceptionTitle:[ex name] exceptionReason:[ex reason]];
+        NSLog(@"Error: Error occured in CAttachment Class in method saveInCacheinDirectory.\n Exception Name:%@ Exception Reason: %@",[ex name],[ex reason]);
     }
     @finally {
         
     }
     return tempPdfLocation;
+    
+    
+	
+}
+-(void)saveinDirectory:(NSString*)dirName strUrl:(NSString*)strUrl
+{
+    
+    @try {
+        mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        tempPdfLocation=@"";
+        
+
+        mainDelegate.AttachmentId=self.AttachmentId;
+
+        
+        NSString *cachesDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];// /Users/dna/Library/Application Support/iPhone Simulator/7.0.3/Applications/9A637052-BDFD-4567-B3AC-6B01DDFD5430/Library/Caches
+        
+        NSString *path = [cachesDirectory stringByAppendingPathComponent:dirName];//append correspondence number
+        NSError *error;
+        if (![[NSFileManager defaultManager] fileExistsAtPath:path])    //Does directory already exist?
+        {
+            if (![[NSFileManager defaultManager] createDirectoryAtPath:path
+                                           withIntermediateDirectories:NO
+                                                            attributes:nil
+                                                                 error:&error])
+            {
+                NSLog(@"Create directory error: %@", error);
+            }
+        }
+        
+        
+        NSString* pdfCacheName = [self.url lastPathComponent];//take the name of the file
+        
+        tempPdfLocation = [path stringByAppendingPathComponent:pdfCacheName];//compute the full path for the (!fileExists){//write file to cache if not exist
+            [[NSFileManager defaultManager] removeItemAtPath:tempPdfLocation error:nil];
+            NSData *data = [NSData dataWithContentsOfFile:strUrl ];
+        
+            if(data.length!=0)
+                [data writeToFile:tempPdfLocation atomically:TRUE];
+            else tempPdfLocation=@"";
+        
+    }
+    @catch (NSException *ex) {
+        [FileManager appendToLogView:@"CAttachment" function:@"saveInCacheinDirectory" ExceptionTitle:[ex name] exceptionReason:[ex reason]];
+    }
+    @finally {
+        
+    }
     
     
 	

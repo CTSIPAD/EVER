@@ -37,26 +37,27 @@
 #import "CSearch.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SVProgressHUD.h"
+#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch]== NSOrderedAscending)
 @implementation ReaderMainPagebar
 {
 	ReaderDocument *document;
-
+    
 	ReaderTrackControl *trackControl;
-
+    
 	NSMutableDictionary *miniThumbViews;
-
+    
 	ReaderPagebarThumb *pageThumbView;
-
+    
 	UILabel *pageNumberLabel;
-
+    
 	UIView *pageNumberView;
-
+    
 	NSTimer *enableTimer;
 	NSTimer *trackTimer;
     AppDelegate* mainDelegate;
-    
+    UIView*  thumbView;
     UIScrollView* scrollViewmainPagebar;
-   }
+}
 
 #pragma mark Constants
 
@@ -94,100 +95,39 @@
 	return [self initWithFrame:frame Document:nil CorrespondenceId:0 MenuId:0 AttachmentId:0];
 }
 
-- (void)updatePageThumbView:(NSInteger)page
+- (void)updatePageNumberText:(NSInteger)page
 {
-	//NSInteger pages = [document.pageCount integerValue];
+	
     CCorrespondence *correspondence;
     if(self.menuId!=100){
         correspondence= ((CMenu*)self.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
     }else{
         correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
     }
+    thumbnailrarray = [[NSMutableArray alloc] init];
     
-    //    NSInteger pages=correspondence.attachmentsList.count;
+    if (correspondence.attachmentsList.count>0)
+    {
+        for(CAttachment* doc in correspondence.attachmentsList)
+        {
+            if([doc.FolderName isEqualToString:mainDelegate.FolderName]){
+                [thumbnailrarray addObject:doc];
+            }
+            
+            
+        }
+    }
     
     NSInteger pages=thumbnailrarray.count;
     
-	if (pages > 1) // Only update frame if more than one page
-	{
-		CGFloat controlWidth = trackControl.bounds.size.width;
-        
-		CGFloat useableWidth = (controlWidth - THUMB_LARGE_WIDTH);
-        
-		CGFloat stride = (useableWidth / (pages - 1)); // Page stride
-        
-		NSInteger X = (stride * (page - 1)); CGFloat pageThumbX = X;
-        
-		CGRect pageThumbRect = pageThumbView.frame; // Current frame
-        
-		if (pageThumbX != pageThumbRect.origin.x) // Only if different
-		{
-			pageThumbRect.origin.x = pageThumbX; // The new X position
-            
-			pageThumbView.frame = pageThumbRect; // Update the frame
-		}
-	}
+    NSString *format = NSLocalizedString(@"%d of %d", @"format"); // Format
+    if(page>thumbnailrarray.count)
+        page=1;
+    NSString *number = [NSString stringWithFormat:format, page, pages]; // Text
     
-	if (page != pageThumbView.tag) // Only if page number changed
-	{
-        
-		pageThumbView.tag = page; [pageThumbView reuse]; // Reuse the thumb view
-        if(thumbnailrarray.count<self.attachmentId)
-            self.attachmentId=0;
-        CAttachment *file;
-        if(self.attachmentId >= thumbnailrarray.count){
-            file=thumbnailrarray[0];
-        }
-        else{
-            file=thumbnailrarray[self.attachmentId];
-        }
-        //johnny here
-        [pageThumbView showLabel:file.title];
-        UIImage *image;
-        if(mainDelegate.ShowThumbnail&&file.ThubnailUrl!=nil)
-            image =[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:file.ThubnailUrl]]];
-        else
-            image =[UIImage imageNamed:@"file.png"];
-        
-		UIImage *thumb = ([image isKindOfClass:[UIImage class]] ? image : nil);
-        [pageThumbView showImage:thumb];
-	}
-}
-
-- (void)updatePageNumberText:(NSInteger)page
-{
-	//if (page != pageNumberLabel.tag) // Only if page number changed
-	//{
-        CCorrespondence *correspondence;
-        if(self.menuId!=100){
-            correspondence= ((CMenu*)self.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
-        }else{
-            correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
-        }
-        thumbnailrarray = [[NSMutableArray alloc] init];
-
-        if (correspondence.attachmentsList.count>0)
-        {
-            for(CAttachment* doc in correspondence.attachmentsList)
-            {
-                if([doc.FolderName isEqualToString:mainDelegate.FolderName]){
-                    [thumbnailrarray addObject:doc];
-                }
-                
-                
-            }
-        }
-
-        NSInteger pages=thumbnailrarray.count;
-        
-		NSString *format = NSLocalizedString(@"%d of %d", @"format"); // Format
-        if(page>thumbnailrarray.count)
-            page=1;
-		NSString *number = [NSString stringWithFormat:format, page, pages]; // Text
-
-		pageNumberLabel.text = number; // Update the page number label text
-
-		pageNumberLabel.tag = page; // Update the last page number tag
+    pageNumberLabel.text = number; // Update the page number label text
+    
+    pageNumberLabel.tag = page; // Update the last page number tag
     
 	
 }
@@ -195,7 +135,7 @@
 - (id)initWithFrame:(CGRect)frame Document:(ReaderDocument *)object CorrespondenceId:(NSInteger)correspondenceId MenuId:(NSInteger)menuId AttachmentId:(NSInteger)attachmentId
 {
 	//assert(object != nil); // Must have a valid ReaderDocument
-
+    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 	if ((self = [super initWithFrame:frame]))
 	{
         self.correspondenceId=correspondenceId;
@@ -204,46 +144,40 @@
 		self.autoresizesSubviews = YES;
 		self.userInteractionEnabled = YES;
 		self.contentMode = UIViewContentModeRedraw;
-		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-		self.backgroundColor = [UIColor colorWithRed:1/255.0f green:49/255.0f  blue:97/255.0f  alpha:1.0];
+		//self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         
-                
+        self.backgroundColor=mainDelegate.cellColor;
         
-
-//		CAGradientLayer *layer = (CAGradientLayer *)self.layer;
-//		UIColor *liteColor = [UIColor colorWithWhite:0.82f alpha:0.8f];
-//		UIColor *darkColor = [UIColor colorWithWhite:0.32f alpha:0.8f];
-//		layer.colors = [NSArray arrayWithObjects:(id)liteColor.CGColor, (id)darkColor.CGColor, nil];
+        
 
 		CGRect shadowRect = self.bounds; shadowRect.size.height = 10.0f; shadowRect.origin.y -= shadowRect.size.height;
-
+        
 		ReaderPagebarShadow *shadowView = [[ReaderPagebarShadow alloc] initWithFrame:shadowRect];
-
+        
 		[self addSubview:shadowView]; // Add the shadow to the view
-
-
+        
+        
         
         
 		CGFloat numberY = (0.0f - (PAGE_NUMBER_HEIGHT + PAGE_NUMBER_SPACE));
 		CGFloat numberX = ((self.bounds.size.width - PAGE_NUMBER_WIDTH) / 2.0f);
 		CGRect numberRect = CGRectMake(numberX, numberY, PAGE_NUMBER_WIDTH, PAGE_NUMBER_HEIGHT);
-
+        
 		pageNumberView = [[UIView alloc] initWithFrame:numberRect]; // Page numbers view
-
 		pageNumberView.autoresizesSubviews = NO;
 		pageNumberView.userInteractionEnabled = NO;
 		pageNumberView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 		pageNumberView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
-
+        
 		pageNumberView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
 		pageNumberView.layer.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.6f].CGColor;
 		pageNumberView.layer.shadowPath = [UIBezierPath bezierPathWithRect:pageNumberView.bounds].CGPath;
 		pageNumberView.layer.shadowRadius = 2.0f; pageNumberView.layer.shadowOpacity = 1.0f;
-
+        
 		CGRect textRect = CGRectInset(pageNumberView.bounds, 4.0f, 2.0f); // Inset the text a bit
-
+        
 		pageNumberLabel = [[UILabel alloc] initWithFrame:textRect]; // Page numbers label
-
+        
 		pageNumberLabel.autoresizesSubviews = NO;
 		pageNumberLabel.autoresizingMask = UIViewAutoresizingNone;
 		pageNumberLabel.textAlignment = NSTextAlignmentCenter;
@@ -253,65 +187,43 @@
 		pageNumberLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
 		pageNumberLabel.shadowColor = [UIColor blackColor];
 		pageNumberLabel.adjustsFontSizeToFitWidth = YES;
-		//pageNumberLabel.minimumFontSize = 12.0f;
-
-		[pageNumberView addSubview:pageNumberLabel]; // Add label view
-
-		[self addSubview:pageNumberView]; // Add page numbers display view
-
-		trackControl = [[ReaderTrackControl alloc] initWithFrame:self.bounds]; // Track control view
-
         
-        scrollViewmainPagebar = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
+		[pageNumberView addSubview:pageNumberLabel]; // Add label view
+        
+		[self addSubview:pageNumberView]; // Add page numbers display view
+        
+        scrollViewmainPagebar = [[UIScrollView alloc] init];
+        scrollViewmainPagebar.frame=CGRectMake(0, 55, 130, self.frame.size.height);
+            
+        
+       
         scrollViewmainPagebar.backgroundColor = [UIColor clearColor];
-        scrollViewmainPagebar.scrollEnabled = YES;
-        scrollViewmainPagebar.pagingEnabled = YES;
         scrollViewmainPagebar.showsVerticalScrollIndicator = YES;
         scrollViewmainPagebar.showsHorizontalScrollIndicator = YES;
-        scrollViewmainPagebar.contentSize = CGSizeMake(self.bounds.size.width * 2, self.bounds.size.height);
-        
-        [scrollViewmainPagebar addSubview:trackControl];
         
         
-		[trackControl addTarget:self action:@selector(trackViewTouchDown:) forControlEvents:UIControlEventTouchDown];
-		[trackControl addTarget:self action:@selector(trackViewValueChanged:) forControlEvents:UIControlEventValueChanged];
-		[trackControl addTarget:self action:@selector(trackViewTouchUp:) forControlEvents:UIControlEventTouchUpOutside];
-		[trackControl addTarget:self action:@selector(trackViewTouchUp:) forControlEvents:UIControlEventTouchUpInside];
 
-		//[self addSubview:trackControl]; // Add the track control and thumbs view
-        [self addSubview:scrollViewmainPagebar];
-       
+        
         mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            self.user =  mainDelegate.user ;
-       
-
-		//document = object; // Retain the document object for our use
-
-		//[self updatePageNumberText:[document.pageNumber integerValue]];
+        self.user =  mainDelegate.user ;
+        
         [self updatePageNumberText:attachmentId+1];
 		miniThumbViews = [NSMutableDictionary new]; // Small thumbs
 	}
-
+    
 	return self;
 }
 
 - (void)removeFromSuperview
 {
 	[trackTimer invalidate]; [enableTimer invalidate];
-
+    
 	[super removeFromSuperview];
 }
 
 - (void)layoutSubviews
 {
-    
-	CGRect controlRect = CGRectInset(self.bounds, 4.0f, 0.0f);
-    
-	CGFloat thumbWidth = (THUMB_SMALL_WIDTH + THUMB_SMALL_GAP);
-    
-	//NSInteger thumbs = (controlRect.size.width / thumbWidth);
-    
-	//NSInteger pages = [document.pageCount integerValue]; // Pages
+
     CCorrespondence *correspondence;
     if(self.menuId!=100){
         correspondence= ((CMenu*)self.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
@@ -334,322 +246,121 @@
         }
     }
     
-    NSInteger pages=thumbnailrarray.count;
-    
-    NSInteger thumbs = pages;
-    
-    
-	if (thumbs > pages) thumbs = pages; // No more than total pages
-    
-	CGFloat controlWidth = ((thumbs * thumbWidth) - THUMB_SMALL_GAP);
-    
-	controlRect.size.width = controlWidth; // Update control width
-    
-	CGFloat widthDelta = (self.bounds.size.width - controlWidth);
-    
-	NSInteger X = (widthDelta / 2.0f);
-    
-    if(X<0){
-        controlRect.origin.x = 0;
+  
+    [self fillThumbView];
+}
+
+-(void) fillThumbView
+{
+    for(UIView* view in scrollViewmainPagebar.subviews){
+        [view removeFromSuperview];
     }
-    else{
-        controlRect.origin.x = X;
+
+    scrollViewmainPagebar.frame=CGRectMake(0, 55, 130, self.frame.size.height);
+
+    UIButton *button;
+    UILabel *titleLable;
+    UIImage *image;
+    NSData *imagedata;
+    NSString* urlString;
+    NSURL *url;
+    
+    
+    UIButton *gobackFolder=[[UIButton alloc]initWithFrame:CGRectMake(40, 0, 50, 50)];
+    [gobackFolder setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"GoBack.png"]]forState:UIControlStateNormal];
+    [gobackFolder addTarget:self action:@selector(closePagebar) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:gobackFolder];
+    
+    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    float size=(thumbnailrarray.count*image.size.width)+((thumbnailrarray.count-1)*40);
+    CGSize ScreenSize = self.bounds.size;
+    int EndSpace;
+    for (int i=0; i<=thumbnailrarray.count-1; i++) {
+      
+        urlString=((CAttachment*)[thumbnailrarray objectAtIndex:i]).ThubnailUrl;
+        if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+            EndSpace=(i/8)%8;
+        }
+        else{
+            EndSpace=(i/6)%6;
+        }
+        
+        int padding=thumbnailrarray.count>=6?450:0;
+        float origin=(ScreenSize.width-padding-size);
+        if(origin<=0) origin=254;
+        if(mainDelegate.ShowThumbnail && ![urlString isEqualToString:@""])
+        {
+            
+            url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            imagedata = [[NSData alloc] initWithContentsOfURL:url];
+            image = [UIImage imageWithData:imagedata];
+
+            button=[[UIButton alloc]initWithFrame:CGRectMake(30, i*133, 70, 85)];
+
+            titleLable=[[UILabel alloc]initWithFrame:CGRectMake(5,i*133+55 , 120, 100)];
+        }
+        else
+        {
+            image =[UIImage imageNamed:@"thumbnail1.png"];
+            button=[[UIButton alloc]initWithFrame:CGRectMake(30, i*133,image.size.width, image.size.height)];
+            titleLable=[[UILabel alloc]initWithFrame:CGRectMake(30, i*133+image.size.height-20, image.size.width+10, 100)];
+        }
+        
+        
+        [button addTarget:self action:@selector(openAttachment:) forControlEvents:UIControlEventTouchUpInside];
+        button.tag=i;
+       
+        [button setBackgroundImage:image forState:UIControlStateNormal];
+        [titleLable setText:((CAttachment*)[thumbnailrarray objectAtIndex:i]).title];
+        
+        titleLable.lineBreakMode = NSLineBreakByWordWrapping;
+        titleLable.numberOfLines = 2;
+        
+        titleLable.textAlignment=NSTextAlignmentCenter;
+        titleLable.backgroundColor = [UIColor clearColor];
+        titleLable.font = [UIFont fontWithName:@"Helvetica" size:17];
+        titleLable.textColor=[UIColor whiteColor];
+        [scrollViewmainPagebar addSubview:button];
+        [scrollViewmainPagebar addSubview:titleLable];
     }
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+         scrollViewmainPagebar.contentSize = CGSizeMake(75, thumbnailrarray.count*160);
+    }
+    else
+    scrollViewmainPagebar.contentSize = CGSizeMake(75, thumbnailrarray.count*140);
+
+    [self addSubview:scrollViewmainPagebar];
     
-    
-    
-	trackControl.frame = controlRect; // Update track control frame
-    
-	if (pageThumbView == nil) // Create the page thumb view when needed
-	{
-		CGFloat heightDelta = (controlRect.size.height - THUMB_LARGE_HEIGHT);
-        
-		NSInteger thumbY = (heightDelta / 2.0f); NSInteger thumbX = 0; // Thumb X, Y
-        
-		CGRect thumbRect = CGRectMake(thumbX, thumbY, THUMB_LARGE_WIDTH, THUMB_LARGE_HEIGHT);
-        
-		pageThumbView = [[ReaderPagebarThumb alloc] initWithFrame:thumbRect]; // Create the thumb view
-        
-		pageThumbView.layer.zPosition = 1.0f; // Z position so that it sits on top of the small thumbs
-        
-		[trackControl addSubview:pageThumbView]; // Add as the first subview of the track control
-	}
-    
-	//[self updatePageThumbView:[document.pageNumber integerValue]]; // Update page thumb view
-    [self updatePageThumbView:self.attachmentId+1];
-	NSInteger strideThumbs = (thumbs - 1); if (strideThumbs < 1) strideThumbs = 1;
-    
-	CGFloat stride = ((CGFloat)pages / (CGFloat)strideThumbs); // Page stride
-    
-	CGFloat heightDelta = (controlRect.size.height - THUMB_SMALL_HEIGHT);
-    
-	NSInteger thumbY = (heightDelta / 2.0f); NSInteger thumbX = 0; // Initial X, Y
-    
-	CGRect thumbRect = CGRectMake(thumbX, thumbY, THUMB_SMALL_WIDTH, THUMB_SMALL_HEIGHT);
-    
-	NSMutableDictionary *thumbsToHide = [miniThumbViews mutableCopy];
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //	for (NSInteger thumb = 0; thumb < thumbs; thumb++) // Iterate through needed thumbs
-    //	{
-    //
-    //		NSInteger page = ((stride * thumb) + 1);
-    //        if (page > pages)
-    //            page = pages; // Page
-    //
-    //		NSNumber *key = [NSNumber numberWithInteger:page]; // Page number key for thumb view
-    //
-    //		ReaderPagebarThumb *smallThumbView = [miniThumbViews objectForKey:key]; // Thumb view
-    //
-    //		if (smallThumbView == nil) // We need to create a new small thumb view for the page number
-    //		{
-    //
-    //
-    //			smallThumbView = [[ReaderPagebarThumb alloc] initWithFrame:thumbRect small:YES]; // Create a small thumb view
-    //
-    //
-    //
-    //
-    //            CAttachment*file=correspondence.attachmentsList[thumb];
-    //
-    //
-    //
-    //                UIImage *image =[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:file.ThubnailUrl]]];
-    //
-    //			if ([image isKindOfClass:[UIImage class]]) [smallThumbView showImage:image]; // Use thumb image from cache
-    //
-    //			[trackControl addSubview:smallThumbView]; [miniThumbViews setObject:smallThumbView forKey:key];
-    //		}
-    //		else // Resue existing small thumb view for the page number
-    //		{
-    //			smallThumbView.hidden = NO; [thumbsToHide removeObjectForKey:key];
-    //
-    //			if (CGRectEqualToRect(smallThumbView.frame, thumbRect) == false)
-    //			{
-    //				smallThumbView.frame = thumbRect; // Update thumb frame
-    //			}
-    //		}
-    //
-    //		thumbRect.origin.x += thumbWidth; // Next thumb X position
-    //	}
-    
-    
-    for (NSInteger thumb = 0; thumb < thumbnailrarray.count; thumb++)
+}
+-(void)adjustToolbar:(UIInterfaceOrientation)tointerfaceOrientation
+{
+    if (!SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+ 
+    if (UIInterfaceOrientationIsPortrait(tointerfaceOrientation)) {
+        self.frame=CGRectMake(0, 0, 130, [UIScreen mainScreen].bounds.size.width);
+    }
+   scrollViewmainPagebar.contentSize = CGSizeMake(75, thumbnailrarray.count*160);
+    }
+    else
     {
-        
-		NSInteger page = ((stride * thumb) + 1);
-        if (page > pages)
-            page = pages; // Page
-        
-		NSNumber *key = [NSNumber numberWithInteger:page]; // Page number key for thumb view
-        
-		ReaderPagebarThumb *smallThumbView = [miniThumbViews objectForKey:key]; // Thumb view
-        
-		if (smallThumbView == nil) // We need to create a new small thumb view for the page number
-		{
+        if (UIInterfaceOrientationIsLandscape(tointerfaceOrientation))
+          scrollViewmainPagebar.contentSize = CGSizeMake(75, thumbnailrarray.count*160);
+        else
+            scrollViewmainPagebar.contentSize = CGSizeMake(75, thumbnailrarray.count*140);
             
-            
-			smallThumbView = [[ReaderPagebarThumb alloc] initWithFrame:thumbRect small:YES]; // Create a small thumb view
-            
-            
-            
-            
-            CAttachment*file=thumbnailrarray[thumb];
-            UIImage *image;
-
-            if(mainDelegate.ShowThumbnail&&file.ThubnailUrl!=nil)
-                image =[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:file.ThubnailUrl]]];
-            else
-                image =[UIImage imageNamed:@"file.png"];
-            
-            [smallThumbView showLabel:file.title];
-            
-            
-			if ([image isKindOfClass:[UIImage class]]) [smallThumbView showImage:image]; // Use thumb image from cache
-            
-			[trackControl addSubview:smallThumbView]; [miniThumbViews setObject:smallThumbView forKey:key];
-		}
-		else // Resue existing small thumb view for the page number
-		{
-			smallThumbView.hidden = NO; [thumbsToHide removeObjectForKey:key];
-            
-			if (CGRectEqualToRect(smallThumbView.frame, thumbRect) == false)
-			{
-				smallThumbView.frame = thumbRect; // Update thumb frame
-			}
-		}
-        
-		thumbRect.origin.x += thumbWidth; // Next thumb X position
-	}
-    
-	[thumbsToHide enumerateKeysAndObjectsUsingBlock: // Hide unused thumbs
-     ^(id key, id object, BOOL *stop)
-     {
-         ReaderPagebarThumb *thumb = object; thumb.hidden = YES;
-     }
-     ];
-}
-
-- (void)updatePagebarViews
-{
-	NSInteger page = self.attachmentId+1; // #
-
-	[self updatePageNumberText:page]; // Update page number text
-
-	[self updatePageThumbView:page]; // Update page thumb view
-}
-
-- (void)updatePagebar
-{
-	if (self.hidden == NO) // Only if visible
-	{
-		[self updatePagebarViews]; // Update views
-	}
-}
-
-- (void)hidePagebar
-{
-	if (self.hidden == NO) // Only if visible
-	{
-        
-        [thumbnailrarray removeAllObjects];
-		[UIView animateWithDuration:0.25 delay:0.0
-			options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction
-			animations:^(void)
-			{
-				self.alpha = 0.0f;
-			}
-			completion:^(BOOL finished)
-			{
-				self.hidden = YES;
-			}
-		];
-	}
-}
-
-- (void)showPagebar
-{
-	if (self.hidden == YES) // Only if hidden
-	{
-       
-		[self updatePagebarViews]; // Update views first
-
-		[UIView animateWithDuration:0.25 delay:0.0
-			options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction
-			animations:^(void)
-			{
-				self.hidden = NO;
-				self.alpha = 1.0f;
-			}
-			completion:NULL
-		];
-	}
-}
-
-#pragma mark ReaderTrackControl action methods
-
-- (void)trackTimerFired:(NSTimer *)timer
-{
-	[trackTimer invalidate]; trackTimer = nil; // Cleanup timer
-
-	if (trackControl.tag != self.attachmentId) // Only if different
-	{
-		//[delegate pagebar:self gotoPage:trackControl.tag]; // Go to document page
-	}
-}
-
-- (void)enableTimerFired:(NSTimer *)timer
-{
-	[enableTimer invalidate]; enableTimer = nil; // Cleanup timer
-
-	trackControl.userInteractionEnabled = YES; // Enable track control interaction
-}
-
-- (void)restartTrackTimer
-{
-	if (trackTimer != nil) { [trackTimer invalidate]; trackTimer = nil; } // Invalidate and release previous timer
-
-	trackTimer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(trackTimerFired:) userInfo:nil repeats:NO];
-}
-
-- (void)startEnableTimer
-{
-	if (enableTimer != nil) { [enableTimer invalidate]; enableTimer = nil; } // Invalidate and release previous timer
-
-	enableTimer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(enableTimerFired:) userInfo:nil repeats:NO];
-}
-
-- (NSInteger)trackViewPageNumber:(ReaderTrackControl *)trackView
-{
-	CGFloat controlWidth = trackView.bounds.size.width; // View width
-    CCorrespondence *correspondence;
-    if(self.menuId!=100){
-        correspondence= ((CMenu*)self.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
-    }else{
-        correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
+  
     }
-    
-    NSInteger pages=thumbnailrarray.count;
-    
-	CGFloat stride = (controlWidth / pages);
-
-	NSInteger page = (trackView.value / stride); // Integer page number
-    
-    mainDelegate.attachmentSelected = page;
-    
-	return (page + 1); // + 1
 }
-
-- (void)trackViewTouchDown:(ReaderTrackControl *)trackView
-{
-	NSInteger page = [self trackViewPageNumber:trackView]; // Page
-
-	if (page != self.attachmentId+1) // Only if different
-	{
-         self.attachmentId=page-1;
-		[self updatePageNumberText:page]; // Update page number text
-
-		[self updatePageThumbView:page]; // Update page thumb view
-
-		[self restartTrackTimer]; // Start the track timer
-       
-	}
-
-	trackView.tag = page; // Start page tracking
+-(void)closePagebar{
+    [delegate closePagebar];
 }
-
-- (void)trackViewValueChanged:(ReaderTrackControl *)trackView
+-(void) openAttachment:(UIButton*)button
 {
-	NSInteger page = [self trackViewPageNumber:trackView]; // Page
+//    if(self.attachmentId!=button.tag){
 
-	if (page != trackView.tag) // Only if the page number has changed
-	{
-		[self updatePageNumberText:page]; // Update page number text
-
-		[self updatePageThumbView:page]; // Update page thumb view
-
-		trackView.tag = page; // Update the page tracking tag
-
-		[self restartTrackTimer]; // Restart the track timer
-	}
-}
-
-- (void)trackViewTouchUp:(ReaderTrackControl *)trackView
-{
-	[trackTimer invalidate]; trackTimer = nil; // Cleanup
-    
-	if (trackView.tag != self.attachmentId) // Only if different
-	{
-		trackView.userInteractionEnabled = NO; // Disable track control interaction
+        self.attachmentId=button.tag;
+        NSInteger page = self.attachmentId+1;
+        [self updatePageNumberText:page];
         
         CCorrespondence *correspondence;
         if(self.menuId!=100){
@@ -657,18 +368,21 @@
         }else{
             correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
         }
-        
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Loading",@"Loading ...") maskType:SVProgressHUDMaskTypeBlack];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         thumbnailrarray = [[NSMutableArray alloc] init];
         
-        
+        NSMutableArray* indexes=[[NSMutableArray alloc]init];
         if (correspondence.attachmentsList.count>0)
         {
+            int index=0;
             for(CAttachment* doc in correspondence.attachmentsList)
             {
                 if([doc.FolderName isEqualToString:mainDelegate.FolderName]){
                     [thumbnailrarray addObject:doc];
+                    [indexes addObject:[NSString stringWithFormat:@"%d",index]];
                 }
-                
+                index++;
                 
             }
         }
@@ -677,11 +391,8 @@
         
         
         
-        
-        [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Loading",@"Loading ...") maskType:SVProgressHUDMaskTypeBlack];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-            
-                       
+        if(fileToOpen.url!=nil){
+    
             
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -695,23 +406,381 @@
                     
                 }
                 // NSString *tempPdfLocation=[CParser loadPdfFile:fileToOpen.url inDirectory:correspondence.Id];
+                NSString* indexx=[indexes objectAtIndex:self.attachmentId];
+                [delegate setAttachmentIdInToolbar:indexx.intValue];
+                if(indexx.intValue==correspondence.attachmentsList.count-1){
+                    [delegate disableNext];
+                    if(correspondence.attachmentsList.count>1)
+                        [delegate enablePrev];
+                }
+                else
+                    if(indexx.intValue==0){
+                        [delegate disablePrev];
+                        if(correspondence.attachmentsList.count>1)
+                            [delegate enableNext];
+                    }
+                    else{
+                        [delegate enableNext];
+                        [delegate enablePrev];
+                    }
+                
                 
                 
                 [delegate pagebar:self gotoPage:1 document:newDocument fileId:self.attachmentId]; // Go to document page
                 
                 
                 
-                [self startEnableTimer]; // Start track control enable timer
+                //[self startEnableTimer]; // Start track control enable timer
                 [SVProgressHUD dismiss];
                 
-            });});
+            });
+        }else{
+            [SVProgressHUD dismiss];
+
+            [self performSelectorOnMainThread:@selector(ShowMessage:) withObject:NSLocalizedString(@"AttachmentProblem",@"") waitUntilDone:YES];
+        }
+    });
+    
         
-	}
-    
-	trackView.tag = 0; // Reset page tracking
-    
+        
+        
+//    }
 }
 
+-(void)ShowMessage:(NSString*)message{
+    
+    NSString *msg = message;
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:NSLocalizedString(@"Alert",@"Alert")
+                          message: msg
+                          delegate:nil
+                          cancelButtonTitle:NSLocalizedString(@"OK",@"OK")
+                          otherButtonTitles: nil];
+    [alert show];
+}
+
+//- (void)updatePagebarViews
+//{
+//	NSInteger page = self.attachmentId+1; // #
+//
+//	[self updatePageNumberText:page]; // Update page number text
+//
+//	[self updatePageThumbView:page]; // Update page thumb view
+//}
+//
+//- (void)updatePagebar
+//{
+//	if (self.hidden == NO) // Only if visible
+//	{
+//		[self updatePagebarViews]; // Update views
+//	}
+//}
+
+//- (void)hidePagebar
+//{
+//	if (self.hidden == NO) // Only if visible
+//	{
+//
+//        [thumbnailrarray removeAllObjects];
+//		[UIView animateWithDuration:0.25 delay:0.0
+//                            options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction
+//                         animations:^(void)
+//         {
+//             self.alpha = 0.0f;
+//         }
+//                         completion:^(BOOL finished)
+//         {
+//             self.hidden = YES;
+//         }
+//         ];
+//	}
+//}
+//
+//- (void)showPagebar
+//{
+//	if (self.hidden == YES) // Only if hidden
+//	{
+//
+//		[self updatePagebarViews]; // Update views first
+//
+//		[UIView animateWithDuration:0.25 delay:0.0
+//                            options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction
+//                         animations:^(void)
+//         {
+//             self.hidden = NO;
+//             self.alpha = 1.0f;
+//         }
+//                         completion:NULL
+//         ];
+//	}
+//}
+
+#pragma mark ReaderTrackControl action methods
+
+//- (void)trackTimerFired:(NSTimer *)timer
+//{
+//	[trackTimer invalidate]; trackTimer = nil; // Cleanup timer
+//
+//	if (trackControl.tag != self.attachmentId) // Only if different
+//	{
+//		//[delegate pagebar:self gotoPage:trackControl.tag]; // Go to document page
+//	}
+//}
+//
+//- (void)enableTimerFired:(NSTimer *)timer
+//{
+//	[enableTimer invalidate]; enableTimer = nil; // Cleanup timer
+//
+//	trackControl.userInteractionEnabled = YES; // Enable track control interaction
+//}
+//
+//- (void)restartTrackTimer
+//{
+//	if (trackTimer != nil) { [trackTimer invalidate]; trackTimer = nil; } // Invalidate and release previous timer
+//
+//	trackTimer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(trackTimerFired:) userInfo:nil repeats:NO];
+//}
+//
+//- (void)startEnableTimer
+//{
+//	if (enableTimer != nil) { [enableTimer invalidate]; enableTimer = nil; } // Invalidate and release previous timer
+//
+//	enableTimer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:self selector:@selector(enableTimerFired:) userInfo:nil repeats:NO];
+//}
+//
+//- (NSInteger)trackViewPageNumber:(ReaderTrackControl *)trackView
+//{
+//	CGFloat controlWidth = trackView.bounds.size.width; // View width
+//    CCorrespondence *correspondence;
+//    if(self.menuId!=100){
+//        correspondence= ((CMenu*)self.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
+//    }else{
+//        correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
+//    }
+//
+//    NSInteger pages=thumbnailrarray.count;
+//
+//	CGFloat stride = (controlWidth / pages);
+//
+//	NSInteger page = (trackView.value / stride); // Integer page number
+//
+//    mainDelegate.attachmentSelected = page;
+//
+//	return (page + 1); // + 1
+//}
+//
+//- (void)trackViewTouchDown:(ReaderTrackControl *)trackView
+//{
+//	NSInteger page = [self trackViewPageNumber:trackView]; // Page
+//
+//	if (page != self.attachmentId+1) // Only if different
+//	{
+//        self.attachmentId=page-1;
+//		[self updatePageNumberText:page]; // Update page number text
+//
+//		[self updatePageThumbView:page]; // Update page thumb view
+//
+//		[self restartTrackTimer]; // Start the track timer
+//
+//	}
+//
+//	trackView.tag = page; // Start page tracking
+//}
+//
+//- (void)trackViewValueChanged:(ReaderTrackControl *)trackView
+//{
+//	NSInteger page = [self trackViewPageNumber:trackView]; // Page
+//
+//	if (page != trackView.tag) // Only if the page number has changed
+//	{
+//		[self updatePageNumberText:page]; // Update page number text
+//
+//		[self updatePageThumbView:page]; // Update page thumb view
+//
+//		trackView.tag = page; // Update the page tracking tag
+//
+//		[self restartTrackTimer]; // Restart the track timer
+//	}
+//}
+
+//- (void)trackViewTouchUp:(ReaderTrackControl *)trackView
+//{
+//	[trackTimer invalidate]; trackTimer = nil; // Cleanup
+//
+//	if (trackView.tag != self.attachmentId) // Only if different
+//	{
+//		trackView.userInteractionEnabled = NO; // Disable track control interaction
+//
+//        CCorrespondence *correspondence;
+//        if(self.menuId!=100){
+//            correspondence= ((CMenu*)self.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
+//        }else{
+//            correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
+//        }
+//
+//        thumbnailrarray = [[NSMutableArray alloc] init];
+//
+//        NSMutableArray* indexes=[[NSMutableArray alloc]init];
+//        if (correspondence.attachmentsList.count>0)
+//        {
+//            int index=0;
+//            for(CAttachment* doc in correspondence.attachmentsList)
+//            {
+//                if([doc.FolderName isEqualToString:mainDelegate.FolderName]){
+//                    [thumbnailrarray addObject:doc];
+//                    [indexes addObject:[NSString stringWithFormat:@"%d",index]];
+//                }
+//                index++;
+//
+//            }
+//        }
+//
+//        CAttachment *fileToOpen=thumbnailrarray[self.attachmentId];
+//
+//
+//
+//
+//        [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Loading",@"Loading ...") maskType:SVProgressHUDMaskTypeBlack];
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+//
+//
+//
+//
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                NSString *tempPdfLocation=[fileToOpen saveInCacheinDirectory:correspondence.Id fromSharepoint:mainDelegate.isSharepoint];
+//
+//                ReaderDocument *newDocument=nil;
+//                if ([ReaderDocument isPDF:tempPdfLocation] == YES) // File must exist
+//                {
+//                    newDocument=[self OpenPdfReader:tempPdfLocation];
+//
+//
+//                }
+//                // NSString *tempPdfLocation=[CParser loadPdfFile:fileToOpen.url inDirectory:correspondence.Id];
+//                NSString* indexx=[indexes objectAtIndex:self.attachmentId];
+//                [delegate setAttachmentIdInToolbar:indexx.intValue];
+//                if(indexx.intValue==correspondence.attachmentsList.count-1){
+//                    [delegate disableNext];
+//                    if(correspondence.attachmentsList.count>1)
+//                        [delegate enablePrev];
+//                }
+//                else
+//                    if(indexx.intValue==0){
+//                        [delegate disablePrev];
+//                        if(correspondence.attachmentsList.count>1)
+//                            [delegate enableNext];
+//                    }
+//                    else{
+//                        [delegate enableNext];
+//                        [delegate enablePrev];
+//                    }
+//
+//
+//
+//                [delegate pagebar:self gotoPage:1 document:newDocument fileId:self.attachmentId]; // Go to document page
+//
+//
+//
+//                [self startEnableTimer]; // Start track control enable timer
+//                [SVProgressHUD dismiss];
+//
+//            });});
+//
+//	}
+//
+//	trackView.tag = 0; // Reset page tracking
+//
+//}
+
+//- (void)trackViewTouchUp:(UIButton *)trackView
+//{
+//	[trackTimer invalidate]; trackTimer = nil; // Cleanup
+//    int aid=self.attachmentId;
+//    int taggg=trackView.tag;
+//	if (trackView.tag != self.attachmentId) // Only if different
+//	{
+//		//trackView.userInteractionEnabled =YES; // Disable track control interaction
+//
+//        CCorrespondence *correspondence;
+//        if(self.menuId!=100){
+//            correspondence= ((CMenu*)self.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
+//        }else{
+//            correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
+//        }
+//
+//        thumbnailrarray = [[NSMutableArray alloc] init];
+//
+//        NSMutableArray* indexes=[[NSMutableArray alloc]init];
+//        if (correspondence.attachmentsList.count>0)
+//        {
+//            int index=0;
+//            for(CAttachment* doc in correspondence.attachmentsList)
+//            {
+//                if([doc.FolderName isEqualToString:mainDelegate.FolderName]){
+//                    [thumbnailrarray addObject:doc];
+//                    [indexes addObject:[NSString stringWithFormat:@"%d",index]];
+//                }
+//                index++;
+//
+//            }
+//        }
+//
+//        CAttachment *fileToOpen=thumbnailrarray[self.attachmentId];
+//
+//
+//
+//
+//        [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Loading",@"Loading ...") maskType:SVProgressHUDMaskTypeBlack];
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+//
+//
+//
+//
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                NSString *tempPdfLocation=[fileToOpen saveInCacheinDirectory:correspondence.Id fromSharepoint:mainDelegate.isSharepoint];
+//
+//                ReaderDocument *newDocument=nil;
+//                if ([ReaderDocument isPDF:tempPdfLocation] == YES) // File must exist
+//                {
+//                    newDocument=[self OpenPdfReader:tempPdfLocation];
+//
+//
+//                }
+//                // NSString *tempPdfLocation=[CParser loadPdfFile:fileToOpen.url inDirectory:correspondence.Id];
+//                NSString* indexx=[indexes objectAtIndex:self.attachmentId];
+//                [delegate setAttachmentIdInToolbar:indexx.intValue];
+//                if(indexx.intValue==correspondence.attachmentsList.count-1){
+//                    [delegate disableNext];
+//                    if(correspondence.attachmentsList.count>1)
+//                        [delegate enablePrev];
+//                }
+//                else
+//                    if(indexx.intValue==0){
+//                        [delegate disablePrev];
+//                        if(correspondence.attachmentsList.count>1)
+//                            [delegate enableNext];
+//                    }
+//                    else{
+//                        [delegate enableNext];
+//                        [delegate enablePrev];
+//                    }
+//
+//
+//
+//                [delegate pagebar:self gotoPage:1 document:newDocument fileId:self.attachmentId]; // Go to document page
+//
+//
+//
+//                //[self startEnableTimer]; // Start track control enable timer
+//                [SVProgressHUD dismiss];
+//
+//            });});
+//
+//	}
+//
+//	trackView.tag = 0; // Reset page tracking
+//
+//}
 -(ReaderDocument*) OpenPdfReader:(NSString *) pdfPath{
     NSString *phrase = nil; // Document password (for unlocking most encrypted PDF files)
     
@@ -732,81 +801,81 @@
 //	ReaderTrackControl class implementation
 //
 
-@implementation ReaderTrackControl
-{
-	CGFloat _value;
-}
-
-#pragma mark Properties
-
-@synthesize value = _value;
-
-#pragma mark ReaderTrackControl instance methods
-
-- (id)initWithFrame:(CGRect)frame
-{
-	if ((self = [super initWithFrame:frame]))
-	{
-		self.autoresizesSubviews = NO;
-		self.userInteractionEnabled = YES;
-		self.contentMode = UIViewContentModeRedraw;
-		self.autoresizingMask = UIViewAutoresizingNone;
-		self.backgroundColor = [UIColor clearColor];
-	}
-
-	return self;
-}
-
-- (CGFloat)limitValue:(CGFloat)valueX
-{
-	CGFloat minX = self.bounds.origin.x; // 0.0f;
-	CGFloat maxX = (self.bounds.size.width - 1.0f);
-
-	if (valueX < minX) valueX = minX; // Minimum X
-	if (valueX > maxX) valueX = maxX; // Maximum X
-
-	return valueX;
-}
-
-#pragma mark UIControl subclass methods
-
-- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
-{
-	CGPoint point = [touch locationInView:self]; // Touch point
-
-	_value = [self limitValue:point.x]; // Limit control value
-
-	return YES;
-}
-
-- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
-{
-	if (self.touchInside == YES) // Only if inside the control
-	{
-		CGPoint point = [touch locationInView:touch.view]; // Touch point
-
-		CGFloat x = [self limitValue:point.x]; // Potential new control value
-
-		if (x != _value) // Only if the new value has changed since the last time
-		{
-			_value = x; [self sendActionsForControlEvents:UIControlEventValueChanged];
-		}
-	}
-
-	return YES;
-}
-
-- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
-{
-	CGPoint point = [touch locationInView:self]; // Touch point
-
-	_value = [self limitValue:point.x]; // Limit control value
-}
-
-@end
-
-#pragma mark -
-
+//@implementation ReaderTrackControl
+//{
+//	CGFloat _value;
+//}
+//
+//#pragma mark Properties
+//
+//@synthesize value = _value;
+//
+//#pragma mark ReaderTrackControl instance methods
+//
+//- (id)initWithFrame:(CGRect)frame
+//{
+//	if ((self = [super initWithFrame:frame]))
+//	{
+//		self.autoresizesSubviews = NO;
+//		self.userInteractionEnabled = YES;
+//		self.contentMode = UIViewContentModeRedraw;
+//		self.autoresizingMask = UIViewAutoresizingNone;
+//		self.backgroundColor = [UIColor clearColor];
+//	}
+//
+//	return self;
+//}
+//
+//- (CGFloat)limitValue:(CGFloat)valueX
+//{
+//	CGFloat minX = self.bounds.origin.x; // 0.0f;
+//	CGFloat maxX = (self.bounds.size.width - 1.0f);
+//
+//	if (valueX < minX) valueX = minX; // Minimum X
+//	if (valueX > maxX) valueX = maxX; // Maximum X
+//
+//	return valueX;
+//}
+//
+//#pragma mark UIControl subclass methods
+//
+//- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+//{
+//	CGPoint point = [touch locationInView:self]; // Touch point
+//
+//	_value = [self limitValue:point.x]; // Limit control value
+//
+//	return YES;
+//}
+//
+//- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+//{
+//	if (self.touchInside == YES) // Only if inside the control
+//	{
+//		CGPoint point = [touch locationInView:touch.view]; // Touch point
+//
+//		CGFloat x = [self limitValue:point.x]; // Potential new control value
+//
+//		if (x != _value) // Only if the new value has changed since the last time
+//		{
+//			_value = x; [self sendActionsForControlEvents:UIControlEventValueChanged];
+//		}
+//	}
+//
+//	return YES;
+//}
+//
+//- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+//{
+//	CGPoint point = [touch locationInView:self]; // Touch point
+//
+//	_value = [self limitValue:point.x]; // Limit control value
+//}
+//
+//@end
+//
+//#pragma mark -
+//
 //
 //	ReaderPagebarThumb class implementation
 //
@@ -825,18 +894,18 @@
 	if ((self = [super initWithFrame:frame])) // Superclass init
 	{
 		//CGFloat value = (small ? 0.6f : 0.7f); // Size based alpha value
-
+        
 		//UIColor *background = [UIColor colorWithWhite:0.8f alpha:value];
-
+        
 		self.backgroundColor = [UIColor clearColor];
         imageView.backgroundColor =[UIColor clearColor];
         
-
+        
 		//imageView.layer.borderColor = [UIColor colorWithWhite:0.4f alpha:0.6f].CGColor;
-
+        
 		//imageView.layer.borderWidth = 1.0f; // Give the thumb image view a border
 	}
-
+    
 	return self;
 }
 
@@ -868,15 +937,15 @@
 		self.contentMode = UIViewContentModeRedraw;
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		self.backgroundColor = [UIColor clearColor];
-
+        
 		CAGradientLayer *layer = (CAGradientLayer *)self.layer;
 		UIColor *blackColor = [UIColor colorWithWhite:0.42f alpha:1.0f];
 		UIColor *clearColor = [UIColor colorWithWhite:0.42f alpha:0.0f];
-//        UIColor *blackColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
-//		UIColor *clearColor = [UIColor colorWithWhite:0.1f alpha:0.8f];
+        //        UIColor *blackColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
+        //		UIColor *clearColor = [UIColor colorWithWhite:0.1f alpha:0.8f];
 		layer.colors = [NSArray arrayWithObjects:(id)clearColor.CGColor, (id)blackColor.CGColor, nil];
 	}
-
+    
 	return self;
 }
 

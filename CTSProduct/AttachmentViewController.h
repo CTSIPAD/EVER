@@ -29,5 +29,6 @@
 @property(nonatomic,unsafe_unretained,readwrite) id <UploadAttachmentViewDelegate> delegate;
 @property(nonatomic,strong)UIPopoverController* notePopController ;
 @property(nonatomic,assign)int index ;
+@property(nonatomic,strong)NSString* NewBtnStatus;
 
 @end

@@ -55,6 +55,16 @@
     
     /***************************************************************************************/
 }
++(void)ShowMessage:(NSString*)message{
+    
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:NSLocalizedString(@"Alert",@"Alert")
+                          message: message
+                          delegate:nil
+                          cancelButtonTitle:NSLocalizedString(@"OK",@"OK")
+                          otherButtonTitles: nil];
+    [alert show];
+}
 
 -(void)jess : (NSString *)path{
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -83,12 +93,12 @@
 -(void)john:(NSData *)xmlData{
     NSError *error;
     GDataXMLDocument *doc= [[GDataXMLDocument alloc] initWithData:xmlData options:0 error:&error];
-    
-    
-    NSArray *signedfileinfo = [doc nodesForXPath:@"//signedfileinfo" error:nil];
+    NSString* path;
+    NSArray *signedfileinfo = [doc nodesForXPath:@"//URL" error:nil];
+    if(signedfileinfo.count>0){
     GDataXMLElement *signedfileinfoXML =  [signedfileinfo objectAtIndex:0];
-    NSString* path=[(GDataXMLElement *) [signedfileinfoXML attributeForName:@"path"] stringValue];
-    
+    path=signedfileinfoXML.stringValue;
+    }
     [self jess:path];
     
 }
@@ -97,6 +107,7 @@
     NSString* lockedby;
     NSString* userid;
     NSString* Islocked;
+    NSError *myError;
     NSMutableDictionary* dict=[[NSMutableDictionary alloc]init];
     AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -104,10 +115,25 @@
     // NSData *searchXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
     
     NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
-    NSData *searchXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    NSData *searchXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&myError];
     NSError *error;
     GDataXMLDocument *doc= [[GDataXMLDocument alloc] initWithData:searchXmlData options:0 error:&error];
     
+     if(doc==nil)
+    {
+        NSLog(@"Error: failed to de-seriaize xml.");
+        if (myError.code==NSURLErrorTimedOut) {
+            NSLog(@"Error: Request timed out.");
+            [self performSelectorOnMainThread:@selector(ShowMessage:) withObject:NSLocalizedString(@"RequestTimedOut", @"request timed out") waitUntilDone:YES];
+        }
+    else
+    {
+        NSLog(@"Error: failed to connect to server.");
+       [self performSelectorOnMainThread:@selector(ShowMessage:) withObject:NSLocalizedString(@"UnableToConnect", @"unable to connect server") waitUntilDone:YES];
+       
+    }
+         return nil;
+        }
     NSArray *result = [doc nodesForXPath:@"//Result" error:nil];
     for (GDataXMLElement *res in result) {
         NSArray *ISLocked = [res elementsForName:@"IsLocked"];
@@ -147,10 +173,20 @@
 	GDataXMLElement *resultXML =  [results objectAtIndex:0];
     
     NSArray *Folders = [resultXML elementsForName:@"Folder"];
+    AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    CCorrespondence *correspondence=mainDelegate.searchModule.correspondenceList[docid.intValue];
     for(GDataXMLElement *FoldersEl in Folders) {
         NSString* folderName = [FoldersEl attributeForName:@"Name"].stringValue;
+        NSString* folderId = [FoldersEl attributeForName:@"Id"].stringValue;
+//        for(CAttachment* attach in correspondence.attachmentsList){
+//            if([attach.FolderId isEqualToString: folderId]){
+//                folderName=attach.FolderName;
+//            }
+//        }
         NSArray *attachmentXML = [FoldersEl elementsForName:@"Attachment"];
         
+
         for(GDataXMLElement *attachment in attachmentXML)
         {
             NSString *urlattach;
@@ -158,7 +194,7 @@
             NSString *thumbnailurlattach;
             NSString* FileName;
             NSString* isOriginalMail;
-            
+            NSString* attachmentStatus;
             
                 NSArray *ids = [attachment elementsForName:@"AttachmentId"];
                 if (ids.count > 0) {
@@ -182,21 +218,33 @@
                     GDataXMLElement *FileNameEL = (GDataXMLElement *) [FileNames objectAtIndex:0];
                     FileName = FileNameEL.stringValue;
                 }
+            
                 NSArray *isOriginalMails = [attachment elementsForName:@"IsOriginalMail"];
                 if (isOriginalMails.count > 0) {
                     GDataXMLElement *isOriginalMailEl= (GDataXMLElement *) [isOriginalMails objectAtIndex:0];
                     isOriginalMail = isOriginalMailEl.stringValue;
                 }
-                
+            NSArray *statusArray=[attachment elementsForName:@"Status"];
+            if (statusArray.count>0) {
+                GDataXMLElement *statusEl=(GDataXMLElement*)[statusArray objectAtIndex:0];
+                attachmentStatus=statusEl.stringValue;
+            }
+            
             
             
             CAttachment* attachment=[[CAttachment alloc]initWithTitle:FileName docId:docid url:urlattach AttachmentId:idattach ThubnailUrl:thumbnailurlattach isOriginalMail:isOriginalMail FolderName:folderName];
-            AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [attachment setFolderId:folderId];
+            [attachment setStatus:attachmentStatus];
 
-            CCorrespondence *correspondence=mainDelegate.searchModule.correspondenceList[docid.intValue];
             if(correspondence.attachmentsList==nil){
                 correspondence.attachmentsList=[[NSMutableArray alloc]init];
                 mainDelegate.FolderName=folderName;
+                mainDelegate.FolderId=folderId;
+            }
+            if(correspondence.attachmentsList.count==1){
+                if(((CAttachment*)correspondence.attachmentsList[0]).AttachmentId.intValue==-1){
+                    [correspondence.attachmentsList removeAllObjects];
+                }
             }
             [correspondence.attachmentsList addObject:attachment];
             
@@ -210,86 +258,124 @@
     NSError *error;
     GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
 														   options:0 error:&error];
-    
-    if(xmlData.length==0){
-        return NSLocalizedString(@"ServerError",@"Cannot access to the server");}
-    else
-        if (doc == nil) {
-            return @"Technical issue";
-            
+    if (doc == nil) {
+        NSLog(@"Error: failed to de-seriaize xml.");
+        if (error.code==NSURLErrorTimedOut) {
+            NSLog(@"Error: Request timed out.");
+            [self performSelectorOnMainThread:@selector(ShowMessage:) withObject:NSLocalizedString(@"RequestTimedOut", @"request timed out") waitUntilDone:YES];
+            return NSLocalizedString(@"RequestTimedOut", @"request timed out");
         }
+        else{
+            NSLog(@"Error: failed to connect to server.");
+            NSString* ErrorMessage=@"Unable to connect Server";
+            [self performSelectorOnMainThread:@selector(ShowMessage:) withObject:ErrorMessage waitUntilDone:YES];
+            return @"Unable to connect Server";
+        }
+        NSLog(@"Error:%@",error);
+    }
+    
     
 	NSArray *results = [doc nodesForXPath:@"//Result" error:nil];
+    if(results.count==0)
+        return @"Unkown Server Error occured";
 	GDataXMLElement *resultXML =  [results objectAtIndex:0];
     NSString* status=[(GDataXMLElement *) [resultXML attributeForName:@"Status"] stringValue];
-    NSString* ErrorMessage=@"Server Error";
+    NSString* ErrorMessage=NSLocalizedString(@"UnkownError",@"Unkown Server Error occured");
     NSArray *Message = [resultXML elementsForName:@"ErrorMessage"];
     if (Message.count > 0) {
         GDataXMLElement *msgEl = (GDataXMLElement *) [Message objectAtIndex:0];
         ErrorMessage = msgEl.stringValue;
     }
     
-    if([status isEqualToString:@"ERROR"]){
+    if([[status uppercaseString] isEqualToString:@"ERROR"]){
         return ErrorMessage;
     }
     return @"OK";
 }
-+(NSMutableArray*)loadRecipients:(NSString*) url{
++(NSMutableArray*)loadRecipients:(NSString*) url section:(NSString*)section{
     NSData *xmlData ;
     AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSError *error;
+    NSError* myError;
+    NSMutableArray* destinations = [[NSMutableArray alloc] init];
+    
     if(!mainDelegate.isOfflineMode){
         NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:[url  stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
-        xmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-   
-    
-    GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
-														   options:0 error:&error];
-    
-	NSArray *results = [doc nodesForXPath:@"//Result" error:nil];
+        
+        xmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&myError];
+        if (myError.code==NSURLErrorTimedOut) {
+             [self performSelectorOnMainThread:@selector(ShowMessage:) withObject:NSLocalizedString(@"RequestTimedOut", @"request timed out") waitUntilDone:YES];
+        }
+        else
+        {
+        
+        GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
+                                                               options:0 error:&error];
+        
+        NSArray *results = [doc nodesForXPath:@"//Result" error:nil];
         GDataXMLElement *recipients =  [results objectAtIndex:0];
-        NSMutableArray* destinations = [[NSMutableArray alloc] init];
+        NSString* status=[(GDataXMLElement *) [recipients attributeForName:@"Status"] stringValue];
+        NSString* ErrorMessage=NSLocalizedString(@"UnkownError",@"Unkown Server Error occured");
+        NSArray *Message = [recipients elementsForName:@"ErrorMessage"];
+        if (Message.count > 0) {
+            GDataXMLElement *msgEl = (GDataXMLElement *) [Message objectAtIndex:0];
+            ErrorMessage = msgEl.stringValue;
+        }
+        
+        if([[status uppercaseString] isEqualToString:@"ERROR"]){
+            [self performSelectorOnMainThread:@selector(ShowMessage:) withObject:ErrorMessage waitUntilDone:YES];
+
+        }
         NSArray *Destinations =[recipients elementsForName:@"Destinations"];
         for (GDataXMLElement *destEl in Destinations) {
             NSArray* dests=[destEl nodesForXPath:@"Destination" error:nil];
             for(GDataXMLElement* item in dests){
                 NSString *DestId=[(GDataXMLElement *) [item attributeForName:@"Id"] stringValue ];
                 NSString* value = item.stringValue;
-              CDestination* dest = [[CDestination alloc] initWithName:value Id:DestId];
+                CDestination* dest = [[CDestination alloc] initWithName:value Id:DestId];
                 [destinations addObject:dest];
             }
             
         }
-        return destinations;
     }
-    return nil;
+    }
+    else{
+        destinations=[self LoadCachedDestinations:section];
+    }
+    return destinations;
 	
-
+    
 }
 
 + (CUser *)loadUserWithData:(NSString *)url {
+    NSLog(@"Info: Enter Method LoadUserWithData");
+    NSLog(@"Parameters: URL=%@",url);
     NSData *xmlData ;
     AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     NSUserDefaults *defaults= [NSUserDefaults standardUserDefaults];
     NSString* IconsCached = [defaults objectForKey:@"iconsCache"];
     NSError *error;
+    NSError *myError;
     if(!mainDelegate.isOfflineMode){
+        NSLog(@"Info: Online Mode.");
         NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
-        
+        NSLog(@"Info:Preparing and Calling Request.");
         // NSURL *xmlUrl = [NSURL URLWithString:url];
-        xmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-        // NSURL *xmlURL = [NSURL URLWithString:url];
-        //xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlURL];
+        //xmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+        xmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&myError];
+        NSLog(@"Caching Login XML");
         [self cacheXml:@"Login" xml:xmlData nb:@"0" name:@""];
     }
     else{
+        NSLog(@"Offline Mode");
+        NSLog(@"Loading Xml from cache.");
         xmlData=[self LoadXML:@"Login" nb:@"0" name:@""];
     }
-    
+    NSLog(@"Info: parsing returned data to XML.");
     GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
 														   options:0 error:&error];
-    
+    NSLog(@"Info:Reading Result Tag");
 	NSArray *results = [doc nodesForXPath:@"//Result" error:nil];
 	
     
@@ -297,7 +383,7 @@
 	//LOAD first user in XML
 	GDataXMLElement *userXML =  [results objectAtIndex:0];
     
-    
+    NSLog(@"Info:Reading Lookups Tag from xml.");
     NSArray *Lookups =[userXML elementsForName:@"Lookups"];
     NSMutableDictionary* allLookups = [[NSMutableDictionary alloc] init];
     for (GDataXMLElement *LookupEl in Lookups) {
@@ -321,9 +407,10 @@
     mainDelegate.Lookups=[[NSMutableDictionary alloc]init];
     mainDelegate.Lookups=allLookups;
     
-    
+    NSLog(@"Info:Reading Status tag.");
     NSString* status=[(GDataXMLElement *) [userXML attributeForName:@"Status"] stringValue];
     if([status isEqualToString:@"OK"]){
+        NSLog(@"Info:Status OK!");
         //fill by user data
         NSString* firstName;
         NSString* userId;
@@ -331,6 +418,7 @@
         NSString * token;
         NSString *language;
         NSString *signature;
+        NSString *signatureId;
         NSString *pincode;
         NSString *serviceType;
         NSString* logo;
@@ -375,6 +463,7 @@
         if  (userIds.count > 0) {
             GDataXMLElement *userIdEl = (GDataXMLElement *) [userIds objectAtIndex:0];
             userId = userIdEl.stringValue;
+            //userId=@"201";
         }
         
         NSArray *firstNames = [userXML elementsForName:@"FirstName"];
@@ -387,7 +476,11 @@
             GDataXMLElement *signatureEl = (GDataXMLElement *) [signatures objectAtIndex:0];
             signature = signatureEl.stringValue;
         }
-        
+        NSArray *SignatureId = [userXML elementsForName:@"SignatureId"];
+        if  (SignatureId.count > 0) {
+            GDataXMLElement *signatureIdEl = (GDataXMLElement *) [SignatureId objectAtIndex:0];
+            signatureId = signatureIdEl.stringValue;
+        }
         NSArray *pincodes = [userXML elementsForName:@"Pincode"];
         if  (pincodes.count > 0) {
             GDataXMLElement *pincodeEl = (GDataXMLElement *) [pincodes objectAtIndex:0];
@@ -516,8 +609,8 @@
                     
                 }
             }
-            CRouteLabel* rlabel = [[CRouteLabel alloc] initWithName:@"NO LABEL" Id:@"NONE"];
-            [routesLabel addObject:rlabel];
+           // CRouteLabel* rlabel = [[CRouteLabel alloc] initWithName:@"NO LABEL" Id:@"NONE"];
+            //[routesLabel addObject:rlabel];
         }
         NSMutableArray *menuItems;
         if([IconsCached isEqualToString:@"NO"]||[IconsCached isEqualToString:@""] || IconsCached==nil){
@@ -542,24 +635,33 @@
         [user setUserDetails:userdetails];
         [user setServerMessage:status];
         [user setSections:Sections];
+        [user setSignatureId:signatureId];
         return user;
     }
     else{
-        NSString* ErrorMessage=@"Server Error";
-        if(results==nil)
-            ErrorMessage=@"Unable to connect Server";
-        NSArray *Message = [userXML elementsForName:@"ErrorMessage"];
-        if (Message.count > 0) {
-            GDataXMLElement *msgEl = (GDataXMLElement *) [Message objectAtIndex:0];
-            ErrorMessage = msgEl.stringValue;
-        }
+        NSLog(@"Info:Status Error!");
+
         CUser *user = [[CUser alloc] init ];
+        NSString* ErrorMessage;
+        if (myError.code==NSURLErrorTimedOut) {
+            NSLog(@"Error: Request timed out");
+             ErrorMessage=NSLocalizedString(@"RequestTimedOut", @"request timed out");
+        }
+        else
+        {
+            ErrorMessage=NSLocalizedString(@"UnableToConnect", @"unable to connect server");
+            NSArray *Message = [userXML elementsForName:@"ErrorMessage"];
+            if (Message.count > 0) {
+                GDataXMLElement *msgEl = (GDataXMLElement *) [Message objectAtIndex:0];
+                ErrorMessage = msgEl.stringValue;
+            }
+            NSLog(@"Error:%@",ErrorMessage);
+        }
         [user setServerMessage:ErrorMessage];
-        
         return user;
-        
     }
 }
+
 +(void)LoadDepartmentChanges:(NSData *) xmlData{
     AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -608,8 +710,8 @@
                     
                 }
             }
-            CRouteLabel* rlabel = [[CRouteLabel alloc] initWithName:@"NO LABEL" Id:@"NONE"];
-            [routesLabel addObject:rlabel];
+           // CRouteLabel* rlabel = [[CRouteLabel alloc] initWithName:@"NO LABEL" Id:@"NONE"];
+            //[routesLabel addObject:rlabel];
         }
         NSMutableArray* menuItems = [[NSMutableArray alloc] init];
         
@@ -689,7 +791,9 @@
     [fetchRequest setEntity:entity];
     predicate = [NSPredicate predicateWithFormat:@"key==%@",key];
     [fetchRequest setPredicate:predicate];
-    
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc]
+                              initWithKey:@"key" ascending:NO];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
     NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
     NSData * data;
     for (NSManagedObject *obj in fetchedObjects) {
@@ -949,8 +1053,8 @@
     }
     
 }
-+(void)cacheCorrespondence:(NSString*)correspondenceId InboxId:(NSString*)InboxId priority:(NSString*)priority new:(NSString*)new showlock:(NSString*)showlock transferId:(NSString*)transferId thumbnailurl:(NSString*)thumbnailurl SystemProperties:(NSData*)SystemProperties Properties:(NSData*)properties toolbarItems:(NSData*)toolbarItems CustomActions:(NSData*)CustomActions SignActions:(NSData*)SignActions
-           AttachmentsList:(NSData*)AttachmentsList AnnotationsList:(NSData*)AnnotationsList CustomItemsList:(NSData*)CustomItemsList{
++(void)cacheCorrespondence:(NSString*)correspondenceId Status:(NSString*)Status InboxId:(NSString*)InboxId priority:(NSString*)priority new:(NSString*)new showlock:(NSString*)showlock transferId:(NSString*)transferId thumbnailurl:(NSString*)thumbnailurl SystemProperties:(NSData*)SystemProperties Properties:(NSData*)properties toolbarItems:(NSData*)toolbarItems CustomActions:(NSData*)CustomActions SignActions:(NSData*)SignActions
+           AttachmentsList:(NSData*)AttachmentsList AnnotationsList:(NSData*)AnnotationsList CustomItemsList:(NSData*)CustomItemsList QuickActions:(NSData*)QuickActions{
     
     [self DeleteCorrespondence:correspondenceId inboxId:InboxId];
     NSError *error;
@@ -962,6 +1066,7 @@
                                    inManagedObjectContext:managedObjectContext];
     [dataRecord setValue:correspondenceId forKey:@"correspondenceid"];
     [dataRecord setValue:InboxId forKey:@"inboxid"];
+    [dataRecord setValue:Status forKey:@"status"];
     [dataRecord setValue:priority forKey:@"priority"];
     [dataRecord setValue:new forKey:@"new"];
     [dataRecord setValue:showlock forKey:@"showlock"];
@@ -975,10 +1080,11 @@
     [dataRecord setValue:AttachmentsList forKey:@"attachmentslist"];
     [dataRecord setValue:AnnotationsList forKey:@"annotationslist"];
     [dataRecord setValue:CustomItemsList forKey:@"customitemslist"];
-    if (![managedObjectContext save:&error]) {
-        
-        NSLog(@"Error:%@", error);
-    }
+    [dataRecord setValue:QuickActions forKey:@"quickactions"];
+//    if (![managedObjectContext save:&error]) {
+//        
+//        NSLog(@"Error:%@", error);
+//    }
     
 }
 +(void)DeleteCorrespondence:(NSString*)CorrespondenceId inboxId:(NSString*)InboxId{
@@ -1021,6 +1127,9 @@
     [fetchRequest setEntity:entity];
     predicate = [NSPredicate predicateWithFormat:@"(inboxid = %@)",InboxId];
     [fetchRequest setPredicate:predicate];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc]
+                              initWithKey:@"correspondenceid" ascending:NO];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
     NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
     NSString* transferId;
     NSString *Id;
@@ -1028,6 +1137,7 @@
     BOOL New;
     BOOL SHOWLOCK;
     NSString* thumbnailUrl;
+    NSString* Status;
     NSMutableArray* Allcorrespondences = [[NSMutableArray alloc] init];
     NSMutableDictionary* allInboxes = [[NSMutableDictionary alloc] init];
     mainDelegate.InboxTotalCorr=fetchedObjects.count;
@@ -1042,12 +1152,14 @@
         NSMutableArray *AttachmentsList=[[NSMutableArray alloc]init];
         NSMutableArray* AnnotationsList=[[NSMutableArray alloc]init];
         NSMutableDictionary* CustomItemsList=[[NSMutableDictionary alloc]init];
+        NSMutableDictionary* QuickActionsList=[[NSMutableDictionary alloc]init];
         New=[[obj valueForKey:@"new"]boolValue];
         Id=[obj valueForKey:@"correspondenceid"];
         SHOWLOCK=[[obj valueForKey:@"showlock"]boolValue];
         Priority=[[obj valueForKey:@"priority"]boolValue];
         transferId=[obj valueForKey:@"transferid"];
         thumbnailUrl=[obj valueForKey:@"thumbnailurl"];
+        Status=[obj valueForKey:@"status"];
         systemPropertiesList=[NSKeyedUnarchiver unarchiveObjectWithData:[obj valueForKey:@"systemproperties"]];
         propertiesList=[NSKeyedUnarchiver unarchiveObjectWithData:[obj valueForKey:@"Properties"]];
         toolbarItems=[NSKeyedUnarchiver unarchiveObjectWithData:[obj valueForKey:@"toolbaritems"]];
@@ -1056,11 +1168,12 @@
         AttachmentsList=[NSKeyedUnarchiver unarchiveObjectWithData:[obj valueForKey:@"attachmentslist"]];
         AnnotationsList=[NSKeyedUnarchiver unarchiveObjectWithData:[obj valueForKey:@"annotationslist"]];
         CustomItemsList=[NSKeyedUnarchiver unarchiveObjectWithData:[obj valueForKey:@"customitemslist"]];
-        
+        QuickActionsList=[NSKeyedUnarchiver unarchiveObjectWithData:[obj valueForKey:@"quickactions"]];
+
         
         
         CCorrespondence  *newCorrespondence = [[CCorrespondence alloc] initWithId:Id Priority:Priority New:New  SHOWLOCK:SHOWLOCK];
-        
+        [newCorrespondence setStatus:Status];
         [newCorrespondence setTransferId:transferId];
         [newCorrespondence setInboxId:InboxId];
         [newCorrespondence setThumnailUrl:thumbnailUrl];
@@ -1072,6 +1185,7 @@
         [newCorrespondence setAttachmentsListMenu:[AttachmentsList copy]];
         [newCorrespondence setAnnotationsList:[AnnotationsList copy]];
         [newCorrespondence setCustomItemsList:[CustomItemsList copy]];
+        [newCorrespondence setQuickActions:[QuickActionsList copy]];
         [Allcorrespondences addObject:newCorrespondence];
         [allInboxes setObject:Allcorrespondences forKey:InboxId];
     }
@@ -1212,15 +1326,20 @@
     return actions;
 }
 +(NSMutableDictionary *)loadCorrespondencesWithData:(NSData*)xmlData {
+    NSLog(@"Info:Enter LoadCorrespondenceWithData Method");
     NSError *error;
     NSString* TotalCorrnb;
     AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    NSLog(@"Converting NSData result to XML");
     
     GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
                                                            options:0 error:&error];
-    
-    if (doc == nil) { return nil; }
-    
+    if (doc == nil)
+    {
+        NSLog(@"Error:failed to convert data to XML");
+        return nil;
+    }
     NSArray *results = [doc nodesForXPath:@"//Result" error:nil];
     
     GDataXMLElement *correspondencesXML =  [results objectAtIndex:0];
@@ -1228,15 +1347,14 @@
     NSString* status=[(GDataXMLElement *) [correspondencesXML attributeForName:@"Status"] stringValue];
     
     if([status isEqualToString:@"ERROR"]){
-        NSMutableDictionary* dict=[[NSMutableDictionary alloc]init];
-        NSString* ErrorMessage=@"Server Error";
+        NSString* ErrorMessage=@"Unable to connect Server";
         NSArray *Message = [correspondencesXML elementsForName:@"ErrorMessage"];
         if (Message.count > 0) {
             GDataXMLElement *msgEl = (GDataXMLElement *) [Message objectAtIndex:0];
             ErrorMessage = msgEl.stringValue;
         }
-        [dict setObject:ErrorMessage forKey:@"error"];
-        return dict;
+        [self performSelectorOnMainThread:@selector(ShowMessage:) withObject:ErrorMessage waitUntilDone:YES];
+        return nil;
         
     }
     
@@ -1264,6 +1382,7 @@
             BOOL New;
             BOOL SHOWLOCK;
             NSString* thumbnailUrl;
+            NSString* Status;
             
             
             NSArray *transferIds = [correspondence elementsForName:@"TransferId"];
@@ -1286,6 +1405,11 @@
                 Id = correspondenceIdEl.stringValue;
             }
             
+            NSArray *StatusArray = [correspondence elementsForName:@"Status"];
+            if (StatusArray.count > 0) {
+                GDataXMLElement *StatusEl = (GDataXMLElement *) [StatusArray objectAtIndex:0];
+                Status = StatusEl.stringValue;
+            }
             
             NSArray *priorities = [correspondence elementsForName:@"IsHighPriority"];
             if (priorities.count > 0) {
@@ -1490,7 +1614,7 @@
             
             
             CCorrespondence  *newCorrespondence = [[CCorrespondence alloc] initWithId:Id Priority:Priority New:New SHOWLOCK:SHOWLOCK];
-            
+            [newCorrespondence setStatus:Status];
             [newCorrespondence setTransferId:transferId];
             [newCorrespondence setSystemProperties:systemPropertiesList];   /*NSMutableDictionary*/
             [newCorrespondence setProperties:propertiesList];               /*NSMutableDictionary*/
@@ -1512,8 +1636,9 @@
             NSData* AttachmentsListData=[NSKeyedArchiver archivedDataWithRootObject:AttachmentsList];
             NSData* AnnotationsListData=[NSKeyedArchiver archivedDataWithRootObject:AnnotationsList];
             NSData* CustomItemsListData=[NSKeyedArchiver archivedDataWithRootObject:CustomItemsList];
-            
-            [self cacheCorrespondence:Id InboxId:inboxId priority:[NSString stringWithFormat:@"%hhd",Priority] new:[NSString stringWithFormat:@"%hhd",New] showlock:[NSString stringWithFormat:@"%hhd",SHOWLOCK] transferId:transferId thumbnailurl:thumbnailUrl SystemProperties:systempropertiesdata Properties:PropertiesListdata toolbarItems:toolbardata CustomActions:customdata SignActions:signactiondata AttachmentsList:AttachmentsListData AnnotationsList:AnnotationsListData CustomItemsList:CustomItemsListData];
+            NSData* QuickActionsData=[NSKeyedArchiver archivedDataWithRootObject:QuickActions];
+
+            [self cacheCorrespondence:Id Status:Status InboxId:inboxId priority:[NSString stringWithFormat:@"%hhd",Priority] new:[NSString stringWithFormat:@"%hhd",New] showlock:[NSString stringWithFormat:@"%hhd",SHOWLOCK] transferId:transferId thumbnailurl:thumbnailUrl SystemProperties:systempropertiesdata Properties:PropertiesListdata toolbarItems:toolbardata CustomActions:customdata SignActions:signactiondata AttachmentsList:AttachmentsListData AnnotationsList:AnnotationsListData CustomItemsList:CustomItemsListData QuickActions:QuickActionsData];
             [Allcorrespondences addObject:newCorrespondence];
             
         }
@@ -1528,11 +1653,12 @@
     NSString* TotalCorrnb;
     
     AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
+    mainDelegate.downloadSuccess=YES;
+
     GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
                                                            options:0 error:&error];
     
-    if (doc == nil) { return; }
+    if (doc == nil) {mainDelegate.downloadSuccess=NO; return; }
     
     NSArray *results = [doc nodesForXPath:@"//Result" error:nil];
     
@@ -1542,7 +1668,7 @@
     
     if([status isEqualToString:@"ERROR"]){
         NSMutableDictionary* dict=[[NSMutableDictionary alloc]init];
-        NSString* ErrorMessage=@"Server Error";
+        NSString* ErrorMessage=NSLocalizedString(@"UnableToConnect", @"unable to connect server");
         NSArray *Message = [correspondencesXML elementsForName:@"ErrorMessage"];
         if (Message.count > 0) {
             GDataXMLElement *msgEl = (GDataXMLElement *) [Message objectAtIndex:0];
@@ -1550,6 +1676,40 @@
         }
         [dict setObject:ErrorMessage forKey:@"error"];
         return ;
+        
+    }
+    //    NSArray *Destinations =[correspondencesXML elementsForName:@"Destinations"];
+    //    for (GDataXMLElement *destEl in Destinations) {
+    //        NSArray* dests=[destEl nodesForXPath:@"Destination" error:nil];
+    //        for(GDataXMLElement* item in dests){
+    //            NSString *DestId=[(GDataXMLElement *) [item attributeForName:@"Id"] stringValue ];
+    //            NSString* value = item.stringValue;
+    //            [self cacheDestination:DestId value:value];
+    //        }
+    //
+    //    }
+    NSArray *destinationsList = [correspondencesXML elementsForName:@"Sections"];
+    
+    if (destinationsList.count > 0) {
+        
+        GDataXMLElement *destinationsXml = (GDataXMLElement *) [destinationsList objectAtIndex:0];
+        
+        NSArray *destinationsEl = [destinationsXml elementsForName:@"Section"];
+        
+        for (GDataXMLElement * destEl in destinationsEl) {
+            NSArray *SectionsList = [destEl elementsForName:@"Destination"];
+            NSString* SectionId = [destEl attributeForName:@"Id"].stringValue;
+            
+            if(SectionsList.count>0){
+                for (GDataXMLElement *destinationItem in SectionsList) {
+                    
+                    NSString* destId = [destinationItem attributeForName:@"Id"].stringValue;
+                    NSString* value = destinationItem.stringValue;
+                    [self cacheDestination:destId value:value section:SectionId];
+                }
+            }
+            
+        }
         
     }
     NSArray *inboxess =[correspondencesXML elementsForName:@"Inboxes"];
@@ -1577,17 +1737,9 @@
                 BOOL New;
                 BOOL SHOWLOCK;
                 NSString* thumbnailUrl;
+                NSString* Status;
                 NSArray *correspondences =[Item nodesForXPath:@"Correspondence" error:nil];
                 for (GDataXMLElement *correspondence in correspondences) {
-                    
-                    
-                    
-                    NSArray *correspondenceIds = [correspondence elementsForName:@"CorrespondenceId"];
-                    if (correspondenceIds.count > 0) {
-                        GDataXMLElement *correspondenceIdEl = (GDataXMLElement *) [correspondenceIds objectAtIndex:0];
-                        Id = correspondenceIdEl.stringValue;
-                    }
-                    
                     
                     NSArray *transferIds = [correspondence elementsForName:@"TransferId"];
                     if (transferIds.count > 0) {
@@ -1603,6 +1755,17 @@
                     else
                         thumbnailUrl=@"";
                     
+                    NSArray *correspondenceIds = [correspondence elementsForName:@"CorrespondenceId"];
+                    if (correspondenceIds.count > 0) {
+                        GDataXMLElement *correspondenceIdEl = (GDataXMLElement *) [correspondenceIds objectAtIndex:0];
+                        Id = correspondenceIdEl.stringValue;
+                    }
+                    
+                    NSArray *StatusArray = [correspondence elementsForName:@"Status"];
+                    if (StatusArray.count > 0) {
+                        GDataXMLElement *StatusEl = (GDataXMLElement *) [StatusArray objectAtIndex:0];
+                        Status = StatusEl.stringValue;
+                    }
                     
                     NSArray *priorities = [correspondence elementsForName:@"IsHighPriority"];
                     if (priorities.count > 0) {
@@ -1633,7 +1796,7 @@
                     NSArray *Maintoolbar =[correspondence nodesForXPath:@"ToolbarItems" error:nil];
                     NSMutableDictionary *toolbarItems=[[NSMutableDictionary alloc] init],*CustomItemsList=[[NSMutableDictionary alloc] init];
                     NSMutableArray *toolbarActions=[[NSMutableArray alloc] init];
-                    NSMutableArray *signActions=[[NSMutableArray alloc]init] ,*AnnotationsList=[[NSMutableArray alloc]init],*AttachmentsList=[[NSMutableArray alloc]init];
+                    NSMutableArray *signActions=[[NSMutableArray alloc]init] ,*AnnotationsList=[[NSMutableArray alloc]init],*AttachmentsList=[[NSMutableArray alloc]init],*QuickActions=[[NSMutableArray alloc]init];
                     int key=-1;
                     for(GDataXMLElement * element in Maintoolbar){
                         NSArray *toolbar=element.children;
@@ -1649,10 +1812,19 @@
                                 BOOL QuickAction=[[(GDataXMLElement *) [prop attributeForName:@"QuickAction"] stringValue]boolValue];
                                 BOOL popup=[[(GDataXMLElement *) [prop attributeForName:@"ShowPopup"] stringValue]boolValue];
                                 BOOL backhome=[[(GDataXMLElement *) [prop attributeForName:@"ReturnHome"] stringValue]boolValue];
+                                NSString* LookupId=[(GDataXMLElement *) [prop attributeForName:@"LookupId"] stringValue];
                                 
                                 ToolbarItem* item=[[ToolbarItem alloc]initWithName:Name Label:Label Display:Display Custom:YES popup:popup backhome:backhome ];
+                                [item setLookupId:LookupId];
                                 if (Display) {
                                     [toolbarItems setValue:item forKey:[NSString stringWithFormat:@"%d",key]];
+                                    if(QuickAction)
+                                    {
+                                        CAction* Qact = [[CAction alloc] initWithLabel:Label action:Name popup:popup backhome:backhome Custom:YES];
+                                        [Qact setLookupId:LookupId];
+                                        if(prop.children.count<=0)
+                                            [QuickActions addObject:Qact];
+                                    }
                                 }
                                 
                                 NSArray *Subitems=prop.children;
@@ -1668,12 +1840,19 @@
                                                 NSString* Namee=[(GDataXMLElement *) [item1 attributeForName:@"Name"] stringValue];
                                                 NSString* Labell=[(GDataXMLElement *) [item1 attributeForName:@"Label"] stringValue];
                                                 BOOL Displayy=[[(GDataXMLElement *) [item1 attributeForName:@"Display"] stringValue]boolValue];
+                                                BOOL QuickActionn=[[(GDataXMLElement *) [prop attributeForName:@"QuickAction"] stringValue]boolValue];
                                                 BOOL popup=[[(GDataXMLElement *) [item1 attributeForName:@"ShowPopup"] stringValue]boolValue];
                                                 BOOL returnHome=[[(GDataXMLElement *) [item1 attributeForName:@"ReturnHome"] stringValue]boolValue];
+                                                NSString* LookupId=[(GDataXMLElement *) [item1 attributeForName:@"LookupId"] stringValue];
+                                                
                                                 if (Displayy){
                                                     CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:popup backhome:returnHome Custom:YES];
+                                                    [menu setLookupId:LookupId];
                                                     [CustomItemsArray addObject:menu];
-                                                    
+                                                    if(QuickActionn)
+                                                    {
+                                                        [QuickActions addObject:menu];
+                                                    }
                                                 }
                                             }
                                         }
@@ -1689,11 +1868,19 @@
                                     NSString* Label=[(GDataXMLElement *) [prop attributeForName:@"Label"] stringValue];
                                     BOOL Display=[[(GDataXMLElement *) [prop attributeForName:@"Display"] stringValue]boolValue];
                                     BOOL QuickAction=[[(GDataXMLElement *) [prop attributeForName:@"QuickAction"] stringValue]boolValue];
+                                    NSString* LookupId=[(GDataXMLElement *) [prop attributeForName:@"LookupId"] stringValue];
                                     
                                     ToolbarItem* item=[[ToolbarItem alloc]initWithName:Name Label:Label Display:Display Custom:NO popup:NO backhome:NO ];
+                                    [item setLookupId:LookupId];
                                     if (Display) {
                                         [toolbarItems setValue:item forKey:[NSString stringWithFormat:@"%d",key]];
-                                        
+                                        if(QuickAction)
+                                        {
+                                            CAction* Qact = [[CAction alloc] initWithLabel:Label action:Name popup:NO backhome:NO Custom:NO];
+                                            [Qact setLookupId:LookupId];
+                                            if(prop.children.count<=0)
+                                                [QuickActions addObject:Qact];
+                                        }
                                     }
                                     NSArray *Subitems=prop.children;
                                     if(Subitems.count>0){
@@ -1706,11 +1893,19 @@
                                                     NSString* Namee=[(GDataXMLElement *) [item1 attributeForName:@"Name"] stringValue];
                                                     NSString* Labell=[(GDataXMLElement *) [item1 attributeForName:@"Label"] stringValue];
                                                     BOOL Displayy=[[(GDataXMLElement *) [item1 attributeForName:@"Display"] stringValue]boolValue];
+                                                    BOOL QuickAction=[[(GDataXMLElement *) [item1 attributeForName:@"QuickAction"] stringValue]boolValue];
+                                                    NSString* LookupId=[(GDataXMLElement *) [item1 attributeForName:@"LookupId"] stringValue];
                                                     
                                                     if (Displayy){
                                                         
                                                         if(![Name isEqualToString:@"More"]){
                                                             CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:NO backhome:NO Custom:NO];
+                                                            [menu setLookupId:LookupId];
+                                                            if(QuickAction)
+                                                            {
+                                                                
+                                                                [QuickActions addObject:menu];
+                                                            }
                                                             if([Name isEqualToString:@"Annotations"]){
                                                                 [AnnotationsList addObject:menu];
                                                             }
@@ -1724,6 +1919,11 @@
                                                             BOOL popup=[[(GDataXMLElement *) [item1 attributeForName:@"ShowPopup"] stringValue]boolValue];
                                                             BOOL returnHome=[[(GDataXMLElement *) [item1 attributeForName:@"ReturnHome"] stringValue]boolValue];
                                                             CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:popup backhome:returnHome Custom:NO];
+                                                            [menu setLookupId:LookupId];
+                                                            if(QuickAction)
+                                                            {
+                                                                [QuickActions addObject:menu];
+                                                            }
                                                             [toolbarActions addObject:menu];
                                                         }
                                                     }
@@ -1735,10 +1935,18 @@
                                                     NSString* Namee=[(GDataXMLElement *) [item1 attributeForName:@"Name"] stringValue];
                                                     NSString* Labell=[(GDataXMLElement *) [item1 attributeForName:@"Label"] stringValue];
                                                     BOOL Displayy=[[(GDataXMLElement *) [item1 attributeForName:@"Display"] stringValue]boolValue];
+                                                    BOOL QuickActionn=[[(GDataXMLElement *) [item1 attributeForName:@"QuickAction"] stringValue]boolValue];
                                                     BOOL popup=[[(GDataXMLElement *) [item1 attributeForName:@"ShowPopup"] stringValue]boolValue];
                                                     BOOL returnHome=[[(GDataXMLElement *) [item1 attributeForName:@"ReturnHome"] stringValue]boolValue];
+                                                    NSString* LookupId=[(GDataXMLElement *) [item1 attributeForName:@"LookupId"] stringValue];
+                                                    
                                                     if (Displayy){
                                                         CAction* menu = [[CAction alloc] initWithLabel:Labell action:Namee popup:popup backhome:returnHome Custom:YES];
+                                                        [menu setLookupId:LookupId];
+                                                        if(QuickActionn)
+                                                        {
+                                                            [QuickActions addObject:menu];
+                                                        }
                                                         if([Name isEqualToString:@"Annotations"]){
                                                             [AnnotationsList addObject:menu];
                                                         }
@@ -1767,8 +1975,10 @@
                     NSData* AttachmentsListData=[NSKeyedArchiver archivedDataWithRootObject:AttachmentsList];
                     NSData* AnnotationsListData=[NSKeyedArchiver archivedDataWithRootObject:AnnotationsList];
                     NSData* CustomItemsListData=[NSKeyedArchiver archivedDataWithRootObject:CustomItemsList];
+                    NSData* QuickActionsData=[NSKeyedArchiver archivedDataWithRootObject:QuickActions];
                     
-                    [self cacheCorrespondence:Id InboxId:inboxId priority:[NSString stringWithFormat:@"%hhd",Priority] new:[NSString stringWithFormat:@"%hhd",New] showlock:[NSString stringWithFormat:@"%hhd",SHOWLOCK] transferId:transferId thumbnailurl:thumbnailUrl SystemProperties:systempropertiesdata Properties:PropertiesListdata toolbarItems:toolbardata CustomActions:customdata SignActions:signactiondata AttachmentsList:AttachmentsListData AnnotationsList:AnnotationsListData CustomItemsList:CustomItemsListData];
+                    [self cacheCorrespondence:Id Status:Status InboxId:inboxId priority:[NSString stringWithFormat:@"%hhd",Priority] new:[NSString stringWithFormat:@"%hhd",New] showlock:[NSString stringWithFormat:@"%hhd",SHOWLOCK] transferId:transferId thumbnailurl:thumbnailUrl SystemProperties:systempropertiesdata Properties:PropertiesListdata toolbarItems:toolbardata CustomActions:customdata SignActions:signactiondata AttachmentsList:AttachmentsListData AnnotationsList:AnnotationsListData CustomItemsList:CustomItemsListData QuickActions:QuickActionsData];
+                    
                 }
                 /***************************************************************/
                 NSArray *Attachments =[Item nodesForXPath:@"Folders" error:nil];
@@ -1779,6 +1989,8 @@
                     
                     for(GDataXMLElement *FoldersEl in Folders) {
                         NSString* folderName = [FoldersEl attributeForName:@"Name"].stringValue;
+                        NSString* folderId = [FoldersEl attributeForName:@"Id"].stringValue;
+
                         NSArray *Folderxml = [FoldersEl elementsForName:@"Attachments"];
                         for(GDataXMLElement *folders in Folderxml)
                         {
@@ -1801,7 +2013,7 @@
                                 NSString* thumbnailUrl;
                                 NSString* isOriginalMail;
                                 NSString* AttachmentId;
-                                
+                                NSString* AttachmentStatus;
                                 NSArray *fileUris = [attachment elementsForName:@"DocId"];
                                 if (fileUris.count > 0) {
                                     GDataXMLElement *fileUriEl = (GDataXMLElement *) [fileUris objectAtIndex:0];
@@ -1816,6 +2028,11 @@
                                 if (FileNames.count > 0) {
                                     GDataXMLElement *FileNameEL = (GDataXMLElement *) [FileNames objectAtIndex:0];
                                     FileName = FileNameEL.stringValue;
+                                }
+                                NSArray *statusArray=[attachment elementsForName:@"Status"];
+                                if (statusArray.count>0) {
+                                    GDataXMLElement *statusEl=(GDataXMLElement*)[statusArray objectAtIndex:0];
+                                    AttachmentStatus=statusEl.stringValue;
                                 }
                                 NSArray *urls = [attachment elementsForName:@"URL"];
                                 if (urls.count > 0) {
@@ -1923,6 +2140,8 @@
                                     
                                     NSString *noteX;
                                     
+                                    NSString *noteId;
+                                    
                                     NSString *noteY;
                                     
                                     NSString *notepage;
@@ -1942,6 +2161,8 @@
                                             
                                         }
                                         
+                                        
+                                        
                                         NSArray *noteYs = [notee elementsForName:@"Y"];
                                         
                                         if (noteYs.count > 0) {
@@ -1951,7 +2172,15 @@
                                             noteY = noteYEl.stringValue;
                                             
                                         }
+                                        NSArray *Ids = [notee elementsForName:@"AnnotationId"];
                                         
+                                        if (Ids.count > 0) {
+                                            
+                                            GDataXMLElement *IdEl = (GDataXMLElement *) [Ids objectAtIndex:0];
+                                            
+                                            noteId = IdEl.stringValue;
+                                            
+                                        }
                                         NSArray *pages = [notee elementsForName:@"Page"];
                                         
                                         if (pages.count > 0) {
@@ -1978,7 +2207,7 @@
                                         
                                         ptLeftTop.y=[noteY intValue];
                                         
-                                        note* noteObj=[[note alloc]initWithName:ptLeftTop.x ordinate:ptLeftTop.y note:noteMSG PageNb:notepage.intValue AttachmentId:AttachmentId.intValue];
+                                        note* noteObj=[[note alloc]initWithName:ptLeftTop.x ordinate:ptLeftTop.y note:noteMSG PageNb:notepage.intValue AttachmentId:AttachmentId.intValue Id:noteId];
                                         [mainDelegate.IncomingNotes addObject:noteObj];
                                         
                                     }
@@ -2005,6 +2234,7 @@
                                     
                                     NSString *Highlightpage;
                                     
+                                    NSString *HighlightId;
                                     
                                     for(GDataXMLElement *Highlight in HighlightXML)
                                     {
@@ -2050,7 +2280,15 @@
                                             
                                         }
                                         
+                                        NSArray *Ids = [Highlight elementsForName:@"AnnotationId"];
                                         
+                                        if (Ids.count > 0) {
+                                            
+                                            GDataXMLElement *IdEl = (GDataXMLElement *) [Ids objectAtIndex:0];
+                                            
+                                            HighlightId = IdEl.stringValue;
+                                            
+                                        }
                                         NSArray *Highlightpages = [Highlight elementsForName:@"Page"];
                                         
                                         if (Highlightpages.count > 0) {
@@ -2074,7 +2312,7 @@
                                         
                                         ptRightBottom.y=[HighlightY2 intValue];
                                         
-                                        HighlightClass* obj=[[HighlightClass alloc]initWithName:ptLeftTop.x ordinate:ptLeftTop.y height:ptRightBottom.x width:ptRightBottom.y PageNb:notepage.intValue AttachmentId:AttachmentId.intValue];
+                                        HighlightClass* obj=[[HighlightClass alloc]initWithName:ptLeftTop.x ordinate:ptRightBottom.x height:ptLeftTop.y width:ptRightBottom.y PageNb:Highlightpage.intValue AttachmentId:AttachmentId.intValue Id:HighlightId];
                                         [mainDelegate.IncomingHighlights addObject:obj];
                                         
                                     }
@@ -2083,7 +2321,7 @@
                                 NSData* NoteAnnotationsData=[NSKeyedArchiver archivedDataWithRootObject:[mainDelegate.IncomingNotes copy]];
                                 NSData* HighlightAnnotationsData=[NSKeyedArchiver archivedDataWithRootObject:[mainDelegate.IncomingHighlights copy]];
                                 
-                                [self cacheAttachment:AttachmentId CorrespondenceId:Id FileName:FileName fileuri:fileUri url:url siteId:SiteId FileId:FileId thumbnailurl:thumbnailUrl FileUrl:FileUrl IsOriginalMail:isOriginalMail FolderName:folderName NoteAnnotations:NoteAnnotationsData HighlightAnnotations:HighlightAnnotationsData];
+                                [self cacheAttachment:AttachmentId CorrespondenceId:Id FileName:FileName fileuri:fileUri url:url siteId:SiteId FileId:FileId thumbnailurl:thumbnailUrl FileUrl:FileUrl IsOriginalMail:isOriginalMail FolderName:folderName FolderId:folderId NoteAnnotations:NoteAnnotationsData HighlightAnnotations:HighlightAnnotationsData Status:AttachmentStatus];
                                 
                             }}}}
                 
@@ -2091,16 +2329,84 @@
             }
         }}
 }
++(void)cacheDestination:(NSString*)DestinationId value:(NSString*)value section:(NSString*)section {
+    [self DeleteDestination:DestinationId section:section];
+    id delegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext* managedObjectContext = [delegate managedObjectContext];
+    
+    NSManagedObject *dataRecord = [NSEntityDescription
+                                   insertNewObjectForEntityForName:@"Destinations"
+                                   inManagedObjectContext:managedObjectContext];
+    [dataRecord setValue:DestinationId forKey:@"id"];
+    [dataRecord setValue:value forKey:@"value"];
+    [dataRecord setValue:section forKey:@"section"];
+}
++(void)DeleteDestination:(NSString*)Id section:(NSString*)section{
+    NSFetchRequest *fetchRequest;
+    NSError *error;
+    NSPredicate *predicate;
+    NSArray *fetchedObjects;
+    NSEntityDescription *entity;
+    id delegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext* managedObjectContext = [delegate managedObjectContext];
+    
+    fetchRequest = [[NSFetchRequest alloc] init];
+    entity = [NSEntityDescription
+              entityForName:@"Destinations" inManagedObjectContext:managedObjectContext];
+    [fetchRequest setEntity:entity];
+    predicate = [NSPredicate predicateWithFormat:@"(id = %@) AND (section = %@)", Id,section];
+    [fetchRequest setPredicate:predicate];
+    fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    for (NSManagedObject *obj in fetchedObjects) {
+        [managedObjectContext deleteObject:obj];
+    }
+    
+}
++(NSMutableArray*)LoadCachedDestinations:(NSString*)section{
+    NSFetchRequest *fetchRequest;
+    NSError *error;
+    NSPredicate* predicate;
+    NSEntityDescription *entity;
+    id delegate = [[UIApplication sharedApplication] delegate];
+    
+    NSManagedObjectContext* managedObjectContext = [delegate managedObjectContext];
+    
+    fetchRequest = [[NSFetchRequest alloc] init];
+    entity = [NSEntityDescription
+              entityForName:@"Destinations" inManagedObjectContext:managedObjectContext];
+    predicate = [NSPredicate predicateWithFormat:@"(section = %@)",section];
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setEntity:entity];
+    
+    NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSMutableArray * data=[[NSMutableArray alloc]init];
+    for (NSManagedObject *obj in fetchedObjects) {
+        
+        NSString *DestId=[obj valueForKey:@"id"];
+        NSString* value = [obj valueForKey:@"value"];
+        CDestination* dest = [[CDestination alloc] initWithName:value Id:DestId];
+        [data addObject:dest];
+        
+    }
+    return data;
+}
 +(void)GetFolderAttachment:(NSString*)url Id:(int)Id{
+    NSLog(@"Info:Enter GetfolderAttachment method.");
     AppDelegate* mainDelegate = (AppDelegate *) [[UIApplication sharedApplication]delegate];
     CCorrespondence *correspondence=mainDelegate.searchModule.correspondenceList[Id];
     NSString* urlTextEscaped = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     // NSURL *xmlUrl = [NSURL URLWithString:urlTextEscaped];
     // NSData *xmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
-    
+    NSError* myError;
     NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlTextEscaped] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
-    NSData *xmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    NSData *xmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&myError];
+    if (myError.code==NSURLErrorTimedOut) {
+        NSLog(@"Error: Request timed out");
+        [self performSelectorOnMainThread:@selector(ShowMessage:) withObject:NSLocalizedString(@"RequestTimedOut", @"request timed out") waitUntilDone:YES];
+    }
+    else
+    {
     NSError *error;
     GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
                                                            options:0 error:&error];
@@ -2117,7 +2423,7 @@
     NSString *urlattach;
     NSString *idattach;
     NSString *thumbnailurlattach;
-    
+    NSString *attachmentStatus;
     for(GDataXMLElement *attachment in attachmentXML)
     {
         NSArray *ids = [attachment elementsForName:@"AttachmentId"];
@@ -2132,30 +2438,50 @@
             urlattach = urlEl.stringValue;
         }
         
+        
         NSArray *thumbnailurls = [attachment elementsForName:@"ThumbnailURL"];
         if (thumbnailurls.count > 0) {
             GDataXMLElement *thumbnailurlEl = (GDataXMLElement *) [thumbnailurls objectAtIndex:0];
             thumbnailurlattach = thumbnailurlEl.stringValue;
         }
-        
+        NSArray *statusArray=[attachment elementsForName:@"Status"];
+        if (statusArray.count>0) {
+            GDataXMLElement *statusEl=(GDataXMLElement*)[statusArray objectAtIndex:0];
+            attachmentStatus=statusEl.stringValue;
+        }
         for(CAttachment* doc in correspondence.attachmentsList)
         {
             if([doc.AttachmentId isEqualToString: idattach]){
                 doc.ThubnailUrl = thumbnailurlattach;
                 doc.url = urlattach;
+                doc.Status=attachmentStatus;
             }
         }
     }
 }
-
+}
 +(NSMutableArray*)loadSpecifiqueAttachment:(NSData*)xmlData CorrespondenceId:(NSString*)Id{
+
     NSError *error;
     
     
     GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
                                                            options:0 error:&error];
     
-    if (doc == nil) { return nil; }
+    if (doc == nil) {
+        NSLog(@"Error: failed to de-seriaize xml.");
+        if (error.code==NSURLErrorTimedOut) {
+            NSLog(@"Error: Request timed out.");
+            [self performSelectorOnMainThread:@selector(ShowMessage:) withObject:NSLocalizedString(@"RequestTimedOut", @"request timed out") waitUntilDone:YES];
+        }
+        else{
+            NSLog(@"Error: failed to connect to server.");
+            NSString* ErrorMessage=@"Unable to connect Server";
+            [self performSelectorOnMainThread:@selector(ShowMessage:) withObject:ErrorMessage waitUntilDone:YES];
+            return nil;
+        }
+        NSLog(@"Error:%@",error);
+    }
     
     NSArray *Attachments = [doc nodesForXPath:@"//Folders" error:nil];
     NSMutableArray* attachments = [[NSMutableArray alloc] init];
@@ -2165,8 +2491,27 @@
         GDataXMLElement *AttachmentsXML =  [Attachments objectAtIndex:0];
         attachments=[self loadAttachmentListWith:AttachmentsXML CorrespondenceId:Id];
     }
-    
+    if(Attachments.count==0){
+        
+        NSArray *results = [doc nodesForXPath:@"//Result" error:nil];
+        
+        GDataXMLElement *resultxml =  [results objectAtIndex:0];
+        
+        NSString* status=[(GDataXMLElement *) [resultxml attributeForName:@"Status"] stringValue];
+        if([[status lowercaseString] isEqualToString:@"error"]){
+            NSString* ErrorMessage=NSLocalizedString(@"UnableToConnect", @"unable to connect server");
+        NSArray *Message = [resultxml elementsForName:@"ErrorMessage"];
+        if (Message.count > 0) {
+            GDataXMLElement *msgEl = (GDataXMLElement *) [Message objectAtIndex:0];
+            ErrorMessage = msgEl.stringValue;
+        }
+        [self performSelectorOnMainThread:@selector(ShowMessage:) withObject:ErrorMessage waitUntilDone:YES];
+            return nil;
+        }
+    }
     return attachments;
+    
+    
     
 }
 
@@ -2278,6 +2623,8 @@
     NSArray *Folders = [attachmentEl elementsForName:@"Folder"];
     for(GDataXMLElement *FoldersEl in Folders) {
         NSString* folderName = [FoldersEl attributeForName:@"Name"].stringValue;
+        NSString* folderId = [FoldersEl attributeForName:@"Id"].stringValue;
+
         NSArray *Folderxml = [FoldersEl elementsForName:@"Attachments"];
         for(GDataXMLElement *folders in Folderxml)
         {
@@ -2300,6 +2647,7 @@
                 NSString* thumbnailUrl;
                 NSString* isOriginalMail;
                 NSString* AttachmentId;
+                NSString* AttachmentStatus;
                 
                 NSArray *fileUris = [attachment elementsForName:@"DocId"];
                 if (fileUris.count > 0) {
@@ -2324,6 +2672,11 @@
                 NSArray *ServerFileInfo = [attachment nodesForXPath:@"ServerFileInfo" error:nil];
                 GDataXMLElement *ServerFileInfoXML;
                 
+                NSArray *StatusArray=[attachment elementsForName:@"Status"];
+                if (StatusArray.count>0) {
+                    GDataXMLElement *statusEl = (GDataXMLElement *) [StatusArray objectAtIndex:0];
+                    AttachmentStatus = statusEl.stringValue;
+                }
                 if(ServerFileInfo.count>0){
                     
                     ServerFileInfoXML = [ServerFileInfo objectAtIndex:0];
@@ -2385,6 +2738,7 @@
                     NSString *notepage;
                     
                     NSString *noteMSG;
+                    NSString *noteId;
                     
                     for(GDataXMLElement *notee in noteXML)
                         
@@ -2406,6 +2760,16 @@
                             GDataXMLElement *noteYEl = (GDataXMLElement *) [noteYs objectAtIndex:0];
                             
                             noteY = noteYEl.stringValue;
+                            
+                        }
+                        
+                        NSArray *Ids = [notee elementsForName:@"AnnotationId"];
+                        
+                        if (Ids.count > 0) {
+                            
+                            GDataXMLElement *IdEl = (GDataXMLElement *) [Ids objectAtIndex:0];
+                            
+                            noteId = IdEl.stringValue;
                             
                         }
                         
@@ -2435,7 +2799,7 @@
                         
                         ptLeftTop.y=[noteY intValue];
                         
-                        note* noteObj=[[note alloc]initWithName:ptLeftTop.x ordinate:ptLeftTop.y note:noteMSG PageNb:notepage.intValue AttachmentId:AttachmentId.intValue];
+                        note* noteObj=[[note alloc]initWithName:ptLeftTop.x ordinate:ptLeftTop.y note:noteMSG PageNb:notepage.intValue AttachmentId:AttachmentId.intValue Id:noteId];
                         [mainDelegate.IncomingNotes addObject:noteObj];
                         
                     }
@@ -2462,7 +2826,7 @@
                     
                     NSString *Highlightpage;
                     
-                    
+                    NSString *HighlightId;
                     for(GDataXMLElement *Highlight in HighlightXML)
                     {
                         NSArray *HighlightX1s = [Highlight elementsForName:@"X"];
@@ -2517,7 +2881,15 @@
                             Highlightpage = HighlightpageEl.stringValue;
                             
                         }
+                        NSArray *Ids = [Highlight elementsForName:@"AnnotationId"];
                         
+                        if (Ids.count > 0) {
+                            
+                            GDataXMLElement *IdEl = (GDataXMLElement *) [Ids objectAtIndex:0];
+                            
+                            HighlightId = IdEl.stringValue;
+                            
+                        }
                         
                         CGPoint ptLeftTop;
                         
@@ -2531,13 +2903,15 @@
                         
                         ptRightBottom.y=[HighlightY2 intValue];
                         
-                        HighlightClass* obj=[[HighlightClass alloc]initWithName:ptLeftTop.x ordinate:ptLeftTop.y height:ptRightBottom.x width:ptRightBottom.y PageNb:notepage.intValue AttachmentId:AttachmentId.intValue];
+                        HighlightClass* obj=[[HighlightClass alloc]initWithName:ptLeftTop.x ordinate:ptRightBottom.x height:ptLeftTop.y width:ptRightBottom.y PageNb:Highlightpage.intValue AttachmentId:AttachmentId.intValue Id:HighlightId];
                         [mainDelegate.IncomingHighlights addObject:obj];
                         
                     }
                 }
                 
-                CAttachment* newAttachment = [[CAttachment alloc] initWithTitle:FileName docId:fileUri url:url SiteId:SiteId FileId:FileId AttachmentId:AttachmentId FileUrl:FileUrl ThubnailUrl:thumbnailUrl isOriginalMail:isOriginalMail FolderName:folderName];
+                CAttachment* newAttachment = [[CAttachment alloc] initWithTitle:FileName docId:fileUri url:url SiteId:SiteId FileId:FileId AttachmentId:AttachmentId FileUrl:FileUrl ThubnailUrl:thumbnailUrl isOriginalMail:isOriginalMail FolderName:folderName ];
+                [newAttachment setStatus:AttachmentStatus];
+                [newAttachment setFolderId:folderId];
                 // [newAttachment setAnnotations:annotations];
                 [newAttachment setNoteAnnotations:[mainDelegate.IncomingNotes copy]];
                 [newAttachment setHighlightAnnotations:[mainDelegate.IncomingHighlights copy]];
@@ -2545,7 +2919,7 @@
                 NSData* NoteAnnotationsData=[NSKeyedArchiver archivedDataWithRootObject:newAttachment.NoteAnnotations];
                 NSData* HighlightAnnotationsData=[NSKeyedArchiver archivedDataWithRootObject:newAttachment.HighlightAnnotations];
                 
-                [self cacheAttachment:AttachmentId CorrespondenceId:CorrespondenceId FileName:FileName fileuri:fileUri url:url siteId:SiteId FileId:FileId thumbnailurl:thumbnailUrl FileUrl:FileUrl IsOriginalMail:isOriginalMail FolderName:folderName NoteAnnotations:NoteAnnotationsData HighlightAnnotations:HighlightAnnotationsData];
+                [self cacheAttachment:AttachmentId CorrespondenceId:CorrespondenceId FileName:FileName fileuri:fileUri url:url siteId:SiteId FileId:FileId thumbnailurl:thumbnailUrl FileUrl:FileUrl IsOriginalMail:isOriginalMail FolderName:folderName FolderId:folderId NoteAnnotations:NoteAnnotationsData HighlightAnnotations:HighlightAnnotationsData Status:AttachmentStatus ];
                 
             }}}
     
@@ -2571,9 +2945,14 @@
     [fetchRequest setEntity:entity];
     predicate = [NSPredicate predicateWithFormat:@"(correspondenceid = %@)",CorrespondenceId];
     [fetchRequest setPredicate:predicate];
+    
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc]
+                              initWithKey:@"attachmentid" ascending:YES];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
     NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
     NSString* fileUri;
     NSString* FileName;
+    NSString* FolderId;
     NSString* url;
     NSString* SiteId;
     NSString* FileId;
@@ -2582,6 +2961,8 @@
     NSString* isOriginalMail;
     NSString* AttachmentId;
     NSString* FolderName;
+    NSString* Status;
+
     for (NSManagedObject *obj in fetchedObjects) {
         
         //   xml=[obj valueForKey:@"xml"];
@@ -2598,24 +2979,25 @@
         isOriginalMail=[obj valueForKey:@"isoriginalmail"];
         AttachmentId=[obj valueForKey:@"attachmentid"];
         FolderName=[obj valueForKey:@"foldername"];
-        
+        FolderId=[obj valueForKey:@"folderid"];
+        Status=[obj valueForKey:@"status"];
+
         NoteAnnotations=[NSKeyedUnarchiver unarchiveObjectWithData:[obj valueForKey:@"noteannotations"]];
         HighlightAnnotations=[NSKeyedUnarchiver unarchiveObjectWithData:[obj valueForKey:@"highlightannotations"]];
         
         CAttachment* newAttachment = [[CAttachment alloc] initWithTitle:FileName docId:fileUri url:url SiteId:SiteId FileId:FileId AttachmentId:AttachmentId FileUrl:FileUrl ThubnailUrl:thumbnailUrl isOriginalMail:isOriginalMail FolderName:FolderName];
+        [newAttachment setFolderId:FolderId];
+        [newAttachment setStatus:Status];
         [newAttachment setNoteAnnotations:[NoteAnnotations copy]];
         [newAttachment setHighlightAnnotations:[HighlightAnnotations copy]];
         [Attachments addObject:newAttachment];
         
     }
-    
-    
-    
-    
+ 
     
     return  Attachments;
 }
-+(void)cacheAttachment:(NSString*)AttachmentId CorrespondenceId:(NSString*)CorrespondenceId FileName:(NSString*)filename fileuri:(NSString*)fileuri url:(NSString*)url siteId:(NSString*)siteId FileId:(NSString*)fileid thumbnailurl:(NSString*)thumbnailurl FileUrl:(NSString*)fileurl IsOriginalMail:(NSString*)isoriginalmail FolderName:(NSString*)foldername NoteAnnotations:(NSData*)NoteAnnotations HighlightAnnotations:(NSData*)HighlightAnnotations{
++(void)cacheAttachment:(NSString*)AttachmentId CorrespondenceId:(NSString*)CorrespondenceId FileName:(NSString*)filename fileuri:(NSString*)fileuri url:(NSString*)url siteId:(NSString*)siteId FileId:(NSString*)fileid thumbnailurl:(NSString*)thumbnailurl FileUrl:(NSString*)fileurl IsOriginalMail:(NSString*)isoriginalmail FolderName:(NSString*)foldername FolderId:(NSString*)folderId NoteAnnotations:(NSData*)NoteAnnotations HighlightAnnotations:(NSData*)HighlightAnnotations Status:(NSString*)Status{
     
     [self DeleteAttachment:AttachmentId FolderName:foldername CorrespondenceId:CorrespondenceId];
     NSError *error;
@@ -2636,9 +3018,10 @@
     [dataRecord setValue:thumbnailurl forKey:@"thumbnailurl"];
     [dataRecord setValue:isoriginalmail forKey:@"isoriginalmail"];
     [dataRecord setValue:foldername forKey:@"foldername"];
+    [dataRecord setValue:folderId forKey:@"folderid"];
     [dataRecord setValue:NoteAnnotations forKey:@"noteannotations"];
     [dataRecord setValue:HighlightAnnotations forKey:@"highlightannotations"];
-    
+    [dataRecord setValue:Status forKey:@"status"];
     if (![managedObjectContext save:&error]) {
         
         NSLog(@"Error:%@", error);
@@ -2755,14 +3138,18 @@
 }
 
 +(CSearch *)loadSearchWithData:(NSData*)xmlData {
-    
+    NSLog(@"Info:Enter loadSerchWithData");
     NSMutableArray *searchCriteriaProp=[[NSMutableArray alloc]init];
     NSError *error;
-    
+    NSLog(@"Converting NSData result to XML");
     GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
 														   options:0 error:&error];
     
-    if (doc == nil) { return nil; }
+    if (doc == nil)
+    {
+        NSLog(@"Error:failed to convert data to XML");
+        return nil;
+    }
     
 	NSArray *results = [doc nodesForXPath:@"//Result" error:nil];
 	
@@ -2833,7 +3220,7 @@
     
     if([status isEqualToString:@"ERROR"]){
         NSMutableDictionary* dict=[[NSMutableDictionary alloc]init];
-        NSString* ErrorMessage=@"Server Error";
+        NSString* ErrorMessage=NSLocalizedString(@"UnableToConnect", @"unable to connect server");
         NSArray *Message = [correspondencesXML elementsForName:@"ErrorMessage"];
         if (Message.count > 0) {
             GDataXMLElement *msgEl = (GDataXMLElement *) [Message objectAtIndex:0];
@@ -2860,6 +3247,7 @@
         BOOL New;
         BOOL SHOWLOCK;
         NSString* thumbnailUrl;
+        NSString* Status;
         
         
         NSArray *transferIds = [correspondence elementsForName:@"TransferId"];
@@ -2882,6 +3270,11 @@
             Id = correspondenceIdEl.stringValue;
         }
         
+        NSArray *StatusArray = [correspondence elementsForName:@"Status"];
+        if (StatusArray.count > 0) {
+            GDataXMLElement *StatusEl = (GDataXMLElement *) [StatusArray objectAtIndex:0];
+            Status = StatusEl.stringValue;
+        }
         
         NSArray *priorities = [correspondence elementsForName:@"IsHighPriority"];
         if (priorities.count > 0) {
@@ -3088,7 +3481,7 @@
         
         
         CCorrespondence  *newCorrespondence = [[CCorrespondence alloc] initWithId:Id Priority:Priority New:New SHOWLOCK:SHOWLOCK];
-        
+        [newCorrespondence setStatus:Status];
         [newCorrespondence setTransferId:transferId];
         [newCorrespondence setSystemProperties:systemPropertiesList];
         [newCorrespondence setProperties:propertiesList];

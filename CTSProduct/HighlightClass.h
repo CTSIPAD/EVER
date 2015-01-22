@@ -18,5 +18,6 @@
 @property double x1;
 @property double y1;
 @property (nonatomic, retain) NSString *status;
--(id)initWithName:(double )abscisa ordinate:(double )ordinat height:(double)h width:(double)w PageNb:(int)Pagenb AttachmentId:(int)Attachmentid;
+@property (nonatomic, retain) NSString *Id;
+-(id)initWithName:(double )abscisa ordinate:(double )ordinat height:(double)h width:(double)w PageNb:(int)Pagenb AttachmentId:(int)Attachmentid Id:(NSString*)Id;
 @end

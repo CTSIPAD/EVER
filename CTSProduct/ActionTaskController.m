@@ -43,19 +43,25 @@
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     displayingLabel = YES;
 	searchBar=[[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    searchBar.barTintColor=[UIColor colorWithRed:12.0f / 255.0f green:93.0f / 255.0f blue:174.0f / 255.0f alpha:1.0];
     searchDisplayController=[[UISearchDisplayController alloc]initWithSearchBar:searchBar contentsController:self];
+    
+
     searchDisplayController.delegate=self;
     searchDisplayController.searchResultsDelegate=self;
     searchDisplayController.searchResultsDataSource=self;
     searchBar.delegate=self;
     self.tableView.tableHeaderView=searchBar;
+    // change
+    self.tableView.backgroundColor=[UIColor whiteColor];
     searchData = [[NSMutableArray alloc] init];
     searchDataDic = [[NSMutableDictionary alloc] init];
     
 	self.clearsSelectionOnViewWillAppear = NO;
     
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0,0,0,0)];
-    [self.tableView setBackgroundColor:[UIColor colorWithRed:208.0/255.0f green:208/255.0f blue:208/255.0f alpha:1.0]];
+   // [self.tableView setBackgroundColor:[UIColor colorWithRed:208.0/255.0f green:208/255.0f blue:208/255.0f alpha:1.0]];
+ 
     self.tableView.layer.borderColor=[[UIColor grayColor]CGColor];
     self.tableView.layer.borderWidth=2;
 	self.clearsSelectionOnViewWillAppear = NO;

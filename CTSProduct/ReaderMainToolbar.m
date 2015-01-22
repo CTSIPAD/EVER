@@ -42,7 +42,9 @@
 #import "ToolbarItem.h"
 
 #define ButtonWidth 65
-
+#define seperator 35
+#define arabicFont 14
+#define lableX 5
 @implementation ReaderMainToolbar
 {
     NSInteger correspondencesCount;
@@ -50,6 +52,34 @@
     AppDelegate *mainDelegate;
     NSString* pageName;
     CCorrespondence *correspondence;
+    UIButton *CustomButton;
+    UIButton *customButton1;
+    UIImage* homeimage;
+    UIImage* metadataimage;
+    UIImage* Hideimage;
+    UIImage* Attachementsimage;
+    UIImage* Transferimage;
+    UIImage* Annotationsimage;
+    UIImage* Signatureimage;
+    UIImage* Saveimage;
+    UIImage* Previousimage;
+    UIImage* nextImage;
+    UIImage* moreImage;
+    UILabel* homeLabel;
+    UILabel* metadataLabel;
+    UILabel* HideLabel;
+    UILabel* AttachementsLabel;
+    UILabel* TransferLabel;
+    UILabel* AnnotationsLabel;
+    UILabel* SignatureLabel;
+    UILabel* SaveLabel;
+    UILabel* PreviousLabel;
+    UILabel* nextLabel;
+    UILabel* moreLable;
+    BOOL lblTitleHide;
+    BOOL enableAction;
+    UIInterfaceOrientation CurrentOrientation;
+ 
 }
 @synthesize nextButton,previousButton,MoreButton,transferButton,attachmentButton,metadataButton,lockButton,commentsButton,annotationButton,lblTitle,closeButton,ActionsButton,Save;
 
@@ -120,56 +150,94 @@
             attachementsCount=correspondence.attachmentsList.count;
             
         }
-        
+        // title,home,next,previous and hide initialize at begining
+        homeLabel=[[UILabel alloc]init];
+        metadataLabel=[[UILabel alloc]init];
+        HideLabel=[[UILabel alloc]init];
+        AttachementsLabel=[[UILabel alloc]init];
+        TransferLabel=[[UILabel alloc]init];
+        AnnotationsLabel=[[UILabel alloc]init];
+        SignatureLabel=[[UILabel alloc]init];
+        SaveLabel=[[UILabel alloc]init];
+        PreviousLabel=[[UILabel alloc]init];
+        nextLabel=[[UILabel alloc]init];
+        moreLable=[[UILabel alloc]init];
         
         lblTitle=[[UILabel alloc]initWithFrame:CGRectMake(20, 15, self.frame.size.width, 15)];
         lblTitle.font = [UIFont fontWithName:@"Helvetica" size:12];
         lblTitle.textColor=[UIColor colorWithRed:204/255.0f green:233/255.0f blue:247/255.0f alpha:1.0];
-        [self addSubview:lblTitle];
+        //[self addSubview:lblTitle];
         
-        
+        Transferimage=[UIImage imageNamed:@"Transfer.png"];
+        Attachementsimage=[UIImage imageNamed:@"AttachementsIcon.png"];
+        metadataimage=[UIImage imageNamed:@"metadata.png"];
+        Annotationsimage=[UIImage imageNamed:@"Annotations.png"];
+        Signatureimage=[UIImage imageNamed:@"Signature.png"];
+        Saveimage=[UIImage imageNamed:@"SaveIcon.png"];
+        if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
+            moreImage=[UIImage imageNamed:@"More-flipped.png"];
+        }
+        else{
+            moreImage=[UIImage imageNamed:@"More.png"];
+
+        }
         homeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [homeButton setBackgroundImage:[UIImage imageNamed:@"HomeIcon.png"] forState:UIControlStateNormal];
-        [homeButton setTitleEdgeInsets:UIEdgeInsetsMake(55, 10, 0,10)];
-        [homeButton setTitle:NSLocalizedString(@"Menu.Home",@"Home") forState:UIControlStateNormal];
-        homeButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
-        homeButton.titleLabel.numberOfLines = 3;
-        homeButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        homeButton.tag=100;
+        homeimage=[UIImage imageNamed:@"homeIcon.png"];
+        [homeButton setBackgroundImage:homeimage forState:UIControlStateNormal];
+        [homeButton setTitleEdgeInsets:UIEdgeInsetsMake(58, 15, 0,10)];
+        
+        homeLabel.text=NSLocalizedString(@"Menu.Home",@"Home");
+        
+        homeLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
+        homeLabel.textColor=[UIColor whiteColor];
+        homeLabel.numberOfLines = 3;
+        homeLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        
         [homeButton setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
         [homeButton addTarget:self action:@selector(homeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:homeButton];
-        
+        [self addSubview:homeLabel];
         
         
         nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [nextButton setBackgroundImage: [UIImage imageNamed:@"next.png"] forState:UIControlStateNormal];
-        [nextButton setTitleEdgeInsets:UIEdgeInsetsMake(55, 0, 0,0)];
-        [nextButton setTitle:NSLocalizedString(@"Menu.Next",@"Next") forState:UIControlStateNormal];
-        nextButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:13];
-        nextButton.titleLabel.numberOfLines = 3;
-        nextButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        [nextButton setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
-        [nextButton setTitleColor:[UIColor grayColor]forState:UIControlStateDisabled];
+        nextButton.tag=100;
+        nextImage=[UIImage imageNamed:@"NextIcon.png"];
+        [nextButton setBackgroundImage: nextImage forState:UIControlStateNormal];
+        nextLabel.text=NSLocalizedString(@"Menu.Next",@"Next");
+        nextLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
+        nextLabel.textColor=[UIColor whiteColor];
+        nextLabel.numberOfLines = 3;
+        nextLabel.lineBreakMode = NSLineBreakByWordWrapping;
         [nextButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+            [nextButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        }
         [self addSubview:nextButton];
-        
+        [self addSubview:nextLabel];
+
         if(attachmentId==attachementsCount-1){
             nextButton.enabled=FALSE;
         }
         else  nextButton.enabled=TRUE;
         
         previousButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [previousButton setBackgroundImage: [UIImage imageNamed:@"previous.png"] forState:UIControlStateNormal];
-        [previousButton setTitleEdgeInsets:UIEdgeInsetsMake(55, 0, 0,0)];
-        [previousButton setTitle:NSLocalizedString(@"Menu.Previous",@"Previous") forState:UIControlStateNormal];
-        previousButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:13];
-        previousButton.titleLabel.numberOfLines = 3;
-        previousButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        [previousButton setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
-        [previousButton setTitleColor:[UIColor grayColor]forState:UIControlStateDisabled];
-        [previousButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        previousButton.tag=100;
+        Previousimage=[UIImage imageNamed:@"PreviousIcon.png"];
+
+        [previousButton setBackgroundImage: Previousimage forState:UIControlStateNormal];
+        PreviousLabel.text=NSLocalizedString(@"Menu.Previous",@"Previous");
+        PreviousLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
+        PreviousLabel.textColor=[UIColor whiteColor];
+        PreviousLabel.numberOfLines = 3;
+        PreviousLabel.lineBreakMode = NSLineBreakByWordWrapping;
+         [previousButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+             [previousButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        }
         [self addSubview:previousButton];
-        
+        [self addSubview:PreviousLabel];
+
         if(attachmentId==0){
             previousButton.enabled=FALSE;
         }
@@ -178,66 +246,98 @@
         
         
         closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [closeButton setBackgroundImage:[UIImage imageNamed:@"Hide.png"] forState:UIControlStateNormal];
-        [closeButton setTitle:NSLocalizedString(@"Menu.Hide", @"Hide Menu") forState:UIControlStateNormal];
-        [closeButton setTitleEdgeInsets:UIEdgeInsetsMake(55, 0, 0,0)];
-        closeButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:13];
-        closeButton.titleLabel.numberOfLines = 3;
-        closeButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        [closeButton setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
-        [closeButton setTitleColor:[UIColor grayColor]forState:UIControlStateDisabled];
+        closeButton.tag=100;
+        Hideimage=[UIImage imageNamed:@"HideIcon.png"];
+        [closeButton setBackgroundImage:Hideimage forState:UIControlStateNormal];
+        HideLabel.text=NSLocalizedString(@"Menu.Hide", @"Hide Menu");
+        HideLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
+        HideLabel.numberOfLines = 3;
+        HideLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        HideLabel.textColor=[UIColor whiteColor];
         [closeButton addTarget:self action:@selector(hideToolbar) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:closeButton];
-        
+        [self addSubview:HideLabel];
+
+
     }
-    
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    [self adjustButtons:orientation];
+    CurrentOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIDeviceOrientation orient=[[UIDevice currentDevice]orientation];
+    if (UIInterfaceOrientationIsPortrait(orient)) {
+        CurrentOrientation=UIInterfaceOrientationPortrait;
+    }
+    [self adjustButtons:CurrentOrientation];
     [self updateToolbar];
-    self.backgroundColor=    [UIColor colorWithRed:1/255.0f green:49/255.0f  blue:97/255.0f  alpha:1.0];
-    
+    self.backgroundColor=[UIColor colorWithRed:12/255.0f green:93/255.0f blue:174/255.0f alpha:1.0];
+    self.frame=CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 100);
 	return self;
 }
 
+//portrait/landscape  Mode to set frame for fixed button
 -(void)adjustButtons:(UIInterfaceOrientation)orientation{
+    CurrentOrientation=orientation;
     if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown) {
+        // initialize as portrait or rotate to portrait
+        
         if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
             int startleft=10;
-            previousButton.frame=CGRectMake(startleft, 30, 65, 90);
-            nextButton.frame = CGRectMake(startleft+ButtonWidth,30, 65, 90);
-            closeButton.frame=CGRectMake(startleft+2*ButtonWidth+5, 30, 80, 90);
-            homeButton.frame = CGRectMake(768-80, 30, 80, 90);
-            
+
+
+            homeButton.frame = CGRectMake(768-80, 15, homeimage.size.width,homeimage.size.height);
+            previousButton.frame=CGRectMake(startleft, homeButton.frame.origin.y, Previousimage.size.width,Previousimage.size.height);
+            nextButton.frame = CGRectMake(startleft+ButtonWidth,homeButton.frame.origin.y, nextImage.size.width,nextImage.size.height);
+            closeButton.frame=CGRectMake(startleft+2*ButtonWidth+5, homeButton.frame.origin.y, Hideimage.size.width,Hideimage.size.height);
+            lblTitleHide=true;
+
             
         }
         else{
             int endright=768;
-            nextButton.frame = CGRectMake(endright-ButtonWidth,30, 65, 90);
-            previousButton.frame=CGRectMake(endright-2*ButtonWidth, 30, 65, 90);
-            closeButton.frame=CGRectMake(endright-3*ButtonWidth-5, 30, 80, 90);
-            homeButton.frame = CGRectMake(10, 30, 80, 90);
-            
+            homeButton.frame = CGRectMake(10, 15,homeimage.size.width,homeimage.size.height);
+              closeButton.frame=CGRectMake(endright-2*ButtonWidth-80, homeButton.frame.origin.y, Hideimage.size.width,Hideimage.size.height);
+            previousButton.frame=CGRectMake(closeButton.frame.origin.x+closeButton.frame.size.width+20,homeButton.frame.origin.y, Previousimage.size.width,Previousimage.size.height);
+            nextButton.frame = CGRectMake(previousButton.frame.origin.x+previousButton.frame.size.width+20,homeButton.frame.origin.y, nextImage.size.width,nextImage.size.height);
+             lblTitleHide=true;
         }
     } else{
+        //landscape mode
+     
         if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
             int startleft=10;
-            previousButton.frame=CGRectMake(startleft, 30, 65, 90);
-            nextButton.frame = CGRectMake(startleft+ButtonWidth,30, 65, 90);
-            closeButton.frame=CGRectMake(startleft+2*ButtonWidth+5, 30, 80, 90);
-            homeButton.frame = CGRectMake(768+167, 30, 80, 90);
             
+            homeButton.frame = CGRectMake(768+167, 15, homeimage.size.width,homeimage.size.height);
+            previousButton.frame=CGRectMake(startleft, homeButton.frame.origin.y, Previousimage.size.width,Previousimage.size.height);
+            nextButton.frame = CGRectMake(startleft+ButtonWidth,homeButton.frame.origin.y, nextImage.size.width,nextImage.size.height);
+            closeButton.frame=CGRectMake(startleft+2*ButtonWidth+5,homeButton.frame.origin.y, Hideimage.size.width,Hideimage.size.height);
+           
+            lblTitleHide=false;
             
         }
         else{
             int endright=768+182;
-            nextButton.frame = CGRectMake(endright,30, 65, 90);
-            previousButton.frame=CGRectMake(endright-ButtonWidth, 30, 65, 90);
-            closeButton.frame=CGRectMake(endright-2*ButtonWidth-5, 30, 80, 90);
-            homeButton.frame = CGRectMake(10, 30, 80, 90);
+             homeButton.frame = CGRectMake(10, 15, homeimage.size.width,homeimage.size.height);
+             nextButton.frame = CGRectMake(endright,homeButton.frame.origin.y,nextImage.size.width,nextImage.size.height);
+            previousButton.frame=CGRectMake(endright-ButtonWidth,homeButton.frame.origin.y, Previousimage.size.width,Previousimage.size.height);
+            closeButton.frame=CGRectMake(endright-2*ButtonWidth-5, homeButton.frame.origin.y, Hideimage.size.width,Hideimage.size.height);
+            lblTitleHide=false;
             
             
         }
     }
+    if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+        homeLabel.frame=CGRectMake(homeButton.frame.origin.x+3, homeButton.frame.origin.y+homeButton.frame.size.height-5, 60, 60);
+        nextLabel.frame=CGRectMake(previousButton.frame.origin.x+3, previousButton.frame.origin.y+previousButton.frame.size.height, 60, 30);
+        PreviousLabel.frame=CGRectMake(nextButton.frame.origin.x+7,nextButton.frame.origin.y+nextButton.frame.size.height, 90, 30);
+        HideLabel.frame=CGRectMake(closeButton.frame.origin.x+7, closeButton.frame.origin.y+closeButton.frame.size.height, 90, 30);
+    }
+    else
+    {
+        homeLabel.frame=CGRectMake(homeButton.frame.origin.x, homeButton.frame.origin.y+homeButton.frame.size.height, 60, 30);
+        PreviousLabel.frame=CGRectMake(previousButton.frame.origin.x-lableX, previousButton.frame.origin.y+previousButton.frame.size.height, 60, 30);
+        nextLabel.frame=CGRectMake(nextButton.frame.origin.x+6,nextButton.frame.origin.y+nextButton.frame.size.height, 90, 30);
+        HideLabel.frame=CGRectMake(closeButton.frame.origin.x+5, closeButton.frame.origin.y+closeButton.frame.size.height, 90, 30);
+    
+    }
+
     [self updateToolbar];
     
 }
@@ -248,8 +348,7 @@
 {
 	if (self.hidden == NO)
 	{
-        
-        
+ 
 		[UIView animateWithDuration:0.25 delay:0.0
                             options:UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction
                          animations:^(void)
@@ -264,7 +363,7 @@
 	}
 }
 
-- (void)showToolbar
+- (void)showToolbar:(NSString*)status
 {
 	if (self.hidden == YES)
 	{
@@ -279,8 +378,28 @@
                          completion:NULL
          ];
 	}
+    [self refreshToolbar:status];
 }
-
+-(void)refreshToolbar:(NSString*)state{
+    if([[state uppercaseString] isEqualToString:@"READONLY"]){
+        for(UIButton* btn in self.subviews){
+            if(btn.tag!=100)
+                btn.enabled=false;
+        }
+    }
+    else
+        if([[state uppercaseString] isEqualToString:@"NOTPDF"]){
+            Save.enabled=false;
+            SignActionButton.enabled=false;
+            annotationButton.enabled=false;
+        }
+        else{
+            for(UIButton* btn in self.subviews){
+                if(btn.tag!=100)
+                    btn.enabled=true;
+            }
+        }
+}
 -(ReaderDocument*) OpenPdfReader:(NSString *) pdfPath{
     NSString *phrase = nil; // Document password (for unlocking most encrypted PDF files)
     
@@ -296,8 +415,10 @@
 #pragma mark UIButton action methods
 - (void)SignAction:(UIButton *)button
 {
+  
 	[delegate tappedInToolbar:self SignActionButton:button];
 }
+
 
 - (void)homeButtonTapped:(UIButton *)button
 {
@@ -374,18 +495,7 @@ BOOL lockSelected=NO;
     if(lockSelected){
         lockButton.selected=YES;
     }else  lockButton.selected=NO;
-    //    if(correspondence.Locked==NO){
-    //         if([self performLock:@"LockCorrespondence"])
-    //         [lockButton setTitle:NSLocalizedString(@"Menu.Unlock",@"unlock") forState:UIControlStateNormal];
-    //        if(self.menuId !=100)
-    //        ((CCorrespondence*) ((CMenu*)self.user.menu[self.menuId]).correspondenceList[self.correspondenceId]).Locked=YES;
-    //    }
-    //    else{  if([self performLock:@"UnlockCorrespondence"])
-    //         [lockButton setTitle:NSLocalizedString(@"Menu.Lock",@"lock") forState:UIControlStateNormal];
-    //        if(self.menuId !=100)
-    //         ((CCorrespondence*) ((CMenu*)self.user.menu[self.menuId]).correspondenceList[self.correspondenceId]).Locked=NO;
-    //
-    //    }
+
 }
 
 -(BOOL)performLock:(NSString*)action{
@@ -394,8 +504,7 @@ BOOL lockSelected=NO;
     
     NSString* url=[NSString stringWithFormat:@"action=%@&token=%@&correspondenceId=%@",action,mainDelegate.user.token,correspondence.Id];
     NSString* lockUrl = [NSString stringWithFormat:@"http://%@?%@",mainDelegate.serverUrl,url];
-    // NSURL *xmlUrl = [NSURL URLWithString:lockUrl];
-    // NSData *lockXmlData = [[NSMutableData alloc] initWithContentsOfURL:xmlUrl];
+
     NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:[lockUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
     NSData *lockXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
     NSString *validationResult=[CParser ValidateWithData:lockXmlData];
@@ -425,34 +534,23 @@ BOOL lockSelected=NO;
     mainDelegate.attachmentType = @"nextprevioustype";
     
     correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
-    //jen PreviousNext
-    // NSMutableArray* thumbnailrarray = [[NSMutableArray alloc] init];
-    
-    
-    //        if (correspondence.attachmentsList.count>0)
-    //        {
-    //            for(CAttachment* doc in correspondence.attachmentsList)
-    //            {
-    //                if([doc.FolderName isEqualToString:mainDelegate.FolderName]){
-    //                    [thumbnailrarray addObject:doc];
-    //                }
-    //
-    //
-    //            }
-    //        }
     
     
     fileToOpen=correspondence.attachmentsList[self.attachmentId];
+    if (fileToOpen.url !=nil || !mainDelegate.isOfflineMode) {
+        
+    
     [self updateTitleWithLocation:fileToOpen.location withName:fileToOpen.title];
     
     //jis next
     [self performSelectorOnMainThread:@selector(increaseProgress) withObject:@"" waitUntilDone:YES];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         
-        if([fileToOpen.url isEqualToString:@""]){
+        if([fileToOpen.url isEqualToString:@""]||fileToOpen.url==nil){
             
             [mainDelegate.folderNames addObject:fileToOpen.FolderName];
-            
+            mainDelegate.FolderName=fileToOpen.FolderName;
+            mainDelegate.FolderId=fileToOpen.FolderId;
             int docId = [correspondence.Id intValue];
             NSData *attachmentXmlData;
             if(!mainDelegate.isOfflineMode){
@@ -463,9 +561,9 @@ BOOL lockSelected=NO;
                 else
                     showthumb=@"false";
                 if(mainDelegate.SupportsServlets)
-                    attachmentUrl= [NSString stringWithFormat:@"http://%@?action=GetFolderAttachments&token=%@&docId=%d&folderName=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,docId,mainDelegate.FolderName,showthumb];
+                    attachmentUrl= [NSString stringWithFormat:@"http://%@?action=GetFolderAttachments&token=%@&docId=%d&folderName=%@&folderId=%@&showThumbnails=%@&language=%@",mainDelegate.serverUrl,mainDelegate.user.token,docId,mainDelegate.FolderName,mainDelegate.FolderId,showthumb,mainDelegate.IpadLanguage];
                 else
-                    attachmentUrl= [NSString stringWithFormat:@"http://%@/GetFolderAttachments?token=%@&docId=%d&folderName=%@&showThumbnails=%@",mainDelegate.serverUrl,mainDelegate.user.token,docId,mainDelegate.FolderName,showthumb];
+                    attachmentUrl= [NSString stringWithFormat:@"http://%@/GetFolderAttachments?token=%@&docId=%d&folderName=%@&folderId=%@&showThumbnails=%@&language=%@",mainDelegate.serverUrl,mainDelegate.user.token,docId,mainDelegate.FolderName,mainDelegate.FolderId,showthumb,mainDelegate.IpadLanguage];
                 
                 [CParser GetFolderAttachment:attachmentUrl Id:self.correspondenceId];
                 
@@ -479,15 +577,12 @@ BOOL lockSelected=NO;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *tempPdfLocation=[fileToOpen saveInCacheinDirectory:fileToOpen.docId fromSharepoint:mainDelegate.isSharepoint];
-            //  NSString *tempPdfLocation=[CParser loadPdfFile:fileToOpen.url inDirectory:correspondence.Id];
             ReaderDocument *newdocument=nil;
             if ([ReaderDocument isPDF:tempPdfLocation] == YES) // File must exist
             {
                 newdocument=[self OpenPdfReader:tempPdfLocation];
             }
             
-            //jen PreviousNext
-            //[delegate tappedInToolbar:self nextButton:button documentReader:newdocument correspondenceId:self.correspondenceId];
             [delegate tappedInToolbar:self nextButton:button documentReader:newdocument correspondenceId:self.correspondenceId attachementId:self.attachmentId];
             
             if(self.attachmentId==attachementsCount-1){
@@ -506,11 +601,17 @@ BOOL lockSelected=NO;
         });
     });
     
+    }
+    else
+    {
+        [CParser ShowMessage:NSLocalizedString(@"AttachmentProblem", @"connect befor open")];
+    }
     
-    
-    
+    [self refreshToolBar];
     
 }
+
+
 - (void)increaseProgress{
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Downloading",@"Downloading ...") maskType:SVProgressHUDMaskTypeBlack];
     
@@ -528,73 +629,24 @@ BOOL lockSelected=NO;
     
     self.attachmentId=self.attachmentId-1;
     
-    if(self.menuId!=100){
-        correspondence= ((CMenu*)self.user.menu[self.menuId]).correspondenceList[self.correspondenceId];
-        //jen
-        NSMutableArray* thumbnailrarray = [[NSMutableArray alloc] init];
-        
-        
-        if (correspondence.attachmentsList.count>0)
-        {
-            for(CAttachment* doc in correspondence.attachmentsList)
-            {
-                if([doc.FolderName isEqualToString:mainDelegate.FolderName]){
-                    [thumbnailrarray addObject:doc];
-                }
-                
-                
-            }
-        }
-        
-        fileToOpen=thumbnailrarray[self.attachmentId];
-    }else{
-        correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
-        //jen
-        NSMutableArray* thumbnailrarray = [[NSMutableArray alloc] init];
-        
-        
-        if (correspondence.attachmentsList.count>0)
-        {
-            for(CAttachment* doc in correspondence.attachmentsList)
-            {
-                if([doc.FolderName isEqualToString:mainDelegate.FolderName]){
-                    [thumbnailrarray addObject:doc];
-                }
-                
-                
-            }
-        }
-        
-        //fileToOpen=thumbnailrarray[self.attachmentId];
-    }
-    
+    correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
     fileToOpen=correspondence.attachmentsList[self.attachmentId];
-    [self updateTitleWithLocation:fileToOpen.location withName:fileToOpen.title];
-    //jen
-    // NSString *tempPdfLocation=[fileToOpen saveInCacheinDirectory:correspondence.Id fromSharepoint:mainDelegate.isSharepoint];
-    NSString *tempPdfLocation=[fileToOpen saveInCacheinDirectory:fileToOpen.docId fromSharepoint:mainDelegate.isSharepoint];
-    // NSString *tempPdfLocation=[CParser loadPdfFile:fileToOpen.url inDirectory:correspondence.Id];
     
+    [self updateTitleWithLocation:fileToOpen.location withName:fileToOpen.title];
+    NSString *tempPdfLocation=[fileToOpen saveInCacheinDirectory:fileToOpen.docId fromSharepoint:mainDelegate.isSharepoint];
+
     ReaderDocument *document=nil;
     if ([ReaderDocument isPDF:tempPdfLocation] == YES) // File must exist
     {
         document=[self OpenPdfReader:tempPdfLocation];
     }
-    //jen PreviousNext
-	//[delegate tappedInToolbar:self previousButton:button documentReader:document correspondenceId:self.correspondenceId];
     [delegate tappedInToolbar:self previousButton:button documentReader:document correspondenceId:self.correspondenceId attachementId:self.attachmentId];
-    //    if(self.correspondenceId==0){
-    //        button.enabled=FALSE;
-    //
-    //    }
+ 
     if(self.attachmentId==0){
         button.enabled=FALSE;
     }
     else  button.enabled=TRUE;
-    
-    //    if(self.correspondenceId==correspondencesCount-1){
-    //        nextButton.enabled=FALSE;
-    //    }
+
     if(self.attachmentId==attachementsCount-1){
         nextButton.enabled=FALSE;
     }
@@ -604,282 +656,348 @@ BOOL lockSelected=NO;
     [self updateToolbar];
 }
 
+-(void)refreshToolBar
+{
+    for(UIView* view in self.subviews){
+        if([view isKindOfClass:[UIButton class]]){
+            [view removeFromSuperview];
+        }
+	if ([view isKindOfClass:[UILabel class]]) {
+            [view removeFromSuperview];
+        }
+    }
+ 
+    [self addSubview:homeButton];
+    [self addSubview:homeLabel];
+    if (UIInterfaceOrientationIsLandscape(CurrentOrientation)){
+        [self addSubview:closeButton];
+        [self addSubview:HideLabel];
+    }
+    
+
+    [self addSubview:nextButton];
+    [self addSubview:nextLabel];
+
+    [self addSubview:previousButton];
+    [self addSubview:PreviousLabel];
+
+
+}
 
 
 -(void)updateToolbar{
-    NSInteger btnWidth=75;
-    [metadataButton removeFromSuperview];
-    [attachmentButton removeFromSuperview];
-    [transferButton removeFromSuperview];
-    [commentsButton removeFromSuperview];
-    [annotationButton removeFromSuperview];
-    [MoreButton removeFromSuperview];
-    [Save removeFromSuperview];
-    [ActionsButton removeFromSuperview];
-    [SignActionButton removeFromSuperview];
+    NSInteger btnWidth=homeButton.frame.origin.x+homeButton.frame.size.width+seperator;
+    NSInteger arabicBtnOrigine=homeButton.frame.origin.x-48-seperator;
+
+    [self refreshToolBar];
+    BOOL found=NO;
     int index=0;
+    
     while(index<=correspondence.toolbar.count){
         NSString*key=[NSString stringWithFormat:@"%d",index];
         ToolbarItem* item=[correspondence.toolbar objectForKey:key];
         if(!item.Custom){
             if([item.Name isEqualToString:@"MetaData"]&&item.Display){
                 metadataButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                metadataButton.tag=100;
                 if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
-                    metadataButton.frame = CGRectMake(homeButton.frame.origin.x-btnWidth, 30, 80, 90);
+                    metadataButton.frame = CGRectMake(arabicBtnOrigine, homeButton.frame.origin.y, metadataimage.size.width,metadataimage.size.height);
+                       metadataLabel.font=[UIFont fontWithName:@"Helvetica" size:arabicFont];
                 }
                 else
-                    metadataButton.frame = CGRectMake(homeButton.frame.origin.x+btnWidth, 30, 80, 90);
-                [metadataButton setBackgroundImage:[UIImage imageNamed:@"metadata.png"] forState:UIControlStateNormal];
+                {
+                     metadataButton.frame = CGRectMake(btnWidth, homeButton.frame.origin.y, metadataimage.size.width,metadataimage.size.height);
+                       metadataLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
+                }
+               
+                [metadataButton setBackgroundImage:metadataimage forState:UIControlStateNormal];
                 if (item.Label==nil || [item.Label isEqualToString:@""])
-                    [metadataButton setTitle:NSLocalizedString(@"Menu.Metadata",item.Label) forState:UIControlStateNormal];
+                    metadataLabel.text=NSLocalizedString(@"Menu.Metadata",item.Label);
                 else
-                    [metadataButton setTitle:NSLocalizedString(item.Label,item.Label) forState:UIControlStateNormal];
+                    metadataLabel.text=NSLocalizedString(item.Label,item.Label);
                 
-                [metadataButton setTitleEdgeInsets:UIEdgeInsetsMake(55, 2, 0,2)];
-                
-                metadataButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
-                metadataButton.titleLabel.numberOfLines = 3;
-                metadataButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                [metadataButton setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
+                metadataLabel.textColor=[UIColor whiteColor];
+                metadataLabel.numberOfLines = 3;
+                metadataLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 [metadataButton addTarget:self action:@selector(metadataButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+                if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+                    metadataLabel.frame=CGRectMake(metadataButton.frame.origin.x-lableX-8, metadataButton.frame.origin.y+metadataButton.frame.size.height, 90, 30);
+                }
+                else
+                metadataLabel.frame=CGRectMake(metadataButton.frame.origin.x-lableX-2, metadataButton.frame.origin.y+metadataButton.frame.size.height, 90, 30);
+
                 [self addSubview:metadataButton];
-                btnWidth=btnWidth+70;
+                [self addSubview:metadataLabel];
+
+                btnWidth=btnWidth+metadataButton.frame.size.width+seperator;
+                arabicBtnOrigine=arabicBtnOrigine-38-seperator;
                 
             }
             if([item.Name isEqualToString:@"Attachments"]&&item.Display){
                 attachmentButton = [UIButton buttonWithType:UIButtonTypeCustom];
                 if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
-                    attachmentButton.frame = CGRectMake(homeButton.frame.origin.x-btnWidth, 30, 80, 90);
-                else
-                    attachmentButton.frame = CGRectMake(homeButton.frame.origin.x+btnWidth, 30, 80, 90);
-                
-                [attachmentButton setBackgroundImage:[UIImage imageNamed:@"attachments.png"] forState:UIControlStateNormal];
-                [attachmentButton setTitleEdgeInsets:UIEdgeInsetsMake(55, 0, 0,0)];
+                {
+                    attachmentButton.frame = CGRectMake(arabicBtnOrigine, homeButton.frame.origin.y, Attachementsimage.size.width,Attachementsimage.size.height);
+                        AttachementsLabel.font=[UIFont fontWithName:@"Helvetica" size:arabicFont];
+                }
+                    else
+                    {
+                    attachmentButton.frame = CGRectMake(btnWidth+5, homeButton.frame.origin.y, Attachementsimage.size.width,Attachementsimage.size.height);
+                             AttachementsLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
+                    }
+               
+                [attachmentButton setBackgroundImage:Attachementsimage forState:UIControlStateNormal];
                 if (item.Label==nil || [item.Label isEqualToString:@""])
-                    [attachmentButton setTitle:NSLocalizedString(@"Menu.Attachments",item.Label) forState:UIControlStateNormal];
+                    AttachementsLabel.text=NSLocalizedString(@"Menu.Attachments",item.Label);
                 else
-                    [attachmentButton setTitle:NSLocalizedString(item.Label,item.Label) forState:UIControlStateNormal];
-                attachmentButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
-                attachmentButton.titleLabel.numberOfLines = 3;
-                attachmentButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                    AttachementsLabel.text=NSLocalizedString(item.Label,item.Label);
+                AttachementsLabel.numberOfLines = 3;
+                AttachementsLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 [attachmentButton setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
                 [attachmentButton addTarget:self action:@selector(attachmentButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+                if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+                     AttachementsLabel.frame=CGRectMake(attachmentButton.frame.origin.x+3, attachmentButton.frame.origin.y+attachmentButton.frame.size.height, 80, 30);
+                }
+                else
+                AttachementsLabel.frame=CGRectMake(attachmentButton.frame.origin.x-lableX-6, attachmentButton.frame.origin.y+attachmentButton.frame.size.height, 80, 30);
+                AttachementsLabel.textColor=[UIColor whiteColor];
                 [self addSubview:attachmentButton];
-                btnWidth=btnWidth+70;
+                [self addSubview:AttachementsLabel];
+
+                btnWidth=btnWidth+attachmentButton.frame.size.width+seperator;
+                arabicBtnOrigine=arabicBtnOrigine-38-seperator;
                 
             }
-            //        if([item.Name isEqualToString:@"Comments"]&&item.Display){
-            //        commentsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            //        if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
-            //            commentsButton.frame = CGRectMake(homeButton.frame.origin.x-btnWidth, 30, 80, 90);
-            //            btnWidth=btnWidth+65;
-            //
-            //        }
-            //        else{
-            //        commentsButton.frame = CGRectMake(homeButton.frame.origin.x+btnWidth, 30, 80, 90);
-            //            btnWidth=btnWidth+75;
-            //
-            //        }
-            //
-            //        [commentsButton setTitleEdgeInsets:UIEdgeInsetsMake(55, 2, 0,2)];
-            //        [commentsButton setBackgroundImage:[UIImage imageNamed:@"comments.png"] forState:UIControlStateNormal];
-            //        [commentsButton setTitle:NSLocalizedString(@"Menu.Comments",item.Label) forState:UIControlStateNormal];
-            //        commentsButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
-            //        [commentsButton setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
-            //        [commentsButton addTarget:self action:@selector(commentButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-            //        [self addSubview:commentsButton];
-            //
-            //
-            //    }
-            if([item.Name isEqualToString:@"Transfer"]&&item.Display){
+
+            if([item.Name isEqualToString:@"Transfer"]&&item.Display ){
                 
                 transferButton = [UIButton buttonWithType:UIButtonTypeCustom];
                 if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
-                    transferButton.frame = CGRectMake(homeButton.frame.origin.x-btnWidth, 30, 80, 90);
-                    btnWidth=btnWidth+65;
+                    transferButton.frame = CGRectMake(arabicBtnOrigine, homeButton.frame.origin.y,Transferimage.size.width,Transferimage.size.height);
+                    //btnWidth=btnWidth+65;
+                                    TransferLabel.font=[UIFont fontWithName:@"Helvetica" size:arabicFont];
                     
                 }
                 else{
-                    transferButton.frame = CGRectMake(homeButton.frame.origin.x+btnWidth, 30, 80, 90);
-                    btnWidth=btnWidth+70;
+                    transferButton.frame = CGRectMake(btnWidth+10, homeButton.frame.origin.y,Transferimage.size.width,Transferimage.size.height-4);
+                  TransferLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
                     
                 }
-                [transferButton setBackgroundImage:[UIImage imageNamed:@"transfer.png"] forState:UIControlStateNormal];
-                [transferButton setTitleEdgeInsets:UIEdgeInsetsMake(55, 2, 0,2)];
+               
+                [transferButton setBackgroundImage:Transferimage forState:UIControlStateNormal];
                 if (item.Label==nil || [item.Label isEqualToString:@""])
-                    [transferButton setTitle:NSLocalizedString(@"Menu.Transfer",item.Label) forState:UIControlStateNormal];
+                    TransferLabel.text=NSLocalizedString(@"Menu.Transfer",item.Label) ;
                 else
-                    [transferButton setTitle:NSLocalizedString(item.Label,item.Label) forState:UIControlStateNormal];
-                transferButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
-                transferButton.titleLabel.numberOfLines = 3;
-                transferButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                    TransferLabel.text=NSLocalizedString(item.Label,item.Label);
+
+                TransferLabel.numberOfLines = 3;
+                TransferLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 [transferButton setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
                 [transferButton addTarget:self action:@selector(transferButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+                if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+                     TransferLabel.frame=CGRectMake(transferButton.frame.origin.x+5, transferButton.frame.origin.y+transferButton.frame.size.height-2, 90, 30);
+                }
+                else
+                TransferLabel.frame=CGRectMake(transferButton.frame.origin.x-lableX, transferButton.frame.origin.y+transferButton.frame.size.height, 90, 30);
+                TransferLabel.textColor=[UIColor whiteColor];
                 [self addSubview:transferButton];
+                [self addSubview:TransferLabel];
+
+                btnWidth=btnWidth+transferButton.frame.size.width+seperator;
+                arabicBtnOrigine=arabicBtnOrigine-38-seperator;
                 
             }
-            if([item.Name isEqualToString:@"Annotations"]&&item.Display){
+            if([item.Name isEqualToString:@"Annotations"]&&item.Display ){
                 
                 annotationButton = [UIButton buttonWithType:UIButtonTypeCustom];
                 if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
-                    annotationButton.frame = CGRectMake(homeButton.frame.origin.x-btnWidth, 30, 80, 90);
-                    btnWidth=btnWidth+65;
+                    annotationButton.frame = CGRectMake(arabicBtnOrigine, homeButton.frame.origin.y, Annotationsimage.size.width,Annotationsimage.size.height);                           AnnotationsLabel.font=[UIFont fontWithName:@"Helvetica" size:arabicFont];
                     
                 }
                 else{
-                    annotationButton.frame = CGRectMake(homeButton.frame.origin.x+btnWidth, 30, 80, 90);
-                    btnWidth=btnWidth+70;
+                    annotationButton.frame = CGRectMake(btnWidth+15, homeButton.frame.origin.y, Annotationsimage.size.width,Annotationsimage.size.height);
+                      AnnotationsLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
+                    btnWidth=btnWidth+annotationButton.frame.size.width+seperator;
                     
                 }
-                [annotationButton setBackgroundImage: [UIImage imageNamed:@"Annotations.png"] forState:UIControlStateNormal];
-                [annotationButton setTitleEdgeInsets:UIEdgeInsetsMake(55, 0, 0,0)];
+                
+                [annotationButton setBackgroundImage: Annotationsimage forState:UIControlStateNormal];
                 if (item.Label==nil || [item.Label isEqualToString:@""])
-                    [annotationButton setTitle:NSLocalizedString(@"Menu.Annotations",item.Label) forState:UIControlStateNormal];
+                    AnnotationsLabel.text=NSLocalizedString(@"Menu.Annotations",item.Label);
                 else
-                    [annotationButton setTitle:NSLocalizedString(item.Label,item.Label) forState:UIControlStateNormal];
-                annotationButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:13];
-                annotationButton.titleLabel.numberOfLines = 3;
-                annotationButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                [annotationButton setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
-                [annotationButton setTitleColor:[UIColor grayColor]forState:UIControlStateDisabled];
+                    AnnotationsLabel.text=NSLocalizedString(item.Label,item.Label);
+              
+                AnnotationsLabel.numberOfLines = 3;
+                AnnotationsLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 [annotationButton addTarget:self action:@selector(annotationButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+                if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+                    AnnotationsLabel.frame=CGRectMake(annotationButton.frame.origin.x, annotationButton.frame.origin.y+annotationButton.frame.size.height+3, 90, 30);
+                }
+                else
+                AnnotationsLabel.frame=CGRectMake(annotationButton.frame.origin.x-12, annotationButton.frame.origin.y+annotationButton.frame.size.height, 90, 30);
+                AnnotationsLabel.textColor=[UIColor whiteColor];
                 [self addSubview:annotationButton];
+                [self addSubview:AnnotationsLabel];
+
+                arabicBtnOrigine=arabicBtnOrigine-35-seperator;
                 
             }
-            if([item.Name isEqualToString:@"Signature"]&&item.Display){
+            if([item.Name isEqualToString:@"Signature"]&&item.Display ){
                 
                 SignActionButton = [UIButton buttonWithType:UIButtonTypeCustom];
                 if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
-                    SignActionButton.frame = CGRectMake(homeButton.frame.origin.x-btnWidth, 30, 60, 70);
-                    btnWidth=btnWidth+75;
-                    
+                    SignActionButton.frame = CGRectMake(arabicBtnOrigine, homeButton.frame.origin.y, Signatureimage.size.width,Signatureimage.size.height);
+                    btnWidth=btnWidth+85;
+                     SignatureLabel.font=[UIFont fontWithName:@"Helvetica" size:arabicFont];
                 }
                 else{
-                    SignActionButton.frame = CGRectMake(homeButton.frame.origin.x+15+btnWidth, 30, 60, 70);
-                    btnWidth=btnWidth+70;
+                    SignActionButton.frame = CGRectMake(btnWidth+15, homeButton.frame.origin.y,Signatureimage.size.width,Signatureimage.size.height-3);
+                    btnWidth=btnWidth+SignActionButton.frame.size.width+seperator;
+                     SignatureLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
                     
                 }
-                [SignActionButton setBackgroundImage: [UIImage imageNamed:@"Signature.png"] forState:UIControlStateNormal];
-                [SignActionButton setTitleEdgeInsets:UIEdgeInsetsMake(75, 0, 0,0)];
+                
+                [SignActionButton setBackgroundImage: Signatureimage forState:UIControlStateNormal];
                 if (item.Label==nil || [item.Label isEqualToString:@""])
-                    [SignActionButton setTitle:NSLocalizedString(@"Menu.sign",item.Label) forState:UIControlStateNormal];
+                    SignatureLabel.text=NSLocalizedString(@"Menu.sign",item.Label);
                 else
-                    [SignActionButton setTitle:NSLocalizedString(item.Label,item.Label) forState:UIControlStateNormal];
-                SignActionButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:13];
-                SignActionButton.titleLabel.numberOfLines = 3;
-                SignActionButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                    SignatureLabel.text=NSLocalizedString(item.Label,item.Label);
+                SignatureLabel.numberOfLines = 3;
+                SignatureLabel.lineBreakMode = NSLineBreakByWordWrapping;
                 [SignActionButton setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
-                [SignActionButton setTitleColor:[UIColor grayColor]forState:UIControlStateDisabled];
                 [SignActionButton addTarget:self action:@selector(SignAction:) forControlEvents:UIControlEventTouchUpInside];
+                if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+                 SignatureLabel.frame=CGRectMake(SignActionButton.frame.origin.x+9, SignActionButton.frame.origin.y+SignActionButton.frame.size.height-2, 90, 30);
+                }
+                else
+                SignatureLabel.frame=CGRectMake(SignActionButton.frame.origin.x-2, SignActionButton.frame.origin.y+SignActionButton.frame.size.height, 90, 30);
+                SignatureLabel.textColor=[UIColor whiteColor];
                 [self addSubview:SignActionButton];
+                [self addSubview:SignatureLabel];
+
+                arabicBtnOrigine=arabicBtnOrigine-38-seperator;
+                if(found){
+                    Save = [UIButton buttonWithType:UIButtonTypeCustom];
+                    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
+                    {
+                        Save.frame = CGRectMake(arabicBtnOrigine, homeButton.frame.origin.y, Saveimage.size.width,Saveimage.size.height);
+                        SaveLabel.font=[UIFont fontWithName:@"Helvetica" size:arabicFont];
+                    }
+                    else
+                    {
+                        SaveLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
+                        Save.frame = CGRectMake(btnWidth+3, homeButton.frame.origin.y+3, Saveimage.size.width,Saveimage.size.height);
+                    }
+                    
+                    [Save setBackgroundImage: Saveimage forState:UIControlStateNormal];
+                    SaveLabel.text=NSLocalizedString(@"Menu.save",@"Save");
+                    
+                    
+                    SaveLabel.numberOfLines = 3;
+                    SaveLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                    [Save setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
+                    [Save addTarget:self action:@selector(SaveButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+                        SaveLabel.frame=CGRectMake(Save.frame.origin.x+10, Save.frame.origin.y+Save.frame.size.height+2, 90, 30);
+                    }
+                    else
+                        SaveLabel.frame=CGRectMake(Save.frame.origin.x+3, Save.frame.origin.y+Save.frame.size.height, 90, 30);
+                    SaveLabel.textColor=[UIColor whiteColor];
+                    [self addSubview:Save];
+                    [self addSubview:SaveLabel];
+                    btnWidth=btnWidth+Save.frame.size.width+seperator;
+                    arabicBtnOrigine=arabicBtnOrigine-38-seperator;
+                }
                 
             }
-            //        if([item.Name isEqualToString:@"Actions"]&&item.Display){
-            //
-            //        ActionsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            //        if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
-            //            ActionsButton.frame = CGRectMake(homeButton.frame.origin.x-btnWidth, 30, 60, 70);
-            //            btnWidth=btnWidth+75;
-            //
-            //        }
-            //        else{
-            //            ActionsButton.frame = CGRectMake(homeButton.frame.origin.x+btnWidth, 30, 60, 70);
-            //            btnWidth=btnWidth+75;
-            //
-            //        }
-            //        [ActionsButton setBackgroundImage: [UIImage imageNamed:@"Actions.png"] forState:UIControlStateNormal];
-            //        [ActionsButton setTitleEdgeInsets:UIEdgeInsetsMake(75, 0, 0,0)];
-            //        if (item.Label==nil || [item.Label isEqualToString:@""])
-            //            [ActionsButton setTitle:NSLocalizedString(@"Menu.Actions",item.Label) forState:UIControlStateNormal];
-            //        else
-            //            [ActionsButton setTitle:NSLocalizedString(item.Label,item.Label) forState:UIControlStateNormal];
-            //        ActionsButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:13];
-            //        ActionsButton.titleLabel.numberOfLines = 3;
-            //        ActionsButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-            //        [ActionsButton setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
-            //        [ActionsButton setTitleColor:[UIColor grayColor]forState:UIControlStateDisabled];
-            //        [ActionsButton addTarget:self action:@selector(ActionsButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-            //        [self addSubview:ActionsButton];
-            //
-            //    }
-            if([item.Name isEqualToString:@"Signature"]&&item.Display&& [mainDelegate.SignMode isEqualToString:@"BuiltInSign"]){
-                
-                Save = [UIButton buttonWithType:UIButtonTypeCustom];
-                if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
-                    Save.frame = CGRectMake(homeButton.frame.origin.x-btnWidth, 30, 70, 90);
+
+            if(([item.Name isEqualToString:@"Signature"]||[item.Name isEqualToString:@"Annotations"])&&item.Display){
+                if (!found) {
+                    found=YES;
+                }
                 else
-                    Save.frame = CGRectMake(homeButton.frame.origin.x+btnWidth, 30, 70, 90);
-                [Save setBackgroundImage: [UIImage imageNamed:@"save.png"] forState:UIControlStateNormal];
-                [Save setTitleEdgeInsets:UIEdgeInsetsMake(55, 0, 0,0)];
-                [Save setTitle:NSLocalizedString(@"Menu.save",@"Save") forState:UIControlStateNormal];
-                
-                Save.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:13];
-                Save.titleLabel.numberOfLines = 3;
-                Save.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                [Save setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
-                [Save setTitleColor:[UIColor grayColor]forState:UIControlStateDisabled];
-                [Save addTarget:self action:@selector(SaveButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-                [self addSubview:Save];
-                btnWidth=btnWidth+65;
+                    found=NO;
+               
                 
             }
             if([item.Name isEqualToString:@"More"]&&item.Display){
                 if(correspondence.actions.count>0 ){
                     MoreButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                    
                     if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
-                        MoreButton.frame = CGRectMake(homeButton.frame.origin.x-btnWidth, 30, 80, 100);
-                        [MoreButton setBackgroundImage: [UIImage imageNamed:@"More-flipped.png"] forState:UIControlStateNormal];
+                        MoreButton.frame = CGRectMake(arabicBtnOrigine, homeButton.frame.origin.y, moreImage.size.width, moreImage.size.height);
+                            moreLable.frame=CGRectMake(MoreButton.frame.origin.x+5, MoreButton.frame.origin.y+MoreButton.frame.size.height+3, 90, 30);
+                        moreLable.font=[UIFont fontWithName:@"Helvetica" size:arabicFont];
                         
                     }
                     else{
-                        MoreButton.frame = CGRectMake(homeButton.frame.origin.x+btnWidth, 30, 80, 100);
+                        MoreButton.frame = CGRectMake(btnWidth, homeButton.frame.origin.y, moreImage.size.width, moreImage.size.height);
+                           moreLable.font=[UIFont fontWithName:@"Helvetica" size:14];
                         [MoreButton setBackgroundImage: [UIImage imageNamed:@"More.png"] forState:UIControlStateNormal];
+                        moreLable.frame=CGRectMake(MoreButton.frame.origin.x-lableX, MoreButton.frame.origin.y+MoreButton.frame.size.height+3, 90, 30);
                         
                     }
+                    [MoreButton setBackgroundImage: moreImage forState:UIControlStateNormal];
                     if (item.Label==nil || [item.Label isEqualToString:@""])
-                        [MoreButton setTitle:NSLocalizedString(@"Menu.More",item.Label) forState:UIControlStateNormal];
+                        moreLable.text=NSLocalizedString(@"Menu.More",item.Label);
+
                     else
-                        [MoreButton setTitle:NSLocalizedString(item.Label,item.Label) forState:UIControlStateNormal];
+                         moreLable.text=NSLocalizedString(item.Label,item.Label);
+
                     
-                    [MoreButton setTitleEdgeInsets:UIEdgeInsetsMake(45, 0, 0,0)];
-                    MoreButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:13];
-                    MoreButton.titleLabel.numberOfLines = 3;
-                    MoreButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                    [MoreButton setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
-                    [MoreButton setTitleColor:[UIColor grayColor]forState:UIControlStateDisabled];
+
+                    moreLable.numberOfLines = 3;
+                    moreLable.lineBreakMode = NSLineBreakByWordWrapping;
                     [MoreButton addTarget:self action:@selector(MoreButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    moreLable.textColor=[UIColor whiteColor];
+                    [self addSubview:moreLable];
                     [self addSubview:MoreButton];
-                    btnWidth=btnWidth+65;
+                    btnWidth=btnWidth+MoreButton.frame.size.width+seperator;                   arabicBtnOrigine=arabicBtnOrigine-38-seperator;
                     
                 }}
         }
         else{
+            
             if(item.Display){
-                UIButton *CustomButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                UIImage * image =  [UIImage imageWithData:[CParser LoadCachedIcons:item.Name]];
+                UILabel *customlabel=[[UILabel alloc]init];
+                CustomButton = [UIButton buttonWithType:UIButtonTypeCustom];
                 if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
-                    CustomButton.frame = CGRectMake(homeButton.frame.origin.x-btnWidth, 30, 80, 90);
+                    CustomButton.frame = CGRectMake(arabicBtnOrigine, homeButton.frame.origin.y, image.size.width, image.size.height);
+                     customlabel.font=[UIFont fontWithName:@"Helvetica" size:arabicFont];
+                    customlabel.frame=CGRectMake(CustomButton.frame.origin.x, CustomButton.frame.origin.y+CustomButton.frame.size.height, image.size.width, 60);
                 }
                 else
-                    CustomButton.frame = CGRectMake(homeButton.frame.origin.x+btnWidth, 30, 80, 90);
-                UIImage * image =  [UIImage imageWithData:[CParser LoadCachedIcons:item.Name]];
+                {
+                    CustomButton.frame = CGRectMake(btnWidth, homeButton.frame.origin.y, image.size.width, image.size.height);
+                          customlabel.font=[UIFont fontWithName:@"Helvetica" size:14];
+                     customlabel.frame=CGRectMake(CustomButton.frame.origin.x-10, CustomButton.frame.origin.y+CustomButton.frame.size.height-10, 60, 60);
+                }
+               
+                   
                 [CustomButton setBackgroundImage:image forState:UIControlStateNormal];
-                [CustomButton setTitle:NSLocalizedString(item.Label,item.Label) forState:UIControlStateNormal];
-                [CustomButton setTitleEdgeInsets:UIEdgeInsetsMake(55, 2, 0,2)];
-                CustomButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
-                CustomButton.titleLabel.numberOfLines = 3;
-                CustomButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                customlabel.text=NSLocalizedString(item.Label,item.Label);
+          
+                customlabel.numberOfLines = 3;
+                customlabel.lineBreakMode = NSLineBreakByWordWrapping;
                 [CustomButton setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
                 CustomButton.tag=index;
                 [CustomButton addTarget:self action:@selector(CustomButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+                customlabel.textColor=[UIColor whiteColor];
                 [self addSubview:CustomButton];
-                
-                btnWidth=btnWidth+70;
+                [self addSubview:customlabel];
+
+                btnWidth=btnWidth+CustomButton.frame.size.width+seperator;                   arabicBtnOrigine=arabicBtnOrigine-38-seperator;
                 
             }
             
         }
         index++;
+//        if ([attachment.title rangeOfString:@".pdf"].location != NSNotFound) {
+//            found = YES;
+//        }
     }
+ 
 }
 
 -(void) updateTitleWithLocation:(NSString*)location withName:(NSString*)name{
