@@ -127,9 +127,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((cell.frame.size.width-ICON_WIDTH)/2, (cell.frame.size.height-ICON_HEIGHT-30)/2, ICON_WIDTH, ICON_HEIGHT) ];
-    UILabel *labelText =[[UILabel alloc] initWithFrame:CGRectMake(10, imageView.frame.size.height+imageView.frame.origin.y+5, cell.frame.size.width-20, TITLE_HEIGHT)];
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((cell.frame.size.width-ICON_WIDTH)/3,15, ICON_WIDTH, ICON_HEIGHT) ];
+    UILabel *labelText =[[UILabel alloc] initWithFrame:CGRectMake(2, imageView.frame.size.height+imageView.frame.origin.y+10, cell.frame.size.width-100, TITLE_HEIGHT)];
     labelText.textAlignment=  NSTextAlignmentCenter;
     labelText.textColor=[UIColor whiteColor];
     labelText.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
@@ -156,8 +158,6 @@
         labelText.text=((CMenu*)mainDelegate.user.menu[indexPath.row]).name;
         
     }
-  
-
     [cell.contentView addSubview:imageView];
     [cell.contentView addSubview:labelText];
      bgColorView.backgroundColor = [UIColor colorWithRed:47.0f / 255.0f green:129.0f / 255.0f blue:211.0f / 255.0f alpha:1.0];

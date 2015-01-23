@@ -65,12 +65,12 @@
         }
     }else{
         if (UIInterfaceOrientationIsPortrait(orientation)) {
-            masterViewFrame.size.width=masterViewFrame.size.width-80;
+            masterViewFrame.size.width=masterViewFrame.size.width-90;
             detailViewFrame.size.width=detailViewFrame.size.width+20;
         }
         else
         {
-            masterViewFrame.size.width=masterViewFrame.size.width-80;
+            masterViewFrame.size.width=masterViewFrame.size.width-90;
             detailViewFrame.size.width=detailViewFrame.size.width+100;
         }
     }
@@ -92,7 +92,7 @@
                 masterViewFrame.origin.x+= detailViewFrame.size.width;
                 masterViewController.view.frame = masterViewFrame;
                 
-                detailViewFrame.origin.x -= masterViewFrame.size.width+80;
+                detailViewFrame.origin.x -= masterViewFrame.size.width+90;
             }
             
             
