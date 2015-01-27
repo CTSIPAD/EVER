@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:CTSProduct.xcodeproj">
+      location = "self:CTSIPAD.xcodeproj">
    </FileRef>
 </Workspace>
