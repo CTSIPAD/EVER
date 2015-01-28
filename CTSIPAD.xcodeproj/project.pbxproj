@@ -107,7 +107,7 @@
 		A2F2330719557C5000CA09DD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2F232EA19557C5000CA09DD /* UIKit.framework */; };
 		A2F2330819557C5000CA09DD /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2F232EC19557C5000CA09DD /* CoreData.framework */; };
 		A2F2331019557C5000CA09DD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A2F2330E19557C5000CA09DD /* InfoPlist.strings */; };
-		A2F2331219557C5000CA09DD /* CTSProductTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F2331119557C5000CA09DD /* CTSProductTests.m */; };
+		A2F2331219557C5000CA09DD /* CTSIPADTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F2331119557C5000CA09DD /* CTSIPADTests.m */; };
 		A2F2331D1959A544008F71AF /* SplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F2331C1959A544008F71AF /* SplitViewController.m */; };
 		A2F2332119557DB200CA09DD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A2F2332319557DB200CA09DD /* Localizable.strings */; };
 		A2F2332519557DD500CA09DD /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2F2332719557DD500CA09DD /* Storyboard.storyboard */; };
@@ -275,7 +275,7 @@
 		A29DA1CA1A121AF700BE6CAE /* detailviewBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = detailviewBackground.png; sourceTree = "<group>"; };
 		A29DA1CC1A124EE500BE6CAE /* sync.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sync.png; sourceTree = "<group>"; };
 		A29DA1CE1A138A4600BE6CAE /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		A29DA1D01A138B8000BE6CAE /* CTSProduct.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = CTSProduct.entitlements; sourceTree = "<group>"; };
+		A29DA1D01A138B8000BE6CAE /* CTSIPAD.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = CTSIPAD.entitlements; sourceTree = "<group>"; };
 		A2A64BD619FF895900D8CCCD /* Offline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Offline.png; sourceTree = "<group>"; };
 		A2A64BD719FF895900D8CCCD /* Online.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Online.png; sourceTree = "<group>"; };
 		A2B4FE691965501400D7EAB5 /* Actions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Actions.png; sourceTree = "<group>"; };
@@ -345,7 +345,7 @@
 		A2F2330419557C5000CA09DD /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A2F2330D19557C5000CA09DD /* CTSIPADTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CTSIPADTests-Info.plist"; sourceTree = "<group>"; };
 		A2F2330F19557C5000CA09DD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		A2F2331119557C5000CA09DD /* CTSProductTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CTSProductTests.m; sourceTree = "<group>"; };
+		A2F2331119557C5000CA09DD /* CTSIPADTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CTSIPADTests.m; sourceTree = "<group>"; };
 		A2F2331B19557CBA00CA09DD /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A2F2331B1959A544008F71AF /* SplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplitViewController.h; sourceTree = "<group>"; };
 		A2F2331C19557CBA00CA09DD /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -813,8 +813,8 @@
 		A2F232DA19557C4F00CA09DD = {
 			isa = PBXGroup;
 			children = (
-				A2F232EE19557C5000CA09DD /* CTSProduct */,
-				A2F2330B19557C5000CA09DD /* CTSProductTests */,
+				A2F232EE19557C5000CA09DD /* CTSIPAD */,
+				A2F2330B19557C5000CA09DD /* CTSIPADTests */,
 				A2F232E519557C5000CA09DD /* Frameworks */,
 				A2F232E419557C5000CA09DD /* Products */,
 			);
@@ -847,10 +847,10 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A2F232EE19557C5000CA09DD /* CTSProduct */ = {
+		A2F232EE19557C5000CA09DD /* CTSIPAD */ = {
 			isa = PBXGroup;
 			children = (
-				A29DA1D01A138B8000BE6CAE /* CTSProduct.entitlements */,
+				A29DA1D01A138B8000BE6CAE /* CTSIPAD.entitlements */,
 				A2FE653419AC7C2300CC5628 /* USER Details */,
 				A2EB9201199B4D6A0047D0E3 /* Sync Result */,
 				A29A71981998B1CA00143756 /* Network operations */,
@@ -882,6 +882,7 @@
 				A2F614111958BD9800956BF0 /* Main Page */,
 				A2F232EF19557C5000CA09DD /* Supporting Files */,
 			);
+			name = CTSIPAD;
 			path = CTSProduct;
 			sourceTree = "<group>";
 		};
@@ -902,12 +903,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		A2F2330B19557C5000CA09DD /* CTSProductTests */ = {
+		A2F2330B19557C5000CA09DD /* CTSIPADTests */ = {
 			isa = PBXGroup;
 			children = (
-				A2F2331119557C5000CA09DD /* CTSProductTests.m */,
+				A2F2331119557C5000CA09DD /* CTSIPADTests.m */,
 				A2F2330C19557C5000CA09DD /* Supporting Files */,
 			);
+			name = CTSIPADTests;
 			path = CTSProductTests;
 			sourceTree = "<group>";
 		};
@@ -1617,7 +1619,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A2F2331219557C5000CA09DD /* CTSProductTests.m in Sources */,
+				A2F2331219557C5000CA09DD /* CTSIPADTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1776,7 +1778,7 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CTSIPAD;
-				PROVISIONING_PROFILE = "738a9795-cb41-4934-a432-fd02bdf62368";
+				PROVISIONING_PROFILE = "b8702c5f-7b30-4a67-961b-fc62844b2982";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1810,7 +1812,7 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CTSIPAD;
-				PROVISIONING_PROFILE = "738a9795-cb41-4934-a432-fd02bdf62368";
+				PROVISIONING_PROFILE = "b8702c5f-7b30-4a67-961b-fc62844b2982";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
