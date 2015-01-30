@@ -1,11 +1,4 @@
-//
-//  SVProgressHUD.m
-//
-//  Created by Sam Vermette on 27.03.11.
-//  Copyright 2011 Sam Vermette. All rights reserved.
-//
-//  https://github.com/samvermette/SVProgressHUD
-//
+
 
 #if !__has_feature(objc_arc)
 #error SVProgressHUD is ARC only. Either turn on ARC for the project or use -fobjc-arc flag

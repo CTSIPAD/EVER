@@ -1,9 +1,9 @@
 //
 //  SignatureViewController.h
-//  CTSTest
+//  CTSIPAD
 //
-//  Created by DNA on 12/23/13.
-//  Copyright (c) 2013 LBI. All rights reserved.
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

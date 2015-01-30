@@ -1,9 +1,9 @@
 //
 //  GDataXMLElement-Extras.h
-//  RSSFun
+//  CTSIPAD
 //
-//  Created by Ray Wenderlich on 1/24/11.
-//  Copyright 2011 Ray Wenderlich. All rights reserved.
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

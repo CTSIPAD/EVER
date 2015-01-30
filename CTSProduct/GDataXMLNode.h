@@ -1,28 +1,4 @@
-/* Copyright (c) 2008 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
-// These node, element, and document classes implement a subset of the methods
-// provided by NSXML.  While NSXML behavior is mimicked as much as possible,
-// there are important differences.
-//
-// The biggest difference is that, since this is based on libxml2, there
-// is no retain model for the underlying node data.  Rather than copy every
-// node obtained from a parse tree (which would have a substantial memory
-// impact), we rely on weak references, and it is up to the code that
-// created a document to retain it for as long as any
-// references rely on nodes inside that document tree.
 
 
 #import <Foundation/Foundation.h>

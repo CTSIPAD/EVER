@@ -1,9 +1,9 @@
 //
 //  CFDestination.h
-//  cfsPad
+//  CTSIPAD
 //
-//  Created by marc balas on 09/05/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

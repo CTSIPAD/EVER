@@ -80,11 +80,6 @@
 		A2C133D519ED68E50095264A /* SPUserResizableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A2C133D219ED68E50095264A /* SPUserResizableView.m */; };
 		A2E598F51A2F161E00CB97A6 /* loginLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = A2E598F31A2F161E00CB97A6 /* loginLandscape.png */; };
 		A2E598F61A2F161E00CB97A6 /* loginPortrait.png in Resources */ = {isa = PBXBuildFile; fileRef = A2E598F41A2F161E00CB97A6 /* loginPortrait.png */; };
-		A2E75C8C197CF0700085CD10 /* RECommonFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E75C83197CF0700085CD10 /* RECommonFunctions.m */; };
-		A2E75C8D197CF0700085CD10 /* REMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E75C85197CF0700085CD10 /* REMenu.m */; };
-		A2E75C8E197CF0700085CD10 /* REMenuContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E75C87197CF0700085CD10 /* REMenuContainerView.m */; };
-		A2E75C8F197CF0700085CD10 /* REMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E75C89197CF0700085CD10 /* REMenuItem.m */; };
-		A2E75C90197CF0700085CD10 /* REMenuItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E75C8B197CF0700085CD10 /* REMenuItemView.m */; };
 		A2E75C93197D2FE20085CD10 /* UserDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E75C92197D2FE20085CD10 /* UserDetail.m */; };
 		A2E75C97197E432E0085CD10 /* UploadControllerDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E75C96197E432E0085CD10 /* UploadControllerDialog.m */; };
 		A2EB9200199A493D0047D0E3 /* OfflineResult.m in Sources */ = {isa = PBXBuildFile; fileRef = A2EB91FF199A493D0047D0E3 /* OfflineResult.m */; };
@@ -304,16 +299,6 @@
 		A2C133D219ED68E50095264A /* SPUserResizableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPUserResizableView.m; sourceTree = "<group>"; };
 		A2E598F31A2F161E00CB97A6 /* loginLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginLandscape.png; sourceTree = "<group>"; };
 		A2E598F41A2F161E00CB97A6 /* loginPortrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginPortrait.png; sourceTree = "<group>"; };
-		A2E75C82197CF0700085CD10 /* RECommonFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RECommonFunctions.h; sourceTree = "<group>"; };
-		A2E75C83197CF0700085CD10 /* RECommonFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RECommonFunctions.m; sourceTree = "<group>"; };
-		A2E75C84197CF0700085CD10 /* REMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REMenu.h; sourceTree = "<group>"; };
-		A2E75C85197CF0700085CD10 /* REMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMenu.m; sourceTree = "<group>"; };
-		A2E75C86197CF0700085CD10 /* REMenuContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REMenuContainerView.h; sourceTree = "<group>"; };
-		A2E75C87197CF0700085CD10 /* REMenuContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMenuContainerView.m; sourceTree = "<group>"; };
-		A2E75C88197CF0700085CD10 /* REMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REMenuItem.h; sourceTree = "<group>"; };
-		A2E75C89197CF0700085CD10 /* REMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMenuItem.m; sourceTree = "<group>"; };
-		A2E75C8A197CF0700085CD10 /* REMenuItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REMenuItemView.h; sourceTree = "<group>"; };
-		A2E75C8B197CF0700085CD10 /* REMenuItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMenuItemView.m; sourceTree = "<group>"; };
 		A2E75C91197D2FE20085CD10 /* UserDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDetail.h; sourceTree = "<group>"; };
 		A2E75C92197D2FE20085CD10 /* UserDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDetail.m; sourceTree = "<group>"; };
 		A2E75C95197E432E0085CD10 /* UploadControllerDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadControllerDialog.h; sourceTree = "<group>"; };
@@ -738,23 +723,6 @@
 			name = images;
 			sourceTree = "<group>";
 		};
-		A2E75C81197CF05C0085CD10 /* REMenu */ = {
-			isa = PBXGroup;
-			children = (
-				A2E75C82197CF0700085CD10 /* RECommonFunctions.h */,
-				A2E75C83197CF0700085CD10 /* RECommonFunctions.m */,
-				A2E75C84197CF0700085CD10 /* REMenu.h */,
-				A2E75C85197CF0700085CD10 /* REMenu.m */,
-				A2E75C86197CF0700085CD10 /* REMenuContainerView.h */,
-				A2E75C87197CF0700085CD10 /* REMenuContainerView.m */,
-				A2E75C88197CF0700085CD10 /* REMenuItem.h */,
-				A2E75C89197CF0700085CD10 /* REMenuItem.m */,
-				A2E75C8A197CF0700085CD10 /* REMenuItemView.h */,
-				A2E75C8B197CF0700085CD10 /* REMenuItemView.m */,
-			);
-			name = REMenu;
-			sourceTree = "<group>";
-		};
 		A2E75C94197E42A00085CD10 /* UPLOAD */ = {
 			isa = PBXGroup;
 			children = (
@@ -856,7 +824,6 @@
 				A29A71981998B1CA00143756 /* Network operations */,
 				A2F8B59A1989909B001BB7DF /* CustomToolbar */,
 				A2E75C94197E42A00085CD10 /* UPLOAD */,
-				A2E75C81197CF05C0085CD10 /* REMenu */,
 				A2EC2B02196EA49400411E1C /* search */,
 				A2B84F5B1962EB930084035F /* Settings */,
 				A2F24F2E195DAB2300D0A564 /* CoreData */,
@@ -1531,13 +1498,11 @@
 				A2B9FA08197E4F0600A61F5F /* AttachmentViewController.m in Sources */,
 				A2F613EA1958778200956BF0 /* GDataXMLNode.m in Sources */,
 				A2F614501959602E00956BF0 /* NotesViewController.m in Sources */,
-				A2E75C8E197CF0700085CD10 /* REMenuContainerView.m in Sources */,
 				956B97BF1966DB6600D01DB8 /* HighlightClass.m in Sources */,
 				A2C133D419ED68E50095264A /* SmoothLineView.m in Sources */,
 				A2F614161958BDCC00956BF0 /* MainMenuViewController.m in Sources */,
 				A2F6147A1959640F00956BF0 /* PMSelectionView.m in Sources */,
 				A2F613FB19587B6400956BF0 /* CAttachment.m in Sources */,
-				A2E75C8C197CF0700085CD10 /* RECommonFunctions.m in Sources */,
 				A2F614B819596ADE00956BF0 /* ReaderThumbRender.m in Sources */,
 				A2F614B519596ADE00956BF0 /* ReaderThumbCache.m in Sources */,
 				A2F6140719587F3800956BF0 /* CAction.m in Sources */,
@@ -1545,7 +1510,6 @@
 				A2F6144F1959602E00956BF0 /* NotesTableViewCell.m in Sources */,
 				A2F614E0195973FA00956BF0 /* SimpleSearchViewController.m in Sources */,
 				A2BDBEFC19C986CE009E3562 /* DrawLayerView.m in Sources */,
-				A2E75C8F197CF0700085CD10 /* REMenuItem.m in Sources */,
 				A29793A819BEF62900AD6D1D /* LookUpObject.m in Sources */,
 				A2F6141019587F7B00956BF0 /* CSearchType.m in Sources */,
 				A2F613F01958786200956BF0 /* CCorrespondence.m in Sources */,
@@ -1561,7 +1525,6 @@
 				A2F61421195954B600956BF0 /* NSData-AES.m in Sources */,
 				A2EC2B01196D7DE000411E1C /* BuiltInActions.m in Sources */,
 				A29DA1881A11FD5B00BE6CAE /* containerView.m in Sources */,
-				A2E75C90197CF0700085CD10 /* REMenuItemView.m in Sources */,
 				A2F614BE19596BBF00956BF0 /* ThumbsMainToolbar.m in Sources */,
 				A2F6144119595C8800956BF0 /* ReaderContentTile.m in Sources */,
 				A2F614261959553500956BF0 /* Base64.m in Sources */,
@@ -1585,7 +1548,6 @@
 				A2F613D71958737E00956BF0 /* StringEncryption.m in Sources */,
 				A2F614761959640F00956BF0 /* PMCalendarController.m in Sources */,
 				A2FE653719AC7C4300CC5628 /* UserDetailsViewController.m in Sources */,
-				A2E75C8D197CF0700085CD10 /* REMenu.m in Sources */,
 				A2F6144619595EC100956BF0 /* ReaderViewController.m in Sources */,
 				A2F614DF195973FA00956BF0 /* SignatureViewController.m in Sources */,
 				A2F613F819587A4100956BF0 /* CSearch.m in Sources */,

@@ -1,6 +1,9 @@
-  //
+//
 //	ReaderViewController.m
-//	Reader v2.6.0
+//  CTSIPAD
+//
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import "ReaderConstants.h"

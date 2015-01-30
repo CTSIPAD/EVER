@@ -1,4 +1,10 @@
-
+//
+// ReaderDocument.m
+//  CTSIPAD
+//
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
+//
 #import "ReaderDocument.h"
 #import "CGPDFDocument.h"
 #import <fcntl.h>

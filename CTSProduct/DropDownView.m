@@ -1,9 +1,9 @@
 //
 //  DropDownView.m
-//  CustomTableView
+//  CTSIPAD
 //
-//  Created by Ameya on 19/09/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import "DropDownView.h"

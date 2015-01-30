@@ -1,10 +1,9 @@
 //
 //  SPUserResizableView.h
-//  SPUserResizableView
+//  CTSIPAD
 //
-//  Created by Stephen Poletto on 12/10/11.
-//
-//  SPUserResizableView is a user-resizable, user-repositionable
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //  UIView subclass.
 
 #import <Foundation/Foundation.h>

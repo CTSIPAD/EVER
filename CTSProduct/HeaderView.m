@@ -1,11 +1,11 @@
 //
 //  HeaderView.m
-//  CTSProductLastVersion
+//  CTSIPAD
 //
-//  Created by ---- on 10/28/14.
+//  Created by MBI.
 //  Copyright (c) 2014 EVER. All rights reserved.
 //
-// yasser
+
 #import "HeaderView.h"
 #import "AppDelegate.h"
 #import "SettingsViewController.h"

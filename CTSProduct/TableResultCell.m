@@ -1,8 +1,8 @@
 //
 //  TableResultself.m
-//  CTSProduct
+//  CTSIPAD
 //
-//  Created by DNA on 6/24/14.
+//  Created by MBI.
 //  Copyright (c) 2014 EVER. All rights reserved.
 //
 
