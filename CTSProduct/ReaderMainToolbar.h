@@ -62,7 +62,6 @@
 @property (nonatomic,assign) NSInteger correspondenceId;
 @property (nonatomic,assign) NSInteger attachmentId;
 @property (nonatomic,strong) CUser* user;
-@property (nonatomic,assign) NSInteger attachementsCount;
 @property (nonatomic,strong)UILabel *lblTitle;
 @property (nonatomic,strong)UIButton *nextButton;
 @property (nonatomic,strong)UIButton *previousButton;

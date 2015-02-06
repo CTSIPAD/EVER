@@ -97,12 +97,6 @@
 		A2F232F919557C5000CA09DD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F232F819557C5000CA09DD /* AppDelegate.m */; };
 		A2F232FC19557C5000CA09DD /* CTSProduct.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A2F232FA19557C5000CA09DD /* CTSProduct.xcdatamodeld */; };
 		A2F232FE19557C5000CA09DD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2F232FD19557C5000CA09DD /* Images.xcassets */; };
-		A2F2330519557C5000CA09DD /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2F2330419557C5000CA09DD /* XCTest.framework */; };
-		A2F2330619557C5000CA09DD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2F232E619557C5000CA09DD /* Foundation.framework */; };
-		A2F2330719557C5000CA09DD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2F232EA19557C5000CA09DD /* UIKit.framework */; };
-		A2F2330819557C5000CA09DD /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2F232EC19557C5000CA09DD /* CoreData.framework */; };
-		A2F2331019557C5000CA09DD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A2F2330E19557C5000CA09DD /* InfoPlist.strings */; };
-		A2F2331219557C5000CA09DD /* CTSIPADTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F2331119557C5000CA09DD /* CTSIPADTests.m */; };
 		A2F2331D1959A544008F71AF /* SplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F2331C1959A544008F71AF /* SplitViewController.m */; };
 		A2F2332119557DB200CA09DD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A2F2332319557DB200CA09DD /* Localizable.strings */; };
 		A2F2332519557DD500CA09DD /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2F2332719557DD500CA09DD /* Storyboard.storyboard */; };
@@ -199,16 +193,6 @@
 		A2F8B59D19899110001BB7DF /* CustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2F8B59C19899110001BB7DF /* CustomViewController.m */; };
 		A2FE653719AC7C4300CC5628 /* UserDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2FE653619AC7C4300CC5628 /* UserDetailsViewController.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		A2F2330919557C5000CA09DD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A2F232DB19557C4F00CA09DD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A2F232E219557C5000CA09DD;
-			remoteInfo = CTSProduct;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMGtakephoto.png; sourceTree = "<group>"; };
@@ -326,7 +310,6 @@
 		A2F232F819557C5000CA09DD /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		A2F232FB19557C5000CA09DD /* CTSProduct.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CTSProduct.xcdatamodel; sourceTree = "<group>"; };
 		A2F232FD19557C5000CA09DD /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		A2F2330319557C5000CA09DD /* CTSIPADTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CTSIPADTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2F2330419557C5000CA09DD /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A2F2330D19557C5000CA09DD /* CTSIPADTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CTSIPADTests-Info.plist"; sourceTree = "<group>"; };
 		A2F2330F19557C5000CA09DD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -546,17 +529,6 @@
 				A2F232ED19557C5000CA09DD /* CoreData.framework in Frameworks */,
 				A2F232EB19557C5000CA09DD /* UIKit.framework in Frameworks */,
 				A2F232E719557C5000CA09DD /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A2F2330019557C5000CA09DD /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A2F2330519557C5000CA09DD /* XCTest.framework in Frameworks */,
-				A2F2330819557C5000CA09DD /* CoreData.framework in Frameworks */,
-				A2F2330719557C5000CA09DD /* UIKit.framework in Frameworks */,
-				A2F2330619557C5000CA09DD /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -792,7 +764,6 @@
 			isa = PBXGroup;
 			children = (
 				A2F232E319557C5000CA09DD /* CTSIPAD.app */,
-				A2F2330319557C5000CA09DD /* CTSIPADTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1315,24 +1286,6 @@
 			productReference = A2F232E319557C5000CA09DD /* CTSIPAD.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A2F2330219557C5000CA09DD /* CTSIPADTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A2F2331819557C5000CA09DD /* Build configuration list for PBXNativeTarget "CTSIPADTests" */;
-			buildPhases = (
-				A2F232FF19557C5000CA09DD /* Sources */,
-				A2F2330019557C5000CA09DD /* Frameworks */,
-				A2F2330119557C5000CA09DD /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				A2F2330A19557C5000CA09DD /* PBXTargetDependency */,
-			);
-			name = CTSIPADTests;
-			productName = CTSProductTests;
-			productReference = A2F2330319557C5000CA09DD /* CTSIPADTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1350,9 +1303,6 @@
 							};
 						};
 					};
-					A2F2330219557C5000CA09DD = {
-						TestTargetID = A2F232E219557C5000CA09DD;
-					};
 				};
 			};
 			buildConfigurationList = A2F232DE19557C4F00CA09DD /* Build configuration list for PBXProject "CTSIPAD" */;
@@ -1369,7 +1319,6 @@
 			projectRoot = "";
 			targets = (
 				A2F232E219557C5000CA09DD /* CTSIPAD */,
-				A2F2330219557C5000CA09DD /* CTSIPADTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1452,14 +1401,6 @@
 				A27888591A163EED0031C3CE /* Folder.png in Resources */,
 				A2F23335195C397A008F71AF /* attachments.png in Resources */,
 				A29DA19F1A12002300BE6CAE /* tapToload.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A2F2330119557C5000CA09DD /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A2F2331019557C5000CA09DD /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1577,23 +1518,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A2F232FF19557C5000CA09DD /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A2F2331219557C5000CA09DD /* CTSIPADTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		A2F2330A19557C5000CA09DD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A2F232E219557C5000CA09DD /* CTSIPAD */;
-			targetProxy = A2F2330919557C5000CA09DD /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		A2F232F119557C5000CA09DD /* InfoPlist.strings */ = {
@@ -1671,7 +1596,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "4d281936-39e9-48ee-925d-e12f51fec9bd";
+				PROVISIONING_PROFILE = "5b866043-10ee-486c-9fb1-d60754b55b41";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -1705,7 +1630,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PROVISIONING_PROFILE = "4d281936-39e9-48ee-925d-e12f51fec9bd";
+				PROVISIONING_PROFILE = "5b866043-10ee-486c-9fb1-d60754b55b41";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
@@ -1740,7 +1665,7 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CTSIPAD;
-				PROVISIONING_PROFILE = "b8702c5f-7b30-4a67-961b-fc62844b2982";
+				PROVISIONING_PROFILE = "5b866043-10ee-486c-9fb1-d60754b55b41";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1774,51 +1699,9 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CTSIPAD;
-				PROVISIONING_PROFILE = "b8702c5f-7b30-4a67-961b-fc62844b2982";
+				PROVISIONING_PROFILE = "5b866043-10ee-486c-9fb1-d60754b55b41";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
-		A2F2331919557C5000CA09DD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CTSProduct.app/CTSProduct";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CTSProduct/CTSProduct-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "CTSProductTests/CTSIPADTests-Info.plist";
-				PRODUCT_NAME = CTSIPADTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		A2F2331A19557C5000CA09DD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CTSProduct.app/CTSProduct";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CTSProduct/CTSProduct-Prefix.pch";
-				INFOPLIST_FILE = "CTSProductTests/CTSIPADTests-Info.plist";
-				PRODUCT_NAME = CTSIPADTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
@@ -1839,15 +1722,6 @@
 			buildConfigurations = (
 				A2F2331619557C5000CA09DD /* Debug */,
 				A2F2331719557C5000CA09DD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A2F2331819557C5000CA09DD /* Build configuration list for PBXNativeTarget "CTSIPADTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A2F2331919557C5000CA09DD /* Debug */,
-				A2F2331A19557C5000CA09DD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

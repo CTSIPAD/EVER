@@ -2460,7 +2460,7 @@
     }
 }
 }
-+(NSMutableArray*)loadSpecifiqueAttachment:(NSData*)xmlData CorrespondenceId:(NSString*)Id{
++(NSMutableArray*)loadSpecifiqueAttachment:(NSData*)xmlData CorrespondenceId:(NSString*)Id IsLocked:(BOOL)IsLocked{
 
     NSError *error;
     
@@ -2489,7 +2489,7 @@
     
     if (Attachments.count > 0) {
         GDataXMLElement *AttachmentsXML =  [Attachments objectAtIndex:0];
-        attachments=[self loadAttachmentListWith:AttachmentsXML CorrespondenceId:Id];
+        attachments=[self loadAttachmentListWith:AttachmentsXML CorrespondenceId:Id  IsLocked:IsLocked];
     }
     if(Attachments.count==0){
         
@@ -2616,7 +2616,7 @@
 
 
 
-+(NSMutableArray*)loadAttachmentListWith:(GDataXMLElement*)attachmentEl CorrespondenceId:(NSString*)CorrespondenceId{
++(NSMutableArray*)loadAttachmentListWith:(GDataXMLElement*)attachmentEl CorrespondenceId:(NSString*)CorrespondenceId  IsLocked:(BOOL)IsLocked{
     AppDelegate *mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
     
     NSMutableArray* attachments = [[NSMutableArray alloc] init];
@@ -2671,11 +2671,15 @@
                 }
                 NSArray *ServerFileInfo = [attachment nodesForXPath:@"ServerFileInfo" error:nil];
                 GDataXMLElement *ServerFileInfoXML;
-                
-                NSArray *StatusArray=[attachment elementsForName:@"Status"];
-                if (StatusArray.count>0) {
-                    GDataXMLElement *statusEl = (GDataXMLElement *) [StatusArray objectAtIndex:0];
-                    AttachmentStatus = statusEl.stringValue;
+                if(!IsLocked){
+                    NSArray *StatusArray=[attachment elementsForName:@"Status"];
+                    if (StatusArray.count>0) {
+                        GDataXMLElement *statusEl = (GDataXMLElement *) [StatusArray objectAtIndex:0];
+                        AttachmentStatus = statusEl.stringValue;
+                    }
+                }
+                else{
+                    AttachmentStatus = @"READONLY";
                 }
                 if(ServerFileInfo.count>0){
                     

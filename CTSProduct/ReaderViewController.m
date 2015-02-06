@@ -3986,7 +3986,7 @@ typedef enum{
 -(void)refreshDocument:(NSString*)PdfLocation attachmentId:(NSString*)attachmentId correspondence:(CCorrespondence *)corr{
     if(corr==nil){
         [mainToolbar.nextButton setEnabled:true];
-        mainToolbar.attachementsCount=mainToolbar.attachementsCount+1;
+        mainDelegate.attachementsCount=mainDelegate.attachementsCount+1;
     }else{
         CAttachment *fileToOpen=corr.attachmentsList[0];
         NSString *tempPdfLocation=[fileToOpen saveInCacheinDirectory:corr.Id fromSharepoint:mainDelegate.isSharepoint];

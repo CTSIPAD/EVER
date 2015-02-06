@@ -31,7 +31,6 @@
 @implementation ReaderMainToolbar
 {
     NSInteger correspondencesCount;
-    NSInteger attachementsCount;
     AppDelegate *mainDelegate;
     NSString* pageName;
     CCorrespondence *correspondence;
@@ -89,50 +88,51 @@
         self.user=mainDelegate.user;
         
         
-        if(menuId!=100){
-            correspondence=((CMenu*)self.user.menu[menuId]).correspondenceList[correspondenceId];
-            correspondencesCount=((CMenu*)self.user.menu[menuId]).correspondenceList.count;
-            //jen PreviousNext
-            NSMutableArray* thumbnailrarray = [[NSMutableArray alloc] init];
-            
-            
-            if (correspondence.attachmentsList.count>0)
-            {
-                for(CAttachment* doc in correspondence.attachmentsList)
-                {
-                    if([doc.FolderName isEqualToString:mainDelegate.FolderName]){
-                        [thumbnailrarray addObject:doc];
-                    }
-                    
-                    
-                }
-            }
-            
-            attachementsCount=thumbnailrarray.count;
-        }else{
-            
+//        if(menuId!=100){
+//            correspondence=((CMenu*)self.user.menu[menuId]).correspondenceList[correspondenceId];
+//            correspondencesCount=((CMenu*)self.user.menu[menuId]).correspondenceList.count;
+//            //jen PreviousNext
+//            NSMutableArray* thumbnailrarray = [[NSMutableArray alloc] init];
+//            
+//            
+//            if (correspondence.attachmentsList.count>0)
+//            {
+//                for(CAttachment* doc in correspondence.attachmentsList)
+//                {
+//                    if([doc.FolderName isEqualToString:mainDelegate.FolderName]){
+//                        [thumbnailrarray addObject:doc];
+//                    }
+//                    
+//                    
+//                }
+//            }
+//            
+//            attachementsCount=thumbnailrarray.count;
+//        }else
+//        {
+        
             correspondence=mainDelegate.searchModule.correspondenceList[mainDelegate.searchSelected];
             correspondencesCount=mainDelegate.searchModule.correspondenceList.count;
             //jen PreviousNext
-            NSMutableArray* thumbnailrarray = [[NSMutableArray alloc] init];
-            
-            
-            if (correspondence.attachmentsList.count>0)
-            {
-                for(CAttachment* doc in correspondence.attachmentsList)
-                {
-                    if([doc.FolderName isEqualToString:mainDelegate.FolderName]){
-                        [thumbnailrarray addObject:doc];
-                    }
-                    
-                    
-                }
-            }
-            
+//            NSMutableArray* thumbnailrarray = [[NSMutableArray alloc] init];
+//            
+//            
+//            if (correspondence.attachmentsList.count>0)
+//            {
+//                for(CAttachment* doc in correspondence.attachmentsList)
+//                {
+//                    if([doc.FolderName isEqualToString:mainDelegate.FolderName]){
+//                        [thumbnailrarray addObject:doc];
+//                    }
+//                    
+//                    
+//                }
+//            }
+//            
             //attachementsCount=thumbnailrarray.count;
-            attachementsCount=correspondence.attachmentsList.count;
+            mainDelegate.attachementsCount=correspondence.attachmentsList.count;
             
-        }
+//        }
         // title,home,next,previous and hide initialize at begining
         homeLabel=[[UILabel alloc]init];
         metadataLabel=[[UILabel alloc]init];
@@ -192,17 +192,29 @@
         nextLabel.textColor=[UIColor whiteColor];
         nextLabel.numberOfLines = 3;
         nextLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        [nextButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        
         if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
             [nextButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         }
+        else
+            [nextButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:nextButton];
         [self addSubview:nextLabel];
 
-        if(attachmentId==attachementsCount-1){
-            nextButton.enabled=FALSE;
+        if(attachmentId==mainDelegate.attachementsCount-1){
+            if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+                previousButton.enabled=FALSE;
+
+            else
+                nextButton.enabled=FALSE;
         }
-        else  nextButton.enabled=TRUE;
+        else{
+            if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+                previousButton.enabled=TRUE;
+            
+            else
+                nextButton.enabled=TRUE;
+        }
         
         previousButton = [UIButton buttonWithType:UIButtonTypeCustom];
         previousButton.tag=100;
@@ -214,17 +226,30 @@
         PreviousLabel.textColor=[UIColor whiteColor];
         PreviousLabel.numberOfLines = 3;
         PreviousLabel.lineBreakMode = NSLineBreakByWordWrapping;
-         [previousButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+         
         if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
              [previousButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         }
+        else
+            [previousButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:previousButton];
         [self addSubview:PreviousLabel];
 
         if(attachmentId==0){
-            previousButton.enabled=FALSE;
+            if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+                nextButton.enabled=FALSE;
+            
+            else
+                previousButton.enabled=FALSE;
         }
-        else  previousButton.enabled=TRUE;
+        else
+        {
+            if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+                nextButton.enabled=TRUE;
+            
+            else
+                previousButton.enabled=TRUE;
+        }
         
         
         
@@ -369,6 +394,7 @@
             if(btn.tag!=100)
                 btn.enabled=false;
         }
+        
     }
     else
         if([[state uppercaseString] isEqualToString:@"NOTPDF"]){
@@ -568,15 +594,35 @@ BOOL lockSelected=NO;
             
             [delegate tappedInToolbar:self nextButton:button documentReader:newdocument correspondenceId:self.correspondenceId attachementId:self.attachmentId];
             
-            if(self.attachmentId==attachementsCount-1){
-                button.enabled=FALSE;
+            if(self.attachmentId==mainDelegate.attachementsCount-1){
+                if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+                    previousButton.enabled=FALSE;
+                
+                else
+                    nextButton.enabled=FALSE;
             }
-            else  button.enabled=TRUE;
+            else{
+                if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+                    previousButton.enabled=TRUE;
+                
+                else
+                    nextButton.enabled=TRUE;
+            }
             
             if(self.attachmentId==0){
-                previousButton.enabled=FALSE;
+                if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+                    nextButton.enabled=FALSE;
+                
+                else
+                    previousButton.enabled=FALSE;
             }
-            else  previousButton.enabled=TRUE;
+            else{
+                if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+                    nextButton.enabled=TRUE;
+                
+                else
+                    previousButton.enabled=TRUE;
+            }
             lockSelected=NO;
             [self updateToolbar];
             [SVProgressHUD dismiss];
@@ -626,15 +672,35 @@ BOOL lockSelected=NO;
     [delegate tappedInToolbar:self previousButton:button documentReader:document correspondenceId:self.correspondenceId attachementId:self.attachmentId];
  
     if(self.attachmentId==0){
-        button.enabled=FALSE;
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+            nextButton.enabled=FALSE;
+        
+        else
+            previousButton.enabled=FALSE;
     }
-    else  button.enabled=TRUE;
+    else {
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+            previousButton.enabled=TRUE;
+        
+        else
+        
+            nextButton.enabled=TRUE;
+    }
 
-    if(self.attachmentId==attachementsCount-1){
-        nextButton.enabled=FALSE;
+    if(self.attachmentId==mainDelegate.attachementsCount-1){
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+            previousButton.enabled=FALSE;
+        
+        else
+            nextButton.enabled=FALSE;
     }
-    else  nextButton.enabled=TRUE;
-    
+    else {
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+            previousButton.enabled=TRUE;
+        
+        else
+            nextButton.enabled=TRUE;
+    }
     lockSelected=NO;
     [self updateToolbar];
 }
@@ -718,6 +784,7 @@ BOOL lockSelected=NO;
             }
             if([item.Name isEqualToString:@"Attachments"]&&item.Display){
                 attachmentButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                attachmentButton.tag=100;
                 if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
                 {
                     attachmentButton.frame = CGRectMake(arabicBtnOrigine, homeButton.frame.origin.y, Attachementsimage.size.width,Attachementsimage.size.height);
@@ -791,7 +858,7 @@ BOOL lockSelected=NO;
                 
             }
             if([item.Name isEqualToString:@"Annotations"]&&item.Display ){
-                
+                found=YES;
                 annotationButton = [UIButton buttonWithType:UIButtonTypeCustom];
                 if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
                     annotationButton.frame = CGRectMake(arabicBtnOrigine, homeButton.frame.origin.y, Annotationsimage.size.width,Annotationsimage.size.height);                           AnnotationsLabel.font=[UIFont fontWithName:@"Helvetica" size:arabicFont];
@@ -826,7 +893,7 @@ BOOL lockSelected=NO;
                 
             }
             if([item.Name isEqualToString:@"Signature"]&&item.Display ){
-                
+                found=YES;
                 SignActionButton = [UIButton buttonWithType:UIButtonTypeCustom];
                 if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
                     SignActionButton.frame = CGRectMake(arabicBtnOrigine, homeButton.frame.origin.y, Signatureimage.size.width,Signatureimage.size.height);
@@ -859,50 +926,11 @@ BOOL lockSelected=NO;
                 [self addSubview:SignatureLabel];
 
                 arabicBtnOrigine=arabicBtnOrigine-38-seperator;
-                if(found){
-                    Save = [UIButton buttonWithType:UIButtonTypeCustom];
-                    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
-                    {
-                        Save.frame = CGRectMake(arabicBtnOrigine, homeButton.frame.origin.y, Saveimage.size.width,Saveimage.size.height);
-                        SaveLabel.font=[UIFont fontWithName:@"Helvetica" size:arabicFont];
-                    }
-                    else
-                    {
-                        SaveLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
-                        Save.frame = CGRectMake(btnWidth+3, homeButton.frame.origin.y+3, Saveimage.size.width,Saveimage.size.height);
-                    }
-                    
-                    [Save setBackgroundImage: Saveimage forState:UIControlStateNormal];
-                    SaveLabel.text=NSLocalizedString(@"Menu.save",@"Save");
-                    
-                    
-                    SaveLabel.numberOfLines = 3;
-                    SaveLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                    [Save setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
-                    [Save addTarget:self action:@selector(SaveButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-                    if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
-                        SaveLabel.frame=CGRectMake(Save.frame.origin.x+10, Save.frame.origin.y+Save.frame.size.height+2, 90, 30);
-                    }
-                    else
-                        SaveLabel.frame=CGRectMake(Save.frame.origin.x+3, Save.frame.origin.y+Save.frame.size.height, 90, 30);
-                    SaveLabel.textColor=[UIColor whiteColor];
-                    [self addSubview:Save];
-                    [self addSubview:SaveLabel];
-                    btnWidth=btnWidth+Save.frame.size.width+seperator;
-                    arabicBtnOrigine=arabicBtnOrigine-38-seperator;
-                }
+                
                 
             }
 
-            if(([item.Name isEqualToString:@"Signature"]||[item.Name isEqualToString:@"Annotations"])&&item.Display){
-                if (!found) {
-                    found=YES;
-                }
-                else
-                    found=NO;
-               
-                
-            }
+           
             if([item.Name isEqualToString:@"More"]&&item.Display){
                 if(correspondence.actions.count>0 ){
                     MoreButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -935,7 +963,8 @@ BOOL lockSelected=NO;
                     moreLable.textColor=[UIColor whiteColor];
                     [self addSubview:moreLable];
                     [self addSubview:MoreButton];
-                    btnWidth=btnWidth+MoreButton.frame.size.width+seperator;                   arabicBtnOrigine=arabicBtnOrigine-38-seperator;
+                    btnWidth=btnWidth+MoreButton.frame.size.width+seperator;
+                    arabicBtnOrigine=arabicBtnOrigine-38-seperator;
                     
                 }}
         }
@@ -943,6 +972,7 @@ BOOL lockSelected=NO;
             
             if(item.Display){
                 UIImage * image =  [UIImage imageWithData:[CParser LoadCachedIcons:item.Name]];
+                
                 UILabel *customlabel=[[UILabel alloc]init];
                 CustomButton = [UIButton buttonWithType:UIButtonTypeCustom];
                 if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
@@ -952,7 +982,7 @@ BOOL lockSelected=NO;
                 }
                 else
                 {
-                    CustomButton.frame = CGRectMake(btnWidth, homeButton.frame.origin.y, image.size.width, image.size.height);
+                    CustomButton.frame = CGRectMake(btnWidth+15, homeButton.frame.origin.y, image.size.width, image.size.height);
                           customlabel.font=[UIFont fontWithName:@"Helvetica" size:14];
                      customlabel.frame=CGRectMake(CustomButton.frame.origin.x-10, CustomButton.frame.origin.y+CustomButton.frame.size.height-10, 60, 60);
                 }
@@ -970,7 +1000,8 @@ BOOL lockSelected=NO;
                 [self addSubview:CustomButton];
                 [self addSubview:customlabel];
 
-                btnWidth=btnWidth+CustomButton.frame.size.width+seperator;                   arabicBtnOrigine=arabicBtnOrigine-38-seperator;
+                btnWidth=btnWidth+CustomButton.frame.size.width+seperator;
+                arabicBtnOrigine=arabicBtnOrigine-38-seperator;
                 
             }
             
@@ -980,8 +1011,41 @@ BOOL lockSelected=NO;
 //            found = YES;
 //        }
     }
- 
+        
+        if(found){
+            Save = [UIButton buttonWithType:UIButtonTypeCustom];
+            if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
+            {
+                Save.frame = CGRectMake(arabicBtnOrigine, homeButton.frame.origin.y, Saveimage.size.width,Saveimage.size.height);
+                SaveLabel.font=[UIFont fontWithName:@"Helvetica" size:arabicFont];
+            }
+            else
+            {
+                SaveLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
+                Save.frame = CGRectMake(btnWidth+10, homeButton.frame.origin.y+3, Saveimage.size.width,Saveimage.size.height);
+            }
+            
+            [Save setBackgroundImage: Saveimage forState:UIControlStateNormal];
+            SaveLabel.text=NSLocalizedString(@"Menu.save",@"Save");
+            
+            
+            SaveLabel.numberOfLines = 3;
+            SaveLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            [Save setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
+            [Save addTarget:self action:@selector(SaveButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+            if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+                SaveLabel.frame=CGRectMake(Save.frame.origin.x+10, Save.frame.origin.y+Save.frame.size.height+2, 90, 30);
+            }
+            else
+                SaveLabel.frame=CGRectMake(Save.frame.origin.x+3, Save.frame.origin.y+Save.frame.size.height, 90, 30);
+            SaveLabel.textColor=[UIColor whiteColor];
+            [self addSubview:Save];
+            [self addSubview:SaveLabel];
+            btnWidth=btnWidth+Save.frame.size.width+seperator;
+            arabicBtnOrigine=arabicBtnOrigine-38-seperator;
+        }
 }
+
 
 -(void) updateTitleWithLocation:(NSString*)location withName:(NSString*)name{
     [lblTitle setText:[NSString stringWithFormat:@"LOCATION: %@   TITLE: %@",location,name]];

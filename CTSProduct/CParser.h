@@ -20,7 +20,7 @@
 +(NSInteger)GetNoteIdWithData:(NSData*) xmlData;
 +(CSearch *)loadSearchWithData:(NSData*)xmlData;
 +(NSMutableArray*)loadSearchCorrespondencesWithData:(NSData*)xmlData;
-+(NSMutableArray*)loadSpecifiqueAttachment:(NSData*)xmlData CorrespondenceId:(NSString*)Id;
++(NSMutableArray*)loadSpecifiqueAttachment:(NSData*)xmlData CorrespondenceId:(NSString*)Id IsLocked:(BOOL)IsLocked;
 -(void)john:(NSData *)xmlData;
 +(NSData*)LoadCachedIcons:(NSString*)key;
 +(void)cacheIcon:(NSString*)key value:(NSData*)value;
