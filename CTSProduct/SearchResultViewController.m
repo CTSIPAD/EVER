@@ -600,15 +600,15 @@
     
     if([UserId isEqualToString:mainDelegate.user.userId] || !isLocked){
         
-        if(correspondence.ShowLocked){
+        if(correspondence.IsLocked){
             if([correspondence performCorrespondenceAction:@"UnlockCorrespondence"]){
-                correspondence.ShowLocked=NO;
+                correspondence.IsLocked=NO;
                 [sender setImage:[UIImage imageNamed:@"cts_Unlock.png"] forState:UIControlStateNormal];
                // [cell hideActions:NO];
             }
         }else{
             if([correspondence performCorrespondenceAction:@"LockCorrespondence"]){
-                correspondence.ShowLocked=YES;
+                correspondence.IsLocked=YES;
                 mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 //  correspondence.LockedBy = [NSString stringWithFormat:@"%@ %@",mainDelegate.user.firstName,mainDelegate.user.lastName];
                 [sender setImage:[UIImage imageNamed:@"lockimg.png"] forState:UIControlStateNormal];
@@ -689,7 +689,7 @@
                         lockedby=[LockResult objectForKey:@"lockedby"];
                         IsLocked=[[LockResult objectForKey:@"IsLocked"]boolValue];
                         lockedbyUserId=[LockResult objectForKey:@"UserId"];
-                        correspondence.ShowLocked=IsLocked;
+                        correspondence.IsLocked=IsLocked;
                         }
                         // [tableView reloadData];
                     }
@@ -749,7 +749,7 @@
                                     if(!mainDelegate.isOfflineMode && !IsLocked){
                                         NSLog(@"Info:Locking correspondence");
                                         if([correspondence performCorrespondenceAction:@"LockCorrespondence"]){
-                                            correspondence.ShowLocked=YES;
+                                            correspondence.IsLocked=YES;
                                             //correspondence.LockedBy = [NSString stringWithFormat:@"%@ %@",mainDelegate.user.firstName,mainDelegate.user.lastName];
                                         }}
                                 }

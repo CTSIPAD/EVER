@@ -14,13 +14,15 @@
 
 @implementation CCorrespondence
 
--(id) initWithId:(NSString*)correspondenceId Priority:(BOOL)priority New:(BOOL)isNew  SHOWLOCK:(BOOL)showlock {
+-(id) initWithId:(NSString*)correspondenceId Priority:(BOOL)priority New:(BOOL)isNew  IsLocked:(BOOL)IsLocked SHOWLOCK:(BOOL)showlock ClickableLock:(BOOL)ClickableLock{
     if ((self = [super init])) {
         self.QuickActions=[[NSMutableArray alloc]init];
         self.Id=correspondenceId;
         self.Priority=priority;
         self.New=isNew;
-        self.ShowLocked = showlock;
+        self.IsLocked = IsLocked;
+        self.ShowLock = showlock;
+        self.ClickableLock = ClickableLock;
     }
     return self;
 }

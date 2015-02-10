@@ -40,13 +40,15 @@
 {
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-        correspondence=mainDelegate.searchModule.correspondenceList[self.index];
-        
-        self.isNew=correspondence.New;
-        self.isLocked=correspondence.ShowLocked;
-        self.isImportant=correspondence.Priority;
-        
-        
+    correspondence=mainDelegate.searchModule.correspondenceList[self.index];
+    
+    self.isNew=correspondence.New;
+    self.isLocked=correspondence.IsLocked;
+    self.ShowLock=correspondence.ShowLock;
+    self.ClickableLock=correspondence.ClickableLock;
+    self.isImportant=correspondence.Priority;
+    
+    
 
     
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -236,7 +238,7 @@
         lockedById=[LockResult objectForKey:@"lockedby"];
         lockedBy=[LockResult objectForKey:@"UserId"];
         
-        if (![mainDelegate.user.userId isEqual:lockedBy] && correspondence.ShowLocked) {
+        if (![mainDelegate.user.userId isEqual:lockedBy] && correspondence.IsLocked) {
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"tasktable.locked",@"Task is locked")
                                                             message:[NSString stringWithFormat:@"%@ %@",lockedById,NSLocalizedString(@"tasktable.locked.dialog",@"has locked the task.")]
@@ -411,11 +413,19 @@
     }
        seperatorView.frame=CGRectMake(0,self.LockButton.frame.size.height+2, self.iconView.frame.size.width, 5);
     if (!mainDelegate.isOfflineMode&& ! [[correspondence.Status lowercaseString] isEqualToString:@"readonly"]) {
-        [self.iconView addSubview:self.LockButton];
+        if(self.ShowLock){
+            [self.iconView addSubview:self.LockButton];
+            [self.iconView addSubview:seperatorView];
+
+        }
+        if(self.ClickableLock)
+            self.LockButton.enabled=true;
+        else
+            self.LockButton.enabled=false;
+
         
     
 
-    [self.iconView addSubview:seperatorView];
     }
     if (self.isNew) {
     newButton.frame=CGRectMake(0, seperatorView.frame.origin.y+seperatorView.frame.size.height+2, self.iconView.frame.size.width, 38);

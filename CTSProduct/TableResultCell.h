@@ -22,6 +22,8 @@
 @property(strong,nonatomic) UIView *cellView;
 @property(strong,nonatomic) UIView *iconView;
 @property (nonatomic,assign) BOOL isLocked;
+@property (nonatomic,assign) BOOL ShowLock;
+@property (nonatomic,assign) BOOL ClickableLock;
 @property(nonatomic,assign) BOOL isNew;
 @property (nonatomic,assign) BOOL isImportant;
 @property (strong,nonatomic) NSString* lockeduserId;
