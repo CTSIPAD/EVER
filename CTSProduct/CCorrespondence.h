@@ -1,9 +1,9 @@
 //
 //  CCorrespondence.h
-//  CTSTest
+//  CTSIPAD
 //
-//  Created by DNA on 12/12/13.
-//  Copyright (c) 2013 LBI. All rights reserved.
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -16,7 +16,9 @@
 @property (nonatomic, retain) NSString *Status;
 @property (nonatomic, assign) BOOL Priority;
 @property (nonatomic, assign) BOOL New;
-@property (nonatomic, assign) BOOL ShowLocked;
+@property (nonatomic, assign) BOOL IsLocked;
+@property (nonatomic, assign) BOOL ShowLock;
+@property (nonatomic, assign) BOOL ClickableLock;
 @property (nonatomic, retain) NSMutableDictionary *systemProperties;
 @property (nonatomic, retain) NSMutableDictionary *properties;
 @property (nonatomic, retain) NSMutableArray *attachmentsList;
@@ -33,7 +35,7 @@
 @property(nonatomic,retain) NSString* ThumnailUrl;
 @property (nonatomic,retain)NSMutableArray*action;
 
--(id) initWithId:(NSString*)correspondenceId Priority:(BOOL)priority New:(BOOL)isNew SHOWLOCK:(BOOL)showlock ;
+-(id) initWithId:(NSString*)correspondenceId Priority:(BOOL)priority New:(BOOL)isNew  IsLocked:(BOOL)IsLocked SHOWLOCK:(BOOL)showlock ClickableLock:(BOOL)ClickableLock ;
 
 -(BOOL)performCorrespondenceAction:(NSString*)action;
 @end

@@ -1,9 +1,9 @@
 //
 //  PDFView.h
-//  demo_form_field
+//  CTSIPAD
 //
-//  Created by Foxit on 12-2-7.
-//  Copyright 2012 Foxit Software Corporation. All rights reserved.
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

@@ -1,9 +1,9 @@
 //
 //  CParser.m
-//  CTSTest
+//  CTSIPAD
 //
-//  Created by DNA on 12/12/13.
-//  Copyright (c) 2013 LBI. All rights reserved.
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import "CParser.h"
@@ -1054,10 +1054,10 @@
     
 }
 +(void)cacheCorrespondence:(NSString*)correspondenceId Status:(NSString*)Status InboxId:(NSString*)InboxId priority:(NSString*)priority new:(NSString*)new showlock:(NSString*)showlock transferId:(NSString*)transferId thumbnailurl:(NSString*)thumbnailurl SystemProperties:(NSData*)SystemProperties Properties:(NSData*)properties toolbarItems:(NSData*)toolbarItems CustomActions:(NSData*)CustomActions SignActions:(NSData*)SignActions
-           AttachmentsList:(NSData*)AttachmentsList AnnotationsList:(NSData*)AnnotationsList CustomItemsList:(NSData*)CustomItemsList QuickActions:(NSData*)QuickActions{
+           AttachmentsList:(NSData*)AttachmentsList AnnotationsList:(NSData*)AnnotationsList CustomItemsList:(NSData*)CustomItemsList QuickActions:(NSData*)QuickActions Islocked:(NSString*)IsLocked ClickableLock:(NSString*)ClickableLock{
     
     [self DeleteCorrespondence:correspondenceId inboxId:InboxId];
-    NSError *error;
+//    NSError *error;
     id delegate = [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext* managedObjectContext = [delegate managedObjectContext];
     
@@ -1070,6 +1070,8 @@
     [dataRecord setValue:priority forKey:@"priority"];
     [dataRecord setValue:new forKey:@"new"];
     [dataRecord setValue:showlock forKey:@"showlock"];
+    [dataRecord setValue:IsLocked forKey:@"islocked"];
+    [dataRecord setValue:ClickableLock forKey:@"clickablelock"];
     [dataRecord setValue:transferId forKey:@"transferid"];
     [dataRecord setValue:thumbnailurl forKey:@"thumbnailurl"];
     [dataRecord setValue:SystemProperties forKey:@"systemproperties"];
@@ -1081,8 +1083,10 @@
     [dataRecord setValue:AnnotationsList forKey:@"annotationslist"];
     [dataRecord setValue:CustomItemsList forKey:@"customitemslist"];
     [dataRecord setValue:QuickActions forKey:@"quickactions"];
+    
+   
 //    if (![managedObjectContext save:&error]) {
-//        
+//
 //        NSLog(@"Error:%@", error);
 //    }
     
@@ -1136,6 +1140,8 @@
     BOOL Priority;
     BOOL New;
     BOOL SHOWLOCK;
+    BOOL IsLocked;
+    BOOL ClickableLock;
     NSString* thumbnailUrl;
     NSString* Status;
     NSMutableArray* Allcorrespondences = [[NSMutableArray alloc] init];
@@ -1156,6 +1162,8 @@
         New=[[obj valueForKey:@"new"]boolValue];
         Id=[obj valueForKey:@"correspondenceid"];
         SHOWLOCK=[[obj valueForKey:@"showlock"]boolValue];
+        IsLocked=[[obj valueForKey:@"islocked"]boolValue];
+        ClickableLock=[[obj valueForKey:@"clickablelock"]boolValue];
         Priority=[[obj valueForKey:@"priority"]boolValue];
         transferId=[obj valueForKey:@"transferid"];
         thumbnailUrl=[obj valueForKey:@"thumbnailurl"];
@@ -1172,7 +1180,7 @@
 
         
         
-        CCorrespondence  *newCorrespondence = [[CCorrespondence alloc] initWithId:Id Priority:Priority New:New  SHOWLOCK:SHOWLOCK];
+        CCorrespondence  *newCorrespondence = [[CCorrespondence alloc] initWithId:Id Priority:Priority New:New  IsLocked:IsLocked SHOWLOCK:SHOWLOCK ClickableLock:ClickableLock];
         [newCorrespondence setStatus:Status];
         [newCorrespondence setTransferId:transferId];
         [newCorrespondence setInboxId:InboxId];
@@ -1380,7 +1388,10 @@
             NSString *Id;
             BOOL Priority;
             BOOL New;
+            BOOL IsLocked;
             BOOL SHOWLOCK;
+            BOOL ClickableLock;
+
             NSString* thumbnailUrl;
             NSString* Status;
             
@@ -1420,8 +1431,14 @@
             GDataXMLElement *newEl = (GDataXMLElement *) [[correspondence elementsForName:@"IsNew"]objectAtIndex:0];
             New = [newEl.stringValue boolValue];
             
-            GDataXMLElement *showlockedEl = (GDataXMLElement *) [[correspondence elementsForName:@"IsLocked"]objectAtIndex:0];
+            GDataXMLElement *IslockedEl = (GDataXMLElement *) [[correspondence elementsForName:@"IsLocked"]objectAtIndex:0];
+            IsLocked = [IslockedEl.stringValue boolValue];
+            
+            GDataXMLElement *showlockedEl = (GDataXMLElement *) [[correspondence elementsForName:@"ShowLock"]objectAtIndex:0];
             SHOWLOCK = [showlockedEl.stringValue boolValue];
+            
+            GDataXMLElement *ClickableLockEl = (GDataXMLElement *) [[correspondence elementsForName:@"ClickableLock"]objectAtIndex:0];
+            ClickableLock = [ClickableLockEl.stringValue boolValue];
             
             
             //********GRIDINFO**********
@@ -1613,7 +1630,7 @@
             
             
             
-            CCorrespondence  *newCorrespondence = [[CCorrespondence alloc] initWithId:Id Priority:Priority New:New SHOWLOCK:SHOWLOCK];
+            CCorrespondence  *newCorrespondence = [[CCorrespondence alloc] initWithId:Id Priority:Priority New:New IsLocked:IsLocked SHOWLOCK:SHOWLOCK ClickableLock:ClickableLock];
             [newCorrespondence setStatus:Status];
             [newCorrespondence setTransferId:transferId];
             [newCorrespondence setSystemProperties:systemPropertiesList];   /*NSMutableDictionary*/
@@ -1638,7 +1655,7 @@
             NSData* CustomItemsListData=[NSKeyedArchiver archivedDataWithRootObject:CustomItemsList];
             NSData* QuickActionsData=[NSKeyedArchiver archivedDataWithRootObject:QuickActions];
 
-            [self cacheCorrespondence:Id Status:Status InboxId:inboxId priority:[NSString stringWithFormat:@"%hhd",Priority] new:[NSString stringWithFormat:@"%hhd",New] showlock:[NSString stringWithFormat:@"%hhd",SHOWLOCK] transferId:transferId thumbnailurl:thumbnailUrl SystemProperties:systempropertiesdata Properties:PropertiesListdata toolbarItems:toolbardata CustomActions:customdata SignActions:signactiondata AttachmentsList:AttachmentsListData AnnotationsList:AnnotationsListData CustomItemsList:CustomItemsListData QuickActions:QuickActionsData];
+            [self cacheCorrespondence:Id Status:Status InboxId:inboxId priority:[NSString stringWithFormat:@"%hhd",Priority] new:[NSString stringWithFormat:@"%hhd",New] showlock:[NSString stringWithFormat:@"%hhd",IsLocked] transferId:transferId thumbnailurl:thumbnailUrl SystemProperties:systempropertiesdata Properties:PropertiesListdata toolbarItems:toolbardata CustomActions:customdata SignActions:signactiondata AttachmentsList:AttachmentsListData AnnotationsList:AnnotationsListData CustomItemsList:CustomItemsListData QuickActions:QuickActionsData Islocked:[NSString stringWithFormat:@"%hhd",IsLocked] ClickableLock:[NSString stringWithFormat:@"%hhd",ClickableLock]];
             [Allcorrespondences addObject:newCorrespondence];
             
         }
@@ -1736,6 +1753,8 @@
                 BOOL Priority;
                 BOOL New;
                 BOOL SHOWLOCK;
+                BOOL IsLocked;
+                BOOL ClickableLock;
                 NSString* thumbnailUrl;
                 NSString* Status;
                 NSArray *correspondences =[Item nodesForXPath:@"Correspondence" error:nil];
@@ -1776,9 +1795,14 @@
                     GDataXMLElement *newEl = (GDataXMLElement *) [[correspondence elementsForName:@"IsNew"]objectAtIndex:0];
                     New = [newEl.stringValue boolValue];
                     
+                    GDataXMLElement *IslockedEl = (GDataXMLElement *) [[correspondence elementsForName:@"IsLocked"]objectAtIndex:0];
+                    IsLocked = [IslockedEl.stringValue boolValue];
+                    
                     GDataXMLElement *showlockedEl = (GDataXMLElement *) [[correspondence elementsForName:@"ShowLock"]objectAtIndex:0];
                     SHOWLOCK = [showlockedEl.stringValue boolValue];
                     
+                    GDataXMLElement *ClickableLockEl = (GDataXMLElement *) [[correspondence elementsForName:@"ClickableLock"]objectAtIndex:0];
+                    ClickableLock = [ClickableLockEl.stringValue boolValue];
                     
                     //********GRIDINFO**********
                     NSArray *systemProperties =[correspondence nodesForXPath:@"GridInfo" error:nil];
@@ -1977,7 +2001,7 @@
                     NSData* CustomItemsListData=[NSKeyedArchiver archivedDataWithRootObject:CustomItemsList];
                     NSData* QuickActionsData=[NSKeyedArchiver archivedDataWithRootObject:QuickActions];
                     
-                    [self cacheCorrespondence:Id Status:Status InboxId:inboxId priority:[NSString stringWithFormat:@"%hhd",Priority] new:[NSString stringWithFormat:@"%hhd",New] showlock:[NSString stringWithFormat:@"%hhd",SHOWLOCK] transferId:transferId thumbnailurl:thumbnailUrl SystemProperties:systempropertiesdata Properties:PropertiesListdata toolbarItems:toolbardata CustomActions:customdata SignActions:signactiondata AttachmentsList:AttachmentsListData AnnotationsList:AnnotationsListData CustomItemsList:CustomItemsListData QuickActions:QuickActionsData];
+                    [self cacheCorrespondence:Id Status:Status InboxId:inboxId priority:[NSString stringWithFormat:@"%hhd",Priority] new:[NSString stringWithFormat:@"%hhd",New] showlock:[NSString stringWithFormat:@"%hhd",SHOWLOCK] transferId:transferId thumbnailurl:thumbnailUrl SystemProperties:systempropertiesdata Properties:PropertiesListdata toolbarItems:toolbardata CustomActions:customdata SignActions:signactiondata AttachmentsList:AttachmentsListData AnnotationsList:AnnotationsListData CustomItemsList:CustomItemsListData QuickActions:QuickActionsData Islocked:[NSString stringWithFormat:@"%hhd",IsLocked] ClickableLock:[NSString stringWithFormat:@"%hhd",ClickableLock]];
                     
                 }
                 /***************************************************************/
@@ -2460,7 +2484,7 @@
     }
 }
 }
-+(NSMutableArray*)loadSpecifiqueAttachment:(NSData*)xmlData CorrespondenceId:(NSString*)Id{
++(NSMutableArray*)loadSpecifiqueAttachment:(NSData*)xmlData CorrespondenceId:(NSString*)Id IsLocked:(BOOL)IsLocked{
 
     NSError *error;
     
@@ -2489,7 +2513,7 @@
     
     if (Attachments.count > 0) {
         GDataXMLElement *AttachmentsXML =  [Attachments objectAtIndex:0];
-        attachments=[self loadAttachmentListWith:AttachmentsXML CorrespondenceId:Id];
+        attachments=[self loadAttachmentListWith:AttachmentsXML CorrespondenceId:Id  IsLocked:IsLocked];
     }
     if(Attachments.count==0){
         
@@ -2616,7 +2640,7 @@
 
 
 
-+(NSMutableArray*)loadAttachmentListWith:(GDataXMLElement*)attachmentEl CorrespondenceId:(NSString*)CorrespondenceId{
++(NSMutableArray*)loadAttachmentListWith:(GDataXMLElement*)attachmentEl CorrespondenceId:(NSString*)CorrespondenceId  IsLocked:(BOOL)IsLocked{
     AppDelegate *mainDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
     
     NSMutableArray* attachments = [[NSMutableArray alloc] init];
@@ -2671,11 +2695,15 @@
                 }
                 NSArray *ServerFileInfo = [attachment nodesForXPath:@"ServerFileInfo" error:nil];
                 GDataXMLElement *ServerFileInfoXML;
-                
-                NSArray *StatusArray=[attachment elementsForName:@"Status"];
-                if (StatusArray.count>0) {
-                    GDataXMLElement *statusEl = (GDataXMLElement *) [StatusArray objectAtIndex:0];
-                    AttachmentStatus = statusEl.stringValue;
+                if(!IsLocked){
+                    NSArray *StatusArray=[attachment elementsForName:@"Status"];
+                    if (StatusArray.count>0) {
+                        GDataXMLElement *statusEl = (GDataXMLElement *) [StatusArray objectAtIndex:0];
+                        AttachmentStatus = statusEl.stringValue;
+                    }
+                }
+                else{
+                    AttachmentStatus = @"READONLY";
                 }
                 if(ServerFileInfo.count>0){
                     
@@ -3246,6 +3274,8 @@
         BOOL Priority;
         BOOL New;
         BOOL SHOWLOCK;
+        BOOL ClickableLock;
+        BOOL IsLocked;
         NSString* thumbnailUrl;
         NSString* Status;
         
@@ -3285,9 +3315,14 @@
         GDataXMLElement *newEl = (GDataXMLElement *) [[correspondence elementsForName:@"IsNew"]objectAtIndex:0];
         New = [newEl.stringValue boolValue];
         
-        GDataXMLElement *showlockedEl = (GDataXMLElement *) [[correspondence elementsForName:@"IsLocked"]objectAtIndex:0];
+        GDataXMLElement *IslockedEl = (GDataXMLElement *) [[correspondence elementsForName:@"IsLocked"]objectAtIndex:0];
+        IsLocked = [IslockedEl.stringValue boolValue];
+        
+        GDataXMLElement *showlockedEl = (GDataXMLElement *) [[correspondence elementsForName:@"ShowLock"]objectAtIndex:0];
         SHOWLOCK = [showlockedEl.stringValue boolValue];
         
+        GDataXMLElement *ClickableLockEl = (GDataXMLElement *) [[correspondence elementsForName:@"ClickableLock"]objectAtIndex:0];
+        ClickableLock = [ClickableLockEl.stringValue boolValue];
         
         //********GRIDINFO**********
         NSArray *systemProperties =[correspondence nodesForXPath:@"GridInfo" error:nil];
@@ -3480,7 +3515,7 @@
         
         
         
-        CCorrespondence  *newCorrespondence = [[CCorrespondence alloc] initWithId:Id Priority:Priority New:New SHOWLOCK:SHOWLOCK];
+        CCorrespondence  *newCorrespondence = [[CCorrespondence alloc] initWithId:Id Priority:Priority New:New IsLocked:IsLocked SHOWLOCK:SHOWLOCK ClickableLock:ClickableLock];
         [newCorrespondence setStatus:Status];
         [newCorrespondence setTransferId:transferId];
         [newCorrespondence setSystemProperties:systemPropertiesList];

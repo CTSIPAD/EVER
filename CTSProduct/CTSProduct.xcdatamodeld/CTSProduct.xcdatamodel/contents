@@ -25,10 +25,12 @@
     <entity name="Correspondences" syncable="YES">
         <attribute name="annotationslist" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="attachmentslist" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="clickablelock" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="correspondenceid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="customactions" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="customitemslist" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="inboxid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="islocked" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="new" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="priority" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="properties" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -73,7 +75,7 @@
     <elements>
         <element name="Attachments" positionX="0" positionY="0" width="128" height="270"/>
         <element name="BuiltInActions" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="Correspondences" positionX="0" positionY="0" width="128" height="300"/>
+        <element name="Correspondences" positionX="0" positionY="0" width="128" height="330"/>
         <element name="Destinations" positionX="0" positionY="0" width="128" height="90"/>
         <element name="ICONS" positionX="0" positionY="0" width="128" height="75"/>
         <element name="InboxItems" positionX="0" positionY="0" width="128" height="90"/>

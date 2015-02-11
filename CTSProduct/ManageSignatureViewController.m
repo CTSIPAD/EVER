@@ -1,9 +1,9 @@
 //
 //  ManageSignatureViewController.m
-//  CTSIpad
+//  CTSIPAD
 //
-//  Created by DNA on 2/5/14.
-//  Copyright (c) 2014 LBI. All rights reserved.
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import "ManageSignatureViewController.h"

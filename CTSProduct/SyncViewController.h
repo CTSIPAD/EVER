@@ -1,8 +1,8 @@
 //
 //  SyncViewController.h
-//  CTSProduct
+//  CTSIPAD
 //
-//  Created by DNA on 8/13/14.
+//  Created by MBI.
 //  Copyright (c) 2014 EVER. All rights reserved.
 //
 

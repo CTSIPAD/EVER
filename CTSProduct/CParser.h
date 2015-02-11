@@ -1,9 +1,9 @@
 //
 //  CParser.h
-//  CTSTest
+//  CTSIPAD
 //
-//  Created by DNA on 12/12/13.
-//  Copyright (c) 2013 LBI. All rights reserved.
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -20,7 +20,7 @@
 +(NSInteger)GetNoteIdWithData:(NSData*) xmlData;
 +(CSearch *)loadSearchWithData:(NSData*)xmlData;
 +(NSMutableArray*)loadSearchCorrespondencesWithData:(NSData*)xmlData;
-+(NSMutableArray*)loadSpecifiqueAttachment:(NSData*)xmlData CorrespondenceId:(NSString*)Id;
++(NSMutableArray*)loadSpecifiqueAttachment:(NSData*)xmlData CorrespondenceId:(NSString*)Id IsLocked:(BOOL)IsLocked;
 -(void)john:(NSData *)xmlData;
 +(NSData*)LoadCachedIcons:(NSString*)key;
 +(void)cacheIcon:(NSString*)key value:(NSData*)value;

@@ -1,8 +1,8 @@
 //
 //  AppDelegate.m
-//  CTSProduct
+//  CTSIPAD
 //
-//  Created by DNA on 6/21/14.
+//  Created by MBI.
 //  Copyright (c) 2014 EVER. All rights reserved.
 //
 
@@ -89,6 +89,7 @@
     self.cellColor=[UIColor colorWithRed:12/255.0f green:93/255.0f blue:174/255.0f alpha:1.0];;
     self.bgBlueColor=[UIColor colorWithRed:1.0f/255.0f green:49.0f/255.0f blue:97.0f/255.0f alpha:1.0];
     thumbnailDefined=NO;
+    [application setStatusBarHidden:YES];
     return YES;
 }
 -(NSString*)CurrentDateStringFromDate:(NSDate*)dateTimeInLine withFormat:(NSString*)dateFormat

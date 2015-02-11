@@ -1,8 +1,8 @@
 //
 //  UserDetail.m
-//  CTSProduct
+//  CTSIPAD
 //
-//  Created by DNA on 7/21/14.
+//  Created by MBI.
 //  Copyright (c) 2014 EVER. All rights reserved.
 //
 

@@ -1,9 +1,9 @@
 //
 //  Signature.m
-//  cfsPad
+//  CTSIPAD
 //
-//  Created by EVER-ME EME on 7/31/12.
-//
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import "DrawLayerView.h"

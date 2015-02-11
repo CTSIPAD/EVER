@@ -1,9 +1,9 @@
 //
 //  ActionTaskController.m
-//  cfsPad
+//  CTSIPAD
 //
-//  Created by marc balas on 02/06/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import "ActionTaskController.h"

@@ -1,8 +1,8 @@
 //
 //  TableResultCell.h
-//  CTSProduct
+//  CTSIPAD
 //
-//  Created by DNA on 6/24/14.
+//  Created by MBI.
 //  Copyright (c) 2014 EVER. All rights reserved.
 //
 
@@ -22,6 +22,8 @@
 @property(strong,nonatomic) UIView *cellView;
 @property(strong,nonatomic) UIView *iconView;
 @property (nonatomic,assign) BOOL isLocked;
+@property (nonatomic,assign) BOOL ShowLock;
+@property (nonatomic,assign) BOOL ClickableLock;
 @property(nonatomic,assign) BOOL isNew;
 @property (nonatomic,assign) BOOL isImportant;
 @property (strong,nonatomic) NSString* lockeduserId;

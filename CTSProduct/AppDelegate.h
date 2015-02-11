@@ -1,8 +1,8 @@
 //
 //  AppDelegate.h
-//  CTSProduct
+//  CTSIPAD
 //
-//  Created by DNA on 6/21/14.
+//  Created by MBI.
 //  Copyright (c) 2014 EVER. All rights reserved.
 //
 
@@ -23,6 +23,7 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (strong, nonatomic) NSString* IpadLanguage;
+@property (nonatomic,assign) NSInteger attachementsCount;
 @property(nonatomic,assign)BOOL isSharepoint;
 @property(nonatomic,assign)BOOL isOfflineMode;
 @property(nonatomic,assign)BOOL Downloading;

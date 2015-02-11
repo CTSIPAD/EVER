@@ -1,9 +1,9 @@
 //
 //  MetadataViewController.m
-//  CTSTest
+//  CTSIPAD
 //
-//  Created by DNA on 1/10/14.
-//  Copyright (c) 2014 LBI. All rights reserved.
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import "MetadataViewController.h"

@@ -1,8 +1,9 @@
 //
 //  SPUserResizableView.m
-//  SPUserResizableView
+//  CTSIPAD
 //
-//  Created by Stephen Poletto on 12/10/11.
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import "SPUserResizableView.h"

@@ -1,9 +1,9 @@
 //
 //  SearchResultViewController.m
-//  iBoard
+//  CTSIPAD
 //
-//  Created by LBI on 11/14/13.
-//  Copyright (c) 2013 LBI. All rights reserved.
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import "SearchResultViewController.h"
@@ -600,15 +600,15 @@
     
     if([UserId isEqualToString:mainDelegate.user.userId] || !isLocked){
         
-        if(correspondence.ShowLocked){
+        if(correspondence.IsLocked){
             if([correspondence performCorrespondenceAction:@"UnlockCorrespondence"]){
-                correspondence.ShowLocked=NO;
+                correspondence.IsLocked=NO;
                 [sender setImage:[UIImage imageNamed:@"cts_Unlock.png"] forState:UIControlStateNormal];
                // [cell hideActions:NO];
             }
         }else{
             if([correspondence performCorrespondenceAction:@"LockCorrespondence"]){
-                correspondence.ShowLocked=YES;
+                correspondence.IsLocked=YES;
                 mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 //  correspondence.LockedBy = [NSString stringWithFormat:@"%@ %@",mainDelegate.user.firstName,mainDelegate.user.lastName];
                 [sender setImage:[UIImage imageNamed:@"lockimg.png"] forState:UIControlStateNormal];
@@ -689,7 +689,7 @@
                         lockedby=[LockResult objectForKey:@"lockedby"];
                         IsLocked=[[LockResult objectForKey:@"IsLocked"]boolValue];
                         lockedbyUserId=[LockResult objectForKey:@"UserId"];
-                        correspondence.ShowLocked=IsLocked;
+                        correspondence.IsLocked=IsLocked;
                         }
                         // [tableView reloadData];
                     }
@@ -702,6 +702,18 @@
                         
                         if(!Break){
                         if([lockedbyUserId isEqualToString:mainDelegate.user.userId] || !IsLocked){
+                            IsLocked=NO;
+                        }
+                        else {
+                            IsLocked=YES;
+                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"tasktable.locked",@"Task is locked")
+                                                                            message:[NSString stringWithFormat:@"%@ %@",lockedby,NSLocalizedString(@"tasktable.locked.dialog",@"has locked the task.")]
+                                                                           delegate:nil
+                                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
+                                                                  otherButtonTitles:nil];
+                            [alert show];
+                            //[SVProgressHUD dismiss];
+                        }
                             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                                 
                                 NSData *attachmentXmlData;
@@ -716,7 +728,7 @@
                                     NSLog(@"URL: %@",attachmentUrl);
                                     NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:[attachmentUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
                                     attachmentXmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-                                    attachments=[CParser loadSpecifiqueAttachment:attachmentXmlData CorrespondenceId:correspondence.Id];
+                                    attachments=[CParser loadSpecifiqueAttachment:attachmentXmlData CorrespondenceId:correspondence.Id IsLocked:IsLocked];
                                 }
                                 else{
                                     attachments=[CParser LoadAttachments:correspondence.Id];
@@ -734,10 +746,10 @@
                                     
                                     
                                     
-                                    if(!mainDelegate.isOfflineMode){
+                                    if(!mainDelegate.isOfflineMode && !IsLocked){
                                         NSLog(@"Info:Locking correspondence");
                                         if([correspondence performCorrespondenceAction:@"LockCorrespondence"]){
-                                            correspondence.ShowLocked=YES;
+                                            correspondence.IsLocked=YES;
                                             //correspondence.LockedBy = [NSString stringWithFormat:@"%@ %@",mainDelegate.user.firstName,mainDelegate.user.lastName];
                                         }}
                                 }
@@ -751,17 +763,7 @@
                                     
                                 });
                             });
-                        }
-                        else {
-                            
-                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"tasktable.locked",@"Task is locked")
-                                                                            message:[NSString stringWithFormat:@"%@ %@",lockedby,NSLocalizedString(@"tasktable.locked.dialog",@"has locked the task.")]
-                                                                           delegate:nil
-                                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                                  otherButtonTitles:nil];
-                            [alert show];
-                            [SVProgressHUD dismiss];
-                        }
+                        
                         }
                         else{
                             [self performSelectorOnMainThread:@selector(dismiss) withObject:nil waitUntilDone:YES];

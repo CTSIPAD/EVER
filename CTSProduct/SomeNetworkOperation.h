@@ -1,9 +1,9 @@
 //
 //  SomeNetworkOperation.h
-//  ConcurrentOperationTest
+//  CTSIPAD
 //
-//  Created by Justin Palmer on 6/21/09.
-//  Copyright 2009 Alternateidea. All rights reserved.
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

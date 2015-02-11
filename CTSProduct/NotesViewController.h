@@ -1,9 +1,9 @@
 //
 //  NotesViewController.h
-//  iBoard
+//  CTSIPAD
 //
-//  Created by DNA on 11/12/13.
-//  Copyright (c) 2013 LBI. All rights reserved.
+//  Created by MBI.
+//  Copyright (c) 2014 EVER. All rights reserved.
 //
 
 #import "NotesTableViewCell.h"

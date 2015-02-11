@@ -1,12 +1,9 @@
 //
 //  CustomViewController.m
-//  CTSProduct
+//  CTSIPAD
 //
-//  Created by DNA on 7/30/14.
+//  Created by MBI.
 //  Copyright (c) 2014 EVER. All rights reserved.
-//
-
-
 //
 #import "CustomViewController.h"
 #import "CAction.h"
