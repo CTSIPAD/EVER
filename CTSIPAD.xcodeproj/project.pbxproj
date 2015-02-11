@@ -302,7 +302,6 @@
 		A2F232E819557C5000CA09DD /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		A2F232EA19557C5000CA09DD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A2F232EC19557C5000CA09DD /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		A2F232F019557C5000CA09DD /* CTSProduct-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CTSProduct-Info.plist"; sourceTree = "<group>"; };
 		A2F232F219557C5000CA09DD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A2F232F419557C5000CA09DD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A2F232F619557C5000CA09DD /* CTSIPAD-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CTSIPAD-Prefix.pch"; sourceTree = "<group>"; };
@@ -831,7 +830,6 @@
 				A2B9FA17198121CD00A61F5F /* ipad_icon.png */,
 				A2F232FD19557C5000CA09DD /* Images.xcassets */,
 				A2F2332719557DD500CA09DD /* Storyboard.storyboard */,
-				A2F232F019557C5000CA09DD /* CTSProduct-Info.plist */,
 				A2F232F119557C5000CA09DD /* InfoPlist.strings */,
 				A2F232F419557C5000CA09DD /* main.m */,
 				A2F232F619557C5000CA09DD /* CTSIPAD-Prefix.pch */,
