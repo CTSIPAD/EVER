@@ -185,3 +185,5 @@
 "Sign.ClearDuplicated"="Clear Duplicate Signature";
 "NothingToSave"="Nothing to save";
 "Alert.Updating"="Updating";
+"DefaultSignAlreadyChosen"="You have already chosen Default Signature. Please save or cancel Default signature first.";
+"HandSignAlreadyChosen"="You have already chosen hand Signature. Please save or cancel Default hand signature first.";

@@ -35,10 +35,11 @@
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     /**** Create Log file ****/
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-    
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+//    
+//    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString* documentsDirectory  = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+
     NSString *fileName =[NSString stringWithFormat:@"%@.log",[self CurrentDateStringFromDate:[NSDate date] withFormat:@"dd-MM-yyyy"]];
     
     logFilePath = [documentsDirectory stringByAppendingPathComponent:fileName];

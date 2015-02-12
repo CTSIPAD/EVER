@@ -79,7 +79,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2608"
             endingLineNumber = "2608"
-            landmarkName = "-executeAction:note:movehome:"
+            landmarkName = "-saveAnnotation"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -95,7 +95,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2614"
             endingLineNumber = "2614"
-            landmarkName = "-executeAction:note:movehome:"
+            landmarkName = "-saveAnnotation"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -138,12 +138,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderMainToolbar.m"
-            timestampString = "438879815.030402"
+            timestampString = "445439598.973869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "530"
-            endingLineNumber = "530"
-            landmarkName = "-nextButtonTapped:"
+            startingLineNumber = "537"
+            endingLineNumber = "537"
+            landmarkName = "-performLock:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -186,12 +186,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "439390741.139612"
+            timestampString = "445441742.359906"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3676"
-            endingLineNumber = "3676"
-            landmarkName = "-saveSignature:correspondenceId:"
+            startingLineNumber = "3677"
+            endingLineNumber = "3677"
+            landmarkName = "-HandSign"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -202,12 +202,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "439390741.139612"
+            timestampString = "445441742.359906"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3744"
-            endingLineNumber = "3744"
-            landmarkName = "-saveSignature:correspondenceId:"
+            startingLineNumber = "3745"
+            endingLineNumber = "3745"
+            landmarkName = "-hideEditingHandles"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -223,23 +223,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3587"
             endingLineNumber = "3587"
-            landmarkName = "-ResizeiDrawLayer:view:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "439389305.355203"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1512"
-            endingLineNumber = "1512"
-            landmarkName = "-UploadAnnotations:"
+            landmarkName = "-Sign"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -262,29 +246,29 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "-[ReaderViewController UploadAnnotations:]"
-                  moduleName = "CTSProduct"
+                  symbolName = "__42-[ReaderViewController UploadAnnotations:]_block_invoke_2"
+                  moduleName = "CTSIPAD"
                   urlString = "file://localhost/Users/dna/Desktop/GITFILES/CTSProduct/CTSProduct/ReaderViewController.m"
-                  timestampString = "439834140.189989"
+                  timestampString = "445445510.64754"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1534"
                   endingLineNumber = "1534"
-                  offsetFromSymbolStart = "884">
+                  offsetFromSymbolStart = "9072">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "-[ReaderViewController UploadAnnotations:]"
-                  moduleName = "CTSProduct"
+                  symbolName = "__42-[ReaderViewController UploadAnnotations:]_block_invoke_2"
+                  moduleName = "CTSIPAD"
                   urlString = "file://localhost/Users/dna/Desktop/GITFILES/CTSProduct/CTSProduct/ReaderViewController.m"
-                  timestampString = "439834140.190298"
+                  timestampString = "445445510.647829"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "1534"
                   endingLineNumber = "1534"
-                  offsetFromSymbolStart = "946">
+                  offsetFromSymbolStart = "9162">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -301,7 +285,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3577"
             endingLineNumber = "3577"
-            landmarkName = "-userResizableViewDidBeginEditing:"
+            landmarkName = "-DuplicateSignature"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -328,12 +312,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "439390741.139612"
+            timestampString = "445441742.359906"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3818"
-            endingLineNumber = "3818"
-            landmarkName = "-refreshAfterSign:correspondenceId:"
+            startingLineNumber = "3819"
+            endingLineNumber = "3819"
+            landmarkName = "-saveSignature:correspondenceId:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -357,28 +341,28 @@
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "__36-[ReaderMainPagebar openAttachment:]_block_invoke"
-                  moduleName = "CTSProduct"
+                  moduleName = "CTSIPAD"
                   urlString = "file://localhost/Users/dna/Desktop/GITFILES/CTSProduct/CTSProduct/ReaderMainPagebar.m"
-                  timestampString = "439834140.193592"
+                  timestampString = "445445510.648883"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "380"
-                  endingLineNumber = "380"
-                  offsetFromSymbolStart = "330">
+                  startingLineNumber = "381"
+                  endingLineNumber = "381"
+                  offsetFromSymbolStart = "1208">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "__36-[ReaderMainPagebar openAttachment:]_block_invoke"
-                  moduleName = "CTSProduct"
+                  symbolName = "__36-[ReaderMainPagebar openAttachment:]_block_invoke_2"
+                  moduleName = "CTSIPAD"
                   urlString = "file://localhost/Users/dna/Desktop/GITFILES/CTSProduct/CTSProduct/ReaderMainPagebar.m"
-                  timestampString = "439834140.194114"
+                  timestampString = "445445510.64927"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "380"
-                  endingLineNumber = "380"
-                  offsetFromSymbolStart = "968">
+                  startingLineNumber = "381"
+                  endingLineNumber = "381"
+                  offsetFromSymbolStart = "34">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -406,38 +390,6 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "439390741.139612"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3235"
-            endingLineNumber = "3235"
-            landmarkName = "-tappedInToolbar:commentButton:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "439390741.139612"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3240"
-            endingLineNumber = "3240"
-            landmarkName = "-tappedInToolbar:noteButton:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CTSProduct/ReaderViewController.m"
             timestampString = "439118332.967237"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
@@ -454,29 +406,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderMainToolbar.m"
-            timestampString = "438879815.030402"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "509"
-            endingLineNumber = "509"
-            landmarkName = "-nextButtonTapped:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CTSProduct/ReaderMainToolbar.m"
-            timestampString = "438879815.030402"
+            timestampString = "445439598.973869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "516"
             endingLineNumber = "516"
-            landmarkName = "-nextButtonTapped:"
-            landmarkType = "5">
+            landmarkName = "@implementation ReaderMainToolbar"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -486,12 +422,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderMainToolbar.m"
-            timestampString = "438879815.030402"
+            timestampString = "445439598.973869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "535"
-            endingLineNumber = "535"
-            landmarkName = "-nextButtonTapped:"
+            startingLineNumber = "523"
+            endingLineNumber = "523"
+            landmarkName = "-performLock:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -507,7 +443,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2324"
             endingLineNumber = "2324"
-            landmarkName = "+GetFolderAttachment:Id:"
+            landmarkName = "+Download:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -523,7 +459,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2357"
             endingLineNumber = "2357"
-            landmarkName = "+GetFolderAttachment:Id:"
+            landmarkName = "+cacheDestination:value:section:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -541,6 +477,36 @@
             endingLineNumber = "419"
             landmarkName = "-openAttachment:"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__36-[ReaderMainPagebar openAttachment:]_block_invoke_2"
+                  moduleName = "CTSIPAD"
+                  urlString = "file://localhost/Users/dna/Desktop/GITFILES/CTSProduct/CTSProduct/ReaderMainPagebar.m"
+                  timestampString = "445445510.651388"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "419"
+                  endingLineNumber = "419"
+                  offsetFromSymbolStart = "1362">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__copy_helper_block_"
+                  moduleName = "CTSIPAD"
+                  urlString = "file://localhost/Users/dna/Desktop/GITFILES/CTSProduct/CTSProduct/ReaderMainPagebar.m"
+                  timestampString = "445445510.651625"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "419"
+                  endingLineNumber = "419"
+                  offsetFromSymbolStart = "16">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -555,85 +521,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3286"
             endingLineNumber = "3286"
-            landmarkName = "@implementation ReaderViewController"
-            landmarkType = "3">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[ReaderViewController pagebar:gotoPage:document:fileId:]"
-                  moduleName = "CTSProduct"
-                  urlString = "file://localhost/Users/dna/Desktop/GITFILES/CTSProduct/CTSProduct/ReaderViewController.m"
-                  timestampString = "439834140.201012"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "3286"
-                  endingLineNumber = "3286"
-                  offsetFromSymbolStart = "1302">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[ReaderViewController pagebar:gotoPage:document:fileId:]"
-                  moduleName = "CTSProduct"
-                  urlString = "file://localhost/Users/dna/Desktop/GITFILES/CTSProduct/CTSProduct/ReaderViewController.m"
-                  timestampString = "439834140.201345"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "3286"
-                  endingLineNumber = "3286"
-                  offsetFromSymbolStart = "1554">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "438878838.19557"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "420"
-            endingLineNumber = "420"
-            landmarkName = "-openPagebar:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "438878864.868401"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "441"
-            endingLineNumber = "441"
-            landmarkName = "-openPagebar:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "438878881.755465"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "423"
-            endingLineNumber = "423"
-            landmarkName = "-openPagebar:"
+            landmarkName = "-openMetaData"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -644,12 +532,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderMainToolbar.m"
-            timestampString = "438879815.030402"
+            timestampString = "445439598.973869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "597"
-            endingLineNumber = "597"
-            landmarkName = "-previousButtonTapped:"
+            startingLineNumber = "604"
+            endingLineNumber = "604"
+            landmarkName = "-nextButtonTapped:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -697,7 +585,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2369"
             endingLineNumber = "2369"
-            landmarkName = "+GetFolderAttachment:Id:"
+            landmarkName = "+DeleteDestination:section:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -708,11 +596,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CTSProduct/ReaderMainToolbar.m"
-            timestampString = "439286622.980771"
+            timestampString = "445439598.973869"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "546"
-            endingLineNumber = "546"
+            startingLineNumber = "552"
+            endingLineNumber = "552"
             landmarkName = "-nextButtonTapped:"
             landmarkType = "5">
          </BreakpointContent>
@@ -761,8 +649,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "2107"
             endingLineNumber = "2107"
-            landmarkName = "-saveAnnotation"
-            landmarkType = "5">
+            landmarkName = "@implementation ReaderViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -793,7 +681,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3487"
             endingLineNumber = "3487"
-            landmarkName = "-Sign"
+            landmarkName = "-alertView:clickedButtonAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -809,39 +697,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "3537"
             endingLineNumber = "3537"
-            landmarkName = "-HandSign"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CTSProduct/ReaderViewController.m"
-            timestampString = "439306733.001467"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "822"
-            endingLineNumber = "822"
-            landmarkName = "-willAnimateRotationToInterfaceOrientation:duration:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CTSProduct/SearchResultViewController.m"
-            timestampString = "439828698.174079"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "718"
-            endingLineNumber = "718"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkName = "-cancelSign"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -858,6 +714,134 @@
             startingLineNumber = "742"
             endingLineNumber = "742"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CTSProduct/CParser.m"
+            timestampString = "445438036.477467"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2471"
+            endingLineNumber = "2471"
+            landmarkName = "+GetFolderAttachment:Id:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CTSProduct/ReaderMainToolbar.m"
+            timestampString = "445439598.973869"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "545"
+            endingLineNumber = "545"
+            landmarkName = "-nextButtonTapped:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CTSProduct/ReaderMainToolbar.m"
+            timestampString = "445439598.973869"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "659"
+            endingLineNumber = "659"
+            landmarkName = "-previousButtonTapped:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CTSProduct/ReaderMainToolbar.m"
+            timestampString = "445439598.973869"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "555"
+            endingLineNumber = "555"
+            landmarkName = "-nextButtonTapped:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CTSProduct/ReaderMainToolbar.m"
+            timestampString = "445439598.973869"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
+            landmarkName = "-initWithFrame:document:CorrespondenceId:MenuId:AttachmentId:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CTSProduct/ReaderMainToolbar.m"
+            timestampString = "445439598.973869"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
+            landmarkName = "-initWithFrame:document:CorrespondenceId:MenuId:AttachmentId:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CTSProduct/SettingsViewController.m"
+            timestampString = "445443511.543302"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CTSProduct/LoginViewController.m"
+            timestampString = "445444435.020829"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "332"
+            endingLineNumber = "332"
+            landmarkName = "-performConnecting:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

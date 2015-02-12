@@ -61,7 +61,7 @@
     self.txtUsername.clipsToBounds=YES;
     self.txtUsername.returnKeyType = UIReturnKeyGo;
     self.txtUsername.autocorrectionType=FALSE;
-    self.txtUsername.text=@"";
+    self.txtUsername.text=@"evertest1";
     
     /**** END  UserName TextView ******/
     
@@ -95,7 +95,7 @@
         self.txtPassword.leftView= paddingView2;
         
     }
-    self.txtPassword.text=@"";
+    self.txtPassword.text=@"ever123";
     
     /**** LOGIN BUTTON ******/
     
