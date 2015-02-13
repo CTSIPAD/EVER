@@ -702,55 +702,6 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
     [m_pdfview setNeedsDisplay];
 }
 
--(CGPoint)searchNotesArray:(CGPoint)pt state:(NSString*)state{
-    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    for(note* obj in mainDelegate.Notes){
-        if(pt.x<=obj.abscissa+12 && pt.x>=obj.abscissa-12 && pt.y<=obj.ordinate+16 && pt.y>=obj.ordinate-16){
-            CGPoint pt1=CGPointMake(obj.abscissa,obj.ordinate);
-            if([state isEqualToString:@"erase.."]){
-                if([obj.status isEqualToString:@"NEW"])
-                    [mainDelegate.Notes removeObject:obj];
-                else
-                    obj.status=@"DELETE";
-                mainDelegate.isAnnotated=YES;
-                
-            }
-            else
-                if(![state isEqualToString:@"search.."]){
-                    
-                    int index=[mainDelegate.Notes indexOfObject:obj];
-                    obj.note=state;
-                    [mainDelegate.Notes setObject:obj atIndexedSubscript:index];
-                    mainDelegate.isAnnotated=YES;
-                }
-            return pt1;
-        }
-    }
-    CGPoint pt1=pt;
-    for(note* obj in mainDelegate.IncomingNotes){
-        if(pt.x<=obj.abscissa+12 && pt.x>=obj.abscissa-12 && pt.y<=obj.ordinate+16 && pt.y>=obj.ordinate-16){
-            pt1=CGPointMake(obj.abscissa,obj.ordinate);
-            
-            if([state isEqualToString:@"erase.."]){
-                obj.status=@"DELETE";
-            }
-            else
-                if(![state isEqualToString:@"search.."]){
-                    obj.note=state;
-                    obj.status=@"UPDATE";
-                }
-            if(![state isEqualToString:@"search.."]){
-                [mainDelegate.Notes addObject:obj];
-                [mainDelegate.IncomingNotes removeObject:obj];
-                mainDelegate.isAnnotated=YES;
-            }
-            return pt1;
-            
-        }
-    }
-    return pt1;
-    
-}
 -(void)SignAll:(CGPoint)ptLeftTop secondPoint:(CGPoint)ptRightBottom previousPoint:(CGPoint)prevPt{
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     //jis sign
@@ -998,7 +949,7 @@ textView.text=@"";
 
 - (void)saveCustomView:(UIButton *)sender
 {
-    
+    foundNote=NO;
     if (![textView.text isEqualToString:@""]) {
         
     
@@ -1278,7 +1229,7 @@ textView.text=@"";
     }
     CGPoint pt1=pt;
     for(note* obj in mainDelegate.IncomingNotes){
-        if(pt.x<=obj.abscissa+12 && pt.x>=obj.abscissa-12 && pt.y<=obj.ordinate+16 && pt.y>=obj.ordinate-16&&  [self getPDFPage:obj.PageNb]==m_current_page&&!foundNote){
+        if(pt.x<=obj.abscissa+13 && pt.x>=obj.abscissa-13 && pt.y<=obj.ordinate+16 && pt.y>=obj.ordinate-16&&  [self getPDFPage:obj.PageNb]==m_current_page&&!foundNote){
             foundNote=YES;
             pt1=CGPointMake(obj.abscissa,obj.ordinate);
             
