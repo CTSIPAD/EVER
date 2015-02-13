@@ -29,7 +29,7 @@
 	
 	FPDF_PAGE m_current_page;
 	FPDF_PAGE* m_pPageArray;
-	
+	BOOL foundNote;
     int m_nAnnotIndex;
     int stampx;
     int stampy;

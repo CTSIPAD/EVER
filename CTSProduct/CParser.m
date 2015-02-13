@@ -364,6 +364,10 @@
         // NSURL *xmlUrl = [NSURL URLWithString:url];
         //xmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
         xmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&myError];
+        if(xmlData==nil){
+             NSLog(@"Error:null data received.");
+            return nil;
+        }
         NSLog(@"Caching Login XML");
         [self cacheXml:@"Login" xml:xmlData nb:@"0" name:@""];
     }

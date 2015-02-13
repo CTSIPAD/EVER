@@ -330,7 +330,11 @@
                 }
         }
         CUser * user = [CParser loadUserWithData:url];
-        
+        if(user==nil){
+            [self stopIndicator];
+            NSLog(@"Error:loadUserWithData returned null user");
+        }
+            
         if(![user.ServerMessage isEqualToString:@"OK"]){
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"error") message:user.ServerMessage delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
             [alert show];
@@ -341,7 +345,7 @@
             return;
         }
         else{
-            
+            NSLog(@"Info:Status OK");
             user.loginName=self.txtUsername.text;
             if(user.menu.count>0)
             {
@@ -378,6 +382,7 @@
                 
             }
             else{
+                NSLog(@"Info:Icons not Cached");
                 [defaults setObject:@"NO" forKey:@"iconsCache"];
                 [defaults synchronize];
                 [self connect];

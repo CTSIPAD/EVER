@@ -44,4 +44,5 @@
 +(CAttachment*)LoadNewAttachmentResults:(NSData *)xmlData docId:(NSString*)docid;
 +(void)ShowMessage:(NSString*)message;
 +(CGFloat)pixelToPoints:(CGFloat)px;
++(void)SendLogs;
 @end

@@ -200,6 +200,25 @@
             [nextButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:nextButton];
         [self addSubview:nextLabel];
+       
+        previousButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        previousButton.tag=100;
+        Previousimage=[UIImage imageNamed:@"PreviousIcon.png"];
+        
+        [previousButton setBackgroundImage: Previousimage forState:UIControlStateNormal];
+        PreviousLabel.text=NSLocalizedString(@"Menu.Previous",@"Previous");
+        PreviousLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
+        PreviousLabel.textColor=[UIColor whiteColor];
+        PreviousLabel.numberOfLines = 3;
+        PreviousLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+            [previousButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        else
+            [previousButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:previousButton];
+        [self addSubview:PreviousLabel];
 
         if(attachmentId==mainDelegate.attachementsCount-1){
             if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
@@ -216,25 +235,7 @@
                 nextButton.enabled=TRUE;
         }
         
-        previousButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        previousButton.tag=100;
-        Previousimage=[UIImage imageNamed:@"PreviousIcon.png"];
-
-        [previousButton setBackgroundImage: Previousimage forState:UIControlStateNormal];
-        PreviousLabel.text=NSLocalizedString(@"Menu.Previous",@"Previous");
-        PreviousLabel.font=[UIFont fontWithName:@"Helvetica" size:14];
-        PreviousLabel.textColor=[UIColor whiteColor];
-        PreviousLabel.numberOfLines = 3;
-        PreviousLabel.lineBreakMode = NSLineBreakByWordWrapping;
-         
-        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
-             [previousButton addTarget:self action:@selector(nextButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        }
-        else
-            [previousButton addTarget:self action:@selector(previousButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:previousButton];
-        [self addSubview:PreviousLabel];
-
+        
         if(attachmentId==0){
             if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
                 nextButton.enabled=FALSE;
@@ -398,16 +399,22 @@
     }
     else
         if([[state uppercaseString] isEqualToString:@"NOTPDF"]){
-            Save.enabled=false;
+            Save.enabled=true;
             SignActionButton.enabled=false;
-            annotationButton.enabled=false;
+            annotationButton.enabled=true;
         }
-        else{
-            for(UIButton* btn in self.subviews){
-                if(btn.tag!=100)
-                    btn.enabled=true;
+        else
+            if([[state uppercaseString] isEqualToString:@"NOTSUPPORTED"]){
+                Save.enabled=false;
+                SignActionButton.enabled=false;
+                annotationButton.enabled=false;
             }
-        }
+            else{
+                for(UIButton* btn in self.subviews){
+                    if(btn.tag!=100)
+                        btn.enabled=true;
+                }
+            }
 }
 -(ReaderDocument*) OpenPdfReader:(NSString *) pdfPath{
     NSString *phrase = nil; // Document password (for unlocking most encrypted PDF files)
