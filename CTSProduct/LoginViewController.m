@@ -336,7 +336,7 @@
         }
             
         if(![user.ServerMessage isEqualToString:@"OK"]){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"error") message:user.ServerMessage delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnableToConnect", @"unable to connect server") message:user.ServerMessage delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
             [alert show];
             [defaults synchronize];
           //  self.txtUsername.text=@"";

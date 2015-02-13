@@ -1687,12 +1687,12 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
                             
                             
                         }
-                        [self ShowMessage:@"Saved Successfully"];
+                        [self ShowMessage:NSLocalizedString(@"Alert.SaveSuccess", @"Saved Successfully")];
                         [self dismiss];
                         
                     }
                 }else{
-                    [self ShowMessage:@"Saved Successfully"];
+                    [self ShowMessage:NSLocalizedString(@"Alert.SaveSuccess", @"Saved Successfully")];
                 }
                 
             });
