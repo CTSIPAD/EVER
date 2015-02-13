@@ -593,216 +593,7 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
     [m_pdfview setNeedsDisplay];
     
 }
--(void)FreeSign:(CGPoint)ptLeftTop secondPoint:(CGPoint)ptRightBottom previousPoint:(CGPoint)prevPt{
-    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    //jis sign
-    
-    m_bAddStamp = TRUE;
-    int nCount=0;
-    FPDF_Annot_GetCount(m_current_page,&nCount);
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                         NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *documentsPath = [documentsDirectory
-                               stringByAppendingPathComponent:@"myimage.png"];
-    
-    [fileManager createFileAtPath:documentsPath contents:self.signatureData attributes:nil];
-    
-    NSLog(@"%@",documentsPath);
-    const char* jpgpath = [documentsPath UTF8String];
-    FILE* pf = fopen(jpgpath , "rb");
-    
-    if(!pf)
-        return;
-    fseek(pf, 0,SEEK_END);
-    int len = ftell(pf);
-    fseek(pf,0,SEEK_SET);
-    unsigned char* buf = (unsigned char*)malloc(len);
-    fread(buf, 1, len, pf);
-    fclose(pf);
-    FPDF_ANNOT_STAMPINFO stampInfo;
-    stampInfo.color = 0xff0000;
-    stampInfo.size = sizeof(stampInfo);
-    
-    
-    NSString* su=@"Signature";
-    
-    const unsigned char *intext=(unsigned char*)[su UTF8String];
-    
-    stampInfo.name[0]=intext[0];
-    stampInfo.name[1]=intext[1];
-    stampInfo.name[2]=intext[2];
-    stampInfo.name[3]=intext[3];
-    stampInfo.name[4]=intext[4];
-    stampInfo.name[5]=intext[5];
-    stampInfo.name[6]=intext[6];
-    stampInfo.name[7]=intext[7];
-    stampInfo.name[8]=intext[8];
-    stampInfo.name[9]=intext[9];
-    stampInfo.name[10]='\0';
-    stampInfo.name[11]='\0';
-    stampInfo.name[12]='\0';
-    stampInfo.name[13]='\0';
-    stampInfo.name[14]='\0';
-    stampInfo.name[15]='\0';
-    stampInfo.name[16]='\0';
-    stampInfo.name[17]='\0';
-    stampInfo.name[18]='\0';
-    stampInfo.name[19]='\0';
-    stampInfo.name[20]='\0';
-    stampInfo.name[21]='\0';
-    stampInfo.name[22]='\0';
-    stampInfo.name[23]='\0';
-    stampInfo.name[24]='\0';
-    stampInfo.name[25]='\0';
-    
-    FS_RECTF rect = {static_cast<FS_FLOAT>(ptRightBottom.x - m_pdfview.annotationSignWidth/2), static_cast<FS_FLOAT>(ptRightBottom.y -m_pdfview.annotationSignHeight/2),static_cast<FS_FLOAT>(ptRightBottom.x+ m_pdfview.annotationSignWidth/2),static_cast<FS_FLOAT>(ptRightBottom.y+m_pdfview.annotationSignHeight/2)};
-    
-    stampInfo.rect = rect;
-    stampInfo.imgtype = FPDF_IMAGETYPE_JPG; //bmp=1 jpg = 2
-    
-    
-    
-    stampInfo.imgdatasize = len;
-    stampInfo.imgdata = (unsigned char*)buf;
-    
-    m_nAnnotIndex--;
-    //}
-    
-    stampx=ptRightBottom.x;
-    stampy=ptRightBottom.y;
-    FPDF_Annot_Add(m_current_page, FPDF_ANNOTTYPE_STAMP, &stampInfo, sizeof(stampInfo), (FPDF_ANNOT*)&m_nAnnotIndex);
-    m_nAnnotIndex++;
-    free(buf);
-    NSString* dir  = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-    NSString* path = [dir stringByAppendingString:@"/FoxitSaveAnnotation.pdf"];
-    
-    
-    const char* file = [path UTF8String];
-    
-    FILE* fp = fopen(file, "wb");
-    FS_FILEWRITE fw;
-    fw.clientData = fp;
-    fw.Flush = FSFileWrite_Flush;
-    fw.GetSize = FSFileWrite_GetSize;
-    fw.WriteBlock = FSFileWrite_WriteBlock;
-    
-    FPDF_Doc_SaveAs(m_fpdfdoc, &fw, FPDF_SAVEAS_INCREMENTAL, NULL);
-    fclose(fp);
-    [m_pdfview setNeedsDisplay];
-}
 
--(void)FreeSignAll:(CGPoint)ptLeftTop secondPoint:(CGPoint)ptRightBottom previousPoint:(CGPoint)prevPt{
-    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    //jis sign
-    
-    for (int i=0; i<m_pageCount; i++) {
-        m_current_page = [self getPDFPage:i];
-        
-        
-        [self setCurPage:m_current_page];
-        
-        m_bAddStamp = TRUE;
-        int nCount=0;
-        FPDF_Annot_GetCount(m_current_page,&nCount);
-        
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                             NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSString *documentsPath = [documentsDirectory
-                                   stringByAppendingPathComponent:@"myimage.png"];
-        
-        [fileManager createFileAtPath:documentsPath contents:self.signatureData attributes:nil];
-        
-        NSLog(@"%@",documentsPath);
-        const char* jpgpath = [documentsPath UTF8String];
-        FILE* pf = fopen(jpgpath , "rb");
-        
-        if(!pf)
-            return;
-        fseek(pf, 0,SEEK_END);
-        int len = ftell(pf);
-        fseek(pf,0,SEEK_SET);
-        unsigned char* buf = (unsigned char*)malloc(len);
-        fread(buf, 1, len, pf);
-        fclose(pf);
-        FPDF_ANNOT_STAMPINFO stampInfo;
-        stampInfo.color = 0xff0000;
-        stampInfo.size = sizeof(stampInfo);
-        
-        
-        NSString* su=@"Signature";
-        
-        const unsigned char *intext=(unsigned char*)[su UTF8String];
-        
-        stampInfo.name[0]=intext[0];
-        stampInfo.name[1]=intext[1];
-        stampInfo.name[2]=intext[2];
-        stampInfo.name[3]=intext[3];
-        stampInfo.name[4]=intext[4];
-        stampInfo.name[5]=intext[5];
-        stampInfo.name[6]=intext[6];
-        stampInfo.name[7]=intext[7];
-        stampInfo.name[8]=intext[8];
-        stampInfo.name[9]=intext[9];
-        stampInfo.name[10]='\0';
-        stampInfo.name[11]='\0';
-        stampInfo.name[12]='\0';
-        stampInfo.name[13]='\0';
-        stampInfo.name[14]='\0';
-        stampInfo.name[15]='\0';
-        stampInfo.name[16]='\0';
-        stampInfo.name[17]='\0';
-        stampInfo.name[18]='\0';
-        stampInfo.name[19]='\0';
-        stampInfo.name[20]='\0';
-        stampInfo.name[21]='\0';
-        stampInfo.name[22]='\0';
-        stampInfo.name[23]='\0';
-        stampInfo.name[24]='\0';
-        stampInfo.name[25]='\0';
-        
-        FS_RECTF rect = {static_cast<FS_FLOAT>(ptRightBottom.x - m_pdfview.annotationSignWidth/2), static_cast<FS_FLOAT>(ptRightBottom.y -m_pdfview.annotationSignHeight/2),static_cast<FS_FLOAT>(ptRightBottom.x+ m_pdfview.annotationSignWidth/2),static_cast<FS_FLOAT>(ptRightBottom.y+m_pdfview.annotationSignHeight/2)};
-        
-        stampInfo.rect = rect;
-        stampInfo.imgtype = FPDF_IMAGETYPE_JPG; //bmp=1 jpg = 2
-        
-        
-        
-        stampInfo.imgdatasize = len;
-        stampInfo.imgdata = (unsigned char*)buf;
-        
-        m_nAnnotIndex--;
-        //}
-        
-        stampx=ptRightBottom.x;
-        stampy=ptRightBottom.y;
-        FPDF_Annot_Add(m_current_page, FPDF_ANNOTTYPE_STAMP, &stampInfo, sizeof(stampInfo), (FPDF_ANNOT*)&m_nAnnotIndex);
-        m_nAnnotIndex++;
-        free(buf);
-        NSString* dir  = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-        NSString* path = [dir stringByAppendingString:@"/FoxitSaveAnnotation.pdf"];
-        
-        
-        const char* file = [path UTF8String];
-        
-        FILE* fp = fopen(file, "wb");
-        FS_FILEWRITE fw;
-        fw.clientData = fp;
-        fw.Flush = FSFileWrite_Flush;
-        fw.GetSize = FSFileWrite_GetSize;
-        fw.WriteBlock = FSFileWrite_WriteBlock;
-        
-        FPDF_Doc_SaveAs(m_fpdfdoc, &fw, FPDF_SAVEAS_INCREMENTAL, NULL);
-        fclose(fp);
-        [m_pdfview setNeedsDisplay];
-    }
-}
 
 -(void)Sign:(CGPoint)ptLeftTop secondPoint:(CGPoint)ptRightBottom previousPoint:(CGPoint)prevPt{
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -1135,7 +926,7 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
                 
                 UIButton *saveNote = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                 [saveNote addTarget:self action:@selector(saveCustomView:) forControlEvents:UIControlEventTouchUpInside];
-                [saveNote setTitle:@"Save" forState:UIControlStateNormal];
+                [saveNote setTitle:NSLocalizedString(@"Save", @"Save") forState:UIControlStateNormal];
                 [saveNote setFrame:CGRectMake(20, 200, 100, 40)];
                 [saveNote setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
                 saveNote.backgroundColor=mainDelegate.buttonColor;
@@ -1144,7 +935,7 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
                 
                 UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                 [clearButton addTarget:self action:@selector(clear) forControlEvents:UIControlEventTouchUpInside];
-                [clearButton setTitle:@"Clear" forState:UIControlStateNormal];
+                [clearButton setTitle:NSLocalizedString(@"Clear", @"Clear") forState:UIControlStateNormal];
                 [clearButton setFrame:CGRectMake(saveNote.frame.origin.x+saveNote.frame.size.width+15, saveNote.frame.origin.y, saveNote.frame.size.width, 40)];
                 [clearButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
                 clearButton.backgroundColor=mainDelegate.buttonColor;
@@ -1152,7 +943,7 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
                 
                 UIButton *dismissButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
                 [dismissButton addTarget:self action:@selector(dismissCustomView:) forControlEvents:UIControlEventTouchUpInside];
-                [dismissButton setTitle:@"Close" forState:UIControlStateNormal];
+                [dismissButton setTitle:NSLocalizedString(@"Close", @"Close") forState:UIControlStateNormal];
                 [dismissButton setFrame:CGRectMake(clearButton.frame.origin.x+clearButton.frame.size.width+15, saveNote.frame.origin.y, saveNote.frame.size.width, 40)];
                 [dismissButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
                 dismissButton.backgroundColor=mainDelegate.buttonColor;
@@ -1161,6 +952,12 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
                 
                 textView = [[UITextView alloc] initWithFrame:CGRectMake(20, 20, 340, 150)];
                 [textView setText:achived_string];
+                if([[mainDelegate.IpadLanguage lowercaseString] isEqualToString:@"ar"])
+                {
+                    textView.textAlignment=NSTextAlignmentRight;
+                    [dismissButton setFrame:CGRectMake(20, 200, 100, 40)];
+                    saveNote.frame=CGRectMake(clearButton.frame.origin.x+clearButton.frame.size.width+15, dismissButton.frame.origin.y, dismissButton.frame.size.width, 40);
+                }
                 [myCustomView addSubview:textView];
                 
                 [m_pdfview addSubview:myCustomView];
@@ -1399,8 +1196,8 @@ textView.text=@"";
 -(void)searchHighlightArray:(CGPoint)pt state:(NSString*)state index:(int)index{
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     for(HighlightClass* obj in mainDelegate.Highlights){
+        if(obj.index == index &&  [self getPDFPage:obj.PageNb]==m_current_page){
         
-        if(obj.index == index){
             if([state isEqualToString:@"erase.."]){
                 if(![obj.status isEqualToString:@"DELETE"])
                     [mainDelegate.Highlights removeObject:obj];
@@ -1418,7 +1215,7 @@ textView.text=@"";
         }
     }
     for(HighlightClass* obj in mainDelegate.IncomingHighlights){
-        if(obj.index == index){
+       if(obj.index == index &&  [self getPDFPage:obj.PageNb]==m_current_page){
             if([state isEqualToString:@"erase.."]){
                 obj.status=@"DELETE";
             }
@@ -1454,14 +1251,68 @@ textView.text=@"";
     m_nAnnotIndex=count;
     }
 }
+-(CGPoint)searchNotesArray:(CGPoint)pt state:(NSString*)state{
+    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    for(note* obj in mainDelegate.Notes){
+        if(pt.x<=obj.abscissa+12 && pt.x>=obj.abscissa-12 && pt.y<=obj.ordinate+16 && pt.y>=obj.ordinate-16&&  [self getPDFPage:obj.PageNb]==m_current_page){
+            foundNote=YES;
+            CGPoint pt1=CGPointMake(obj.abscissa,obj.ordinate);
+            if([state isEqualToString:@"erase.."]){
+                if([obj.status isEqualToString:@"NEW"])
+                    [mainDelegate.Notes removeObject:obj];
+                else
+                    obj.status=@"DELETE";
+                mainDelegate.isAnnotated=YES;
+                
+            }
+            else
+                if(![state isEqualToString:@"search.."]){
+                    
+                    int index=[mainDelegate.Notes indexOfObject:obj];
+                    obj.note=state;
+                    [mainDelegate.Notes setObject:obj atIndexedSubscript:index];
+                    mainDelegate.isAnnotated=YES;
+                }
+            return pt1;
+        }
+    }
+    CGPoint pt1=pt;
+    for(note* obj in mainDelegate.IncomingNotes){
+        if(pt.x<=obj.abscissa+12 && pt.x>=obj.abscissa-12 && pt.y<=obj.ordinate+16 && pt.y>=obj.ordinate-16&&  [self getPDFPage:obj.PageNb]==m_current_page&&!foundNote){
+            foundNote=YES;
+            pt1=CGPointMake(obj.abscissa,obj.ordinate);
+            
+            if([state isEqualToString:@"erase.."]){
+                obj.status=@"DELETE";
+            }
+            else
+                if(![state isEqualToString:@"search.."]){
+                    obj.note=state;
+                    obj.status=@"UPDATE";
+                }
+            if(![state isEqualToString:@"search.."]){
+                [mainDelegate.Notes addObject:obj];
+                [mainDelegate.IncomingNotes removeObject:obj];
+                mainDelegate.isAnnotated=YES;
+            }
+            return pt1;
+            
+        }
+    }
+    return pt1;
+    
+}
 -(void)eraseAnnotation:(CGPoint)pt1 secondPoint:(CGPoint)pt2 {
+    foundNote=NO;
     FPDF_ANNOT annot;
     
     pt1=[self searchNotesArray:pt1 state:@"erase.."];
     FPDF_Annot_GetAtPos(m_current_page, pt1.x,pt1.y, &annot);
-    int index=0;
-    FPDF_Annot_GetIndex(m_current_page, annot, &index);
-    [self searchHighlightArray:pt1 state:@"erase.." index:index];
+    if(!foundNote){
+        int index=0;
+        FPDF_Annot_GetIndex(m_current_page, annot, &index);
+        [self searchHighlightArray:pt1 state:@"erase.." index:index];
+    }
     FPDF_Annot_Delete(m_current_page,annot);
     [m_pdfview setNeedsDisplay];
     //[self deleteAnnot];
@@ -1511,5 +1362,214 @@ textView.text=@"";
    NSString* path = [dir stringByAppendingString:@"/FoxitSaveAnnotation.pdf"];
     [self.Attachment saveinDirectory:self.Correspondence.Id strUrl:path];
 }
+-(void)FreeSign:(CGPoint)ptLeftTop secondPoint:(CGPoint)ptRightBottom previousPoint:(CGPoint)prevPt{
+    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    //jis sign
+    
+    m_bAddStamp = TRUE;
+    int nCount=0;
+    FPDF_Annot_GetCount(m_current_page,&nCount);
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                         NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsPath = [documentsDirectory
+                               stringByAppendingPathComponent:@"myimage.png"];
+    
+    [fileManager createFileAtPath:documentsPath contents:self.signatureData attributes:nil];
+    
+    NSLog(@"%@",documentsPath);
+    const char* jpgpath = [documentsPath UTF8String];
+    FILE* pf = fopen(jpgpath , "rb");
+    
+    if(!pf)
+        return;
+    fseek(pf, 0,SEEK_END);
+    int len = ftell(pf);
+    fseek(pf,0,SEEK_SET);
+    unsigned char* buf = (unsigned char*)malloc(len);
+    fread(buf, 1, len, pf);
+    fclose(pf);
+    FPDF_ANNOT_STAMPINFO stampInfo;
+    stampInfo.color = 0xff0000;
+    stampInfo.size = sizeof(stampInfo);
+    
+    
+    NSString* su=@"Signature";
+    
+    const unsigned char *intext=(unsigned char*)[su UTF8String];
+    
+    stampInfo.name[0]=intext[0];
+    stampInfo.name[1]=intext[1];
+    stampInfo.name[2]=intext[2];
+    stampInfo.name[3]=intext[3];
+    stampInfo.name[4]=intext[4];
+    stampInfo.name[5]=intext[5];
+    stampInfo.name[6]=intext[6];
+    stampInfo.name[7]=intext[7];
+    stampInfo.name[8]=intext[8];
+    stampInfo.name[9]=intext[9];
+    stampInfo.name[10]='\0';
+    stampInfo.name[11]='\0';
+    stampInfo.name[12]='\0';
+    stampInfo.name[13]='\0';
+    stampInfo.name[14]='\0';
+    stampInfo.name[15]='\0';
+    stampInfo.name[16]='\0';
+    stampInfo.name[17]='\0';
+    stampInfo.name[18]='\0';
+    stampInfo.name[19]='\0';
+    stampInfo.name[20]='\0';
+    stampInfo.name[21]='\0';
+    stampInfo.name[22]='\0';
+    stampInfo.name[23]='\0';
+    stampInfo.name[24]='\0';
+    stampInfo.name[25]='\0';
+    
+    FS_RECTF rect = {static_cast<FS_FLOAT>(ptRightBottom.x - m_pdfview.annotationSignWidth/2), static_cast<FS_FLOAT>(ptRightBottom.y -m_pdfview.annotationSignHeight/2),static_cast<FS_FLOAT>(ptRightBottom.x+ m_pdfview.annotationSignWidth/2),static_cast<FS_FLOAT>(ptRightBottom.y+m_pdfview.annotationSignHeight/2)};
+    
+    stampInfo.rect = rect;
+    stampInfo.imgtype = FPDF_IMAGETYPE_JPG; //bmp=1 jpg = 2
+    
+    
+    
+    stampInfo.imgdatasize = len;
+    stampInfo.imgdata = (unsigned char*)buf;
+    
+    m_nAnnotIndex--;
+    //}
+    
+    stampx=ptRightBottom.x;
+    stampy=ptRightBottom.y;
+    FPDF_Annot_Add(m_current_page, FPDF_ANNOTTYPE_STAMP, &stampInfo, sizeof(stampInfo), (FPDF_ANNOT*)&m_nAnnotIndex);
+    m_nAnnotIndex++;
+    free(buf);
+    NSString* dir  = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    NSString* path = [dir stringByAppendingString:@"/FoxitSaveAnnotation.pdf"];
+    
+    
+    const char* file = [path UTF8String];
+    
+    FILE* fp = fopen(file, "wb");
+    FS_FILEWRITE fw;
+    fw.clientData = fp;
+    fw.Flush = FSFileWrite_Flush;
+    fw.GetSize = FSFileWrite_GetSize;
+    fw.WriteBlock = FSFileWrite_WriteBlock;
+    
+    FPDF_Doc_SaveAs(m_fpdfdoc, &fw, FPDF_SAVEAS_INCREMENTAL, NULL);
+    fclose(fp);
+    [m_pdfview setNeedsDisplay];
+}
 
+-(void)FreeSignAll:(CGPoint)ptLeftTop secondPoint:(CGPoint)ptRightBottom previousPoint:(CGPoint)prevPt{
+    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    //jis sign
+    
+    for (int i=0; i<m_pageCount; i++) {
+        m_current_page = [self getPDFPage:i];
+        
+        
+        [self setCurPage:m_current_page];
+        
+        m_bAddStamp = TRUE;
+        int nCount=0;
+        FPDF_Annot_GetCount(m_current_page,&nCount);
+        
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                             NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *documentsPath = [documentsDirectory
+                                   stringByAppendingPathComponent:@"myimage.png"];
+        
+        [fileManager createFileAtPath:documentsPath contents:self.signatureData attributes:nil];
+        
+        NSLog(@"%@",documentsPath);
+        const char* jpgpath = [documentsPath UTF8String];
+        FILE* pf = fopen(jpgpath , "rb");
+        
+        if(!pf)
+            return;
+        fseek(pf, 0,SEEK_END);
+        int len = ftell(pf);
+        fseek(pf,0,SEEK_SET);
+        unsigned char* buf = (unsigned char*)malloc(len);
+        fread(buf, 1, len, pf);
+        fclose(pf);
+        FPDF_ANNOT_STAMPINFO stampInfo;
+        stampInfo.color = 0xff0000;
+        stampInfo.size = sizeof(stampInfo);
+        
+        
+        NSString* su=@"Signature";
+        
+        const unsigned char *intext=(unsigned char*)[su UTF8String];
+        
+        stampInfo.name[0]=intext[0];
+        stampInfo.name[1]=intext[1];
+        stampInfo.name[2]=intext[2];
+        stampInfo.name[3]=intext[3];
+        stampInfo.name[4]=intext[4];
+        stampInfo.name[5]=intext[5];
+        stampInfo.name[6]=intext[6];
+        stampInfo.name[7]=intext[7];
+        stampInfo.name[8]=intext[8];
+        stampInfo.name[9]=intext[9];
+        stampInfo.name[10]='\0';
+        stampInfo.name[11]='\0';
+        stampInfo.name[12]='\0';
+        stampInfo.name[13]='\0';
+        stampInfo.name[14]='\0';
+        stampInfo.name[15]='\0';
+        stampInfo.name[16]='\0';
+        stampInfo.name[17]='\0';
+        stampInfo.name[18]='\0';
+        stampInfo.name[19]='\0';
+        stampInfo.name[20]='\0';
+        stampInfo.name[21]='\0';
+        stampInfo.name[22]='\0';
+        stampInfo.name[23]='\0';
+        stampInfo.name[24]='\0';
+        stampInfo.name[25]='\0';
+        
+        FS_RECTF rect = {static_cast<FS_FLOAT>(ptRightBottom.x - m_pdfview.annotationSignWidth/2), static_cast<FS_FLOAT>(ptRightBottom.y -m_pdfview.annotationSignHeight/2),static_cast<FS_FLOAT>(ptRightBottom.x+ m_pdfview.annotationSignWidth/2),static_cast<FS_FLOAT>(ptRightBottom.y+m_pdfview.annotationSignHeight/2)};
+        
+        stampInfo.rect = rect;
+        stampInfo.imgtype = FPDF_IMAGETYPE_JPG; //bmp=1 jpg = 2
+        
+        
+        
+        stampInfo.imgdatasize = len;
+        stampInfo.imgdata = (unsigned char*)buf;
+        
+        m_nAnnotIndex--;
+        //}
+        
+        stampx=ptRightBottom.x;
+        stampy=ptRightBottom.y;
+        FPDF_Annot_Add(m_current_page, FPDF_ANNOTTYPE_STAMP, &stampInfo, sizeof(stampInfo), (FPDF_ANNOT*)&m_nAnnotIndex);
+        m_nAnnotIndex++;
+        free(buf);
+        NSString* dir  = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+        NSString* path = [dir stringByAppendingString:@"/FoxitSaveAnnotation.pdf"];
+        
+        
+        const char* file = [path UTF8String];
+        
+        FILE* fp = fopen(file, "wb");
+        FS_FILEWRITE fw;
+        fw.clientData = fp;
+        fw.Flush = FSFileWrite_Flush;
+        fw.GetSize = FSFileWrite_GetSize;
+        fw.WriteBlock = FSFileWrite_WriteBlock;
+        
+        FPDF_Doc_SaveAs(m_fpdfdoc, &fw, FPDF_SAVEAS_INCREMENTAL, NULL);
+        fclose(fp);
+        [m_pdfview setNeedsDisplay];
+    }
+}
 @end

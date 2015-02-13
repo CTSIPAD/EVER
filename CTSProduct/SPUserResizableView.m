@@ -255,9 +255,9 @@ typedef struct CGPointSPUserResizableViewAnchorPointPair {
         
     }
     else{
-        [delegate DisableSwipe];
+        
         if(contentView!=nil){
-            
+            [delegate DisableSwipe];
             self.contentView.canvas.layer.borderColor = [UIColor yellowColor].CGColor;
             
         }
@@ -377,13 +377,13 @@ typedef struct CGPointSPUserResizableViewAnchorPointPair {
     
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         [self becomeFirstResponder];
-        UIMenuItem *copy = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"clear") action:@selector(clear)];
+        UIMenuItem *clear = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"clear") action:@selector(clear)];
         UIMenuItem *cancel = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"cancel") action:@selector(cancel)];
         UIMenuItem *duplicate = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Sign.Duplicate", @"Duplicate on all page") action:@selector(duplicate)];
-        UIMenuItem *copyy = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Sign.ClearDuplicated", @"Remove Duplicate signature") action:@selector(RemoveAllSignatures)];
+        UIMenuItem *duplicateAll = [[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"Sign.ClearDuplicated", @"Remove Duplicate signature") action:@selector(RemoveAllSignatures)];
 
         UIMenuController *menu = [UIMenuController sharedMenuController];
-        NSMutableArray* array=[NSMutableArray arrayWithObjects:copy,cancel,duplicate,copyy, nil];
+        NSMutableArray* array=[NSMutableArray arrayWithObjects:duplicate,duplicateAll,clear,cancel, nil];
         [menu setMenuItems:array];
         
         

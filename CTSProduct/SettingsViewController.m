@@ -165,6 +165,7 @@
             break;
         case 2:
             if (!mainDelegate.isOfflineMode) {
+                
                 NSData *imageData= [NSData dataWithContentsOfFile:mainDelegate.logFilePath] ;
 
                 [SVProgressHUD showWithStatus:NSLocalizedString(@"Alert.Loading",@"Uploading ...") maskType:SVProgressHUDMaskTypeBlack];

@@ -1296,6 +1296,9 @@
 					A2F232E219557C5000CA09DD = {
 						DevelopmentTeam = 4GWU23F735;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.InterAppAudio = {
 								enabled = 0;
 							};

@@ -3598,7 +3598,7 @@ typedef enum{
 
     if(m_pdfview.handsign){
         m_pdfview.btnSign=NO;
-        [self ShowMessage:@"you already chosen hand Signature.\nPlease save or cancel Default hand signature first."];
+        [self ShowMessage:NSLocalizedString(@"HandSignAlreadyChosen", @"you already chosen hand Signature.\n\nPlease save or cancel Default hand signature first.")];
         return;
     }
   //  [self DisableSwipe];
@@ -3664,7 +3664,8 @@ typedef enum{
     if(m_pdfview.btnSign){
         
         m_pdfview.handsign=NO;
-        [self ShowMessage:@"you already chosen Default Signature.\nPlease save or cancel Default signature first."];
+        
+        [self ShowMessage:NSLocalizedString(@"DefaultSignAlreadyChosen", @"you already chosen Default Signature.\n\nPlease save or cancel Default signature first.")];
         return;
     }
     float factor;
