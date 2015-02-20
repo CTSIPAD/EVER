@@ -870,7 +870,7 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
                 
                 UIView *myCustomView = [[UIView alloc] initWithFrame:CGRectMake(180, 150, 380, 250)];
             
-                [myCustomView setBackgroundColor:mainDelegate.bgBlueColor];
+                [myCustomView setBackgroundColor:mainDelegate.buttonColor];
                 [myCustomView setAlpha:0.0f];
                 
                 
@@ -880,7 +880,7 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
                 [saveNote setTitle:NSLocalizedString(@"Save", @"Save") forState:UIControlStateNormal];
                 [saveNote setFrame:CGRectMake(20, 200, 100, 40)];
                 [saveNote setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-                saveNote.backgroundColor=mainDelegate.buttonColor;
+                saveNote.backgroundColor=mainDelegate.selectedInboxColor;
                 [myCustomView addSubview:saveNote];
                 
                 
@@ -889,7 +889,7 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
                 [clearButton setTitle:NSLocalizedString(@"Clear", @"Clear") forState:UIControlStateNormal];
                 [clearButton setFrame:CGRectMake(saveNote.frame.origin.x+saveNote.frame.size.width+15, saveNote.frame.origin.y, saveNote.frame.size.width, 40)];
                 [clearButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-                clearButton.backgroundColor=mainDelegate.buttonColor;
+                clearButton.backgroundColor=mainDelegate.selectedInboxColor;
                 [myCustomView addSubview:clearButton];
                 
                 UIButton *dismissButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -897,7 +897,7 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
                 [dismissButton setTitle:NSLocalizedString(@"Close", @"Close") forState:UIControlStateNormal];
                 [dismissButton setFrame:CGRectMake(clearButton.frame.origin.x+clearButton.frame.size.width+15, saveNote.frame.origin.y, saveNote.frame.size.width, 40)];
                 [dismissButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-                dismissButton.backgroundColor=mainDelegate.buttonColor;
+                dismissButton.backgroundColor=mainDelegate.selectedInboxColor;
                 [myCustomView addSubview:dismissButton];
                 
                 

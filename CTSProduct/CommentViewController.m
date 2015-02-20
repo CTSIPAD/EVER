@@ -55,7 +55,7 @@
         self.view.clipsToBounds=YES;
         self.view.layer.borderWidth=1.0;
         self.view.layer.borderColor=[[UIColor grayColor]CGColor];
-        self.view.backgroundColor=mainDelegate.bgBlueColor;
+        self.view.backgroundColor=mainDelegate.buttonColor;
         UILabel *Titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, frame.size.width-20, 20)];
 
         NSString * nameAct=[NSString stringWithFormat:@"%@",self.Action.label];
@@ -82,7 +82,7 @@
             txtNote.frame= CGRectMake(10, 55, frame.size.width-35, frame.size.height-150);
         txtNote.font = [UIFont systemFontOfSize:15];
         txtNote.delegate = self;
-        txtNote.backgroundColor=mainDelegate.textColor;
+        txtNote.backgroundColor=mainDelegate.SearchViewColors;
         txtNote.autocorrectionType = UITextAutocorrectionTypeNo;
         txtNote.keyboardType = UIKeyboardTypeDefault;
         txtNote.returnKeyType = UIReturnKeyDone;
@@ -101,7 +101,7 @@
         [closeButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
         //[closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [closeButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-        closeButton.backgroundColor=mainDelegate.buttonColor;
+        closeButton.backgroundColor=mainDelegate.selectedInboxColor;
         
         UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
@@ -114,7 +114,7 @@
         [saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
         //[saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [saveButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-        saveButton.backgroundColor=mainDelegate.buttonColor;
+        saveButton.backgroundColor=mainDelegate.selectedInboxColor;
         
         if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
             lblNote.textAlignment=NSTextAlignmentRight;

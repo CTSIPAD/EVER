@@ -87,7 +87,7 @@ static int count;
         self.view.layer.borderWidth=1.0;
         self.view.layer.borderColor=[[UIColor grayColor]CGColor];
  
-        self.view.backgroundColor=mainDelegate.bgBlueColor;
+        self.view.backgroundColor=mainDelegate.buttonColor;
         UILabel *Titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, frame.size.width-20, 20)];
         
         Titlelabel.text = NSLocalizedString(@"UploadAttachment",@"Upload Attachment");
@@ -123,7 +123,7 @@ static int count;
         [closeButton setTitle:NSLocalizedString(@"Cancel",@"Cancel") forState:UIControlStateNormal];
         [closeButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
         [closeButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-        closeButton.backgroundColor=mainDelegate.buttonColor;
+        closeButton.backgroundColor=mainDelegate.selectedInboxColor;
         
         UIButton *uploadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
@@ -135,7 +135,7 @@ static int count;
         [uploadButton setTitle:NSLocalizedString(@"Upload",@"Upload") forState:UIControlStateNormal];
         [uploadButton addTarget:self action:@selector(upload) forControlEvents:UIControlEventTouchUpInside];
         [uploadButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-        uploadButton.backgroundColor=mainDelegate.buttonColor;
+        uploadButton.backgroundColor=mainDelegate.selectedInboxColor;
         
 
         UILabel *attachment=[[UILabel alloc] initWithFrame:CGRectMake(15, 220, 200, 40)];
@@ -151,7 +151,7 @@ static int count;
         txtAttachmentName.returnKeyType = UIReturnKeyDone;
         txtAttachmentName.clearButtonMode = UITextFieldViewModeWhileEditing;
         txtAttachmentName.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-        txtAttachmentName.backgroundColor=mainDelegate.textColor;
+        txtAttachmentName.backgroundColor=mainDelegate.SearchViewColors;
         UIView *paddingView=[[UIView alloc] initWithFrame:CGRectMake(0, 0,10 ,35)];
         if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
             txtAttachmentName.rightViewMode=UITextFieldViewModeAlways;

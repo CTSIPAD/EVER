@@ -56,6 +56,9 @@
     int barWidth;
     int arabicBarWidth;
     int nameLableX;
+    UILabel* DateTimeLabel;
+    UIImageView* imageview;
+    UIImage* clockImage;
 }
 
 -(id)init
@@ -88,20 +91,20 @@
     
     if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
         if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
-            mainDelegate.logoView.frame=CGRectMake([UIScreen mainScreen].bounds.size.width+20, 5, 200, 100);
+            mainDelegate.logoView.frame=CGRectMake([UIScreen mainScreen].bounds.size.height-logoImage.size.width-20, 10, logoImage.size.width, logoImage.size.height);
         }
         else
         {
             if(UIInterfaceOrientationIsPortrait(orient))
-                mainDelegate.logoView.frame=CGRectMake([UIScreen mainScreen].bounds.size.height-220, 5, 200, 100);
+                mainDelegate.logoView.frame=CGRectMake([UIScreen mainScreen].bounds.size.height-logoImage.size.width-20, 10, logoImage.size.width, logoImage.size.height);
             else
-                mainDelegate.logoView.frame=CGRectMake([UIScreen mainScreen].bounds.size.width-220, 5, 200, 100);
+                mainDelegate.logoView.frame=CGRectMake([UIScreen mainScreen].bounds.size.width-logoImage.size.width-20, 10,logoImage.size.width, logoImage.size.height);
         }
         origineX=10;
     }
     else
     {
-        mainDelegate.logoView.frame=CGRectMake(10, 5, 200, 100);
+        mainDelegate.logoView.frame=CGRectMake(10, 10, logoImage.size.width, logoImage.size.height);
         if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
             origineX=60;
         }else{
@@ -114,9 +117,19 @@
         nameLableWidth=100;
         barWidth=140;
 
+    
     mainDelegate.barView=[self createBarView];
+    clockImage=[UIImage imageNamed:@"clock.png"];
+     DateTimeLabel=[[UILabel alloc]initWithFrame:CGRectMake(mainDelegate.barView.frame.origin.x+mainDelegate.barView.frame.size.width-235, mainDelegate.barView.frame.origin.y+mainDelegate.barView.frame.size.height, 235, 40)];
+    imageview=[[UIImageView alloc]initWithFrame:CGRectMake(DateTimeLabel.frame.origin.x-clockImage.size.width, DateTimeLabel.frame.origin.y+(DateTimeLabel.frame.size.height/2)-clockImage.size.height/2, clockImage.size.width, clockImage.size.height)];
+    imageview.image=clockImage;
+    DateTimeLabel.textColor=mainDelegate.SearchLabelsColor;
+    DateTimeLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:16.0];
+    DateTimeLabel.textAlignment=NSTextAlignmentCenter;
     [self.view addSubview: mainDelegate.logoView];
     [self.view addSubview: mainDelegate.barView];
+    [self.view addSubview: imageview];
+    [self.view addSubview: DateTimeLabel];
     
     
     
@@ -127,10 +140,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [self SyncActions];
+    [self updateTime];
 }
 
-
+-(void)updateTime
+{
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"EEEE dd MMM | hh:mm:ss "];
+    NSString* CurrentDT=[formatter stringFromDate:[NSDate date]];
+    DateTimeLabel.text=CurrentDT;
+    [self performSelector:@selector(updateTime) withObject:self afterDelay:1.0];
+}
 
 -(UIView*) createBarView
 {
@@ -326,7 +349,7 @@
         }
         
     }
-    barView.backgroundColor=[UIColor colorWithRed:12/255.0f green:93/255.0f blue:174/255.0f alpha:1.0];
+    barView.backgroundColor=mainDelegate.cellColor;
     return barView;
     
     
@@ -1086,6 +1109,8 @@
            [mainDelegate.barView setNeedsDisplay];
             [self.view addSubview:mainDelegate.barView];
         enableSyncButton=true;
+    DateTimeLabel.frame=CGRectMake(mainDelegate.barView.frame.origin.x+mainDelegate.barView.frame.size.width-235, mainDelegate.barView.frame.origin.y+mainDelegate.barView.frame.size.height, 235, 40);
+    imageview.frame=CGRectMake(DateTimeLabel.frame.origin.x-clockImage.size.width, DateTimeLabel.frame.origin.y+(DateTimeLabel.frame.size.height/2)-clockImage.size.height/2, clockImage.size.width, clockImage.size.height);
 
 }
 

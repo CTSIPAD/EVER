@@ -28,7 +28,7 @@
 @synthesize AnnotationsMode=_AnnotationsMode;
 @synthesize Highlights =_Highlights,Notes=_Notes,attachmentType=_attachmentType,Char_count;
 @synthesize IncomingHighlights =_IncomingHighlights,IncomingNotes=_IncomingNotes;
-@synthesize textColor,bgColor,buttonColor,titleColor,bgBlueColor,cellColor,thumbnailDefined;
+@synthesize textColor,bgColor,buttonColor,titleColor,cellColor,iconViewColor,CorrespondenceCellColor,TablebgColor,metaDataCellColor,selectedInboxColor,thumbnailDefined;
 @synthesize barView,logoView,logFilePath;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -80,15 +80,21 @@
     self.QuickActionClicked=NO;
     self.Notes=[[NSMutableArray alloc]init];
     
-    CGFloat red = 173.0f / 255.0f;
-    CGFloat green = 208.0f / 255.0f;
-    CGFloat blue = 238.0f / 255.0f;
     self.textColor=[UIColor colorWithRed:196.0f/255.0f green:223.0f/255.0f blue:242.0f/255.0f alpha:1.0f];
-    self.bgColor=[UIColor colorWithRed:228.0f/255.0f green:243.0f/255.0f blue:249.0f/255.0f alpha:1.0];
-    self.buttonColor=[UIColor colorWithRed:red green:green blue:blue alpha:1.0f];
-    self.titleColor=[UIColor colorWithRed:1.0f/255.0f green:50.0f/255.0f blue:102.0f/255.0f alpha:1.0f];
-    self.cellColor=[UIColor colorWithRed:12/255.0f green:93/255.0f blue:174/255.0f alpha:1.0];;
-    self.bgBlueColor=[UIColor colorWithRed:1.0f/255.0f green:49.0f/255.0f blue:97.0f/255.0f alpha:1.0];
+    self.TablebgColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"backGroundImg.png"]];
+    self.bgColor=[UIColor colorWithRed:188/255.0f green:213/255.0f blue:217/255.0f alpha:1.0];
+    self.buttonColor=[UIColor colorWithRed:27/255.0f green:109/255.0f blue:121/255.0f alpha:1.0];
+    self.titleColor=[UIColor colorWithRed:255/255.0f green:254/255.0f blue:255/255.0f alpha:1.0f];
+    self.SearchLabelsColor=[UIColor colorWithRed:84/255.0f green:93/255.0f blue:93/255.0f alpha:1.0f];
+    self.InboxCellColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"cellbg.png"]];
+    self.InboxCellColor_ar=[UIColor colorWithPatternImage:[UIImage imageNamed:@"cellbg_ar.png"]];
+    self.cellColor=[UIColor colorWithRed:47/255.0f green:157/255.0f blue:172/255.0f alpha:1.0f];
+    self.metaDataCellColor=[UIColor colorWithRed:157/255.0f green:198/255.0f blue:204/255.0f alpha:1.0];
+    self.CorrespondenceCellColor=[UIColor colorWithRed:142/255.0f green:194/255.0f blue:200/255.0f alpha:1.0f];
+    self.SearchViewColors=[UIColor colorWithRed:141/255.0f green:194/255.0f blue:202/255.0f alpha:1.0f];
+    self.selectedInboxColor=[UIColor colorWithRed:201/255.0f green:83/255.0f blue:55/255.0f alpha:1.0];;
+    self.iconViewColor=[UIColor colorWithRed:118/255.0f green:181/255.0f blue:190/255.0f alpha:1.0];;
+
     thumbnailDefined=NO;
     [application setStatusBarHidden:YES];
     return YES;

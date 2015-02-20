@@ -26,6 +26,7 @@
     NSUserDefaults *defaults;
     NSString* IconsCached;
     NSString* Password;
+    UIImage* LoginbtnImg;
     
 }
 
@@ -54,14 +55,16 @@
     /**** UserName TextView ******/
     
     self.txtUsername.autoresizingMask = UIViewAutoresizingNone;
-    self.txtUsername.layer.borderWidth=2;
-    self.txtUsername.backgroundColor=[UIColor whiteColor];
-    self.txtUsername.layer.borderColor=[[UIColor grayColor] CGColor];
-    self.txtUsername.layer.cornerRadius=10;
-    self.txtUsername.clipsToBounds=YES;
+//    self.txtUsername.layer.borderWidth=2;
+    self.txtUsername.backgroundColor=[UIColor clearColor];
+    self.txtUsername.layer.borderColor=[[UIColor clearColor] CGColor];
+//    self.txtUsername.layer.cornerRadius=10;
+//    self.txtUsername.clipsToBounds=YES;
     self.txtUsername.returnKeyType = UIReturnKeyGo;
     self.txtUsername.autocorrectionType=FALSE;
     self.txtUsername.text=@"";
+    self.txtUsername.textColor=[UIColor colorWithRed:48/255.0 green:157/255.0 blue:174/255.0 alpha:1];
+    [self.txtUsername setValue:[UIColor colorWithRed:48/255.0 green:157/255.0 blue:174/255.0 alpha:1] forKeyPath:@"_placeholderLabel.textColor"];
     
     /**** END  UserName TextView ******/
     
@@ -69,19 +72,21 @@
     /**** Password TextView ******/
     
     self.txtPassword.autoresizingMask = UIViewAutoresizingNone;
-    self.txtPassword.layer.borderWidth=2;
-    self.txtPassword.backgroundColor=[UIColor whiteColor];
-    self.txtPassword.layer.borderColor=[[UIColor grayColor] CGColor];
-    self.txtPassword.layer.cornerRadius=10;
-    self.txtPassword.clipsToBounds=YES;
+//    self.txtPassword.layer.borderWidth=2;
+    self.txtPassword.backgroundColor=[UIColor clearColor];
+    self.txtPassword.layer.borderColor=[[UIColor clearColor] CGColor];
+//    self.txtPassword.layer.cornerRadius=10;
+//    self.txtPassword.clipsToBounds=YES;
     self.txtPassword.secureTextEntry=YES;
     self.txtPassword.returnKeyType = UIReturnKeyGo;
+    self.txtPassword.textColor=[UIColor colorWithRed:48/255.0 green:157/255.0 blue:174/255.0 alpha:1];
+    [self.txtPassword setValue:[UIColor colorWithRed:48/255.0 green:157/255.0 blue:174/255.0 alpha:1] forKeyPath:@"_placeholderLabel.textColor"];
     /****END Password TextView ******/
     UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 35)];
     UIView *paddingView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 35)];
     
     if([appDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
-        
+        LoginbtnImg=[UIImage imageNamed:@"Login_ar.png"];
         self.txtUsername.rightViewMode = UITextFieldViewModeAlways;
         self.txtPassword.rightViewMode = UITextFieldViewModeAlways;
         self.txtUsername.rightView= paddingView;
@@ -89,6 +94,7 @@
         
     }
     else{
+        LoginbtnImg=[UIImage imageNamed:@"Login.png"];
         self.txtUsername.leftViewMode = UITextFieldViewModeAlways;
         self.txtPassword.leftViewMode = UITextFieldViewModeAlways;
         self.txtUsername.leftView= paddingView;
@@ -100,18 +106,19 @@
     /**** LOGIN BUTTON ******/
     
     self.btnLogin.autoresizingMask = UIViewAutoresizingNone;
-    self.btnLogin.backgroundColor=[UIColor colorWithRed:37/255.0f green:96/255.0f blue:172/255.0f alpha:1.0];
+//    self.btnLogin.backgroundColor=[UIColor colorWithRed:37/255.0f green:96/255.0f blue:172/255.0f alpha:1.0];
     [self.btnLogin setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     CGFloat red = 0.0f / 255.0f;
     CGFloat green = 155.0f / 255.0f;
     CGFloat blue = 213.0f / 255.0f;
     [self.btnLogin setTitleColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0] forState:UIControlStateHighlighted];
-    self.btnLogin.layer.borderColor=[[UIColor grayColor] CGColor];
-    self.btnLogin.layer.cornerRadius=10;
-    if([appDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
+//    self.btnLogin.layer.borderColor=[[UIColor grayColor] CGColor];
+//    self.btnLogin.layer.cornerRadius=10;
+    if([appDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
+        self.btnLogin.titleLabel.text=@"تسجيل الدخول";
         [self.btnLogin.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:18]];
-    else
-        [self.btnLogin.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:24]];
+    }
+    
     
     
     /**** END LOGIN BUTTON ******/
@@ -121,10 +128,7 @@
     
     [self getLicense];
     
-    activityIndicatorObject=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    activityIndicatorObject.center=CGPointMake(517, 420);
-    activityIndicatorObject.transform = CGAffineTransformMakeScale(1.5, 1.5);
-    [self.view addSubview:activityIndicatorObject];
+    
     [self.view addSubview:self.txtUsername];
     
     
@@ -336,7 +340,7 @@
         }
             
         if(![user.ServerMessage isEqualToString:@"OK"]){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"error") message:user.ServerMessage delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnableToConnect", @"unable to connect server") message:user.ServerMessage delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
             [alert show];
             [defaults synchronize];
           //  self.txtUsername.text=@"";
@@ -498,6 +502,7 @@
             
             [UIView commitAnimations];
         }}
+    
     activityIndicatorObject.center=CGPointMake(btnLogin.frame.origin.x+btnLogin.frame.size.width+20,btnLogin.frame.origin.y+20);
     
 }
@@ -506,24 +511,29 @@
     if(interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)
     {
         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginPortrait.png"]];
-        self.txtUsername.frame=CGRectMake(220, 410, 350, 40);
-        self.txtPassword.frame=CGRectMake(220, 475, 350, 40);
+        self.txtUsername.frame=CGRectMake(157, 660, 470, 60);
+        self.txtPassword.frame=CGRectMake(157, 741, 470, 60);
         if([appDelegate.IpadLanguage isEqualToString:@"en"])
-            self.btnLogin.frame=CGRectMake(220, 540, 120, 50);
+            self.btnLogin.frame=CGRectMake(95, 850, LoginbtnImg.size.width, LoginbtnImg.size.height);
         else
-            self.btnLogin.frame=CGRectMake(430, 540, 140, 50);
+            self.btnLogin.frame=CGRectMake(self.txtUsername.frame.size.width+self.txtUsername.frame.origin.x-LoginbtnImg.size.width+20, 850,  LoginbtnImg.size.width, LoginbtnImg.size.height);
         
     }
     else if(interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight){
         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginLandscape.png"]];
-        self.txtUsername.frame=CGRectMake(350, 280, 350, 40);
-        self.txtPassword.frame=CGRectMake(350, 340, 350, 40);
+        self.txtUsername.frame=CGRectMake(675, 300, 255, 60);
+        self.txtPassword.frame=CGRectMake(675, 384, 255, 60);
         if([appDelegate.IpadLanguage isEqualToString:@"en"])
-            self.btnLogin.frame=CGRectMake(350, 400, 140, 50);
+            self.btnLogin.frame=CGRectMake(self.txtUsername.frame.origin.x-47, 490,  LoginbtnImg.size.width, LoginbtnImg.size.height);
         else
-            self.btnLogin.frame=CGRectMake(560, 400, 140, 50);
+            self.btnLogin.frame=CGRectMake(self.txtUsername.frame.size.width+self.txtUsername.frame.origin.x-LoginbtnImg.size.width+20, 490,  LoginbtnImg.size.width, LoginbtnImg.size.height);
         
     }
+    activityIndicatorObject=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicatorObject.color=[UIColor colorWithRed:48/255.0 green:157/255.0 blue:174/255.0 alpha:1];
+    activityIndicatorObject.center=CGPointMake(btnLogin.frame.origin.x+btnLogin.frame.size.width+20,btnLogin.frame.origin.y+20);
+    activityIndicatorObject.transform = CGAffineTransformMakeScale(1.5, 1.5);
+    [self.view addSubview:activityIndicatorObject];
 }
 
 

@@ -540,11 +540,8 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
     
     
 	assert(document != nil); // Must have a valid ReaderDocument
-    CGFloat red = 173.0f / 255.0f;
-    CGFloat green = 208.0f / 255.0f;
-    CGFloat blue = 238.0f / 255.0f;
-	//self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
-    self.view.backgroundColor=[UIColor colorWithRed:red green:green  blue:blue  alpha:1.0];
+    //self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+    self.view.backgroundColor=mainDelegate.bgColor;
 	CGRect viewRect = self.view.bounds; // View controller's view bounds
     
     
@@ -619,7 +616,7 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
     numberPages.titleLabel.font = [UIFont systemFontOfSize:12];
     [numberPages setTintColor:[UIColor whiteColor]];
     
-    numberPages.backgroundColor = [UIColor colorWithRed:1/255.0f green:49/255.0f  blue:97/255.0f  alpha:1.0];
+    numberPages.backgroundColor = mainDelegate.cellColor;
     if (!UIInterfaceOrientationIsPortrait([[UIDevice currentDevice]orientation])) {
         [self openMetaData];
         isMetadataVisible=YES;
@@ -1687,12 +1684,12 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
                             
                             
                         }
-                        [self ShowMessage:@"Saved Successfully"];
+                        [self ShowMessage:NSLocalizedString(@"Alert.SaveSuccess", @"Saved Successfully")];
                         [self dismiss];
                         
                     }
                 }else{
-                    [self ShowMessage:@"Saved Successfully"];
+                    [self ShowMessage:NSLocalizedString(@"Alert.SaveSuccess", @"Saved Successfully")];
                 }
                 
             });

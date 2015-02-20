@@ -31,11 +31,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [self.tableView setUserInteractionEnabled:NO];
-    [self.tableView setBackgroundColor:[UIColor whiteColor]];
+    [self.tableView setBackgroundColor:mainDelegate.metaDataCellColor];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"metadataCell"];
     
-    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     
 }
@@ -115,11 +115,11 @@
 {
     UIView *view = [[UIView alloc] init];
 
-    view.backgroundColor=mainDelegate.bgBlueColor;
+    view.backgroundColor=mainDelegate.cellColor;
     view.frame=CGRectMake(0, 0, 350, 50);
     
     UILabel *lblTitle=[[UILabel alloc]initWithFrame:CGRectMake(10, 10, cell.frame.size.width-20, 30)];
-    [lblTitle setBackgroundColor:mainDelegate.bgBlueColor];
+    [lblTitle setBackgroundColor:mainDelegate.cellColor];
     lblTitle.textColor=[UIColor whiteColor];
     lblTitle.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
     NSString *key=[NSString stringWithFormat:@"%d",section];
@@ -146,7 +146,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    cell.backgroundColor=[UIColor colorWithRed:239.0/255.0f green:239.0/255.0f blue:239.0/255.0f alpha:1.0];
+    cell.backgroundColor=mainDelegate.metaDataCellColor;
     NSString *key=[NSString stringWithFormat:@"%d",indexPath.section];
     NSDictionary *subDictionary = [properties objectForKey:key];
     
@@ -155,6 +155,8 @@
     NSDictionary *subSubDictionary=[subDictionary objectForKey:[keys objectAtIndex:0]];
     NSArray *subkeys=[subSubDictionary allKeys];
     cell.textLabel.text= [subSubDictionary objectForKey:[subkeys objectAtIndex:0]];
+    cell.textLabel.textColor=mainDelegate.SearchLabelsColor;
+
     cell.textLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:14];
     if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
         cell.textLabel.textAlignment=NSTextAlignmentRight;

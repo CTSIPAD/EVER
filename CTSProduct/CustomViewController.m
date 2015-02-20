@@ -34,9 +34,7 @@
 {
     [super viewDidLoad];
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    CGFloat red = 1.0f / 255.0f;
-    CGFloat green = 49.0f / 255.0f;
-    CGFloat blue = 97.0f / 255.0f;    self.tableView.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
+      self.tableView.backgroundColor = mainDelegate.buttonColor;
     
     [self.tableView setSeparatorColor:[UIColor whiteColor]];
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0,0,0,0)];

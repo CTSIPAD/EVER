@@ -84,8 +84,8 @@
     mainDelegate.attachmentSelected =0;
     mainDelegate.NbOfCorrToLoad=mainDelegate.SettingsCorrNb;
     self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-    self.tableView.backgroundColor=mainDelegate.bgColor;
-    self.tableView.separatorColor = mainDelegate.bgColor;
+    self.tableView.backgroundColor=mainDelegate.TablebgColor;
+    self.tableView.separatorColor = [UIColor clearColor];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"searchResultCell"];
     [self.tableView setContentInset:UIEdgeInsetsMake(0,0,0,0)];
     self.searchResult=mainDelegate.searchModule;
@@ -357,6 +357,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (mainDelegate.isOfflineMode) {
+        if(self.searchResult==nil)
+            return  1;
         return self.searchResult.correspondenceList.count;
     }
     if(self.searchResult.correspondenceList.count==0)
@@ -404,7 +406,18 @@
 }
 
 
-
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 5;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIImage* headImage=[UIImage imageNamed:@"tableheader.png"];
+    UIView* headerView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, headImage.size.width, headImage.size.height)];
+    UIImageView* imgView=[[UIImageView alloc]initWithImage:headImage];
+    [headerView addSubview:imgView];
+    return headerView;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(self.searchResult.correspondenceList.count==0){
@@ -468,7 +481,7 @@
             
             cell.backgroundColor =mainDelegate.bgColor;
             UIView *bgViewColor=[[UIView alloc] init];
-            bgViewColor.backgroundColor=[UIColor colorWithRed:47.0f / 255.0f green:129.0f / 255.0f blue:211.0f / 255.0f alpha:1.0];
+            bgViewColor.backgroundColor=mainDelegate.selectedInboxColor;
             cell.selectedBackgroundView=bgViewColor;
             
         }
@@ -480,7 +493,7 @@
                 }
                 [cell loadmore];
                 
-                cell.backgroundColor =[UIColor colorWithRed:1.0f/255.0f green:49.0f/255.0f blue:97.0f/255.0f alpha:1.0f];
+                cell.backgroundColor =mainDelegate.buttonColor;
                 
                 
                 

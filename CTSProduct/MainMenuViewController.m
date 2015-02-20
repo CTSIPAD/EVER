@@ -48,16 +48,18 @@
     
     [self.navigationController setNavigationBarHidden:TRUE];
     
-    CGFloat redsep = 12.0f / 255.0f;
-    CGFloat greensep = 93.0f / 255.0f;
-    CGFloat bluesep = 174.0f / 255.0f;
-    
-    UIColor *color=[UIColor colorWithRed:redsep green:greensep blue:bluesep alpha:1.0];
+    UIColor *color;
+    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"en"])
+        color=mainDelegate.InboxCellColor;
+    else
+        color=mainDelegate.InboxCellColor_ar;
+
     
     self.tableView.opaque=NO;
 
     [self.tableView setSeparatorInset:UIEdgeInsetsMake(0,0,0,0)];
-    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    self.tableView.separatorColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"separator.png"]];
+mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     menuItemsCount=mainDelegate.user.menu.count;
     if (mainDelegate.isOfflineMode) {
@@ -114,12 +116,12 @@
 //            return (764-20)/6;
 //        else  return 764/totalMenuItemsCount;
 //    }
-    return 155;
+    return 120;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 1.0;
+    return 0;
 }
 
 
@@ -130,9 +132,10 @@
 //    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((cell.frame.size.width-ICON_WIDTH)/3,15, ICON_WIDTH, ICON_HEIGHT) ];
+    UIImageView *imageView = [[UIImageView alloc] init];
     UILabel *labelText =[[UILabel alloc] initWithFrame:CGRectMake(2, imageView.frame.size.height+imageView.frame.origin.y+10, cell.frame.size.width-100, TITLE_HEIGHT)];
     labelText.textAlignment=  NSTextAlignmentCenter;
+    labelText.backgroundColor=[UIColor clearColor];
     labelText.textColor=[UIColor whiteColor];
     labelText.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
     labelText.layer.shadowOpacity = 0.6;
@@ -144,23 +147,51 @@
     UIView *bgColorView = [[UIView alloc] init];
     NSInteger rowsNumber=totalMenuItemsCount;
     if (indexPath.row==rowsNumber-x) {
-        imageView.image=[UIImage imageNamed:[NSString stringWithFormat:@"MainSearchimg.png"]];
+        UIImage *cellImage = [UIImage imageNamed:[NSString stringWithFormat:@"MainSearchimg.png"]];
+        imageView.image=cellImage;
+        if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"en"]){
+
+            imageView.frame=CGRectMake(30,60-(cellImage.size.height/2), cellImage.size.width, cellImage.size.height);
+        }
+        else{
+            imageView.frame=CGRectMake(cell.frame.size.width-cellImage.size.width-120,60-(cellImage.size.height/2), cellImage.size.width, cellImage.size.height);
+
+        }
         labelText.text=NSLocalizedString(@"Search",@"Search");
-        cell.backgroundColor = mainDelegate.cellColor;
+        
         
     }
     else
     {
-        cell.backgroundColor = mainDelegate.cellColor;
         NSData * data= [NSData dataWithBase64EncodedString:((CMenu*)mainDelegate.user.menu[indexPath.row]).icon];
         UIImage *cellImage = [UIImage imageWithData:data];
+        if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"en"]){
+
+        imageView.frame=CGRectMake(30,60-(cellImage.size.height/2), cellImage.size.width, cellImage.size.height);
+        }else{
+            imageView.frame=CGRectMake(cell.frame.size.width-cellImage.size.width-120,60-(cellImage.size.height/2), cellImage.size.width, cellImage.size.height);
+
+        }
         [imageView setImage:cellImage];
         labelText.text=((CMenu*)mainDelegate.user.menu[indexPath.row]).name;
         
     }
+    
+   
+
+    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"en"]){
+        cell.backgroundColor = mainDelegate.InboxCellColor;
+         labelText.frame=CGRectMake(90,60-TITLE_HEIGHT/2, cell.frame.size.width-190, TITLE_HEIGHT);
+    }
+    else{
+        cell.backgroundColor = mainDelegate.InboxCellColor_ar;
+        labelText.frame=CGRectMake(2,60-TITLE_HEIGHT/2, cell.frame.size.width-190, TITLE_HEIGHT);
+
+    }
+    
     [cell.contentView addSubview:imageView];
     [cell.contentView addSubview:labelText];
-     bgColorView.backgroundColor = [UIColor colorWithRed:47.0f / 255.0f green:129.0f / 255.0f blue:211.0f / 255.0f alpha:1.0];
+     bgColorView.backgroundColor = mainDelegate.selectedInboxColor;
     bgColorView.layer.masksToBounds = YES;
    cell.selectedBackgroundView = bgColorView;
     

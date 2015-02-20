@@ -165,10 +165,10 @@
         [closeButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
         closeButton.layer.cornerRadius=5;
         [closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        CGFloat selectedRed = 52.0f / 255.0f;
-        CGFloat selectedGreen = 52.0f / 255.0f;
-        CGFloat selectedBlue = 52.0f / 255.0f;
-        //  closeButton.backgroundColor = [UIColor colorWithRed:selectedRed green:selectedGreen blue:selectedBlue alpha:1.0];
+//        CGFloat selectedRed = 52.0f / 255.0f;
+//        CGFloat selectedGreen = 52.0f / 255.0f;
+//        CGFloat selectedBlue = 52.0f / 255.0f;
+          closeButton.backgroundColor = mainDelegate.selectedInboxColor;
         
         UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         saveButton.frame = CGRectMake(closeButton.frame.origin.x+100+((frame.size.width-200)/3), 300, 100, 35);
@@ -176,7 +176,7 @@
         [saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
         saveButton.layer.cornerRadius=5;
         [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        //  saveButton.backgroundColor = [UIColor colorWithRed:selectedRed green:selectedGreen blue:selectedBlue alpha:1.0];
+         saveButton.backgroundColor =mainDelegate.selectedInboxColor;
         [self.view addSubview:closeButton];
         [self.view addSubview:saveButton];
         

@@ -64,11 +64,8 @@
         self.view.clipsToBounds=YES;
         self.view.layer.borderWidth=1.0;
         self.view.layer.borderColor=[[UIColor grayColor]CGColor];
-        CGFloat red = 1.0f / 255.0f;
-        CGFloat green = 49.0f / 255.0f;
-        CGFloat blue = 97.0f / 255.0f;
         
-        [self.view setBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
+        [self.view setBackgroundColor:mainDelegate.buttonColor];
         CGFloat textWidth;
         if (SYSTEM_VERSION_LESS_THAN(@"8.0"))
            textWidth=(self.view.frame.size.width/2)-10;
@@ -108,7 +105,7 @@
             txtOldPin.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
             txtOldPin.secureTextEntry = YES;
             txtOldPin.delegate=self;
-            txtOldPin.backgroundColor=mainDelegate.textColor;
+            txtOldPin.backgroundColor=mainDelegate.SearchViewColors;
             
             UILabel *lblNewPin = [[UILabel alloc] initWithFrame:CGRectMake(20, 400, 150, 40)];
             lblNewPin.textColor = [UIColor whiteColor];
@@ -127,7 +124,7 @@
             txtPin.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
             txtPin.secureTextEntry = YES;
             txtPin.delegate=self;
-            txtPin.backgroundColor=mainDelegate.textColor;
+            txtPin.backgroundColor=mainDelegate.SearchViewColors;
             
             UILabel *lblConfirmPin = [[UILabel alloc] initWithFrame:CGRectMake(20, 450, 150, 40)];
             lblConfirmPin.textColor = [UIColor whiteColor];
@@ -146,7 +143,7 @@
             txtConfirmPin.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
             txtConfirmPin.secureTextEntry = YES;
             txtConfirmPin.delegate=self;
-            txtConfirmPin.backgroundColor=mainDelegate.textColor;
+            txtConfirmPin.backgroundColor=mainDelegate.SearchViewColors;
             
             if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
                 
@@ -181,14 +178,14 @@
         [saveButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
         [saveButton setTitle:NSLocalizedString(@"Save",@"Save") forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
-        saveButton.backgroundColor=mainDelegate.buttonColor;
+        saveButton.backgroundColor=mainDelegate.selectedInboxColor;
 
         UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         clearButton.frame = CGRectMake(saveButton.frame.origin.x+115+20, buttonsY, 115, 35);
         [clearButton setTitle:NSLocalizedString(@"Clear",@"Clear") forState:UIControlStateNormal];
         [clearButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
         [clearButton addTarget:self action:@selector(clear) forControlEvents:UIControlEventTouchUpInside];
-        clearButton.backgroundColor=mainDelegate.buttonColor;
+        clearButton.backgroundColor=mainDelegate.selectedInboxColor;
         
         
         UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -196,7 +193,7 @@
         [cancelButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
         [cancelButton setTitle:NSLocalizedString(@"Close",@"Close") forState:UIControlStateNormal];
         [cancelButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
-        cancelButton.backgroundColor=mainDelegate.buttonColor;
+        cancelButton.backgroundColor=mainDelegate.selectedInboxColor;
         
         if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
             cancelButton.frame=CGRectMake((frame.size.width-385)/3, buttonsY, 115, 35);
