@@ -43,7 +43,7 @@
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     displayingLabel = YES;
 	searchBar=[[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-    searchBar.barTintColor=[UIColor colorWithRed:12.0f / 255.0f green:93.0f / 255.0f blue:174.0f / 255.0f alpha:1.0];
+    searchBar.barTintColor=mainDelegate.cellColor;
     searchDisplayController=[[UISearchDisplayController alloc]initWithSearchBar:searchBar contentsController:self];
     
 

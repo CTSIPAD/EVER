@@ -169,8 +169,8 @@
     [super viewDidLoad];
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     UIColor *seperatorColor=[UIColor colorWithRed:228.0/255.0f green:243.0/255.0f blue:250/255.0f alpha:1.0f];
-      self.view.backgroundColor=seperatorColor;
-    self.tableView.separatorColor=seperatorColor;
+      self.view.backgroundColor=appDelegate.TablebgColor;
+    self.tableView.separatorColor=[UIColor clearColor];
     if(appDelegate.searchModule.searchTypes.count>0)
         selectedType=((CSearchType*)appDelegate.searchModule.searchTypes[0]).typeId;
     self.navigationController.navigationBarHidden = YES;
@@ -229,13 +229,19 @@
     if(section==0)
         return 100;
     
-    return 1;
+    return 0;
 }
 
 - (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *view = [[UIView alloc] init];
+
+    
     if(section==0){
+       
+        UIImage* headImage=[UIImage imageNamed:@"tableheader.png"];
+        UIImageView* imgView=[[UIImageView alloc]initWithImage:headImage];
+        [view addSubview:imgView];
         btnSimpleSearch=[[UIButton alloc]init];
         if ([appDelegate.IpadLanguage isEqualToString:@"ar"]) {
             if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
@@ -256,13 +262,13 @@
         }
       
    
-        btnSimpleSearch.backgroundColor = appDelegate.buttonColor;
+        btnSimpleSearch.backgroundColor = appDelegate.SearchViewColors;
 
         [btnSimpleSearch setTitle:NSLocalizedString(@"Search.SimpleSearch", @"Simple Search") forState:UIControlStateNormal] ;
         [btnSimpleSearch setImage:[UIImage imageNamed:@"Searchimg.png"] forState:UIControlStateNormal];
         [btnSimpleSearch setImageEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 80)];
         [btnSimpleSearch setTitleEdgeInsets:UIEdgeInsetsMake(5,5, 5,0)];
-        [btnSimpleSearch setTitleColor:[UIColor colorWithRed:1.0f/255.0f green:50.0f/255.0f blue:102.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+        [btnSimpleSearch setTitleColor:appDelegate.SearchLabelsColor forState:UIControlStateNormal];
         btnSimpleSearch.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
         [btnSimpleSearch addTarget:self action:@selector(simpleSearchButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         
@@ -309,7 +315,8 @@
     }
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
     
-    
+    cell.backgroundColor=[UIColor clearColor];
+
     
     // Configure the cell...
     if(indexPath.section ==appDelegate.searchModule.criterias.count){
@@ -441,9 +448,9 @@
         count++;
     }
     // change
-    UIColor *color=[UIColor colorWithRed:228.0f/255.0f green:243.0f/255.0f blue:250.0f/255.0f alpha:1.0f];
+   // UIColor *color=[UIColor colorWithRed:228.0f/255.0f green:243.0f/255.0f blue:250.0f/255.0f alpha:1.0f];
     
-    cell.backgroundColor=color;
+   // cell.backgroundColor=color;
     return cell;
    
 }

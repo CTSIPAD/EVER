@@ -47,7 +47,7 @@
     self.navigationItem.hidesBackButton=YES;
     self.navigationController.navigationBarHidden = YES;
     maindelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [self.view setBackgroundColor:mainDelegate.bgColor];
+    [self.view setBackgroundColor:mainDelegate.TablebgColor];
      btnAdvanceSearch=[[UIButton alloc]init];
     if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
         if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
@@ -67,24 +67,22 @@
          btnAdvanceSearch.Frame=CGRectMake(self.view.frame.origin.x+20, 30, 220, 50);
     }
 
-    CGFloat red = 173.0f / 255.0f;
-    CGFloat green = 208.0f / 255.0f;
-    CGFloat blue = 238.0f / 255.0f;
-    btnAdvanceSearch.backgroundColor=mainDelegate.buttonColor;
+   
+    btnAdvanceSearch.backgroundColor=mainDelegate.SearchViewColors;
 
     btnAdvanceSearch.clipsToBounds=YES;
     [btnAdvanceSearch setTitle:NSLocalizedString(@"Search.AdvancedSearch", @"Advanced Search") forState:UIControlStateNormal] ;
     [btnAdvanceSearch setImage:[UIImage imageNamed:@"Searchimg.png"] forState:UIControlStateNormal];
     [btnAdvanceSearch setImageEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 80)];
     [btnAdvanceSearch setTitleEdgeInsets:UIEdgeInsetsMake(7, 0, 0, 0)];
-    [btnAdvanceSearch setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+    [btnAdvanceSearch setTitleColor:mainDelegate.SearchLabelsColor forState:UIControlStateNormal];
     btnAdvanceSearch.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
     [btnAdvanceSearch addTarget:self action:@selector(advanceSearchButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnAdvanceSearch];
     
     
     lblTitle = [[UILabel alloc] init];
-    lblTitle.textColor = [UIColor colorWithRed:1.0f/255.0f green:50.0f/255.0f blue:102.0f/255.0f alpha:1.0f];
+    lblTitle.textColor = mainDelegate.SearchLabelsColor;
     lblTitle.text =NSLocalizedString(@"Search.SearchKeywords", @"Search words");
     if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
         lblTitle.frame = CGRectMake(self.view.frame.size.width-140, btnAdvanceSearch.frame.origin.y+btnAdvanceSearch.frame.size.height+60, 120, 40);
@@ -112,7 +110,7 @@
     }
    
   
-    txtKeyword.backgroundColor=mainDelegate.textColor;
+    txtKeyword.backgroundColor=mainDelegate.SearchViewColors;
     txtKeyword.textColor=[UIColor blackColor];
 
     txtKeyword.returnKeyType = UIReturnKeySearch;
@@ -138,10 +136,15 @@
    
     
   //  [btnSearch setFrame:CGRectMake(((self.view.frame.size.width-450)/2)+405, 307, 40, 40)];
-    [btnSearch setImage:[UIImage imageNamed:@"Searchimg.png"] forState:UIControlStateNormal];
-    [btnSearch setBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
+    [btnSearch setImage:[UIImage imageNamed:@"SimpleSearchBtn.png"] forState:UIControlStateNormal];
+    [btnSearch setBackgroundColor:mainDelegate.selectedInboxColor];
     [btnSearch addTarget:self action:@selector(searchButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 
+    UIView *view = [[UIView alloc] init];
+        UIImage* headImage=[UIImage imageNamed:@"tableheader.png"];
+        UIImageView* imgView=[[UIImageView alloc]initWithImage:headImage];
+        [view addSubview:imgView];
+    [self.view addSubview:view];
     [self.view addSubview:txtKeyword];
     [self.view addSubview:btnSearch];
     

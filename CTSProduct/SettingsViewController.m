@@ -35,7 +35,7 @@
     self.btnSave.backgroundColor=mainDelegate.buttonColor;
     [self.btnSave setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
     
-    self.NbOfCorrespondences.backgroundColor=mainDelegate.textColor;
+    self.NbOfCorrespondences.backgroundColor=mainDelegate.SearchViewColors;
     self.NbOfCorrespondences.textColor=mainDelegate.titleColor;
     self.NbOfCorrespondences.borderStyle=UITextBorderStyleNone;
     self.NbOfCorrespondences.keyboardType=UIKeyboardTypeNumberPad;
@@ -44,13 +44,11 @@
     defaults = [NSUserDefaults standardUserDefaults];
 
     
-    CGFloat red1 = 173.0f / 255.0f;
-    CGFloat green1 = 208.0f / 255.0f;
-    CGFloat blue1 = 238.0f / 255.0f;
+
     self.navigationItem.hidesBackButton=YES;
     self.navigationController.navigationBarHidden = YES;
-    self.tableView.backgroundColor = [UIColor colorWithRed:red1 green:green1 blue:blue1 alpha:1.0];
-    self.tableView.separatorColor = [UIColor colorWithRed:45.0f/255.0f green:45.0f/255.0f blue:45.0f/255.0f alpha:1.0];
+    self.tableView.backgroundColor = mainDelegate.TablebgColor;
+    self.tableView.separatorColor =[UIColor clearColor];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"searchResultCell"];
     
     [self.tableView setContentInset:UIEdgeInsetsMake(0,0,0,0)];
@@ -59,14 +57,18 @@
     else
         self.NbOfCorrespondences.text=[NSString stringWithFormat:@"%d",mainDelegate.SettingsCorrNb];
 
-    [[UILabel appearanceWhenContainedIn:[UITableViewHeaderFooterView class],nil] setTextColor:mainDelegate.titleColor];
+    [[UILabel appearanceWhenContainedIn:[UITableViewHeaderFooterView class],nil] setTextColor:mainDelegate.SearchLabelsColor];
     if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
         [[UILabel appearanceWhenContainedIn:[UITableViewHeaderFooterView class],nil] setTextAlignment:NSTextAlignmentRight];
     if (mainDelegate.isOfflineMode) {
         self.btnSave.enabled=false;
         self.NbOfCorrespondences.enabled=false;
     }
-    
+    UIImage* headImage=[UIImage imageNamed:@"tableheader.png"];
+    UIView* headerView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, headImage.size.width, headImage.size.height)];
+    UIImageView* imgView=[[UIImageView alloc]initWithImage:headImage];
+    [headerView addSubview:imgView];
+    self.tableView.tableHeaderView =headerView;
 }
 
 -(void)deleteCachedFiles{

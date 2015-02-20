@@ -148,7 +148,7 @@
         
         lblTitle=[[UILabel alloc]initWithFrame:CGRectMake(20, 15, self.frame.size.width, 15)];
         lblTitle.font = [UIFont fontWithName:@"Helvetica" size:12];
-        lblTitle.textColor=[UIColor colorWithRed:204/255.0f green:233/255.0f blue:247/255.0f alpha:1.0];
+        lblTitle.textColor=mainDelegate.textColor;
         //[self addSubview:lblTitle];
         
         Transferimage=[UIImage imageNamed:@"Transfer.png"];
@@ -276,7 +276,7 @@
     }
     [self adjustButtons:CurrentOrientation];
     [self updateToolbar];
-    self.backgroundColor=[UIColor colorWithRed:12/255.0f green:93/255.0f blue:174/255.0f alpha:1.0];
+    self.backgroundColor=mainDelegate.cellColor;
     self.frame=CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 100);
 	return self;
 }

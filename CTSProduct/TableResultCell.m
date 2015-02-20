@@ -54,13 +54,13 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
 
-        CGFloat red = 19.0f / 255.0f;
-        CGFloat green = 145.0f / 255.0f;
-        CGFloat blue = 247.0f / 255.0f;
+//        CGFloat red = 19.0f / 255.0f;
+//        CGFloat green = 145.0f / 255.0f;
+//        CGFloat blue = 247.0f / 255.0f;
         int x;
         int y;
         
-             self.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
+//             self.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
         self.cellView=[[UIView alloc] init];
         if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication]statusBarOrientation]) && SYSTEM_VERSION_LESS_THAN(@"8.0") && ![mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
             self.cellView.Frame=CGRectMake(15, 13, frame.size.width-120, 150);
@@ -75,7 +75,7 @@
         }
             //self.cellView=[[UIView alloc] initWithFrame:CGRectMake(15, 13, [UIScreen mainScreen].bounds.size.width-10, 150)];
        
-        self.cellView.backgroundColor=[UIColor colorWithRed:172.0/255.0f green:207/255.0f blue:237/255.0f alpha:1.0f];
+        self.cellView.backgroundColor=mainDelegate.CorrespondenceCellColor;
 
         [self addSubview:self.cellView];
         
@@ -359,8 +359,7 @@
         
     }
 
-    self.iconView.backgroundColor=[UIColor colorWithRed:113.0f/255.0 green:184.0f/255.0 blue:229.0f/255.0 alpha:1.0];
-    
+    self.iconView.backgroundColor=mainDelegate.iconViewColor;
     // lock button
     self.LockButton=[[UIButton alloc] init];
     

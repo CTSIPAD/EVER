@@ -94,8 +94,20 @@
 @property(nonatomic,strong) UIColor *bgColor;
 @property (nonatomic,strong) UIColor *buttonColor;
 @property(nonatomic,strong) UIColor *titleColor;
-@property(nonatomic,strong) UIColor *bgBlueColor;
 @property(nonatomic,strong) UIColor *cellColor;
+@property(nonatomic,strong) UIColor *metaDataCellColor;
+@property(nonatomic,strong) UIColor *TablebgColor;
+@property(nonatomic,strong) UIColor *CorrespondenceCellColor;
+@property(nonatomic,strong) UIColor *selectedInboxColor;
+@property(nonatomic,strong) UIColor *iconViewColor;
+@property(nonatomic,strong) UIColor *SearchViewColors;
+@property(nonatomic,strong) UIColor *SearchLabelsColor;
+@property(nonatomic,strong) UIColor *InboxCellColor;
+@property(nonatomic,strong) UIColor *InboxCellColor_ar;
+
+
+
+
 @property(nonatomic,assign) BOOL thumbnailDefined;
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;

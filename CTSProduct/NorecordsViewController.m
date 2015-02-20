@@ -77,21 +77,12 @@
 {
     [super viewDidLoad];
     [SVProgressHUD dismiss];
-
-    //jis toolbar
     
-    //    CGFloat red = 88.0f / 255.0f;
-    //    CGFloat green = 96.0f / 255.0f;
-    //    CGFloat blue = 104.0f / 255.0f;
-    
-    CGFloat red = 173.0f / 255.0f;
-    CGFloat green = 208.0f / 255.0f;
-    CGFloat blue = 238.0f / 255.0f;
     self.navigationItem.hidesBackButton=YES;
     self.navigationController.navigationBarHidden = YES;
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    noRecords = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width/2-350, self.view.frame.size.height/3, self.view.frame.size.width/2, 40)];
+    noRecords = [[UILabel alloc] initWithFrame:CGRectMake(0, ( (self.view.frame.size.height-350)/2)-20, self.view.frame.size.width, 40)];
     noRecords.numberOfLines=0;
     noRecords.lineBreakMode = NSLineBreakByWordWrapping;
     noRecords.font =[UIFont fontWithName:@"Helvetica-Bold" size:25.0f];
@@ -111,12 +102,15 @@
     }
     
     
-    noRecords.shadowColor = [UIColor colorWithRed:0.0f / 255.0f green:155.0f / 255.0f blue:213.0f / 255.0f alpha:1.0];
-    noRecords.shadowOffset = CGSizeMake(0.0, 1.0);
-    noRecords.textColor = [UIColor whiteColor];
+    noRecords.textColor = mainDelegate.cellColor;
     noRecords.textAlignment=NSTextAlignmentCenter;
     //[self.view setBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
-    [self.view setBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
+    CGRect rect=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-350);
+    UIGraphicsBeginImageContext(rect.size);
+    [[UIImage imageNamed:@"backGroundImg.png"] drawInRect:rect];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:image]];
     [self.view addSubview:noRecords];
     
     

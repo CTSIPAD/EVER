@@ -32,7 +32,7 @@
         self.view.clipsToBounds=YES;
         self.view.layer.borderWidth=1.0;
         self.view.layer.borderColor=[[UIColor grayColor]CGColor];
-        self.view.backgroundColor=mainDelegate.bgBlueColor;
+        self.view.backgroundColor=mainDelegate.buttonColor;
         UILabel *Titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, frame.size.width, 20)];
         Titlelabel.text = NSLocalizedString(@"Note",@"Note");
         Titlelabel.textAlignment=NSTextAlignmentCenter;
@@ -76,21 +76,21 @@
         [closeButton setTitle:NSLocalizedString(@"Close",@"Close") forState:UIControlStateNormal];
         [closeButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
         [closeButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-        closeButton.backgroundColor=mainDelegate.buttonColor;
+        closeButton.backgroundColor=mainDelegate.selectedInboxColor;
         
         UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         saveButton.frame = CGRectMake(15, 200, 115, 35);
         [saveButton setTitle:NSLocalizedString(@"Save",@"Save") forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
         [saveButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-        saveButton.backgroundColor=mainDelegate.buttonColor;
+        saveButton.backgroundColor=mainDelegate.selectedInboxColor;
 
         UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         clearButton.frame =CGRectMake(140, 200, 115, 35);
         [clearButton setTitle:NSLocalizedString(@"Clear",@"Clear") forState:UIControlStateNormal];
         [clearButton addTarget:self action:@selector(clear) forControlEvents:UIControlEventTouchUpInside];
         [clearButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-        clearButton.backgroundColor=mainDelegate.buttonColor;
+        clearButton.backgroundColor=mainDelegate.selectedInboxColor;
         if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
             closeButton.frame= CGRectMake(20, 200, 115, 35);
             clearButton.frame=CGRectMake(150, 200, 115, 35);
