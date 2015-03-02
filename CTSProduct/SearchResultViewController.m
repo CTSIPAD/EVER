@@ -30,7 +30,6 @@
 #import "UserDetailsViewController.h"
 #import "UploadControllerDialog.h"
 #import "CommentViewController.h"
-#import "HeaderView.h"
 #import "containerView.h"
 #define  SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch]== NSOrderedAscending)
 @interface SearchResultViewController ()
@@ -101,6 +100,7 @@
     
     
 }
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     if([searchText length] == 0) {
@@ -642,9 +642,18 @@
     
     
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    self.navigationItem.hidesBackButton=YES;
+    self.navigationController.navigationBarHidden = YES;
+    self.navigationController.hidesBarsOnTap = NO;
+
+}
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [SVProgressHUD dismiss];
+    
+
     
     
 }

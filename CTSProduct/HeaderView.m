@@ -20,6 +20,7 @@
 #import "UserDetailsViewController.h"
 #import "SVProgressHUD.h"
 #import "containerView.h"
+#import "ReportViewController.h"
 #define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch]== NSOrderedAscending)
 @interface HeaderView ()
 
@@ -169,6 +170,13 @@
     [settingButton setBackgroundImage:settingImage forState:UIControlStateNormal];
     [settingButton addTarget:self action:@selector(OpenSettingsPage) forControlEvents:UIControlEventTouchUpInside];
     [iconArray addObject:settingButton];
+    //
+    // setting button
+    UIButton *ReportsButton=[[UIButton alloc] init];
+    UIImage *ReportsImage=[UIImage imageNamed:@"R2.png"];
+    [ReportsButton setBackgroundImage:ReportsImage forState:UIControlStateNormal];
+    [ReportsButton addTarget:self action:@selector(ShowReports) forControlEvents:UIControlEventTouchUpInside];
+    [iconArray addObject:ReportsButton];
     //
     
     // user icon
@@ -405,7 +413,12 @@
     
     [navController pushViewController:SettingsView animated:YES];
 }
-
+-(void)ShowReports{
+    UINavigationController *navController=[mainDelegate.splitViewController.viewControllers objectAtIndex:1];
+    [navController setNavigationBarHidden:YES animated:YES];
+    ReportViewController *ReportsPage=[[ReportViewController alloc] init];
+    [navController pushViewController:ReportsPage animated:YES];
+}
 -(void)download{
 
     

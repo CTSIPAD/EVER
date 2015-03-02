@@ -69,6 +69,12 @@
         [self.view.layer removeAllAnimations];
     }
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    self.navigationItem.hidesBackButton=YES;
+    self.navigationController.navigationBarHidden = YES;
+}
+
 - (void)keyboardDidShow: (NSNotification *) notif{
     if(animate){
         if (UIDeviceOrientationIsPortrait(self.interfaceOrientation)){

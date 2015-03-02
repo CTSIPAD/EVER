@@ -20,6 +20,8 @@
 #import "MainMenuViewController.h"
 #import "FileManager.h"
 #import "SVProgressHUD.h"
+#define  SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch]== NSOrderedAscending)
+
 @interface NorecordsViewController ()
 
 @end
@@ -28,6 +30,8 @@
     AppDelegate *mainDelegate;
     BOOL blinkStatus;
     UILabel *noRecords;
+    CGFloat Width;
+    CGFloat Height;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -43,7 +47,7 @@
 -(void)deleteCachedFiles{
     
     @try{
-        
+    
         NSFileManager *fm = [NSFileManager defaultManager];
         
         // TEMPORARY PDF PATH
@@ -71,6 +75,13 @@
     }
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    self.navigationItem.hidesBackButton=YES;
+    self.navigationController.navigationBarHidden = YES;
+    self.navigationController.hidesBarsOnTap = NO;
+
+}
 
 
 - (void)viewDidLoad
@@ -82,7 +93,16 @@
     self.navigationController.navigationBarHidden = YES;
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    noRecords = [[UILabel alloc] initWithFrame:CGRectMake(0, ( (self.view.frame.size.height-350)/2)-20, self.view.frame.size.width, 40)];
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")){
+        Width=self.view.frame.size.width;
+        Height=self.view.frame.size.height;
+    }
+    else{
+        Width=self.view.frame.size.height;
+        Height=self.view.frame.size.width;
+    }
+        
+    noRecords = [[UILabel alloc] initWithFrame:CGRectMake(0, ( (Height-350)/2)-20, Width, 40)];
     noRecords.numberOfLines=0;
     noRecords.lineBreakMode = NSLineBreakByWordWrapping;
     noRecords.font =[UIFont fontWithName:@"Helvetica-Bold" size:25.0f];
@@ -105,12 +125,19 @@
     noRecords.textColor = mainDelegate.cellColor;
     noRecords.textAlignment=NSTextAlignmentCenter;
     //[self.view setBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
-    CGRect rect=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-350);
+    CGRect rect=CGRectMake(0, 0, Width, Height-350);
     UIGraphicsBeginImageContext(rect.size);
     [[UIImage imageNamed:@"backGroundImg.png"] drawInRect:rect];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+//    [self.view setBackgroundColor:mainDelegate.TablebgColor];
+
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:image]];
+    UIView *viewheader = [[UIView alloc] init];
+    UIImage* headImage=[UIImage imageNamed:@"tableheader.png"];
+    UIImageView* imgView=[[UIImageView alloc]initWithImage:headImage];
+    [viewheader addSubview:imgView];
+    [self.view addSubview:viewheader];
     [self.view addSubview:noRecords];
     
     

@@ -38,6 +38,13 @@
     }
     return self;
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    self.navigationItem.hidesBackButton=YES;
+    self.navigationController.navigationBarHidden = YES;
+    self.navigationController.hidesBarsOnTap = NO;
+
+}
 
 - (void)viewDidLoad
 {

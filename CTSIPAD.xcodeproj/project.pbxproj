@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		045DC4AE1A5D738D009C3540 /* IMGtakephoto.png in Resources */ = {isa = PBXBuildFile; fileRef = 045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */; };
+		0499B7041AA459BE002609A0 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0499B7031AA459BE002609A0 /* ReportViewController.m */; };
+		0499B7061AA45F0F002609A0 /* R2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0499B7051AA45F0F002609A0 /* R2.png */; };
+		0499B70D1AA468EC002609A0 /* Charts-By-Categorie.png in Resources */ = {isa = PBXBuildFile; fileRef = 0499B7081AA468EC002609A0 /* Charts-By-Categorie.png */; };
+		0499B70E1AA468EC002609A0 /* Charts-By-Months.png in Resources */ = {isa = PBXBuildFile; fileRef = 0499B7091AA468EC002609A0 /* Charts-By-Months.png */; };
+		0499B70F1AA468EC002609A0 /* Charts-By-Structures.png in Resources */ = {isa = PBXBuildFile; fileRef = 0499B70A1AA468EC002609A0 /* Charts-By-Structures.png */; };
+		0499B7101AA468EC002609A0 /* Overdue-Documents.png in Resources */ = {isa = PBXBuildFile; fileRef = 0499B70B1AA468EC002609A0 /* Overdue-Documents.png */; };
+		0499B7111AA468EC002609A0 /* Overdue-Transfers.png in Resources */ = {isa = PBXBuildFile; fileRef = 0499B70C1AA468EC002609A0 /* Overdue-Transfers.png */; };
+		0499B7191AA4C173002609A0 /* barBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0499B7181AA4C173002609A0 /* barBg.png */; };
 		04A17EFC1A947C4100E76B01 /* Login.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A17EFB1A947C4100E76B01 /* Login.png */; };
 		04A17EFE1A94807400E76B01 /* Login_ar.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A17EFD1A94807400E76B01 /* Login_ar.png */; };
 		04A17F021A94B1D000E76B01 /* cellbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A17EFF1A94B1D000E76B01 /* cellbg.png */; };
@@ -206,6 +214,15 @@
 
 /* Begin PBXFileReference section */
 		045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMGtakephoto.png; sourceTree = "<group>"; };
+		0499B7021AA459BE002609A0 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
+		0499B7031AA459BE002609A0 /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
+		0499B7051AA45F0F002609A0 /* R2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = R2.png; sourceTree = "<group>"; };
+		0499B7081AA468EC002609A0 /* Charts-By-Categorie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Charts-By-Categorie.png"; sourceTree = "<group>"; };
+		0499B7091AA468EC002609A0 /* Charts-By-Months.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Charts-By-Months.png"; sourceTree = "<group>"; };
+		0499B70A1AA468EC002609A0 /* Charts-By-Structures.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Charts-By-Structures.png"; sourceTree = "<group>"; };
+		0499B70B1AA468EC002609A0 /* Overdue-Documents.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Overdue-Documents.png"; sourceTree = "<group>"; };
+		0499B70C1AA468EC002609A0 /* Overdue-Transfers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Overdue-Transfers.png"; sourceTree = "<group>"; };
+		0499B7181AA4C173002609A0 /* barBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = barBg.png; sourceTree = "<group>"; };
 		04A17EFB1A947C4100E76B01 /* Login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Login.png; sourceTree = "<group>"; };
 		04A17EFD1A94807400E76B01 /* Login_ar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Login_ar.png; sourceTree = "<group>"; };
 		04A17EFF1A94B1D000E76B01 /* cellbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cellbg.png; sourceTree = "<group>"; };
@@ -554,6 +571,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0499B7011AA459AF002609A0 /* Reports */ = {
+			isa = PBXGroup;
+			children = (
+				0499B7071AA45F1F002609A0 /* images */,
+			);
+			name = Reports;
+			sourceTree = "<group>";
+		};
+		0499B7071AA45F1F002609A0 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				0499B7081AA468EC002609A0 /* Charts-By-Categorie.png */,
+				0499B7091AA468EC002609A0 /* Charts-By-Months.png */,
+				0499B70A1AA468EC002609A0 /* Charts-By-Structures.png */,
+				0499B70B1AA468EC002609A0 /* Overdue-Documents.png */,
+				0499B70C1AA468EC002609A0 /* Overdue-Transfers.png */,
+				0499B7051AA45F0F002609A0 /* R2.png */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
 		9572E0C11961567E0087A06C /* images */ = {
 			isa = PBXGroup;
 			children = (
@@ -810,6 +848,9 @@
 			isa = PBXGroup;
 			children = (
 				A29DA1D01A138B8000BE6CAE /* CTSIPAD.entitlements */,
+				0499B7011AA459AF002609A0 /* Reports */,
+				0499B7021AA459BE002609A0 /* ReportViewController.h */,
+				0499B7031AA459BE002609A0 /* ReportViewController.m */,
 				A2FE653419AC7C2300CC5628 /* USER Details */,
 				A2EB9201199B4D6A0047D0E3 /* Sync Result */,
 				A29A71981998B1CA00143756 /* Network operations */,
@@ -882,6 +923,7 @@
 		A2F2331519599287008F71AF /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0499B7181AA4C173002609A0 /* barBg.png */,
 				04A17F0B1A95290200E76B01 /* cellbg_ar.png */,
 				A22FC6801A1C879100A283BC /* cts_Unlock.png */,
 				04A17F051A94BF1B00E76B01 /* backGroundImg.png */,
@@ -1360,6 +1402,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2F2334C195C71B0008F71AF /* Lock.png in Resources */,
+				0499B70D1AA468EC002609A0 /* Charts-By-Categorie.png in Resources */,
 				A29DA1C91A12126500BE6CAE /* Logout.png in Resources */,
 				A2F232F319557C5000CA09DD /* InfoPlist.strings in Resources */,
 				A29DA1951A11FDD600BE6CAE /* NextIcon.png in Resources */,
@@ -1371,10 +1414,12 @@
 				A29DA1C31A120C2500BE6CAE /* dropDownTag.png in Resources */,
 				04A17EFE1A94807400E76B01 /* Login_ar.png in Resources */,
 				A29793A419BEF42300AD6D1D /* disclosure.png in Resources */,
+				0499B70F1AA468EC002609A0 /* Charts-By-Structures.png in Resources */,
 				A29DA1BB1A12072B00BE6CAE /* iconViewSeperator.png in Resources */,
 				A29DA1BF1A120BF800BE6CAE /* Searchimg.png in Resources */,
 				A2F23336195C397A008F71AF /* comments.png in Resources */,
 				A29793A519BEF42300AD6D1D /* disclosure@2x.png in Resources */,
+				0499B7191AA4C173002609A0 /* barBg.png in Resources */,
 				A29DA1B51A12045200BE6CAE /* metadata.png in Resources */,
 				A2B84F5A19628DAB0084035F /* GoBack.png in Resources */,
 				A2F61483195964F400956BF0 /* background@2x.png in Resources */,
@@ -1394,6 +1439,7 @@
 				A2010BF1195D954E004AC93C /* erase.png in Resources */,
 				A2010BEB195D6C55004AC93C /* FreeSignAll.png in Resources */,
 				A29DA1A11A12006E00BE6CAE /* seperatorimg.png in Resources */,
+				0499B7111AA468EC002609A0 /* Overdue-Transfers.png in Resources */,
 				A29DA1971A11FDD600BE6CAE /* SaveIcon.png in Resources */,
 				A29DA1C51A1210DA00BE6CAE /* settings.png in Resources */,
 				A29DA1CB1A121AF700BE6CAE /* detailviewBackground.png in Resources */,
@@ -1438,8 +1484,11 @@
 				A2E598F51A2F161E00CB97A6 /* loginLandscape.png in Resources */,
 				A29DA1961A11FDD600BE6CAE /* PreviousIcon.png in Resources */,
 				A2F2332519557DD500CA09DD /* Storyboard.storyboard in Resources */,
+				0499B7101AA468EC002609A0 /* Overdue-Documents.png in Resources */,
 				A2B9FA231982B3FD00A61F5F /* camera.png in Resources */,
 				A27888591A163EED0031C3CE /* Folder.png in Resources */,
+				0499B70E1AA468EC002609A0 /* Charts-By-Months.png in Resources */,
+				0499B7061AA45F0F002609A0 /* R2.png in Resources */,
 				A2F23335195C397A008F71AF /* attachments.png in Resources */,
 				A29DA19F1A12002300BE6CAE /* tapToload.png in Resources */,
 			);
@@ -1532,6 +1581,7 @@
 				A2FE653719AC7C4300CC5628 /* UserDetailsViewController.m in Sources */,
 				A2F6144619595EC100956BF0 /* ReaderViewController.m in Sources */,
 				A2F614DF195973FA00956BF0 /* SignatureViewController.m in Sources */,
+				0499B7041AA459BE002609A0 /* ReportViewController.m in Sources */,
 				A2F613F819587A4100956BF0 /* CSearch.m in Sources */,
 				A2F6144219595C8800956BF0 /* ReaderContentView.m in Sources */,
 				A2F614901959683B00956BF0 /* CGPDFDocument.m in Sources */,

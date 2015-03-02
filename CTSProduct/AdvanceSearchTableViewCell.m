@@ -88,6 +88,7 @@
 }
 
 
+
 -(void)updateCellwithCriteria:(CSearchCriteria*)searchCriteria{
     if(searchCriteria !=nil){
         criteria=searchCriteria;

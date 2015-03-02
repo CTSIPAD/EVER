@@ -12,7 +12,6 @@
 #import "CSearch.h"
 #import "SplitViewController.h"
 #import "SearchResultViewController.h"
-#import "HeaderView.h"
 #import "containerView.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>

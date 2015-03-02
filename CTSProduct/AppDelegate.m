@@ -97,6 +97,9 @@
 
     thumbnailDefined=NO;
     [application setStatusBarHidden:YES];
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"barBg.png"] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setTintColor:self.textColor];
+    
     return YES;
 }
 -(NSString*)CurrentDateStringFromDate:(NSDate*)dateTimeInLine withFormat:(NSString*)dateFormat
