@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "GDataXMLNode.h"
 #import "SVProgressHUD.h"
+#import "PieViewController.h"
 #define  SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch]== NSOrderedAscending)
 
 @interface ReportViewController (){
@@ -53,9 +54,7 @@
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:image]];
-    
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:image]];
-    
+
     UIView *viewheader = [[UIView alloc] init];
     UIImage* headImage=[UIImage imageNamed:@"tableheader.png"];
     UIImageView* imgView=[[UIImageView alloc]initWithImage:headImage];
@@ -68,7 +67,7 @@
     
     [firstBtn setTitle:@"Charts By Category" forState:UIControlStateNormal];
     [firstBtn setTitleColor:mainDelegate.SearchLabelsColor forState:UIControlStateNormal];
-    [firstBtn addTarget:self action:@selector(ShowReport) forControlEvents:UIControlEventTouchUpInside];
+    [firstBtn addTarget:self action:@selector(ShowPie) forControlEvents:UIControlEventTouchUpInside];
     [firstBtn setBackgroundImage:PieImage forState:UIControlStateNormal];
     [firstBtn setTitleEdgeInsets:UIEdgeInsetsMake(firstBtn.frame.size.height+50, 0, 0, 0)];
     firstBtn.titleLabel.textAlignment=NSTextAlignmentCenter;
@@ -93,7 +92,7 @@
     
     [secondBtn setBackgroundImage:BarImage forState:UIControlStateNormal];
     [secondBtn setTitleEdgeInsets:UIEdgeInsetsMake(secondBtn.frame.size.height+50, 0, 0, 0)];
-    [secondBtn addTarget:self action:@selector(FilterReport) forControlEvents:UIControlEventTouchUpInside];
+    [secondBtn addTarget:self action:@selector(ShowBar) forControlEvents:UIControlEventTouchUpInside];
     secondBtn.titleLabel.textAlignment=NSTextAlignmentCenter;
     [secondBtn setTitle:@"Charts By Structures" forState:UIControlStateNormal];
     [secondBtn setTitleColor:mainDelegate.SearchLabelsColor forState:UIControlStateNormal];
@@ -149,6 +148,19 @@
     [self.view addSubview:view1];
     [self.view addSubview:secondButton];
 
+}
+-(void)ShowPie
+{
+    
+    UINavigationController *navController=[mainDelegate.splitViewController.viewControllers objectAtIndex:1];
+    [navController setNavigationBarHidden:YES animated:YES];
+    PieViewController *ReportsPage=[[PieViewController alloc] init];
+    [navController pushViewController:ReportsPage animated:YES];
+}
+-(void)ShowBar
+{
+    
+    
 }
 -(void)ShowReport
 {

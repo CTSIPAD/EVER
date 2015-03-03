@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: 960px;
+  height: 500px;
+  position: relative;
+}
+path.slice{
+	stroke-width:2px;
+}
+polyline{
+	opacity: .3;
+	stroke: black;
+	stroke-width: 2px;
+	fill: none;
+} 
+svg text.percent{
+	fill:white;
+	text-anchor:middle;
+	font-size:12px;
+}
+div
+{
+    
+    margin-left:100px;
+    margin-top:20px;
+    position:static;
+    
+}
+.legend rect {
+    fill:white;
+    stroke:black;
+    opacity:0.8;}
+</style>
+<body>
+ <div id="dashboard" ></div>
+<script src="d3.min.js"></script>
+<script src="Donut3D.js"></script>
+ <script src="d3.legend.js"></script>
+<script>
+    var svg = d3.select("body").append("svg").attr("width",950).attr("height",500);
+
+function showRing(Data){
+
+svg.append("g").attr("id","DonutPie");
+
+Donut3D.draw("DonutPie", readData(Data), 180, 150, 130, 100, 30, 0.4);
+
+legend = svg.append("g")
+.attr("class","legend")
+.attr("transform","translate(420,30)")
+.attr("data-style-padding",10)
+.style("font-size","20px")
+.call(d3.legend)
+
+}
+
+function readData(Data){
+	return Data.map(function(d){
+		return {label:d.label, value:d.value, color:d.color};});
+}
+</script>
+</body>

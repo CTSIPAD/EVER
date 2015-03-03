@@ -16,6 +16,11 @@
 		0499B7101AA468EC002609A0 /* Overdue-Documents.png in Resources */ = {isa = PBXBuildFile; fileRef = 0499B70B1AA468EC002609A0 /* Overdue-Documents.png */; };
 		0499B7111AA468EC002609A0 /* Overdue-Transfers.png in Resources */ = {isa = PBXBuildFile; fileRef = 0499B70C1AA468EC002609A0 /* Overdue-Transfers.png */; };
 		0499B7191AA4C173002609A0 /* barBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0499B7181AA4C173002609A0 /* barBg.png */; };
+		0499B7211AA4C89F002609A0 /* d3.legend.js in Resources */ = {isa = PBXBuildFile; fileRef = 0499B71B1AA4C89F002609A0 /* d3.legend.js */; };
+		0499B7221AA4C89F002609A0 /* d3.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 0499B71C1AA4C89F002609A0 /* d3.min.js */; };
+		0499B7231AA4C89F002609A0 /* D3Ring.html in Resources */ = {isa = PBXBuildFile; fileRef = 0499B71D1AA4C89F002609A0 /* D3Ring.html */; };
+		0499B7241AA4C89F002609A0 /* Donut3D.js in Resources */ = {isa = PBXBuildFile; fileRef = 0499B71E1AA4C89F002609A0 /* Donut3D.js */; };
+		0499B7291AA4C8BE002609A0 /* PieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0499B7281AA4C8BE002609A0 /* PieViewController.m */; };
 		04A17EFC1A947C4100E76B01 /* Login.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A17EFB1A947C4100E76B01 /* Login.png */; };
 		04A17EFE1A94807400E76B01 /* Login_ar.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A17EFD1A94807400E76B01 /* Login_ar.png */; };
 		04A17F021A94B1D000E76B01 /* cellbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A17EFF1A94B1D000E76B01 /* cellbg.png */; };
@@ -223,6 +228,12 @@
 		0499B70B1AA468EC002609A0 /* Overdue-Documents.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Overdue-Documents.png"; sourceTree = "<group>"; };
 		0499B70C1AA468EC002609A0 /* Overdue-Transfers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Overdue-Transfers.png"; sourceTree = "<group>"; };
 		0499B7181AA4C173002609A0 /* barBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = barBg.png; sourceTree = "<group>"; };
+		0499B71B1AA4C89F002609A0 /* d3.legend.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = d3.legend.js; sourceTree = "<group>"; };
+		0499B71C1AA4C89F002609A0 /* d3.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = d3.min.js; sourceTree = "<group>"; };
+		0499B71D1AA4C89F002609A0 /* D3Ring.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = D3Ring.html; sourceTree = "<group>"; };
+		0499B71E1AA4C89F002609A0 /* Donut3D.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Donut3D.js; sourceTree = "<group>"; };
+		0499B7271AA4C8BE002609A0 /* PieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieViewController.h; sourceTree = "<group>"; };
+		0499B7281AA4C8BE002609A0 /* PieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieViewController.m; sourceTree = "<group>"; };
 		04A17EFB1A947C4100E76B01 /* Login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Login.png; sourceTree = "<group>"; };
 		04A17EFD1A94807400E76B01 /* Login_ar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Login_ar.png; sourceTree = "<group>"; };
 		04A17EFF1A94B1D000E76B01 /* cellbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cellbg.png; sourceTree = "<group>"; };
@@ -574,6 +585,7 @@
 		0499B7011AA459AF002609A0 /* Reports */ = {
 			isa = PBXGroup;
 			children = (
+				0499B71A1AA4C89F002609A0 /* Pie Chart */,
 				0499B7071AA45F1F002609A0 /* images */,
 			);
 			name = Reports;
@@ -590,6 +602,20 @@
 				0499B7051AA45F0F002609A0 /* R2.png */,
 			);
 			name = images;
+			sourceTree = "<group>";
+		};
+		0499B71A1AA4C89F002609A0 /* Pie Chart */ = {
+			isa = PBXGroup;
+			children = (
+				0499B7271AA4C8BE002609A0 /* PieViewController.h */,
+				0499B7281AA4C8BE002609A0 /* PieViewController.m */,
+				0499B71B1AA4C89F002609A0 /* d3.legend.js */,
+				0499B71C1AA4C89F002609A0 /* d3.min.js */,
+				0499B71D1AA4C89F002609A0 /* D3Ring.html */,
+				0499B71E1AA4C89F002609A0 /* Donut3D.js */,
+			);
+			name = "Pie Chart";
+			path = reports;
 			sourceTree = "<group>";
 		};
 		9572E0C11961567E0087A06C /* images */ = {
@@ -1415,6 +1441,7 @@
 				04A17EFE1A94807400E76B01 /* Login_ar.png in Resources */,
 				A29793A419BEF42300AD6D1D /* disclosure.png in Resources */,
 				0499B70F1AA468EC002609A0 /* Charts-By-Structures.png in Resources */,
+				0499B7241AA4C89F002609A0 /* Donut3D.js in Resources */,
 				A29DA1BB1A12072B00BE6CAE /* iconViewSeperator.png in Resources */,
 				A29DA1BF1A120BF800BE6CAE /* Searchimg.png in Resources */,
 				A2F23336195C397A008F71AF /* comments.png in Resources */,
@@ -1433,6 +1460,7 @@
 				A2B9FA211982459700A61F5F /* ShowAttachments.png in Resources */,
 				A2F61482195964F400956BF0 /* background.png in Resources */,
 				A2A64BD919FF895900D8CCCD /* Online.png in Resources */,
+				0499B7211AA4C89F002609A0 /* d3.legend.js in Resources */,
 				A2F2332119557DB200CA09DD /* Localizable.strings in Resources */,
 				A29DA1C71A12117B00BE6CAE /* downloadAll.png in Resources */,
 				A29DA1941A11FDD600BE6CAE /* MainSearchimg.png in Resources */,
@@ -1449,8 +1477,10 @@
 				A2B9FA18198121CD00A61F5F /* icon.png in Resources */,
 				A2C133D319ED68E50095264A /* HandSign.png in Resources */,
 				A2F2332A19557E9500CA09DD /* Settings.bundle in Resources */,
+				0499B7221AA4C89F002609A0 /* d3.min.js in Resources */,
 				04A17F0A1A94DC9A00E76B01 /* SimpleSearchBtn.png in Resources */,
 				A2F23325195B633E008F71AF /* cts_Search.png in Resources */,
+				0499B7231AA4C89F002609A0 /* D3Ring.html in Resources */,
 				A2F614871959651100956BF0 /* default.plist in Resources */,
 				A29DA1B91A1204E100BE6CAE /* Annotations.png in Resources */,
 				A2B9FA19198121CD00A61F5F /* ipad_icon.png in Resources */,
@@ -1557,6 +1587,7 @@
 				A2EC2B01196D7DE000411E1C /* BuiltInActions.m in Sources */,
 				A29DA1881A11FD5B00BE6CAE /* containerView.m in Sources */,
 				A2F614BE19596BBF00956BF0 /* ThumbsMainToolbar.m in Sources */,
+				0499B7291AA4C8BE002609A0 /* PieViewController.m in Sources */,
 				A2F6144119595C8800956BF0 /* ReaderContentTile.m in Sources */,
 				A2F614261959553500956BF0 /* Base64.m in Sources */,
 				A2F6140119587EF000956BF0 /* CRouteLabel.m in Sources */,
