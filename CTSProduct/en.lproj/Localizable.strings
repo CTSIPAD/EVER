@@ -162,6 +162,7 @@
 "Alert.NO"="NO";
 "download.confirmation"="This will download all the files to your device. When done, the application will go offline. Are you sure you want to continue?";
 "InvalidURL"="Failed To open correspondence.Reason: InvalidURL! ";
+"ErrorInURL"="Failed To open Attachment.Reason: InvalidURL! ";
 "Alert.SignView"="Sign field is empty, Add a Signature";
 "NoteFieldEmpty"="Please type a note";
 "Upload_attachment_Field"="Please upload a file.";

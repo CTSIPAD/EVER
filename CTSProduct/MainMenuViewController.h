@@ -9,4 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface MainMenuViewController : UITableViewController<UIAlertViewDelegate>
+@property (nonatomic, strong) NSMutableSet *shownIndexes;
+
 @end

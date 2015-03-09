@@ -894,6 +894,33 @@
     }
     
 }
+
++(void)DeleteAllData{
+    NSFetchRequest *fetchRequest;
+    NSError *error;
+    NSArray *fetchedObjects;
+    NSEntityDescription *entity;
+    id delegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext* managedObjectContext = [delegate managedObjectContext];
+    
+    fetchRequest = [[NSFetchRequest alloc] init];
+    entity = [NSEntityDescription
+              entityForName:@"Correspondences" inManagedObjectContext:managedObjectContext];
+    [fetchRequest setEntity:entity];
+    fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    for (NSManagedObject *obj in fetchedObjects) {
+        [managedObjectContext deleteObject:obj];
+    }
+    entity = [NSEntityDescription
+              entityForName:@"Attachments" inManagedObjectContext:managedObjectContext];
+    [fetchRequest setEntity:entity];
+    fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    for (NSManagedObject *obj in fetchedObjects) {
+        [managedObjectContext deleteObject:obj];
+    }
+    
+    
+}
 +(void)DeleteOfflineActions:(NSString*)name{
     NSFetchRequest *fetchRequest;
     NSError *error;
@@ -1699,16 +1726,8 @@
         return ;
         
     }
-    //    NSArray *Destinations =[correspondencesXML elementsForName:@"Destinations"];
-    //    for (GDataXMLElement *destEl in Destinations) {
-    //        NSArray* dests=[destEl nodesForXPath:@"Destination" error:nil];
-    //        for(GDataXMLElement* item in dests){
-    //            NSString *DestId=[(GDataXMLElement *) [item attributeForName:@"Id"] stringValue ];
-    //            NSString* value = item.stringValue;
-    //            [self cacheDestination:DestId value:value];
-    //        }
-    //
-    //    }
+    [self DeleteAllData];
+
     NSArray *destinationsList = [correspondencesXML elementsForName:@"Sections"];
     
     if (destinationsList.count > 0) {

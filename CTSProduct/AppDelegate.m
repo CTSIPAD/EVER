@@ -92,9 +92,10 @@
     self.metaDataCellColor=[UIColor colorWithRed:157/255.0f green:198/255.0f blue:204/255.0f alpha:1.0];
     self.CorrespondenceCellColor=[UIColor colorWithRed:142/255.0f green:194/255.0f blue:200/255.0f alpha:1.0f];
     self.SearchViewColors=[UIColor colorWithRed:141/255.0f green:194/255.0f blue:202/255.0f alpha:1.0f];
-    self.selectedInboxColor=[UIColor colorWithRed:201/255.0f green:83/255.0f blue:55/255.0f alpha:1.0];;
-    self.iconViewColor=[UIColor colorWithRed:118/255.0f green:181/255.0f blue:190/255.0f alpha:1.0];;
-
+    self.selectedInboxColor=[UIColor colorWithRed:201/255.0f green:83/255.0f blue:55/255.0f alpha:1.0];
+    self.iconViewColor=[UIColor colorWithRed:118/255.0f green:181/255.0f blue:190/255.0f alpha:1.0];
+    self.InboxCellSelectedColor_ar=[UIColor colorWithPatternImage:[UIImage imageNamed:@"SelectedInbox_ar.png"]];
+    self.InboxCellSelectedColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"SelectedInbox.png"]];
     thumbnailDefined=NO;
     [application setStatusBarHidden:YES];
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"barBg.png"] forBarMetrics:UIBarMetricsDefault];

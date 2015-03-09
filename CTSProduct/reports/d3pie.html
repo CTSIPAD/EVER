@@ -1,0 +1,150 @@
+﻿<html>
+<head>
+    <style>
+        .legend {
+            position: relative;
+            float:left;
+            display:block;
+            top:-400px;
+            left:500px;
+            background:white;
+            border:1px solid rgb(75,75,75);
+            box-shadow: 10px 10px 5px #888888; 
+        }
+    
+    </style>
+</head>
+<body>
+
+<div id="pieChart"></div>
+<div id="legend" class="legend"></div>
+<script src="d3.min.js"></script>
+<script src="d3pie.min.js"></script>
+
+<script>
+    function showRing(size,title,Data){
+var pie = new d3pie("pieChart", {
+	"header": {
+		"title": {
+			"text":title.text,
+			"fontSize": 24,
+			"font": "open sans"
+		},
+		"subtitle": {
+			"text": "",
+			"color": "#999999",
+			"fontSize": 12,
+			"font": "open sans"
+		},
+		"titleSubtitlePadding": 9
+	},
+	"footer": {
+		"color": "#999999",
+		"fontSize": 14,
+		"font": "open sans",
+		"location": "bottom-left"
+	},
+	"size": {
+		"canvasWidth": size.size
+	},
+	"data": {
+		"sortOrder": "value-desc",
+		"content":Data
+	},
+	"labels": {
+		"outer": {
+			"pieDistance": 32
+		},
+		"inner": {
+			"hideWhenLessThanPercentage": 3
+		},
+		"mainLabel": {
+			"fontSize": 14
+		},
+		"percentage": {
+			"color": "#ffffff",
+            "fontSize":15,
+			"decimalPlaces": 0
+		},
+		"value": {
+			"color": "#2c9c8b",
+			"fontSize": 14
+		},
+		"lines": {
+			"enabled": true
+		}
+	},
+<!--    "tooltips":{-->
+<!--        "enabled":true,-->
+<!--        "type":"placeholder",-->
+<!--        "string":"{label}:{value},{percentage}%",-->
+<!--        "styles":{-->
+<!--                "backgroundOpacity":0.48-->
+<!--                    -->
+<!--        }-->
+<!--    },-->
+	"effects": {
+		"pullOutSegmentOnClick": {
+			"effect": "linear",
+			"speed": 400,
+			"size": 12
+		}
+	},
+	"misc": {
+		"gradient": {
+			"enabled": true,
+			"percentage": 100
+		}
+	}
+                    
+});
+function maxWidth(Data){
+    var max=0;
+    for(var i=0;i<Data.length; i++){
+        if(max<Data[i].label.length){
+            max=Data[i].label.length;
+        }
+    }
+    if(max>13) return 11*max;
+    return (18*max);
+};
+var svg = d3.select("#legend")
+.append("svg")
+.attr("width",function(){return maxWidth(Data);})
+.attr("height", 35*Data.length);
+
+
+
+var legend = svg.append("g")
+.attr("class", "legend")
+.attr('transform', 'translate(0,15)')
+.attr("x",0)
+.attr("y",0);
+legend.selectAll('rect')
+.data(Data)
+.enter()
+.append("rect")
+.attr("width", 20)
+.attr("height", 20)
+.attr("x", 30)
+.attr("y", function(d, i){ return (i) *  30;})
+.style("fill", function(d) {
+       return d.color;
+       })
+       legend.selectAll('text')
+       .data(Data)
+       .enter()
+       .append("text")
+       .attr("x", 60)
+       .attr("width", 200)
+       .attr("height", 50)
+       .attr("y", function(d, i){ return (i) *  30+15;})
+       .text(function(d) {
+             var text = d.label;
+             return text;
+             });
+        document.getElementById('legend').style.width=maxWidth(Data);    }
+</script>
+
+</body>
+</html>

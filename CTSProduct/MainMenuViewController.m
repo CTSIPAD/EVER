@@ -28,6 +28,7 @@
     NSInteger menuItemsCount;
     NSInteger totalMenuItemsCount;
     BOOL canFound;
+    UIColor *Selectedcolor;
     int x;
 }
 @end
@@ -45,20 +46,22 @@
 {
     [super viewDidLoad];
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
+    _shownIndexes = [NSMutableSet set];
     [self.navigationController setNavigationBarHidden:TRUE];
     
     UIColor *color;
-    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"en"])
+    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"en"]){
         color=mainDelegate.InboxCellColor;
-    else
+        Selectedcolor=mainDelegate.InboxCellSelectedColor;
+    }
+    else{
         color=mainDelegate.InboxCellColor_ar;
+        Selectedcolor=mainDelegate.InboxCellSelectedColor_ar;
 
+    }
     
     self.tableView.opaque=NO;
-
-    [self.tableView setSeparatorInset:UIEdgeInsetsMake(0,0,0,0)];
-    self.tableView.separatorColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"separator.png"]];
+    self.tableView.separatorColor=[UIColor clearColor];
 mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     menuItemsCount=mainDelegate.user.menu.count;
@@ -191,15 +194,59 @@ mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     [cell.contentView addSubview:imageView];
     [cell.contentView addSubview:labelText];
-     bgColorView.backgroundColor = mainDelegate.selectedInboxColor;
-    bgColorView.layer.masksToBounds = YES;
+        bgColorView.backgroundColor = Selectedcolor;
+       bgColorView.layer.masksToBounds = YES;
    cell.selectedBackgroundView = bgColorView;
     
     return cell;
 }
 
+//This function is where all the magic happens
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    CGRect leftFrame = cell.frame;
+    CGRect rightFrame = cell.frame;
+
+    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"en"])
+        leftFrame.origin.x -= cell.frame.size.width;
+    else
+        leftFrame.origin.x += cell.frame.size.width;
+    
+
+    UIView* view = [self.view viewWithTag:100];
+    if (!view) {
+        NSLog(@"nil");
+    }
+    
+    [cell setFrame:leftFrame];
+    if(indexPath.row==0){
+
+        [UIView animateWithDuration:0.4
+                         animations:^{
+                             [cell setFrame:rightFrame];
+                         }
+                         completion:^(BOOL finished){
+                         }
+         ];
+    }
+    else
+        [UIView animateWithDuration:(indexPath.row+1)*0.253
+                         animations:^{
+                             [cell setFrame:rightFrame];
+                         }
+                         completion:^(BOOL finished){
+                         }
+         ];
+    
+    
+    
+    UIView * additionalSeparator = [[UIView alloc] initWithFrame:CGRectMake(0,cell.frame.size.height-3,cell.frame.size.width,3)];
+    additionalSeparator.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"separator.png"]];
+    [cell addSubview:additionalSeparator];
+    
+}
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath  {
     @try{
+        
         NSLog(@"Info: Entering didSelectRowAtIndexPath method in MainMenuViewController.");
         mainDelegate.SearchClicked=NO;
         UINavigationController *navController=[mainDelegate.splitViewController.viewControllers objectAtIndex:1];

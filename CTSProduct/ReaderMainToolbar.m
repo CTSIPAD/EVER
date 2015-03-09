@@ -594,12 +594,16 @@ BOOL lockSelected=NO;
         dispatch_async(dispatch_get_main_queue(), ^{
             NSString *tempPdfLocation=[fileToOpen saveInCacheinDirectory:fileToOpen.docId fromSharepoint:mainDelegate.isSharepoint];
             ReaderDocument *newdocument=nil;
-            if ([ReaderDocument isPDF:tempPdfLocation] == YES) // File must exist
+            if (![tempPdfLocation isEqualToString:@""]&&[ReaderDocument isPDF:tempPdfLocation] == YES) // File must exist
             {
                 newdocument=[self OpenPdfReader:tempPdfLocation];
+                [delegate tappedInToolbar:self nextButton:button documentReader:newdocument correspondenceId:self.correspondenceId attachementId:self.attachmentId];
+            }
+            else{
+                
+                [self performSelectorOnMainThread:@selector(ShowMessage:) withObject:NSLocalizedString(@"ErrorInURL",@"") waitUntilDone:YES];
             }
             
-            [delegate tappedInToolbar:self nextButton:button documentReader:newdocument correspondenceId:self.correspondenceId attachementId:self.attachmentId];
             
             if(self.attachmentId==mainDelegate.attachementsCount-1){
                 if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
@@ -672,12 +676,17 @@ BOOL lockSelected=NO;
     NSString *tempPdfLocation=[fileToOpen saveInCacheinDirectory:fileToOpen.docId fromSharepoint:mainDelegate.isSharepoint];
 
     ReaderDocument *document=nil;
-    if ([ReaderDocument isPDF:tempPdfLocation] == YES) // File must exist
+    if (![tempPdfLocation isEqualToString:@""]&&[ReaderDocument isPDF:tempPdfLocation] == YES) // File must exist
     {
         document=[self OpenPdfReader:tempPdfLocation];
-    }
+    
     [delegate tappedInToolbar:self previousButton:button documentReader:document correspondenceId:self.correspondenceId attachementId:self.attachmentId];
- 
+    }
+    else{
+        
+        [self performSelectorOnMainThread:@selector(ShowMessage:) withObject:NSLocalizedString(@"ErrorInURL",@"") waitUntilDone:YES];
+    }
+    
     if(self.attachmentId==0){
         if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
             nextButton.enabled=FALSE;

@@ -103,6 +103,8 @@
 @property(nonatomic,strong) UIColor *SearchLabelsColor;
 @property(nonatomic,strong) UIColor *InboxCellColor;
 @property(nonatomic,strong) UIColor *InboxCellColor_ar;
+@property(nonatomic,strong) UIColor *InboxCellSelectedColor_ar;
+@property(nonatomic,strong) UIColor *InboxCellSelectedColor;
 
 
 

@@ -79,10 +79,26 @@
     [super viewWillAppear:YES];
     self.navigationItem.hidesBackButton=YES;
     self.navigationController.navigationBarHidden = YES;
-    self.navigationController.hidesBarsOnTap = NO;
 
 }
 
+
+-(void) showHideNavbar:(id) sender
+{
+    // write code to show/hide nav bar here
+    // check if the Navigation Bar is shown
+    if (self.navigationController.navigationBar.hidden == NO)
+    {
+        // hide the Navigation Bar
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+    }
+    // if Navigation Bar is already hidden
+    else if (self.navigationController.navigationBar.hidden == YES)
+    {
+        // Show the Navigation Bar
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+    }
+}
 
 - (void)viewDidLoad
 {
@@ -92,7 +108,8 @@
     self.navigationItem.hidesBackButton=YES;
     self.navigationController.navigationBarHidden = YES;
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showHideNavbar:)];
+    [self.view addGestureRecognizer:tapGesture];
     if (SYSTEM_VERSION_LESS_THAN(@"8.0")){
         Width=self.view.frame.size.width;
         Height=self.view.frame.size.height;

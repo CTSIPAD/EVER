@@ -382,12 +382,12 @@
                 NSString *tempPdfLocation=[fileToOpen saveInCacheinDirectory:correspondence.Id fromSharepoint:mainDelegate.isSharepoint];
                 
                 ReaderDocument *newDocument=nil;
-                if ([ReaderDocument isPDF:tempPdfLocation] == YES) // File must exist
+                if (![tempPdfLocation isEqualToString:@""]&&[ReaderDocument isPDF:tempPdfLocation] == YES) // File must exist
                 {
                     newDocument=[self OpenPdfReader:tempPdfLocation];
                     
                     
-                }
+                
                 // NSString *tempPdfLocation=[CParser loadPdfFile:fileToOpen.url inDirectory:correspondence.Id];
                 NSString* indexx=[indexes objectAtIndex:self.attachmentId];
                 [delegate setAttachmentIdInToolbar:indexx.intValue];
@@ -411,7 +411,11 @@
                 
                 [delegate pagebar:self gotoPage:1 document:newDocument fileId:self.attachmentId]; // Go to document page
                 
-                
+                }
+                else{
+                    
+                    [self performSelectorOnMainThread:@selector(ShowMessage:) withObject:NSLocalizedString(@"ErrorInURL",@"") waitUntilDone:YES];
+                }
                 
                 //[self startEnableTimer]; // Start track control enable timer
                 [SVProgressHUD dismiss];

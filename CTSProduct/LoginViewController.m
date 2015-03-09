@@ -62,7 +62,7 @@
 //    self.txtUsername.clipsToBounds=YES;
     self.txtUsername.returnKeyType = UIReturnKeyGo;
     self.txtUsername.autocorrectionType=FALSE;
-    self.txtUsername.text=@"";
+    self.txtUsername.text=@"f";
     self.txtUsername.textColor=[UIColor colorWithRed:48/255.0 green:157/255.0 blue:174/255.0 alpha:1];
     [self.txtUsername setValue:[UIColor colorWithRed:48/255.0 green:157/255.0 blue:174/255.0 alpha:1] forKeyPath:@"_placeholderLabel.textColor"];
     
@@ -101,7 +101,7 @@
         self.txtPassword.leftView= paddingView2;
         
     }
-    self.txtPassword.text=@"";
+    self.txtPassword.text=@"vre";
     
     /**** LOGIN BUTTON ******/
     
@@ -520,13 +520,14 @@
         
     }
     else if(interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight){
+
         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginLandscape.png"]];
-        self.txtUsername.frame=CGRectMake(675, 300, 255, 60);
-        self.txtPassword.frame=CGRectMake(675, 384, 255, 60);
+        self.txtUsername.frame=CGRectMake(617, 319, 295, 50);
+        self.txtPassword.frame=CGRectMake(617, 392, 295, 50);
         if([appDelegate.IpadLanguage isEqualToString:@"en"])
-            self.btnLogin.frame=CGRectMake(self.txtUsername.frame.origin.x-47, 490,  LoginbtnImg.size.width, LoginbtnImg.size.height);
+            self.btnLogin.frame=CGRectMake(self.txtUsername.frame.origin.x-55, 490,  LoginbtnImg.size.width, LoginbtnImg.size.height);
         else
-            self.btnLogin.frame=CGRectMake(self.txtUsername.frame.size.width+self.txtUsername.frame.origin.x-LoginbtnImg.size.width+20, 490,  LoginbtnImg.size.width, LoginbtnImg.size.height);
+            self.btnLogin.frame=CGRectMake(self.txtUsername.frame.size.width+self.txtUsername.frame.origin.x-LoginbtnImg.size.width+22, 490,  LoginbtnImg.size.width, LoginbtnImg.size.height);
         
     }
     activityIndicatorObject=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];

@@ -48,7 +48,7 @@
     self.navigationItem.hidesBackButton=NO;
     self.navigationController.navigationBarHidden = NO;
     self.navigationController.navigationBar.translucent = YES;
-    self.navigationController.hidesBarsOnTap = true;
+//    self.navigationController.hidesBarsOnTap = true;
     self.tableView.backgroundColor = mainDelegate.TablebgColor;
     self.tableView.separatorColor =[UIColor clearColor];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"searchResultCell"];

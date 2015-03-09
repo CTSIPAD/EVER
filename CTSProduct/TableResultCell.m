@@ -174,19 +174,19 @@
    
         
         
-        self.label1.textColor=[UIColor whiteColor];
+        self.label1.textColor=mainDelegate.SearchLabelsColor;
         self.label1.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
         
         self.label2.backgroundColor=[UIColor clearColor];
-        self.label2.textColor=[UIColor whiteColor];
+        self.label2.textColor=mainDelegate.SearchLabelsColor;
         self.label2.font=[UIFont fontWithName:@"Helvetica" size:16];
         
         self.label3.backgroundColor=[UIColor clearColor];
-        self.label3.textColor=[UIColor whiteColor];
+        self.label3.textColor=mainDelegate.SearchLabelsColor;
         self.label3.font=[UIFont fontWithName:@"Helvetica" size:16];
         
         self.label4.backgroundColor=[UIColor clearColor];
-        self.label4.textColor=[UIColor whiteColor];
+        self.label4.textColor=mainDelegate.SearchLabelsColor;
         self.label4.font=[UIFont fontWithName:@"Helvetica" size:16];
         
         [self addSubview:self.label1];
@@ -325,7 +325,7 @@
     [self.imageView removeFromSuperview];
     [self ResetContent];
     self.label1=[[UILabel alloc]initWithFrame: CGRectMake(self.frame.size.width/2+40,-self.frame.size.height/4,362,73)];
-    self.label1.textColor = [UIColor whiteColor];
+    self.label1.textColor = mainDelegate.SearchLabelsColor;
     self.label1.highlightedTextColor = [UIColor whiteColor];
     self.label1.backgroundColor = [UIColor clearColor];
     self.label1.font=[UIFont fontWithName:@"Verdana" size:20];

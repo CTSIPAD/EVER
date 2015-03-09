@@ -89,23 +89,23 @@
     // logo image
     UIImage *logoImage=[UIImage imageWithData:mainDelegate.logo];
      mainDelegate.logoView.image=logoImage;
-    
+    float y= (100-logoImage.size.height)/2;
     if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
         if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
-            mainDelegate.logoView.frame=CGRectMake([UIScreen mainScreen].bounds.size.height-logoImage.size.width-20, 10, logoImage.size.width, logoImage.size.height);
+            mainDelegate.logoView.frame=CGRectMake([UIScreen mainScreen].bounds.size.height-logoImage.size.width-20, y, logoImage.size.width, logoImage.size.height);
         }
         else
         {
             if(UIInterfaceOrientationIsPortrait(orient))
-                mainDelegate.logoView.frame=CGRectMake([UIScreen mainScreen].bounds.size.height-logoImage.size.width-20, 10, logoImage.size.width, logoImage.size.height);
+                mainDelegate.logoView.frame=CGRectMake([UIScreen mainScreen].bounds.size.height-logoImage.size.width-20, y, logoImage.size.width, logoImage.size.height);
             else
-                mainDelegate.logoView.frame=CGRectMake([UIScreen mainScreen].bounds.size.width-logoImage.size.width-20, 10,logoImage.size.width, logoImage.size.height);
+                mainDelegate.logoView.frame=CGRectMake([UIScreen mainScreen].bounds.size.width-logoImage.size.width-20, y,logoImage.size.width, logoImage.size.height);
         }
         origineX=10;
     }
     else
     {
-        mainDelegate.logoView.frame=CGRectMake(10, 10, logoImage.size.width, logoImage.size.height);
+        mainDelegate.logoView.frame=CGRectMake(10, y, logoImage.size.width, logoImage.size.height);
         if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
             origineX=60;
         }else{
@@ -248,7 +248,7 @@
     [iconArray addObject:self.statusButton]; // add status button
     UIButton *nButton=[[UIButton alloc] init];
     [nButton setTitle:@"Y" forState:UIControlStateNormal];
-    [nButton setBackgroundColor:[UIColor purpleColor]];
+    [nButton setBackgroundColor:[UIColor clearColor]];
     [iconArray addObject:logoutButton];
     //
     
@@ -363,7 +363,37 @@
     
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    
+}
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:YES];
+    CGRect leftFrame = mainDelegate.logoView.frame;
+    CGRect rightFrame = mainDelegate.logoView.frame;
+    
+    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"en"])
+        leftFrame.origin.x -= mainDelegate.logoView.frame.size.width;
+    else
+        leftFrame.origin.x += mainDelegate.logoView.frame.size.width;
+    
+    
+    UIView* view = [self.view viewWithTag:100];
+    if (!view) {
+        NSLog(@"nil");
+    }
+    
+    [mainDelegate.logoView setFrame:leftFrame];
+           [UIView animateWithDuration:1
+                         animations:^{
+                             [mainDelegate.logoView setFrame:rightFrame];
+                         }
+                         completion:^(BOOL finished){
+                         }
+         ];
+    
 
+}
 -(void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 
 {
@@ -401,7 +431,10 @@
 {
     
     self.view.frame=CGRectMake(0, 0, parent.view.frame.size.width,400);
-    self.view.backgroundColor=[UIColor whiteColor];
+   
+    UIImage *image = [UIImage imageNamed:@"headerBackGround.png"];
+    [self.view setBackgroundColor:[UIColor colorWithPatternImage:image]];
+//    self.view.backgroundColor=[UIColor whiteColor];
 }
 
 -(void)OpenSettingsPage{
@@ -1106,7 +1139,7 @@
     mainDelegate.splitViewController= [storyboard instantiateViewControllerWithIdentifier:@"SplitViewController"];
     UINavigationController* navigationController = [self.splitViewController.viewControllers lastObject];
     self.splitViewController.delegate = (id)navigationController.topViewController;
-    self.splitViewController.view.backgroundColor = [UIColor grayColor];
+    self.splitViewController.view.backgroundColor = [UIColor clearColor];
     containerView *container=[[containerView alloc] init];
     container.splitView=mainDelegate.splitViewController;
     self.view.window.rootViewController=container;
