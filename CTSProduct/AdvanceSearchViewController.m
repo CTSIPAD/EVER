@@ -218,7 +218,7 @@
     }
     
     
-    return 80;
+    return 70;
 }
 
 -(CGFloat)  tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -226,16 +226,16 @@
     //	if(section==appDelegate.searchModule.criterias.count)
     //	return appDelegate.searchModule.searchTypes.count*55;
     //
-    return 1;
+    return 0;
 	
 }
 
 -(CGFloat)  tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if(section==0)
-        return 100;
+        return 80;
     
-    return 0;
+    return 1;
 }
 
 - (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section

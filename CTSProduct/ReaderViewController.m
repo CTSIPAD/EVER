@@ -304,6 +304,7 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
     }
     
 }
+
 - (void)centreView
 {
     m_pdfview.frame = [self centeredFrameForScrollView:PdfScroll andUIView:m_pdfview];
@@ -491,7 +492,7 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
             //CGRect viewRect = CGRectMake( m_pdfview.bounds.origin.x+218,0,size.width, self.view.bounds.size.height);
             
            // CGRect pagebarRect = viewRect;
-            CGRect pagebarRect = CGRectMake(0, 0, 130, self.view.frame.size.height);
+            CGRect pagebarRect = CGRectMake(0, 0, 200, self.view.frame.size.height);
            // pagebarRect.size.height = PAGEBAR_HEIGHT;
             //pagebarRect.origin.y = (viewRect.size.height - PAGEBAR_HEIGHT);
             pagebarRect.size.height = self.view.frame.size.height;
@@ -630,13 +631,24 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
 -(void) createFolderPageBar
 {
     folderPagebar = [[UIView alloc]init];
-  folderPagebar.frame=CGRectMake([UIScreen mainScreen].bounds.origin.x, m_pdfview.frame.origin.y, 130, [UIScreen mainScreen].bounds.size.height);
+  folderPagebar.frame=CGRectMake([UIScreen mainScreen].bounds.origin.x, m_pdfview.frame.origin.y, 200, [UIScreen mainScreen].bounds.size.height);
     
     folderPagebar.autoresizesSubviews = YES;
     folderPagebar.userInteractionEnabled = YES;
     folderPagebar.contentMode = UIViewContentModeRedraw;
-    folderPagebar.backgroundColor=mainDelegate.cellColor;
-    [self refreshFolderPageBar];
+    UIImage* bgColor;
+    
+    
+    UIInterfaceOrientation orientation=[[ UIApplication sharedApplication]statusBarOrientation];
+    
+    if (  UIInterfaceOrientationIsPortrait(orientation)) {
+        
+        bgColor=[UIImage imageNamed:@"metadataBg_Portraite.png"];
+    }
+    else
+        
+        bgColor=[UIImage imageNamed:@"metadataBg1.png"];
+    [folderPagebar setBackgroundColor:[UIColor colorWithPatternImage:bgColor]];    [self refreshFolderPageBar];
     [self.view addSubview:folderPagebar];
     
 }
@@ -684,23 +696,28 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
         UIButton *btnFolder;
         UILabel* folderlabel;
         
-        btnFolder=[[UIButton alloc]initWithFrame:CGRectMake(30, i*133+15, image.size.width, image.size.height)];
-           folderlabel=[[UILabel alloc]initWithFrame:CGRectMake(20, i*133+image.size.height, image.size.width+20, 100)];
+        btnFolder=[[UIButton alloc]initWithFrame:CGRectMake(100-image.size.width/2, i*133+15, image.size.width, image.size.height)];
+        folderlabel=[[UILabel alloc]init];
+        folderlabel.text=((FolderObject*)[folderarray objectAtIndex:i]).Name;
+        folderlabel.font = [UIFont fontWithName:@"Helvetica" size:17];
+
+        CGSize size = [folderlabel.text sizeWithAttributes:@{NSFontAttributeName: folderlabel.font}];
+        CGSize textSize = CGSizeMake(ceilf(size.width), ceilf(size.height));
+        
+        folderlabel.frame=CGRectMake(20, i*133+image.size.height+20, 160, textSize.height+20);
         
         [btnFolder setBackgroundImage:image forState:UIControlStateNormal];
-        folderlabel.text=((FolderObject*)[folderarray objectAtIndex:i]).Name;
         
         folderlabel.lineBreakMode = NSLineBreakByWordWrapping;
-        folderlabel.numberOfLines = 2;
+        folderlabel.numberOfLines = 0;
         
         folderlabel.textAlignment=NSTextAlignmentCenter;
-        folderlabel.backgroundColor = [UIColor clearColor];
-        folderlabel.font = [UIFont fontWithName:@"Helvetica" size:17];
         folderlabel.textColor=[UIColor whiteColor];
         btnFolder.tag =i;
         [btnFolder addTarget:self action:@selector(openPagebar:) forControlEvents:UIControlEventTouchUpInside];
         [scrollView addSubview:btnFolder];
         [scrollView addSubview:folderlabel];
+        [folderlabel setNeedsDisplay];
         
     }
     if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
@@ -796,10 +813,15 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
 {
     if(!SYSTEM_VERSION_LESS_THAN(@"8.0")){
     if(UIInterfaceOrientationIsPortrait(toInterfaceOrientation)){
-        folderPagebar.frame=CGRectMake([UIScreen mainScreen].bounds.origin.x, m_pdfview.frame.origin.y, 130, [UIScreen mainScreen].bounds.size.width);
+        folderPagebar.frame=CGRectMake([UIScreen mainScreen].bounds.origin.x, m_pdfview.frame.origin.y, 200, [UIScreen mainScreen].bounds.size.width);
+        
+        [folderPagebar setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"metadataBg_Portraite.png"]]];
+
     }
     else
-        folderPagebar.frame=CGRectMake([UIScreen mainScreen].bounds.origin.x, m_pdfview.frame.origin.y, 130, [UIScreen mainScreen].bounds.size.height);
+        folderPagebar.frame=CGRectMake([UIScreen mainScreen].bounds.origin.x, m_pdfview.frame.origin.y, 200, [UIScreen mainScreen].bounds.size.height);
+        [folderPagebar setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"metadataBg1.png"]]];
+
     }
     [mainPagebar adjustToolbar:toInterfaceOrientation];
     
@@ -833,7 +855,7 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
             openButton.frame = CGRectMake((m_pdfview.frame.origin.x+m_pdfview.frame.size.width/2)-100, 0, 200, 30);
             
         }
-        
+          [folderPagebar setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"metadataBg_Portraite.png"]]];
     } else {
         factor=1.75;
         m_pdfview.frame=CGRectMake ((self.view.bounds.size.width-self.view.bounds.size.width/factor)/2, 5, self.view.bounds.size.width/factor, self.view.bounds.size.height-5);
@@ -853,7 +875,7 @@ ReaderMainToolbarDelegate, ReaderMainPagebarDelegate, ReaderContentViewDelegate,
             PdfScroll.frame=m_pdfview.frame;
             
         }
-        
+          [folderPagebar setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"metadataBg1.png"]]];
     }
     
     
@@ -1789,17 +1811,17 @@ typedef enum{
                 [self EnableSwipe];
                 mainDelegate.isAnnotated=YES;
                 
-                NoteAlertView *noteView = [[NoteAlertView alloc] initWithFrame:CGRectMake(0, 300, 400, 250) fromComment:NO];
+                NoteAlertView *noteView = [[NoteAlertView alloc] initWithFrame:CGRectMake(0, 300, 428, 290) fromComment:NO];
                 noteView.modalPresentationStyle = UIModalPresentationFormSheet;
                 noteView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 [self presentViewController:noteView animated:YES completion:nil];
-                noteView.preferredContentSize=CGSizeMake(400, 250);
+                noteView.preferredContentSize=CGSizeMake(428, 290);
                 //noteView.view.superview.frame = CGRectMake(300, 300, 400, 250);
                 UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
                 if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown) {
-                    noteView.view.superview.frame = CGRectMake(150, 300, 400, 250);
+                    noteView.view.superview.frame = CGRectMake(150, 300, 428, 290);
                 } else {
-                    noteView.view.superview.frame = CGRectMake(300, 300, 400, 250);
+                    noteView.view.superview.frame = CGRectMake(300, 300, 428, 290);
                 }
                 
                 noteView.delegate=self;
@@ -2776,13 +2798,13 @@ typedef enum{
         }else{
             correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
         }
-        UploadControllerDialog *uploadDialog = [[UploadControllerDialog alloc] initWithFrame:CGRectMake(300, 200, 400, 400)];
+        UploadControllerDialog *uploadDialog = [[UploadControllerDialog alloc] initWithFrame:CGRectMake(300, 200, 515, 499)];
         uploadDialog.modalPresentationStyle = UIModalPresentationFormSheet;
         uploadDialog.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         uploadDialog.view.superview.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         [self presentViewController:uploadDialog animated:YES completion:nil];
 
-            uploadDialog.preferredContentSize=CGSizeMake(400, 400);
+            uploadDialog.preferredContentSize=CGSizeMake(515, 499);
 
         uploadDialog.CorrespondenceId=correspondence.Id;
         [uploadDialog setCorrespondenceIndex:self.correspondenceId];
@@ -2899,20 +2921,20 @@ typedef enum{
         mainPagebar.hidden=true;
         [mainPagebar removeFromSuperview];
     }
-    TransferViewController *transferView = [[TransferViewController alloc] initWithFrame:CGRectMake(0, 200, 450, 370)];
+    TransferViewController *transferView = [[TransferViewController alloc] initWithFrame:CGRectMake(0, 200, 691, 499)];
     
     transferView.modalPresentationStyle = UIModalPresentationFormSheet;
     transferView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:transferView animated:YES completion:nil];
-    transferView.preferredContentSize=CGSizeMake(450, 470);
+    transferView.preferredContentSize=CGSizeMake(691, 499);
     if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
         if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication]statusBarOrientation])) {
-            transferView.view.superview.frame = CGRectMake(200, 300, 450, 470);
+            transferView.view.superview.frame = CGRectMake(200, 300, 691, 499);
         }
         else
-        transferView.view.superview.frame = CGRectMake(300, 200, 450, 470); //it's important to do this after presentModalViewController
+        transferView.view.superview.frame = CGRectMake(300, 200,691, 499); //it's important to do this after presentModalViewController
     }else{
-         transferView.preferredContentSize=CGSizeMake(450, 470);
+         transferView.preferredContentSize=CGSizeMake(691, 499);
         
     }
     //transferView.view.superview.frame = CGRectMake(300, 200, 450, 470); //it's important to do this after presentModalViewController
@@ -3126,16 +3148,16 @@ typedef enum{
     if ([delegate respondsToSelector:@selector(dismissReaderViewController:)] == YES)
     {
         [self.notePopController dismissPopoverAnimated:NO];
-        CommentViewController *AcceptView = [[CommentViewController alloc] initWithActionName:CGRectMake(0, 200, 450, 370)  Action:action];
+        CommentViewController *AcceptView = [[CommentViewController alloc] initWithActionName:CGRectMake(0, 200, 691, 499)  Action:action];
         AcceptView.modalPresentationStyle = UIModalPresentationFormSheet;
         AcceptView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentViewController:AcceptView animated:YES completion:nil];
         if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
             
-            AcceptView.view.superview.frame = CGRectMake(300, 200, 450, 370); //it's important to do this
+            AcceptView.view.superview.frame = CGRectMake(300, 200, 691, 499); //it's important to do this
         }
         else
-            AcceptView.preferredContentSize=CGSizeMake(450, 370);
+            AcceptView.preferredContentSize=CGSizeMake(691, 499);
         AcceptView.delegate=self;
         AcceptView.Action=action;
         AcceptView.document =document1;
@@ -3246,7 +3268,7 @@ typedef enum{
             }else{
                 correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
             }
-            MetadataViewController  *metadataTable=[[MetadataViewController alloc]initWithStyle:UITableViewStyleGrouped];
+            MetadataViewController  *metadataTable=[[MetadataViewController alloc]initWithStyle:UITableViewStylePlain];
             
             metadataTable.view.frame=viewRect;
             
@@ -3258,20 +3280,20 @@ typedef enum{
             [self addChildViewController:metadataTable];
             metadataContainer=[[UIView alloc]initWithFrame:CGRectMake(0,0,200, self.view.bounds.size.height )];
             
-            UIButton *close = [UIButton buttonWithType:UIButtonTypeCustom];
-            if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
-                close.frame = CGRectMake(8, 10, 20, 20);
-            else
-                close.frame = CGRectMake(metadataContainer.frame.origin.x+metadataContainer.frame.size.width-30, 10, 20, 20);
-            [close setBackgroundImage:[UIImage imageNamed:@"delete_item.png"] forState:UIControlStateNormal];
-            [close addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
-            [close setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//            UIButton *close = [UIButton buttonWithType:UIButtonTypeCustom];
+//            if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
+//                close.frame = CGRectMake(8, 10, 20, 20);
+//            else
+//                close.frame = CGRectMake(metadataContainer.frame.origin.x+metadataContainer.frame.size.width-30, 10, 20, 20);
+//            [close setBackgroundImage:[UIImage imageNamed:@"delete_item.png"] forState:UIControlStateNormal];
+//            [close addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
+//            [close setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             
             metadataContainer=[[UIView alloc]initWithFrame:CGRectMake(0,0,200, self.view.bounds.size.height )];
             
             
             [metadataContainer addSubview:metadataTable.view];
-            [metadataContainer addSubview:close];
+//            [metadataContainer addSubview:close];
             [self.view addSubview:metadataContainer];
 
 //            m_pdfview.frame=CGRectMake(320+(self.view.bounds.size.width-(320+m_pdfview.frame.size.width))/2, 0, m_pdfview.frame.size.width, m_pdfview.frame.size.height);
@@ -3983,7 +4005,10 @@ typedef enum{
 }
 -(void)refreshDocument:(NSString*)PdfLocation attachmentId:(NSString*)attachmentId correspondence:(CCorrespondence *)corr{
     if(corr==nil){
-        [mainToolbar.nextButton setEnabled:true];
+        if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
+            [mainToolbar.previousButton setEnabled:true];
+        else
+            [mainToolbar.nextButton setEnabled:true];
         mainDelegate.attachementsCount=mainDelegate.attachementsCount+1;
     }else{
         CAttachment *fileToOpen=corr.attachmentsList[0];

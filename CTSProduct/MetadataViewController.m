@@ -33,14 +33,28 @@
     [super viewDidLoad];
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [self.tableView setUserInteractionEnabled:NO];
-    [self.tableView setBackgroundColor:mainDelegate.metaDataCellColor];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"metadataCell"];
     
+       [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"metadataCell"];
     
+    self.tableView.separatorColor=[UIColor clearColor];
+
     
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    UIImage* bgColor;
+
+    UIInterfaceOrientation orientation=[[ UIApplication sharedApplication]statusBarOrientation];
+    
+    if (  UIInterfaceOrientationIsPortrait(orientation)) {
+        
+        bgColor=[UIImage imageNamed:@"metadataBg_Portraite.png"];
+    }
+    else
+        
+        bgColor=[UIImage imageNamed:@"metadataBg1.png"];
+    [self.tableView setBackgroundColor:[UIColor colorWithPatternImage:bgColor]];
+
     properties = [[NSMutableDictionary alloc] init];
     
     NSMutableDictionary *subDictionary;
@@ -68,18 +82,27 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    return properties.count ;
+    return 1 ;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    return 1;
+    return properties.count;
+}
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)mycell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(properties.count!=indexPath.row+1){
+    UIImage*image=[UIImage imageNamed:@"metadataSeparator.png"];
+    UIView * additionalSeparator = [[UIView alloc] initWithFrame:CGRectMake(8,mycell.frame.size.height-image.size.height,mycell.frame.size.width-16,image.size.height)];
+    additionalSeparator.backgroundColor = [UIColor colorWithPatternImage:image];
+    [mycell addSubview:additionalSeparator];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *key=[NSString stringWithFormat:@"%d",indexPath.section];
+    NSString *key=[NSString stringWithFormat:@"%d",indexPath.row];
     NSDictionary *subDictionary = [properties objectForKey:key];
     NSArray *keys=[subDictionary allKeys];
     NSDictionary *subSubDictionary=[subDictionary objectForKey:[keys objectAtIndex:0]];
@@ -90,76 +113,87 @@
     CGRect rect = [attributedText boundingRectWithSize:(CGSize){200, CGFLOAT_MAX}
                                                options:NSStringDrawingUsesLineFragmentOrigin
                                                context:nil];
-    return rect.size.height+50;
+    return rect.size.height+100;
 
     
 }
 
--(CGFloat)  tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-	
-	return 1;
-	
-}
-
--(CGFloat)  tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-	return 50;
-}
 
 -(void)hide{
     [ReaderViewController closeMetadata];
 }
 
-- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *view = [[UIView alloc] init];
 
-    view.backgroundColor=mainDelegate.cellColor;
-    view.frame=CGRectMake(0, 0, 350, 50);
-    
-    UILabel *lblTitle=[[UILabel alloc]initWithFrame:CGRectMake(10, 10, cell.frame.size.width-20, 30)];
-    [lblTitle setBackgroundColor:mainDelegate.cellColor];
-    lblTitle.textColor=[UIColor whiteColor];
-    lblTitle.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
-    NSString *key=[NSString stringWithFormat:@"%d",section];
-    NSDictionary *subDictionary = [properties objectForKey:key];
-    NSArray *keys=[subDictionary allKeys];
-    NSDictionary *subSubDictionary=[subDictionary objectForKey:[keys objectAtIndex:0]];
-    lblTitle.text=[[subSubDictionary allKeys] objectAtIndex:0];
-    
-    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
-        lblTitle.textAlignment=NSTextAlignmentRight;
-    
-    [view addSubview:lblTitle];
-    
-    return view;
-}
 
 
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     static NSString *CellIdentifier = @"metadataCell";
-    cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    cell.backgroundColor=mainDelegate.metaDataCellColor;
-    NSString *key=[NSString stringWithFormat:@"%d",indexPath.section];
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    cell.backgroundColor=[UIColor clearColor];
+    
+    
+    NSString *key=[NSString stringWithFormat:@"%d",indexPath.row];
     NSDictionary *subDictionary = [properties objectForKey:key];
     
     NSArray *keys=[subDictionary allKeys];
     cell.textLabel.numberOfLines=0;
     NSDictionary *subSubDictionary=[subDictionary objectForKey:[keys objectAtIndex:0]];
     NSArray *subkeys=[subSubDictionary allKeys];
-    cell.textLabel.text= [subSubDictionary objectForKey:[subkeys objectAtIndex:0]];
-    cell.textLabel.textColor=mainDelegate.SearchLabelsColor;
+    
+    
+//    UIImage *cellImage=[UIImage imageNamed:@"SubjectIcon.png"];
+//    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 20, cellImage.size.width, cellImage.size.height)];
+//    
+//    [imageView setImage:cellImage];
+   
+    
+    UILabel *lblTitle=[[UILabel alloc]initWithFrame:CGRectMake(20, 20, cell.frame.size.width-180, 30)];
+    [lblTitle setBackgroundColor:[UIColor clearColor]];
+    lblTitle.textColor=[UIColor whiteColor];
+    lblTitle.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
+    lblTitle.text=[subkeys objectAtIndex:0];
+    lblTitle.textAlignment=NSTextAlignmentLeft;
 
-    cell.textLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:14];
-    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
-        cell.textLabel.textAlignment=NSTextAlignmentRight;
+    
+    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
+        lblTitle.textAlignment=NSTextAlignmentRight;
+        lblTitle.frame=CGRectMake(15, 20, cell.frame.size.width-180, 30);
+//        imageView.frame=CGRectMake(lblTitle.frame.origin.x+lblTitle.frame.size.width+5, 15,cellImage.size.width, cellImage.size.height);
+        
+    }
+    CGSize textSize = [[subSubDictionary objectForKey:[subkeys objectAtIndex:0]] sizeWithFont: [UIFont fontWithName:@"Helvetica" size:14]
+                         constrainedToSize:CGSizeMake(cell.frame.size.width-180, CGFLOAT_MAX)
+                             lineBreakMode:NSLineBreakByWordWrapping];
+    
+    
+    
+    
+    UILabel *lbldetail=[[UILabel alloc]initWithFrame:CGRectMake(lblTitle.frame.origin.x, 55, cell.frame.size.width-180, textSize.height)];
+    [lbldetail setBackgroundColor:[UIColor clearColor]];
+    lbldetail.textColor=[UIColor colorWithRed:196/255.0f green:208/255.0f blue:208/255.0f alpha:1.0f];
+    lbldetail.font = [UIFont fontWithName:@"Helvetica" size:14];
+    lbldetail.textAlignment=NSTextAlignmentLeft;
+
+    if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
+        lbldetail.frame=CGRectMake(15, 55, cell.frame.size.width-180, textSize.height);
+        lbldetail.textAlignment=NSTextAlignmentRight;
+    }
+    lbldetail.text=[subSubDictionary objectForKey:[subkeys objectAtIndex:0]];
+    lbldetail.lineBreakMode = NSLineBreakByWordWrapping;
+    lbldetail.numberOfLines=0;
+    
+   
+
+   
+
+    [cell addSubview:lblTitle];
+    [cell addSubview:lbldetail];
+//    [cell addSubview:imageView];
+//    [lbldetail sizeToFit];
 
     return cell;
 }

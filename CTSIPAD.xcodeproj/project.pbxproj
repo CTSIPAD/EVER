@@ -7,7 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		043477AD1AB1AADE009513D8 /* EditSignature.png in Resources */ = {isa = PBXBuildFile; fileRef = 043477AC1AB1AADE009513D8 /* EditSignature.png */; };
+		043477AF1AB220F8009513D8 /* NotePopUpBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 043477AE1AB220F8009513D8 /* NotePopUpBg.png */; };
+		043477B11AB23DD0009513D8 /* uploadBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 043477B01AB23DD0009513D8 /* uploadBg.png */; };
+		04524B0D1AB196B8008814B0 /* PopUpCancelBtn_ar.png in Resources */ = {isa = PBXBuildFile; fileRef = 04524B0B1AB196B8008814B0 /* PopUpCancelBtn_ar.png */; };
+		04524B0E1AB196B8008814B0 /* PopUpCancelBtn_en.png in Resources */ = {isa = PBXBuildFile; fileRef = 04524B0C1AB196B8008814B0 /* PopUpCancelBtn_en.png */; };
+		045551361AB2E87C00A7844C /* d3.tip.js in Resources */ = {isa = PBXBuildFile; fileRef = 0455512B1AB2E87C00A7844C /* d3.tip.js */; };
+		045551371AB2E87C00A7844C /* D3HorizontalBarChart.html in Resources */ = {isa = PBXBuildFile; fileRef = 0455512C1AB2E87C00A7844C /* D3HorizontalBarChart.html */; };
+		045551381AB2E87C00A7844C /* D3OverdueBarChart.html in Resources */ = {isa = PBXBuildFile; fileRef = 0455512D1AB2E87C00A7844C /* D3OverdueBarChart.html */; };
+		045551391AB2E87C00A7844C /* D3VerticalBarChart.html in Resources */ = {isa = PBXBuildFile; fileRef = 0455512E1AB2E87C00A7844C /* D3VerticalBarChart.html */; };
+		0455513A1AB2E87C00A7844C /* HorizontalBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551301AB2E87C00A7844C /* HorizontalBarChartViewController.m */; };
+		0455513B1AB2E87C00A7844C /* OverdueBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551321AB2E87C00A7844C /* OverdueBarChartViewController.m */; };
+		0455513C1AB2E87C00A7844C /* VerticalBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */; };
+		0455513D1AB2E87C00A7844C /* VerticalBartChartViewController in Resources */ = {isa = PBXBuildFile; fileRef = 045551351AB2E87C00A7844C /* VerticalBartChartViewController */; };
 		045DC4AE1A5D738D009C3540 /* IMGtakephoto.png in Resources */ = {isa = PBXBuildFile; fileRef = 045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */; };
+		0481EF991AAF41D800BACA04 /* metadataBg1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0481EF981AAF41D800BACA04 /* metadataBg1.png */; };
 		04932D491AA9E05500180152 /* separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 04932D481AA9E05500180152 /* separator.png */; };
 		04932D4D1AA9E31A00180152 /* SelectedInbox_ar.png in Resources */ = {isa = PBXBuildFile; fileRef = 04932D4A1AA9E31A00180152 /* SelectedInbox_ar.png */; };
 		04932D4E1AA9E31A00180152 /* SelectedInbox.png in Resources */ = {isa = PBXBuildFile; fileRef = 04932D4B1AA9E31A00180152 /* SelectedInbox.png */; };
@@ -32,6 +46,7 @@
 		04A131491AAD8EF700D422F8 /* metadataSeparator.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A131481AAD8EF700D422F8 /* metadataSeparator.png */; };
 		04A1314D1AAD8F3D00D422F8 /* PopUpBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A1314B1AAD8F3D00D422F8 /* PopUpBg.png */; };
 		04A1314E1AAD8F3D00D422F8 /* PopUpbtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A1314C1AAD8F3D00D422F8 /* PopUpbtn.png */; };
+		04A131501AAD9D3200D422F8 /* metadataBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A1314F1AAD9D3200D422F8 /* metadataBg.png */; };
 		04A17EFC1A947C4100E76B01 /* Login.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A17EFB1A947C4100E76B01 /* Login.png */; };
 		04A17EFE1A94807400E76B01 /* Login_ar.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A17EFD1A94807400E76B01 /* Login_ar.png */; };
 		04A17F021A94B1D000E76B01 /* cellbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A17EFF1A94B1D000E76B01 /* cellbg.png */; };
@@ -41,6 +56,7 @@
 		04A17F0A1A94DC9A00E76B01 /* SimpleSearchBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A17F091A94DC9A00E76B01 /* SimpleSearchBtn.png */; };
 		04A17F0C1A95290200E76B01 /* cellbg_ar.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A17F0B1A95290200E76B01 /* cellbg_ar.png */; };
 		04A17F0E1A9539D500E76B01 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A17F0D1A9539D500E76B01 /* clock.png */; };
+		04C8C5161AB254B400B2ED70 /* metadataBg_Portraite.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C8C5151AB254B400B2ED70 /* metadataBg_Portraite.png */; };
 		04CBF9F71AA841D800F9A82A /* d3pie.html in Resources */ = {isa = PBXBuildFile; fileRef = 04CBF9F61AA841D800F9A82A /* d3pie.html */; };
 		04CBF9F91AA842E100F9A82A /* d3pie.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 04CBF9F81AA842E100F9A82A /* d3pie.min.js */; };
 		956B97BC1966DB4F00D01DB8 /* note.m in Sources */ = {isa = PBXBuildFile; fileRef = 956B97BB1966DB4F00D01DB8 /* note.m */; };
@@ -230,7 +246,24 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		043477AC1AB1AADE009513D8 /* EditSignature.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EditSignature.png; sourceTree = "<group>"; };
+		043477AE1AB220F8009513D8 /* NotePopUpBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotePopUpBg.png; sourceTree = "<group>"; };
+		043477B01AB23DD0009513D8 /* uploadBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uploadBg.png; sourceTree = "<group>"; };
+		04524B0B1AB196B8008814B0 /* PopUpCancelBtn_ar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PopUpCancelBtn_ar.png; sourceTree = "<group>"; };
+		04524B0C1AB196B8008814B0 /* PopUpCancelBtn_en.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PopUpCancelBtn_en.png; sourceTree = "<group>"; };
+		0455512B1AB2E87C00A7844C /* d3.tip.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = d3.tip.js; sourceTree = "<group>"; };
+		0455512C1AB2E87C00A7844C /* D3HorizontalBarChart.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = D3HorizontalBarChart.html; sourceTree = "<group>"; };
+		0455512D1AB2E87C00A7844C /* D3OverdueBarChart.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = D3OverdueBarChart.html; sourceTree = "<group>"; };
+		0455512E1AB2E87C00A7844C /* D3VerticalBarChart.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = D3VerticalBarChart.html; sourceTree = "<group>"; };
+		0455512F1AB2E87C00A7844C /* HorizontalBarChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HorizontalBarChartViewController.h; sourceTree = "<group>"; };
+		045551301AB2E87C00A7844C /* HorizontalBarChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HorizontalBarChartViewController.m; sourceTree = "<group>"; };
+		045551311AB2E87C00A7844C /* OverdueBarChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverdueBarChartViewController.h; sourceTree = "<group>"; };
+		045551321AB2E87C00A7844C /* OverdueBarChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverdueBarChartViewController.m; sourceTree = "<group>"; };
+		045551331AB2E87C00A7844C /* VerticalBarChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticalBarChartViewController.h; sourceTree = "<group>"; };
+		045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticalBarChartViewController.m; sourceTree = "<group>"; };
+		045551351AB2E87C00A7844C /* VerticalBartChartViewController */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VerticalBartChartViewController; sourceTree = "<group>"; };
 		045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMGtakephoto.png; sourceTree = "<group>"; };
+		0481EF981AAF41D800BACA04 /* metadataBg1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadataBg1.png; sourceTree = "<group>"; };
 		04932D481AA9E05500180152 /* separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = separator.png; sourceTree = "<group>"; };
 		04932D4A1AA9E31A00180152 /* SelectedInbox_ar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SelectedInbox_ar.png; sourceTree = "<group>"; };
 		04932D4B1AA9E31A00180152 /* SelectedInbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SelectedInbox.png; sourceTree = "<group>"; };
@@ -257,6 +290,7 @@
 		04A131481AAD8EF700D422F8 /* metadataSeparator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadataSeparator.png; sourceTree = "<group>"; };
 		04A1314B1AAD8F3D00D422F8 /* PopUpBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PopUpBg.png; sourceTree = "<group>"; };
 		04A1314C1AAD8F3D00D422F8 /* PopUpbtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PopUpbtn.png; sourceTree = "<group>"; };
+		04A1314F1AAD9D3200D422F8 /* metadataBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadataBg.png; sourceTree = "<group>"; };
 		04A17EFB1A947C4100E76B01 /* Login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Login.png; sourceTree = "<group>"; };
 		04A17EFD1A94807400E76B01 /* Login_ar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Login_ar.png; sourceTree = "<group>"; };
 		04A17EFF1A94B1D000E76B01 /* cellbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cellbg.png; sourceTree = "<group>"; };
@@ -266,6 +300,7 @@
 		04A17F091A94DC9A00E76B01 /* SimpleSearchBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SimpleSearchBtn.png; sourceTree = "<group>"; };
 		04A17F0B1A95290200E76B01 /* cellbg_ar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cellbg_ar.png; sourceTree = "<group>"; };
 		04A17F0D1A9539D500E76B01 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
+		04C8C5151AB254B400B2ED70 /* metadataBg_Portraite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadataBg_Portraite.png; sourceTree = "<group>"; };
 		04CBF9F61AA841D800F9A82A /* d3pie.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = d3pie.html; sourceTree = "<group>"; };
 		04CBF9F81AA842E100F9A82A /* d3pie.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = d3pie.min.js; sourceTree = "<group>"; };
 		956B97BA1966DB4F00D01DB8 /* note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = note.h; sourceTree = "<group>"; };
@@ -609,6 +644,19 @@
 		0499B7011AA459AF002609A0 /* Reports */ = {
 			isa = PBXGroup;
 			children = (
+				0455512B1AB2E87C00A7844C /* d3.tip.js */,
+				0455512C1AB2E87C00A7844C /* D3HorizontalBarChart.html */,
+				0455512D1AB2E87C00A7844C /* D3OverdueBarChart.html */,
+				0455512E1AB2E87C00A7844C /* D3VerticalBarChart.html */,
+				0455512F1AB2E87C00A7844C /* HorizontalBarChartViewController.h */,
+				045551301AB2E87C00A7844C /* HorizontalBarChartViewController.m */,
+				045551311AB2E87C00A7844C /* OverdueBarChartViewController.h */,
+				045551321AB2E87C00A7844C /* OverdueBarChartViewController.m */,
+				045551331AB2E87C00A7844C /* VerticalBarChartViewController.h */,
+				045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */,
+				045551351AB2E87C00A7844C /* VerticalBartChartViewController */,
+				0499B7021AA459BE002609A0 /* ReportViewController.h */,
+				0499B7031AA459BE002609A0 /* ReportViewController.m */,
 				0499B71A1AA4C89F002609A0 /* Pie Chart */,
 				0499B7071AA45F1F002609A0 /* images */,
 			);
@@ -648,6 +696,8 @@
 			isa = PBXGroup;
 			children = (
 				04A1314B1AAD8F3D00D422F8 /* PopUpBg.png */,
+				04524B0B1AB196B8008814B0 /* PopUpCancelBtn_ar.png */,
+				04524B0C1AB196B8008814B0 /* PopUpCancelBtn_en.png */,
 				04A1314C1AAD8F3D00D422F8 /* PopUpbtn.png */,
 			);
 			name = images;
@@ -658,6 +708,7 @@
 			children = (
 				A278885A1A165E6F0031C3CE /* thumbnail1.png */,
 				A278885C1A165EFB0031C3CE /* thumbnail3.png */,
+				043477AE1AB220F8009513D8 /* NotePopUpBg.png */,
 				A2B84F5519628DAB0084035F /* file.png */,
 				A2B84F5719628DAB0084035F /* GoBack.png */,
 			);
@@ -681,7 +732,10 @@
 			children = (
 				04A131481AAD8EF700D422F8 /* metadataSeparator.png */,
 				04A131401AAD8ECC00D422F8 /* DateIcon.png */,
+				0481EF981AAF41D800BACA04 /* metadataBg1.png */,
+				04A1314F1AAD9D3200D422F8 /* metadataBg.png */,
 				04A131411AAD8ECC00D422F8 /* refIcon.png */,
+				04C8C5151AB254B400B2ED70 /* metadataBg_Portraite.png */,
 				04A131421AAD8ECC00D422F8 /* senderIcon.png */,
 				04A131431AAD8ECC00D422F8 /* SubjectIcon.png */,
 				A29DA1B41A12045200BE6CAE /* metadata.png */,
@@ -804,6 +858,7 @@
 		A2B84F621962F3960084035F /* images */ = {
 			isa = PBXGroup;
 			children = (
+				043477AC1AB1AADE009513D8 /* EditSignature.png */,
 				A29DA1C41A1210DA00BE6CAE /* settings.png */,
 			);
 			name = images;
@@ -812,6 +867,7 @@
 		A2B9FA0B197E63CA00A61F5F /* images */ = {
 			isa = PBXGroup;
 			children = (
+				043477B01AB23DD0009513D8 /* uploadBg.png */,
 				045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */,
 				A2B9FA221982B3FD00A61F5F /* camera.png */,
 			);
@@ -915,8 +971,6 @@
 			children = (
 				A29DA1D01A138B8000BE6CAE /* CTSIPAD.entitlements */,
 				0499B7011AA459AF002609A0 /* Reports */,
-				0499B7021AA459BE002609A0 /* ReportViewController.h */,
-				0499B7031AA459BE002609A0 /* ReportViewController.m */,
 				A2FE653419AC7C2300CC5628 /* USER Details */,
 				A2EB9201199B4D6A0047D0E3 /* Sync Result */,
 				A29A71981998B1CA00143756 /* Network operations */,
@@ -1475,6 +1529,7 @@
 				04CBF9F71AA841D800F9A82A /* d3pie.html in Resources */,
 				04932D4D1AA9E31A00180152 /* SelectedInbox_ar.png in Resources */,
 				0499B70D1AA468EC002609A0 /* Charts-By-Categorie.png in Resources */,
+				045551381AB2E87C00A7844C /* D3OverdueBarChart.html in Resources */,
 				A29DA1C91A12126500BE6CAE /* Logout.png in Resources */,
 				04A1314E1AAD8F3D00D422F8 /* PopUpbtn.png in Resources */,
 				A2F232F319557C5000CA09DD /* InfoPlist.strings in Resources */,
@@ -1483,10 +1538,13 @@
 				A29DA1C21A120C2500BE6CAE /* calendar.png in Resources */,
 				A27888571A1633850031C3CE /* newimg.png in Resources */,
 				045DC4AE1A5D738D009C3540 /* IMGtakephoto.png in Resources */,
+				04A131501AAD9D3200D422F8 /* metadataBg.png in Resources */,
 				A2010BEA195D6C55004AC93C /* FreeSign.png in Resources */,
 				A29DA1C31A120C2500BE6CAE /* dropDownTag.png in Resources */,
 				04A17EFE1A94807400E76B01 /* Login_ar.png in Resources */,
 				A29793A419BEF42300AD6D1D /* disclosure.png in Resources */,
+				043477AD1AB1AADE009513D8 /* EditSignature.png in Resources */,
+				043477B11AB23DD0009513D8 /* uploadBg.png in Resources */,
 				0499B70F1AA468EC002609A0 /* Charts-By-Structures.png in Resources */,
 				0499B7241AA4C89F002609A0 /* Donut3D.js in Resources */,
 				A29DA1BB1A12072B00BE6CAE /* iconViewSeperator.png in Resources */,
@@ -1499,10 +1557,12 @@
 				A29DA1B51A12045200BE6CAE /* metadata.png in Resources */,
 				A2B84F5A19628DAB0084035F /* GoBack.png in Resources */,
 				A2F61483195964F400956BF0 /* background@2x.png in Resources */,
+				04524B0D1AB196B8008814B0 /* PopUpCancelBtn_ar.png in Resources */,
 				04A17F0E1A9539D500E76B01 /* clock.png in Resources */,
 				A2F2333A195C397A008F71AF /* Note.png in Resources */,
 				A2010BED195D6C55004AC93C /* SignAll.png in Resources */,
 				A29DA1931A11FDD600BE6CAE /* HideIcon.png in Resources */,
+				0481EF991AAF41D800BACA04 /* metadataBg1.png in Resources */,
 				A2F614861959651100956BF0 /* apple calendar.plist in Resources */,
 				A29DA1A71A1200BE00BE6CAE /* subjectimg.png in Resources */,
 				A27888561A1633850031C3CE /* Priorityimg.png in Resources */,
@@ -1544,15 +1604,18 @@
 				A29DA1B31A12040500BE6CAE /* homeIcon.png in Resources */,
 				A27888631A1A466D0031C3CE /* More.png in Resources */,
 				A2F232FE19557C5000CA09DD /* Images.xcassets in Resources */,
+				045551361AB2E87C00A7844C /* d3.tip.js in Resources */,
 				04932D4E1AA9E31A00180152 /* SelectedInbox.png in Resources */,
 				A278885B1A165E6F0031C3CE /* thumbnail1.png in Resources */,
 				04A17F031A94B1D000E76B01 /* selectedcellArrow.png in Resources */,
 				A29DA1B71A12047100BE6CAE /* Signature.png in Resources */,
 				A2E598F61A2F161E00CB97A6 /* loginPortrait.png in Resources */,
+				0455513D1AB2E87C00A7844C /* VerticalBartChartViewController in Resources */,
 				04A131461AAD8ECC00D422F8 /* senderIcon.png in Resources */,
 				A2B84F5819628DAB0084035F /* file.png in Resources */,
 				A2010BF3195D954E004AC93C /* save.png in Resources */,
 				04A17EFC1A947C4100E76B01 /* Login.png in Resources */,
+				045551371AB2E87C00A7844C /* D3HorizontalBarChart.html in Resources */,
 				A278885D1A165EFB0031C3CE /* thumbnail3.png in Resources */,
 				A2EB9208199B60A10047D0E3 /* failure.jpg in Resources */,
 				A2EB9209199B60A10047D0E3 /* success.jpg in Resources */,
@@ -1564,16 +1627,20 @@
 				A27888621A1A466D0031C3CE /* More-flipped.png in Resources */,
 				A2B9FA1F1982459700A61F5F /* AddNew.png in Resources */,
 				A2E598F51A2F161E00CB97A6 /* loginLandscape.png in Resources */,
+				04C8C5161AB254B400B2ED70 /* metadataBg_Portraite.png in Resources */,
 				A29DA1961A11FDD600BE6CAE /* PreviousIcon.png in Resources */,
 				A2F2332519557DD500CA09DD /* Storyboard.storyboard in Resources */,
 				0499B7101AA468EC002609A0 /* Overdue-Documents.png in Resources */,
 				04932D511AA9EF4600180152 /* headerBackGround.png in Resources */,
+				043477AF1AB220F8009513D8 /* NotePopUpBg.png in Resources */,
 				A2B9FA231982B3FD00A61F5F /* camera.png in Resources */,
 				A27888591A163EED0031C3CE /* Folder.png in Resources */,
 				04A131441AAD8ECC00D422F8 /* DateIcon.png in Resources */,
 				04A131491AAD8EF700D422F8 /* metadataSeparator.png in Resources */,
+				04524B0E1AB196B8008814B0 /* PopUpCancelBtn_en.png in Resources */,
 				0499B70E1AA468EC002609A0 /* Charts-By-Months.png in Resources */,
 				0499B7061AA45F0F002609A0 /* R2.png in Resources */,
+				045551391AB2E87C00A7844C /* D3VerticalBarChart.html in Resources */,
 				A2F23335195C397A008F71AF /* attachments.png in Resources */,
 				04CBF9F91AA842E100F9A82A /* d3pie.min.js in Resources */,
 				A29DA19F1A12002300BE6CAE /* tapToload.png in Resources */,
@@ -1598,6 +1665,7 @@
 				A2F6138519583FC200956BF0 /* LoginViewController.m in Sources */,
 				A2EB920C199B99D10047D0E3 /* SyncViewController.m in Sources */,
 				A2F232F919557C5000CA09DD /* AppDelegate.m in Sources */,
+				0455513C1AB2E87C00A7844C /* VerticalBarChartViewController.m in Sources */,
 				A2F614751959640F00956BF0 /* PMCalendarBackgroundView.m in Sources */,
 				A29A719B1998B1F800143756 /* SomeNetworkOperation.m in Sources */,
 				A2EB9200199A493D0047D0E3 /* OfflineResult.m in Sources */,
@@ -1669,6 +1737,7 @@
 				A2F6144619595EC100956BF0 /* ReaderViewController.m in Sources */,
 				A2F614DF195973FA00956BF0 /* SignatureViewController.m in Sources */,
 				0499B7041AA459BE002609A0 /* ReportViewController.m in Sources */,
+				0455513B1AB2E87C00A7844C /* OverdueBarChartViewController.m in Sources */,
 				A2F613F819587A4100956BF0 /* CSearch.m in Sources */,
 				A2F6144219595C8800956BF0 /* ReaderContentView.m in Sources */,
 				A2F614901959683B00956BF0 /* CGPDFDocument.m in Sources */,
@@ -1691,6 +1760,7 @@
 				A2F8B59D19899110001BB7DF /* CustomViewController.m in Sources */,
 				A2F613D319586F5500956BF0 /* FileManager.m in Sources */,
 				A2F614C219596BE800956BF0 /* UIXToolbarView.m in Sources */,
+				0455513A1AB2E87C00A7844C /* HorizontalBarChartViewController.m in Sources */,
 				A2F614771959640F00956BF0 /* PMCalendarView.m in Sources */,
 				A2F614B919596ADE00956BF0 /* ReaderThumbRequest.m in Sources */,
 			);

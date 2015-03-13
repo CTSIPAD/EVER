@@ -136,23 +136,41 @@
         case 0:{
 
             if (!mainDelegate.isOfflineMode) {
-                int myHeight;
-                if (mainDelegate.PinCodeEnabled)
-                    myHeight=500;
-                else
-                    myHeight=400;
 
-            SignatureViewController *signatureView = [[SignatureViewController alloc] initWithFrame:CGRectMake(310, 100, 400, 500)];
+                SignatureViewController *signatureView;
+                if(mainDelegate.PinCodeEnabled){
+                    signatureView = [[SignatureViewController alloc] initWithFrame:CGRectMake(310, 100, 515, 499)];
+                }
+                else
+                {
+                    signatureView = [[SignatureViewController alloc] initWithFrame:CGRectMake(310, 100, 515, 342)];
+
+                }
             signatureView.modalPresentationStyle = UIModalPresentationFormSheet;
             signatureView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [self presentViewController:signatureView animated:YES completion:nil];
               
-            if (SYSTEM_VERSION_LESS_THAN(@"8.0"))
-                signatureView.view.superview.frame = CGRectMake(310, 100, 400, myHeight);
-            else
-                signatureView.preferredContentSize=CGSizeMake(400, myHeight);
+                if (SYSTEM_VERSION_LESS_THAN(@"8.0")){
+                    if(mainDelegate.PinCodeEnabled){
+                        signatureView.view.superview.frame = CGRectMake(310, 100, 515, 499);
+                    }
+                    else
+                    {
+                        signatureView.view.superview.frame = CGRectMake(310, 100, 515, 342);
+                    }
+
+                }
+                else{
+                    if(mainDelegate.PinCodeEnabled){
+                        signatureView.preferredContentSize=CGSizeMake(515, 499);
+                    }
+                    else
+                    {
+                        signatureView.preferredContentSize=CGSizeMake(515, 342);
+                    }
+                }
             }
-        
+                    
             else
             {
                 [self ShowMessage:NSLocalizedString(@"Alert.EditSignature", @"go online before edit signature")];

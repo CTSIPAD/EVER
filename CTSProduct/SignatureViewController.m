@@ -58,44 +58,37 @@
         //originalFrame = frame;
         // self.view.alpha = 1;
         
-                mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        self.view.layer.cornerRadius=5;
-        self.view.clipsToBounds=YES;
-        self.view.layer.borderWidth=1.0;
-        self.view.layer.borderColor=[[UIColor grayColor]CGColor];
-        
-        [self.view setBackgroundColor:mainDelegate.buttonColor];
-        CGFloat textWidth;
-        if (SYSTEM_VERSION_LESS_THAN(@"8.0"))
-           textWidth=(self.view.frame.size.width/2)-10;
-        else
-         textWidth=380;
+        if(mainDelegate.PinCodeEnabled){
+            self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"uploadBg.png"]];
+
+        }
+        else{
+            self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"EditSignature.png"]];
+
+        }
         UIView *paddingView=[[UIView alloc] initWithFrame:CGRectMake(0, 0,10 ,35)];
         UIView *paddingView1=[[UIView alloc] initWithFrame:CGRectMake(0, 0,10 ,35)];
         UIView *paddingView2=[[UIView alloc] initWithFrame:CGRectMake(0, 0,10 ,35)];
         
         
-        UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, frame.size.width, 25)];
-        lblTitle.textColor = [UIColor whiteColor];
+        UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(50, 30, frame.size.width-100, 25)];
+        lblTitle.textColor = mainDelegate.selectedInboxColor;
         lblTitle.text =NSLocalizedString(@"Signature.YourSignature", @"Your Signature");
-        lblTitle.textAlignment=NSTextAlignmentCenter;
+        lblTitle.textAlignment=NSTextAlignmentLeft;
         lblTitle.backgroundColor = [UIColor clearColor];
         lblTitle.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
         
-        int buttonsY;
-        int signViewY;
         if(mainDelegate.PinCodeEnabled){
-            signViewY=60;
-            buttonsY=450;
-            UILabel *lblOldPin = [[UILabel alloc] initWithFrame:CGRectMake(20, 350, 150, 40)];
-            lblOldPin.textColor = [UIColor whiteColor];
+            UILabel *lblOldPin = [[UILabel alloc] initWithFrame:CGRectMake(50, 350, frame.size.width-100, 40)];
+            lblOldPin.textColor = mainDelegate.PopUpTextColor;
             lblOldPin.text =NSLocalizedString(@"Signature.OldPinCode",@"Old Pin Code");
             lblOldPin.textAlignment=NSTextAlignmentLeft;
             lblOldPin.backgroundColor = [UIColor clearColor];
             lblOldPin.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
             
-            txtOldPin = [[UITextField alloc] initWithFrame:CGRectMake(10, 270, textWidth, 40)];
+            txtOldPin = [[UITextField alloc] initWithFrame:CGRectMake(50, 270, frame.size.width-100, 40)];
             txtOldPin.font = [UIFont systemFontOfSize:15];
             txtOldPin.placeholder = NSLocalizedString(@"Signature.OldPinCode",@"Old Pin Code");
             txtOldPin.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -107,14 +100,14 @@
             txtOldPin.delegate=self;
             txtOldPin.backgroundColor=mainDelegate.SearchViewColors;
             
-            UILabel *lblNewPin = [[UILabel alloc] initWithFrame:CGRectMake(20, 400, 150, 40)];
-            lblNewPin.textColor = [UIColor whiteColor];
+            UILabel *lblNewPin = [[UILabel alloc] initWithFrame:CGRectMake(50, 400, frame.size.width-100, 40)];
+            lblNewPin.textColor = mainDelegate.PopUpTextColor;
             lblNewPin.text =NSLocalizedString(@"Signature.PinCode",@"Pin Code");
             lblNewPin.textAlignment=NSTextAlignmentLeft;
             lblNewPin.backgroundColor = [UIColor clearColor];
             lblNewPin.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
             
-            txtPin=[[UITextField alloc] initWithFrame:CGRectMake(10, 320,textWidth, 40)];
+            txtPin=[[UITextField alloc] initWithFrame:CGRectMake(50, 320,frame.size.width-100, 40)];
             txtPin.font = [UIFont systemFontOfSize:15];
             txtPin.placeholder = NSLocalizedString(@"Signature.PinCode",@"Pin Code");
             txtPin.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -126,14 +119,14 @@
             txtPin.delegate=self;
             txtPin.backgroundColor=mainDelegate.SearchViewColors;
             
-            UILabel *lblConfirmPin = [[UILabel alloc] initWithFrame:CGRectMake(20, 450, 150, 40)];
-            lblConfirmPin.textColor = [UIColor whiteColor];
+            UILabel *lblConfirmPin = [[UILabel alloc] initWithFrame:CGRectMake(50, 450, frame.size.width-100, 40)];
+            lblConfirmPin.textColor = mainDelegate.PopUpTextColor;
             lblConfirmPin.text =NSLocalizedString(@"Signature.ConfirmPin",@"Confirm Pin");
             lblConfirmPin.textAlignment=NSTextAlignmentLeft;
             lblConfirmPin.backgroundColor = [UIColor clearColor];
             lblConfirmPin.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
             
-            txtConfirmPin = [[UITextField alloc] initWithFrame:CGRectMake(10, 370, textWidth, 40)];
+            txtConfirmPin = [[UITextField alloc] initWithFrame:CGRectMake(50, 370, frame.size.width-100, 40)];
             txtConfirmPin.font = [UIFont systemFontOfSize:15];
             txtConfirmPin.placeholder = NSLocalizedString(@"Signature.PinCodeConfirmation",@"Pin Code Confirmation");
             txtConfirmPin.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -167,39 +160,69 @@
                 txtConfirmPin.leftView=paddingView2;
             }
         }
-        else
-        {
-            signViewY=100;
-            buttonsY=330;
-        }
-        sigView=[[Signature alloc]initWithFrame:CGRectMake((frame.size.width-175)/2, signViewY, 175, 175) signature:mainDelegate.user.signature];
+       
+        sigView=[[Signature alloc]initWithFrame:CGRectMake(-60+(frame.size.width-175)/2, 70, 295, 175) signature:mainDelegate.user.signature];
         UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        saveButton.frame =CGRectMake((frame.size.width-385)/3, buttonsY, 115, 35);
-        [saveButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-        [saveButton setTitle:NSLocalizedString(@"Save",@"Save") forState:UIControlStateNormal];
+        UIImage *SaveNoteImage;
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+            SaveNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
+            saveButton.frame = CGRectMake(2*SaveNoteImage.size.width+70, frame.size.height-60, SaveNoteImage.size.width, SaveNoteImage.size.height);
+        }else{
+            SaveNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
+            saveButton.frame = CGRectMake((frame.size.width-70)-(3*SaveNoteImage.size.width), frame.size.height-60, SaveNoteImage.size.width, SaveNoteImage.size.height);
+            
+        }
+        [saveButton setBackgroundImage:SaveNoteImage forState:UIControlStateNormal];
+        
+        saveButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
+        [saveButton setTitle:NSLocalizedString(@"Save", @"Save") forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
-        saveButton.backgroundColor=mainDelegate.selectedInboxColor;
-
+        [saveButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+        [self.view addSubview:saveButton];
+        
+        
+        
+        
         UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        clearButton.frame = CGRectMake(saveButton.frame.origin.x+115+20, buttonsY, 115, 35);
-        [clearButton setTitle:NSLocalizedString(@"Clear",@"Clear") forState:UIControlStateNormal];
-        [clearButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+            SaveNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
+            clearButton.frame = CGRectMake(SaveNoteImage.size.width+60, frame.size.height-60, SaveNoteImage.size.width, SaveNoteImage.size.height);
+        }else{
+            SaveNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
+            clearButton.frame = CGRectMake((frame.size.width-60)-(2*SaveNoteImage.size.width),frame.size.height-60, SaveNoteImage.size.width, SaveNoteImage.size.height);
+            
+        }
+        [clearButton setBackgroundImage:SaveNoteImage forState:UIControlStateNormal];
+        
+        clearButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
+        [clearButton setTitle:NSLocalizedString(@"Clear", @"Clear") forState:UIControlStateNormal];
         [clearButton addTarget:self action:@selector(clear) forControlEvents:UIControlEventTouchUpInside];
-        clearButton.backgroundColor=mainDelegate.selectedInboxColor;
+        [clearButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+        [self.view addSubview:clearButton];
+        
+        
+        
         
         
         UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        cancelButton.frame = CGRectMake(clearButton.frame.origin.x+115+20, buttonsY, 115, 35);
-        [cancelButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-        [cancelButton setTitle:NSLocalizedString(@"Close",@"Close") forState:UIControlStateNormal];
-        [cancelButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
-        cancelButton.backgroundColor=mainDelegate.selectedInboxColor;
-        
+        UIImage *closeButtonImage;
         if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
-            cancelButton.frame=CGRectMake((frame.size.width-385)/3, buttonsY, 115, 35);
-            clearButton.frame = CGRectMake(cancelButton.frame.origin.x+115+20, buttonsY, 115, 35);
-            saveButton.frame=CGRectMake(clearButton.frame.origin.x+115+20, buttonsY, 115, 35);
+            closeButtonImage=[UIImage imageNamed:@"PopUpCancelBtn_ar.png"];
+            
+            cancelButton.frame = CGRectMake(50,frame.size.height-60, closeButtonImage.size.width, closeButtonImage.size.height);
+            lblTitle.textAlignment=NSTextAlignmentRight;
+
+        }else{
+            closeButtonImage=[UIImage imageNamed:@"PopUpCancelBtn_en.png"];
+            cancelButton.frame = CGRectMake((frame.size.width-50)-closeButtonImage.size.width, frame.size.height-60, closeButtonImage.size.width, closeButtonImage.size.height);
+            [cancelButton setTitleEdgeInsets: UIEdgeInsetsMake(0,15,0,0)];
         }
+        [cancelButton setBackgroundImage:closeButtonImage forState:UIControlStateNormal];
+        cancelButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
+        [cancelButton setTitle:NSLocalizedString(@"Close", @"Close") forState:UIControlStateNormal];
+        [cancelButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
+        [cancelButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+        [self.view addSubview:cancelButton];
         
         [self.view addSubview:lblTitle];
         if(mainDelegate.PinCodeEnabled){

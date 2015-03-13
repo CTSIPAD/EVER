@@ -868,48 +868,86 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
             if (![achived_string isEqualToString:@""]) {
                 
                 
-                UIView *myCustomView = [[UIView alloc] initWithFrame:CGRectMake(180, 150, 380, 250)];
+                UIView *myCustomView = [[UIView alloc] initWithFrame:CGRectMake(100, 150, 428, 290)];
             
-                [myCustomView setBackgroundColor:mainDelegate.buttonColor];
+                [myCustomView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"NotePopUpBg.png"]]];
                 [myCustomView setAlpha:0.0f];
                 
                 
+                textView = [[UITextView alloc] initWithFrame:CGRectMake(50, 50, 328, 150)];
+                [textView setText:achived_string];
+                
+                [myCustomView addSubview:textView];
                 
                 UIButton *saveNote = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-                [saveNote addTarget:self action:@selector(saveCustomView:) forControlEvents:UIControlEventTouchUpInside];
+                UIImage *SaveNoteImage;
+                if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+                    SaveNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
+                    saveNote.frame = CGRectMake(2*SaveNoteImage.size.width+70, textView.frame.origin.y+textView.frame.size.height+20, SaveNoteImage.size.width, SaveNoteImage.size.height);
+                }else{
+                    SaveNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
+                    saveNote.frame = CGRectMake((myCustomView.frame.size.width-70)-(3*SaveNoteImage.size.width), textView.frame.origin.y+textView.frame.size.height+20, SaveNoteImage.size.width, SaveNoteImage.size.height);
+                    
+                }
+                [saveNote setBackgroundImage:SaveNoteImage forState:UIControlStateNormal];
+                
+                saveNote.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
                 [saveNote setTitle:NSLocalizedString(@"Save", @"Save") forState:UIControlStateNormal];
-                [saveNote setFrame:CGRectMake(20, 200, 100, 40)];
+                [saveNote addTarget:self action:@selector(saveCustomView:) forControlEvents:UIControlEventTouchUpInside];
                 [saveNote setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-                saveNote.backgroundColor=mainDelegate.selectedInboxColor;
                 [myCustomView addSubview:saveNote];
+
+                
                 
                 
                 UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-                [clearButton addTarget:self action:@selector(clear) forControlEvents:UIControlEventTouchUpInside];
+                if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+                    SaveNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
+                    clearButton.frame = CGRectMake(SaveNoteImage.size.width+60, textView.frame.origin.y+textView.frame.size.height+20, SaveNoteImage.size.width, SaveNoteImage.size.height);
+                }else{
+                    SaveNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
+                    clearButton.frame = CGRectMake((myCustomView.frame.size.width-60)-(2*SaveNoteImage.size.width), textView.frame.origin.y+textView.frame.size.height+20, SaveNoteImage.size.width, SaveNoteImage.size.height);
+                    
+                }
+                [clearButton setBackgroundImage:SaveNoteImage forState:UIControlStateNormal];
+                
+                clearButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
                 [clearButton setTitle:NSLocalizedString(@"Clear", @"Clear") forState:UIControlStateNormal];
-                [clearButton setFrame:CGRectMake(saveNote.frame.origin.x+saveNote.frame.size.width+15, saveNote.frame.origin.y, saveNote.frame.size.width, 40)];
+                [clearButton addTarget:self action:@selector(clear) forControlEvents:UIControlEventTouchUpInside];
                 [clearButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-                clearButton.backgroundColor=mainDelegate.selectedInboxColor;
                 [myCustomView addSubview:clearButton];
                 
+                
+                
+                
+            
                 UIButton *dismissButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-                [dismissButton addTarget:self action:@selector(dismissCustomView:) forControlEvents:UIControlEventTouchUpInside];
+                UIImage *closeButtonImage;
+                if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
+                    closeButtonImage=[UIImage imageNamed:@"PopUpCancelBtn_ar.png"];
+
+                    dismissButton.frame = CGRectMake(50, textView.frame.origin.y+textView.frame.size.height+20, closeButtonImage.size.width, closeButtonImage.size.height);
+                }else{
+                    closeButtonImage=[UIImage imageNamed:@"PopUpCancelBtn_en.png"];
+                    dismissButton.frame = CGRectMake((myCustomView.frame.size.width-50)-closeButtonImage.size.width, textView.frame.origin.y+textView.frame.size.height+20, closeButtonImage.size.width, closeButtonImage.size.height);
+                    [dismissButton setTitleEdgeInsets: UIEdgeInsetsMake(0,15,0,0)];
+                }
+                [dismissButton setBackgroundImage:closeButtonImage forState:UIControlStateNormal];
+                dismissButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
                 [dismissButton setTitle:NSLocalizedString(@"Close", @"Close") forState:UIControlStateNormal];
-                [dismissButton setFrame:CGRectMake(clearButton.frame.origin.x+clearButton.frame.size.width+15, saveNote.frame.origin.y, saveNote.frame.size.width, 40)];
+                [dismissButton addTarget:self action:@selector(dismissCustomView:) forControlEvents:UIControlEventTouchUpInside];
                 [dismissButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-                dismissButton.backgroundColor=mainDelegate.selectedInboxColor;
                 [myCustomView addSubview:dismissButton];
+
                 
                 
-                textView = [[UITextView alloc] initWithFrame:CGRectMake(20, 20, 340, 150)];
-                [textView setText:achived_string];
+                
                 if([[mainDelegate.IpadLanguage lowercaseString] isEqualToString:@"ar"])
                 {
                     textView.textAlignment=NSTextAlignmentRight;
-                    [dismissButton setFrame:CGRectMake(20, 200, 100, 40)];
-                    saveNote.frame=CGRectMake(clearButton.frame.origin.x+clearButton.frame.size.width+15, dismissButton.frame.origin.y, dismissButton.frame.size.width, 40);
                 }
-                [myCustomView addSubview:textView];
+                
+                
                 
                 [m_pdfview addSubview:myCustomView];
                 

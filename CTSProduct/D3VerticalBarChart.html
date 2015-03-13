@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+  
+    <head>
+        
+        <style type="text/css">
+            body
+            {
+                font: 10px sans-serif;
+            }
+        
+        .axis path,
+        .axis line
+        {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+        
+        .bar
+        {
+            fill: steelblue;
+        }
+        
+        .x.axis path
+        {
+            display: none;
+        }
+        </style>
+        
+    </head>
+    <body>
+        <center><h2>correspondences count by status</h2></center>
+        <div id="barChart" style="margin-top:30px;margin-left:20px;margin-bottom:30px;"/>
+    </body>
+    <script src="d3.min.js"></script>
+  
+    <script type="text/javascript">
+        
+        /*var data = new Array();
+         data.push({ "structure": "product", "completed": 1, "draft": 2, "new": 3 });
+         data.push({ "structure": "sales", "completed": 4, "draft": 5, "new": 6 });
+         data.push({ "structure": "ps", "completed": 9, "draft": 8, "new": 7 });*/
+    function showData(data) {
+        
+        var margin = { top: 30, right: 20, bottom: 40, left: 40 },
+        width = 700 - margin.left - margin.right,
+        height = 520 - margin.top - margin.bottom;
+        
+        var x0 = d3.scale.ordinal()
+        .rangeRoundBands([0, width], .1);
+        
+        var x1 = d3.scale.ordinal();
+        
+        var y = d3.scale.linear()
+        .range([height, 0]);
+        
+        var colors = GetColors(data);
+        var color = d3.scale.ordinal()
+        .range(colors);
+        /*var color = d3.scale.ordinal()
+        .range(["#307CAC", "#CB5E3B", "#43C043"]);*/
+        
+        var xAxis = d3.svg.axis()
+        .scale(x0)
+        .orient("bottom");
+        
+        var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left")
+        .tickFormat(d3.format(".2s"));
+        
+        var svg = d3.select("#barChart").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        
+        var status = GetStatus(data);
+        
+        
+        x0.domain(data.map(function (d) { return d.Label; }));
+        x1.domain(status).rangeRoundBands([0, x0.rangeBand()]);
+        y.domain([0, GetMax(data)]);
+        
+        svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+        
+        svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", (height+35))
+        .style("text-anchor", "middle")
+        .style("font-size", "15px")
+        .text("Structure");
+        
+        svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .style("font-size","15px")
+        .text("Count");
+        
+        var state = svg.selectAll(".state")
+        .data(data)
+        .enter().append("g")
+        .attr("class", "g")
+        .attr("transform", function (d) { return "translate(" + x0(d.Label) + ",0)"; });
+        
+        state.selectAll("rect")
+        .data(function (d) { return d.Values; })
+        .enter().append("rect")
+        .attr("width", x1.rangeBand())
+        .attr("x", function (d) { return x1(d.Name); })
+        .attr("y", height)
+        .attr("height", function (d) { return height - y(d.Value); })
+        .transition().duration(1000).ease("in")
+        .attr("y", function (d) { return y(d.Value); })
+        .style("fill", function (d) { return color(d.Name); });
+        
+        var legend = svg.selectAll(".legend")
+        .data(status.slice().reverse())
+        .enter().append("g")
+        .attr("class", "legend")
+        .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
+        
+        legend.append("rect")
+        .attr("x", width)
+        .attr("width", 18)
+        .attr("height", 18)
+        .style("fill", color);
+        
+        legend.append("text")
+        .attr("x", width - 6)
+        .attr("y", 9)
+        .attr("dy", ".35em")
+        .style("text-anchor", "end")
+        .text(function (d) { return d; });
+        
+        function GetColors(data) {
+            var colors = new Array();
+            data[0].Values.forEach(function (d) {
+                                   colors.push(d.Color);
+                                   });
+                                   return colors;
+        }
+        
+        
+        function GetStatus(data) {
+            var status = new Array();
+            data[0].Values.forEach(function (d) {
+                                   status.push(d.Name);
+                                   });
+                                   return status;
+        }
+        
+        function GetMax(data) {
+            var max = -1;
+            data.forEach(function (d) {
+                         d.Values.forEach(function (v) {
+                                          if (v.Value > max) {
+                                          max = v.Value;
+                                          }
+                                          });
+                         });
+                         return max;
+        }    }
+    
+        </script>
+</html>

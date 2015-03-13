@@ -62,7 +62,7 @@
     
     self.tableView.opaque=NO;
     self.tableView.separatorColor=[UIColor clearColor];
-mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     menuItemsCount=mainDelegate.user.menu.count;
     if (mainDelegate.isOfflineMode) {
