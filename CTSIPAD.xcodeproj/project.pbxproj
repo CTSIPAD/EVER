@@ -20,7 +20,6 @@
 		0455513B1AB2E87C00A7844C /* OverdueBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551321AB2E87C00A7844C /* OverdueBarChartViewController.m */; };
 		0455513C1AB2E87C00A7844C /* VerticalBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */; };
 		0455513D1AB2E87C00A7844C /* VerticalBartChartViewController in Resources */ = {isa = PBXBuildFile; fileRef = 045551351AB2E87C00A7844C /* VerticalBartChartViewController */; };
-		0455EB7E1AB4B8C7003CAD85 /* categorie.png in Resources */ = {isa = PBXBuildFile; fileRef = 0455EB7D1AB4B8C7003CAD85 /* categorie.png */; };
 		0455EB821AB4E80B003CAD85 /* documents.png in Resources */ = {isa = PBXBuildFile; fileRef = 0455EB7F1AB4E80B003CAD85 /* documents.png */; };
 		0455EB831AB4E80B003CAD85 /* months.png in Resources */ = {isa = PBXBuildFile; fileRef = 0455EB801AB4E80B003CAD85 /* months.png */; };
 		0455EB841AB4E80B003CAD85 /* structure.png in Resources */ = {isa = PBXBuildFile; fileRef = 0455EB811AB4E80B003CAD85 /* structure.png */; };
@@ -60,6 +59,7 @@
 		04A17F0A1A94DC9A00E76B01 /* SimpleSearchBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A17F091A94DC9A00E76B01 /* SimpleSearchBtn.png */; };
 		04A17F0C1A95290200E76B01 /* cellbg_ar.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A17F0B1A95290200E76B01 /* cellbg_ar.png */; };
 		04A17F0E1A9539D500E76B01 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A17F0D1A9539D500E76B01 /* clock.png */; };
+		04C59E241AB6DACF00B25AC2 /* categorie.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C59E231AB6DACF00B25AC2 /* categorie.png */; };
 		04C8C5161AB254B400B2ED70 /* metadataBg_Portraite.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C8C5151AB254B400B2ED70 /* metadataBg_Portraite.png */; };
 		04CBF9F71AA841D800F9A82A /* d3pie.html in Resources */ = {isa = PBXBuildFile; fileRef = 04CBF9F61AA841D800F9A82A /* d3pie.html */; };
 		04CBF9F91AA842E100F9A82A /* d3pie.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 04CBF9F81AA842E100F9A82A /* d3pie.min.js */; };
@@ -266,7 +266,6 @@
 		045551331AB2E87C00A7844C /* VerticalBarChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticalBarChartViewController.h; sourceTree = "<group>"; };
 		045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticalBarChartViewController.m; sourceTree = "<group>"; };
 		045551351AB2E87C00A7844C /* VerticalBartChartViewController */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VerticalBartChartViewController; sourceTree = "<group>"; };
-		0455EB7D1AB4B8C7003CAD85 /* categorie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = categorie.png; sourceTree = "<group>"; };
 		0455EB7F1AB4E80B003CAD85 /* documents.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = documents.png; sourceTree = "<group>"; };
 		0455EB801AB4E80B003CAD85 /* months.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = months.png; sourceTree = "<group>"; };
 		0455EB811AB4E80B003CAD85 /* structure.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = structure.png; sourceTree = "<group>"; };
@@ -308,6 +307,7 @@
 		04A17F091A94DC9A00E76B01 /* SimpleSearchBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SimpleSearchBtn.png; sourceTree = "<group>"; };
 		04A17F0B1A95290200E76B01 /* cellbg_ar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cellbg_ar.png; sourceTree = "<group>"; };
 		04A17F0D1A9539D500E76B01 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
+		04C59E231AB6DACF00B25AC2 /* categorie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = categorie.png; sourceTree = "<group>"; };
 		04C8C5151AB254B400B2ED70 /* metadataBg_Portraite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadataBg_Portraite.png; sourceTree = "<group>"; };
 		04CBF9F61AA841D800F9A82A /* d3pie.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = d3pie.html; sourceTree = "<group>"; };
 		04CBF9F81AA842E100F9A82A /* d3pie.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = d3pie.min.js; sourceTree = "<group>"; };
@@ -674,6 +674,7 @@
 		0499B7071AA45F1F002609A0 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				04C59E231AB6DACF00B25AC2 /* categorie.png */,
 				0499B7081AA468EC002609A0 /* Charts-By-Categorie.png */,
 				0455EB7F1AB4E80B003CAD85 /* documents.png */,
 				0455EB801AB4E80B003CAD85 /* months.png */,
@@ -682,7 +683,6 @@
 				0499B70A1AA468EC002609A0 /* Charts-By-Structures.png */,
 				0499B70B1AA468EC002609A0 /* Overdue-Documents.png */,
 				0499B70C1AA468EC002609A0 /* Overdue-Transfers.png */,
-				0455EB7D1AB4B8C7003CAD85 /* categorie.png */,
 				0499B7051AA45F0F002609A0 /* R2.png */,
 			);
 			name = images;
@@ -1576,6 +1576,7 @@
 				A2010BED195D6C55004AC93C /* SignAll.png in Resources */,
 				A29DA1931A11FDD600BE6CAE /* HideIcon.png in Resources */,
 				0481EF991AAF41D800BACA04 /* metadataBg1.png in Resources */,
+				04C59E241AB6DACF00B25AC2 /* categorie.png in Resources */,
 				A2F614861959651100956BF0 /* apple calendar.plist in Resources */,
 				A29DA1A71A1200BE00BE6CAE /* subjectimg.png in Resources */,
 				A27888561A1633850031C3CE /* Priorityimg.png in Resources */,
@@ -1639,7 +1640,6 @@
 				A2010BF2195D954E004AC93C /* highlight.png in Resources */,
 				A29DA1981A11FDD600BE6CAE /* Transfer.png in Resources */,
 				A29DA1A51A1200BE00BE6CAE /* lockimg.png in Resources */,
-				0455EB7E1AB4B8C7003CAD85 /* categorie.png in Resources */,
 				A27888621A1A466D0031C3CE /* More-flipped.png in Resources */,
 				A2B9FA1F1982459700A61F5F /* AddNew.png in Resources */,
 				A2E598F51A2F161E00CB97A6 /* loginLandscape.png in Resources */,
