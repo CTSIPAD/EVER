@@ -40,44 +40,61 @@
     {
         font-size: 12px;
     }
+    
+    .d3-tip
+    {
+        line-height: 1;
+        font-weight: bold;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 2px;
+    }
+    
+    /* Creates a small triangle extender for the tooltip */
+    .d3-tip:after
+    {
+        box-sizing: border-box;
+        display: inline;
+        font-size: 10px;
+        width: 100%;
+        line-height: 1;
+        color: rgba(0, 0, 0, 0.8);
+        content: "\25BC";
+        position: absolute;
+        text-align: center;
+    }
+    
+    /* Style northward tooltips differently */
+    .d3-tip.n:after
+    {
+        margin: -1px 0 0 0;
+        top: 100%;
+        left: 0;
+    }
+    
     </style>
   
     </head>
     <body>
-        <div style="margin-top: 100px;margin-left:50px">
+        <center><h3>Correspondences Count by Structures </h3></center>
+        <div style="margin-top: 50px;margin-left:30px" onclick="hideToolTip(this)">
             <svg class="chart"></svg>
         </div>
     </body>
     <script src="d3.min.js"></script>
+    <script src="d3.tip.js"></script>
     <script>
-     /*function showData(dataset) {
-            
-    }*/
-    var data = {
-        Names: [
-                'march', 'ferbruary', 'april'
-                ],
-                ChartPoints: [
-                              {
-                              Color: '#1B86CA',
-                              Name: 'ATM committee',
-                              Values: [ 4,5,8]
-                              },
-                              {
-                              Color: '#26C326',
-                              Name: 'مكتب المدير',
-                              Values: [2, 5, 7]
-                              },
-                              ]
-    };
-    
+        
+    function showData(data) {
+        
     var colors = GetColors(data);
-    //alert(JSON.stringify(data));
     var chartHeight = 450;
-    var aux = chartHeight -(10*(data.Names.length ));
-    var groupHeight = aux / (data.ChartPoints.length);
-    var chartWidth = 300,
-    barHeight = groupHeight/(data.Names.length),
+    var aux = chartHeight -(10*(data.Labels.length ));
+    //var groupHeight = aux / (data.ChartPoints.length);
+    var groupHeight = aux / (data.Labels.length);
+    var chartWidth = 400,
+    barHeight = groupHeight/(data.ChartPoints.length),
     //groupHeight = barHeight * data.ChartPoints.length,
     gapBetweenGroups = 10,
     spaceForNames = 150,
@@ -85,7 +102,7 @@
     
     // Zip the ChartPoints data together (first Values, second Values, etc.)
     var zippedData = [];
-    for (var i = 0; i < data.Names.length; i++) {
+    for (var i = 0; i < data.Labels.length; i++) {
         for (var j = 0; j < data.ChartPoints.length; j++) {
             zippedData.push(data.ChartPoints[j].Values[i]);
         }
@@ -118,6 +135,14 @@
     .orient("bottom")
     .tickFormat(d3.format("2s"));
     
+    var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function (d) {
+          return "<strong>Count:</strong> <span style='color:red'>" + d + "</span>";
+          });
+
+
     // Specify the chart area and dimensions
     var chart = d3.select(".chart")
     .attr("width", spaceForNames + chartWidth + spaceForLegend)
@@ -131,10 +156,14 @@
           return "translate(" + spaceForNames + "," + (i * barHeight + gapBetweenGroups * (0.5 + Math.floor(i / data.ChartPoints.length))) + ")";
           });
           
+          chart.call(tip);
+          
           // Create rectangles of the correct width
           bar.append("rect")
           .attr("fill", function (d, i) { return color(i % data.ChartPoints.length); })
           .attr("class", "bar")
+          .on('mouseover', tip.show)
+          .on('mouseout', tip.hide)
           .attr("width", 0)
           .transition().duration(1000).ease("in")
           .attr("width", x)
@@ -153,12 +182,12 @@
           // Draw Names
           bar.append("text")
           .attr("class", "Name")
-          .attr("x", function (d) { return -10; })
-          .attr("y", ((groupHeight / 2)-barHeight+(3*gapBetweenGroups)))
+          .attr("x", -10)
+          .attr("y", ((groupHeight / 2)))
           .attr("dy", ".35em")
           .text(function (d, i) {
                 if (i % data.ChartPoints.length === 0)
-                return data.Names[Math.floor(i / data.ChartPoints.length)];
+                return data.Labels[Math.floor(i / data.ChartPoints.length)];
                 else
                 return ""
                 });
@@ -221,5 +250,11 @@
            });
            return colorArray;
            }
+           
+           function hideToolTip(item) {
+               tip.hide;
+           }
+
+     }
     </script>
 </html>

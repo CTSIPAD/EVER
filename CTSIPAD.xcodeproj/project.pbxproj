@@ -18,12 +18,15 @@
 		045551391AB2E87C00A7844C /* D3VerticalBarChart.html in Resources */ = {isa = PBXBuildFile; fileRef = 0455512E1AB2E87C00A7844C /* D3VerticalBarChart.html */; };
 		0455513A1AB2E87C00A7844C /* HorizontalBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551301AB2E87C00A7844C /* HorizontalBarChartViewController.m */; };
 		0455513B1AB2E87C00A7844C /* OverdueBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551321AB2E87C00A7844C /* OverdueBarChartViewController.m */; };
+<<<<<<< HEAD
 		0455513C1AB2E87C00A7844C /* VerticalBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */; };
 		0455513D1AB2E87C00A7844C /* VerticalBartChartViewController in Resources */ = {isa = PBXBuildFile; fileRef = 045551351AB2E87C00A7844C /* VerticalBartChartViewController */; };
 		0455EB7E1AB4B8C7003CAD85 /* categorie.png in Resources */ = {isa = PBXBuildFile; fileRef = 0455EB7D1AB4B8C7003CAD85 /* categorie.png */; };
 		0455EB821AB4E80B003CAD85 /* documents.png in Resources */ = {isa = PBXBuildFile; fileRef = 0455EB7F1AB4E80B003CAD85 /* documents.png */; };
 		0455EB831AB4E80B003CAD85 /* months.png in Resources */ = {isa = PBXBuildFile; fileRef = 0455EB801AB4E80B003CAD85 /* months.png */; };
 		0455EB841AB4E80B003CAD85 /* structure.png in Resources */ = {isa = PBXBuildFile; fileRef = 0455EB811AB4E80B003CAD85 /* structure.png */; };
+=======
+>>>>>>> e17df5a84651d564652161a9a6b2f1f742076128
 		045DC4AE1A5D738D009C3540 /* IMGtakephoto.png in Resources */ = {isa = PBXBuildFile; fileRef = 045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */; };
 		0481EF991AAF41D800BACA04 /* metadataBg1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0481EF981AAF41D800BACA04 /* metadataBg1.png */; };
 		04932D491AA9E05500180152 /* separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 04932D481AA9E05500180152 /* separator.png */; };
@@ -63,6 +66,7 @@
 		04C8C5161AB254B400B2ED70 /* metadataBg_Portraite.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C8C5151AB254B400B2ED70 /* metadataBg_Portraite.png */; };
 		04CBF9F71AA841D800F9A82A /* d3pie.html in Resources */ = {isa = PBXBuildFile; fileRef = 04CBF9F61AA841D800F9A82A /* d3pie.html */; };
 		04CBF9F91AA842E100F9A82A /* d3pie.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 04CBF9F81AA842E100F9A82A /* d3pie.min.js */; };
+		3EC5379B1AB6C6660045E3EA /* VerticalBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC5379A1AB6C6660045E3EA /* VerticalBarChartViewController.m */; };
 		956B97BC1966DB4F00D01DB8 /* note.m in Sources */ = {isa = PBXBuildFile; fileRef = 956B97BB1966DB4F00D01DB8 /* note.m */; };
 		956B97BF1966DB6600D01DB8 /* HighlightClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 956B97BE1966DB6600D01DB8 /* HighlightClass.m */; };
 		A2010BEA195D6C55004AC93C /* FreeSign.png in Resources */ = {isa = PBXBuildFile; fileRef = A2010BE6195D6C55004AC93C /* FreeSign.png */; };
@@ -264,12 +268,15 @@
 		045551311AB2E87C00A7844C /* OverdueBarChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverdueBarChartViewController.h; sourceTree = "<group>"; };
 		045551321AB2E87C00A7844C /* OverdueBarChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverdueBarChartViewController.m; sourceTree = "<group>"; };
 		045551331AB2E87C00A7844C /* VerticalBarChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticalBarChartViewController.h; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticalBarChartViewController.m; sourceTree = "<group>"; };
 		045551351AB2E87C00A7844C /* VerticalBartChartViewController */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VerticalBartChartViewController; sourceTree = "<group>"; };
 		0455EB7D1AB4B8C7003CAD85 /* categorie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = categorie.png; sourceTree = "<group>"; };
 		0455EB7F1AB4E80B003CAD85 /* documents.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = documents.png; sourceTree = "<group>"; };
 		0455EB801AB4E80B003CAD85 /* months.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = months.png; sourceTree = "<group>"; };
 		0455EB811AB4E80B003CAD85 /* structure.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = structure.png; sourceTree = "<group>"; };
+=======
+>>>>>>> e17df5a84651d564652161a9a6b2f1f742076128
 		045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMGtakephoto.png; sourceTree = "<group>"; };
 		0481EF981AAF41D800BACA04 /* metadataBg1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadataBg1.png; sourceTree = "<group>"; };
 		04932D481AA9E05500180152 /* separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = separator.png; sourceTree = "<group>"; };
@@ -311,6 +318,7 @@
 		04C8C5151AB254B400B2ED70 /* metadataBg_Portraite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadataBg_Portraite.png; sourceTree = "<group>"; };
 		04CBF9F61AA841D800F9A82A /* d3pie.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = d3pie.html; sourceTree = "<group>"; };
 		04CBF9F81AA842E100F9A82A /* d3pie.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = d3pie.min.js; sourceTree = "<group>"; };
+		3EC5379A1AB6C6660045E3EA /* VerticalBarChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticalBarChartViewController.m; sourceTree = "<group>"; };
 		956B97BA1966DB4F00D01DB8 /* note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = note.h; sourceTree = "<group>"; };
 		956B97BB1966DB4F00D01DB8 /* note.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = note.m; sourceTree = "<group>"; };
 		956B97BD1966DB6600D01DB8 /* HighlightClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightClass.h; sourceTree = "<group>"; };
@@ -661,8 +669,7 @@
 				045551311AB2E87C00A7844C /* OverdueBarChartViewController.h */,
 				045551321AB2E87C00A7844C /* OverdueBarChartViewController.m */,
 				045551331AB2E87C00A7844C /* VerticalBarChartViewController.h */,
-				045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */,
-				045551351AB2E87C00A7844C /* VerticalBartChartViewController */,
+				3EC5379A1AB6C6660045E3EA /* VerticalBarChartViewController.m */,
 				0499B7021AA459BE002609A0 /* ReportViewController.h */,
 				0499B7031AA459BE002609A0 /* ReportViewController.m */,
 				0499B71A1AA4C89F002609A0 /* Pie Chart */,
@@ -1625,7 +1632,6 @@
 				04A17F031A94B1D000E76B01 /* selectedcellArrow.png in Resources */,
 				A29DA1B71A12047100BE6CAE /* Signature.png in Resources */,
 				A2E598F61A2F161E00CB97A6 /* loginPortrait.png in Resources */,
-				0455513D1AB2E87C00A7844C /* VerticalBartChartViewController in Resources */,
 				04A131461AAD8ECC00D422F8 /* senderIcon.png in Resources */,
 				A2B84F5819628DAB0084035F /* file.png in Resources */,
 				A2010BF3195D954E004AC93C /* save.png in Resources */,
@@ -1681,7 +1687,7 @@
 				A2F6138519583FC200956BF0 /* LoginViewController.m in Sources */,
 				A2EB920C199B99D10047D0E3 /* SyncViewController.m in Sources */,
 				A2F232F919557C5000CA09DD /* AppDelegate.m in Sources */,
-				0455513C1AB2E87C00A7844C /* VerticalBarChartViewController.m in Sources */,
+				3EC5379B1AB6C6660045E3EA /* VerticalBarChartViewController.m in Sources */,
 				A2F614751959640F00956BF0 /* PMCalendarBackgroundView.m in Sources */,
 				A29A719B1998B1F800143756 /* SomeNetworkOperation.m in Sources */,
 				A2EB9200199A493D0047D0E3 /* OfflineResult.m in Sources */,
@@ -1926,7 +1932,11 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CTSIPAD;
+<<<<<<< HEAD
 				PROVISIONING_PROFILE = "8d15d7b2-3678-49dd-aed2-0503e0c7d026";
+=======
+				PROVISIONING_PROFILE = "9c495b27-1b3d-4427-a39b-62e682cf952e";
+>>>>>>> e17df5a84651d564652161a9a6b2f1f742076128
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1959,7 +1969,11 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CTSIPAD;
+<<<<<<< HEAD
 				PROVISIONING_PROFILE = "8d15d7b2-3678-49dd-aed2-0503e0c7d026";
+=======
+				PROVISIONING_PROFILE = "9c495b27-1b3d-4427-a39b-62e682cf952e";
+>>>>>>> e17df5a84651d564652161a9a6b2f1f742076128
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

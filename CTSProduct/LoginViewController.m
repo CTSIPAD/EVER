@@ -62,7 +62,7 @@
 //    self.txtUsername.clipsToBounds=YES;
     self.txtUsername.returnKeyType = UIReturnKeyGo;
     self.txtUsername.autocorrectionType=FALSE;
-    self.txtUsername.text=@"f";
+    self.txtUsername.text=@"dory";
     self.txtUsername.textColor=[UIColor colorWithRed:48/255.0 green:157/255.0 blue:174/255.0 alpha:1];
     [self.txtUsername setValue:[UIColor colorWithRed:48/255.0 green:157/255.0 blue:174/255.0 alpha:1] forKeyPath:@"_placeholderLabel.textColor"];
     
@@ -101,7 +101,7 @@
         self.txtPassword.leftView= paddingView2;
         
     }
-    self.txtPassword.text=@"vre";
+    self.txtPassword.text=@"dory";
     
     /**** LOGIN BUTTON ******/
     
