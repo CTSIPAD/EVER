@@ -28,6 +28,8 @@ static int count;
     NSMutableArray* mutableArray;
     NSArray* imageArray;
     ALAssetsLibrary* library;
+    NSInteger btnWidth;
+    NSInteger btnHeight;
     
 }
 @end
@@ -61,7 +63,7 @@ static int count;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.view.superview.bounds = _realBounds;
-    self.view.superview.frame=CGRectMake(300, 200, 400, 400);
+    self.view.superview.frame=CGRectMake(300, 200, 515, 499);
 }
 - (id)initWithActionName:(CGRect)frame {
     
@@ -82,26 +84,24 @@ static int count;
         }
         else
         centerPoint=CGPointMake(500, 400);
-        self.view.layer.cornerRadius=5;
-        self.view.clipsToBounds=YES;
-        self.view.layer.borderWidth=1.0;
-        self.view.layer.borderColor=[[UIColor grayColor]CGColor];
- 
-        self.view.backgroundColor=mainDelegate.buttonColor;
-        UILabel *Titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, frame.size.width-20, 20)];
+
+        self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"uploadBg.png"]];
         
+        imageView=[[UIImageView alloc] initWithFrame:CGRectMake(165, 95, 180, 180)];
+        imageView.backgroundColor=mainDelegate.SearchViewColors;
+        imageView.layer.cornerRadius=10;
+        
+        UILabel *Titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, frame.size.width-100, 20)];
         Titlelabel.text = NSLocalizedString(@"UploadAttachment",@"Upload Attachment");
-        Titlelabel.textAlignment=NSTextAlignmentCenter;
+        Titlelabel.textAlignment=NSTextAlignmentLeft;
         Titlelabel.backgroundColor = [UIColor clearColor];
         Titlelabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
-        Titlelabel.textColor=[UIColor whiteColor];
+        Titlelabel.textColor=mainDelegate.selectedInboxColor;
      
-        
-        NSInteger btnWidth=115;
         
         
         UIButton *Camerabtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        Camerabtn.frame =CGRectMake(frame.size.width-80,150,35, 35);
+        Camerabtn.frame =CGRectMake(frame.size.width-100,170,35, 35);
         Camerabtn.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
         [Camerabtn setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"camera.png"]]forState:UIControlStateNormal];
         [Camerabtn addTarget:self action:@selector(ChooseExisting) forControlEvents:UIControlEventTouchUpInside];
@@ -109,41 +109,64 @@ static int count;
         
         
         UIButton* takePhotobtn=[UIButton buttonWithType:UIButtonTypeRoundedRect];
-        takePhotobtn.frame =CGRectMake(40,150,40, 40);
+        takePhotobtn.frame =CGRectMake(50,170,40, 40);
         [takePhotobtn setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"IMGtakephoto.png"]]forState:UIControlStateNormal];
         [takePhotobtn addTarget:self action:@selector(takePhoto) forControlEvents:UIControlEventTouchUpInside];
         
-        UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIButton* closeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIImage *closeButtonImage;
         if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
-            closeButton.frame = CGRectMake((frame.size.width-(2*btnWidth +50))/2, frame.size.height-65, btnWidth, 35);
+            closeButtonImage=[UIImage imageNamed:@"PopUpCancelBtn_ar.png"];
+            btnWidth=closeButtonImage.size.width;
+            btnHeight=closeButtonImage.size.height;
+            closeButton.frame = CGRectMake(50, imageView.frame.origin.y+imageView.frame.size.height+120, btnWidth, btnHeight);
+        }else{
+            closeButtonImage=[UIImage imageNamed:@"PopUpCancelBtn_en.png"];
+            btnWidth=closeButtonImage.size.width;
+            btnHeight=closeButtonImage.size.height;
+            closeButton.frame = CGRectMake((frame.size.width-50)-btnWidth, imageView.frame.origin.y+imageView.frame.size.height+120, btnWidth, btnHeight);
+            [closeButton setTitleEdgeInsets: UIEdgeInsetsMake(0,20,0,0)];
         }
-        else
-            closeButton.frame =CGRectMake(((frame.size.width-(2*btnWidth +50))/2)+btnWidth+60, frame.size.height-65, btnWidth, 35);
-        closeButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
+        [closeButton setBackgroundImage:closeButtonImage forState:UIControlStateNormal];
+        closeButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
         [closeButton setTitle:NSLocalizedString(@"Cancel",@"Cancel") forState:UIControlStateNormal];
         [closeButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
         [closeButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-        closeButton.backgroundColor=mainDelegate.selectedInboxColor;
         
-        UIButton *uploadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        
+        
+        
+        
+        UIButton* uploadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIImage *SaveButtonImage;
         if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
-            uploadButton.frame =CGRectMake(((frame.size.width-(2*btnWidth +50))/2)+btnWidth+50, frame.size.height-65, btnWidth, 35);
+            SaveButtonImage=[UIImage imageNamed:@"PopUpbtn.png"];
+            btnWidth=SaveButtonImage.size.width;
+            btnHeight=SaveButtonImage.size.height;
+            uploadButton.frame = CGRectMake(btnWidth+60, imageView.frame.origin.y+imageView.frame.size.height+120, btnWidth, btnHeight);
+        }else{
+            SaveButtonImage=[UIImage imageNamed:@"PopUpbtn.png"];
+            btnWidth=SaveButtonImage.size.width;
+            btnHeight=SaveButtonImage.size.height;
+            uploadButton.frame = CGRectMake((frame.size.width-60)-(2*btnWidth), imageView.frame.origin.y+imageView.frame.size.height+120, btnWidth, btnHeight);
+            
         }
-        else
-            uploadButton.frame = CGRectMake((frame.size.width-(2*btnWidth +50))/2-10, frame.size.height-65, btnWidth, 35);
-        uploadButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
+        [uploadButton setBackgroundImage:SaveButtonImage forState:UIControlStateNormal];
+        
+        uploadButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:14];
         [uploadButton setTitle:NSLocalizedString(@"Upload",@"Upload") forState:UIControlStateNormal];
-        [uploadButton addTarget:self action:@selector(upload) forControlEvents:UIControlEventTouchUpInside];
+        [uploadButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
         [uploadButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
-        uploadButton.backgroundColor=mainDelegate.selectedInboxColor;
+        
         
 
-        UILabel *attachment=[[UILabel alloc] initWithFrame:CGRectMake(15, 220, 200, 40)];
-        attachment.textColor = [UIColor whiteColor];
+        UILabel *attachment=[[UILabel alloc] initWithFrame:CGRectMake(50, 290, frame.size.width-100, 40)];
+        attachment.textColor = mainDelegate.PopUpTextColor;
         attachment.backgroundColor = [UIColor clearColor];
         attachment.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
+        attachment.text =NSLocalizedString(@"AttachmentName",@"Attachment Name:");
 
-        txtAttachmentName = [[UITextField alloc] initWithFrame:CGRectMake(10, 260, 375, 40)];
+        txtAttachmentName = [[UITextField alloc] initWithFrame:CGRectMake(50, 330, frame.size.width-100, 40)];
         txtAttachmentName.font = [UIFont systemFontOfSize:15];
         txtAttachmentName.placeholder = NSLocalizedString(@"AttachmentName",@"Attachment Name");
         txtAttachmentName.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -163,21 +186,17 @@ static int count;
         txtAttachmentName.leftView=paddingView;
         }
         
-        attachment.text =NSLocalizedString(@"AttachmentName",@"Attachment Name:");
         if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
             attachment.textAlignment=NSTextAlignmentRight;
             txtAttachmentName.textAlignment=NSTextAlignmentRight;
-  
-        attachment.frame=CGRectMake(((frame.size.width-(2*btnWidth +50))/2)+130, 210, 200, 40);
+            Titlelabel.textAlignment=NSTextAlignmentRight;
         }
         else
             attachment.textAlignment=NSTextAlignmentLeft;
         
-        imageView=[[UIImageView alloc] initWithFrame:CGRectMake(110, 45, 180, 180)];
-        imageView.backgroundColor=[UIColor whiteColor];
-        imageView.layer.cornerRadius=10;
+       
         [self.view addSubview:imageView];
-        
+        [self.view addSubview:attachment];
         [self.view addSubview:Titlelabel];
         [self.view addSubview:txtAttachmentName];
         [self.view addSubview:Camerabtn];

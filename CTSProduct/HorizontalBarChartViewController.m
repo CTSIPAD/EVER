@@ -1,36 +1,33 @@
 //
-//  ViewController.m
-//  D3Tester
+//  HorizontalBarChartViewController.m
+//  CTSIPAD
 //
-//  Created by Steven Vandeweghe on 5/24/13.
-//  Copyright (c) 2013 Blue Crowbar. All rights reserved.
+//  Created by Ronald Cortbawi on 3/10/15.
+//  Copyright (c) 2015 EVER. All rights reserved.
 //
 
-#import "PieViewController.h"
+#import "HorizontalBarChartViewController.h"
 #import "AppDelegate.h"
 #define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch]== NSOrderedAscending)
 
-@interface PieViewController () <UIWebViewDelegate>{
+@interface HorizontalBarChartViewController   () <UIWebViewDelegate>{
     CGFloat Width;
     CGFloat Height;
     AppDelegate *mainDelegate;
 }
-
 @property (retain, nonatomic) IBOutlet UIWebView *WebView;
-
 @end
 
-@implementation PieViewController
+@implementation HorizontalBarChartViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     self.navigationItem.hidesBackButton=NO;
     self.navigationController.navigationBarHidden = NO;
     self.navigationController.navigationBar.translucent = YES;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showHideNavbar:)];
-
+    
     if (SYSTEM_VERSION_LESS_THAN(@"8.0")){
         Width=self.view.frame.size.width;
         Height=self.view.frame.size.height;
@@ -51,20 +48,18 @@
     UIImageView* imgView=[[UIImageView alloc]initWithImage:headImage];
     [viewheader addSubview:imgView];
     [self.view addSubview:viewheader];
-
     
     self.WebView=[[UIWebView alloc]initWithFrame:CGRectMake(0, 45, Height-100, Width-100)];
     self.WebView.delegate=self;
     [self.view addSubview:self.WebView];
     self.WebView.backgroundColor=[UIColor colorWithPatternImage:image];
-	NSString *htmlPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"d3pie" ofType:@"html"];
-	NSString *html = [NSString stringWithContentsOfFile:htmlPath usedEncoding:nil error:nil];
+    NSString *htmlPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"D3HorizontalBarChart" ofType:@"html"];
+    NSString *html = [NSString stringWithContentsOfFile:htmlPath usedEncoding:nil error:nil];
     
-	[self.WebView loadHTMLString:html baseURL:[NSURL fileURLWithPath:[htmlPath stringByDeletingLastPathComponent]]];
+    [self.WebView loadHTMLString:html baseURL:[NSURL fileURLWithPath:[htmlPath stringByDeletingLastPathComponent]]];
     [self.view addGestureRecognizer:tapGesture];
-
+    
 }
-
 
 -(void) showHideNavbar:(id) sender
 {
@@ -84,18 +79,17 @@
 }
 - (BOOL)shouldAutorotate
 {
-	return YES;
+    return YES;
 }
 
-
-#pragma mark - UIWebViewDelegate
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    /*NSString* data=@"[ {label:\"Incoming Correspondences\", value:62.2,color:\"blue\"},{label:\"Outgoing  Correspondences\", value:18.9, color:\"red\"},{label:\"Internal  Correspondences\", value:18.9,color:\"green\"}]";*/
-    
     NSString *serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
-    NSString *getPieChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCategoriesCountData?token=%@&language=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
+    NSString *getPieChartDataUrl =[NSString stringWithFormat:@"http://%@/GetStructureCountData?token=%@&language=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
     NSURL *url = [NSURL URLWithString:getPieChartDataUrl];
     NSMutableURLRequest* request=[[NSMutableURLRequest alloc]initWithURL:url];
     NSURLResponse * response = nil;
@@ -110,15 +104,11 @@
     NSInteger statusCode = [HTTPResponse statusCode];
     
     if([[NSString stringWithFormat: @"%ld", (long)statusCode]  isEqual: @"200"]){
-        NSString* title=@"{text:\"Correspondences by Category\"}";
-        NSString* size=[NSString stringWithFormat:@"{size:%f}",Width-50];
-        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showRing(%@,%@,%@)",size,title,data]];
+        
+        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showData(%@)",data]];
         
     }
     
 }
-
-
-
 
 @end

@@ -98,12 +98,15 @@
             self.imageView =[[UIImageView alloc]init];
         dropDownbtn = [UIButton buttonWithType:UIButtonTypeCustom];
         dropDownbtn.autoresizingMask = UIViewAutoresizingNone;
-        dropDownbtn.layer.borderColor=[[UIColor whiteColor] CGColor];
-        dropDownbtn.layer.borderWidth=2.0f;
-        dropDownbtn.layer.cornerRadius=10;
+        dropDownbtn.layer.borderColor=mainDelegate.buttonColor.CGColor;
+        dropDownbtn.layer.borderWidth=1.0f;
+        //dropDownbtn.layer.cornerRadius=10;
         [dropDownbtn setTitle:NSLocalizedString(@"Menu.Actions",@"Actions") forState:UIControlStateNormal];
         [dropDownbtn setImage:[UIImage imageNamed:@"disclosure.png"] forState:UIControlStateNormal];
-        
+        [dropDownbtn setTitleColor:mainDelegate.buttonColor forState:UIControlStateNormal];
+        [dropDownbtn setTitleEdgeInsets: UIEdgeInsetsMake(0,0,0,0)];
+        [dropDownbtn setImageEdgeInsets:UIEdgeInsetsMake(0,-5,0,0)];
+
         UIImage *image;BOOL ThumbnailDefined=NO;
         if(![correspondence.ThumnailUrl isEqualToString:@""]){
             NSString* path=[correspondence.ThumnailUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -133,7 +136,7 @@
                     self.label4=[[UILabel alloc] initWithFrame:CGRectMake(200, 105, 530-x, 20)];
             
             
-            dropDownbtn.frame = CGRectMake(self.cellView.frame.origin.x+80, self.cellView.frame.origin.y+15, 100, 30);
+            dropDownbtn.frame = CGRectMake(self.cellView.frame.origin.x+80, self.cellView.frame.origin.y+15, 90, 30);
 
             self.label1.textAlignment=NSTextAlignmentRight;
             self.label2.textAlignment=NSTextAlignmentRight;

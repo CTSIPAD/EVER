@@ -129,7 +129,6 @@
 		self.contentMode = UIViewContentModeRedraw;
 		//self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         
-        self.backgroundColor=mainDelegate.cellColor;
         
         
 
@@ -176,7 +175,7 @@
 		[self addSubview:pageNumberView]; // Add page numbers display view
         
         scrollViewmainPagebar = [[UIScrollView alloc] init];
-        scrollViewmainPagebar.frame=CGRectMake(0, 55, 130, self.frame.size.height);
+        scrollViewmainPagebar.frame=CGRectMake(0, 80, 160, self.frame.size.height);
             
         
        
@@ -231,6 +230,20 @@
     
   
     [self fillThumbView];
+    UIImage* bgColor;
+    
+    
+    UIInterfaceOrientation orientation=[[ UIApplication sharedApplication]statusBarOrientation];
+    
+    if (  UIInterfaceOrientationIsPortrait(orientation)) {
+        
+        bgColor=[UIImage imageNamed:@"metadataBg_Portraite.png"];
+    }
+    else
+        
+        bgColor=[UIImage imageNamed:@"metadataBg1.png"];
+    [self setBackgroundColor:[UIColor colorWithPatternImage:bgColor]];
+
 }
 
 -(void) fillThumbView
@@ -239,7 +252,7 @@
         [view removeFromSuperview];
     }
 
-    scrollViewmainPagebar.frame=CGRectMake(0, 55, 130, self.frame.size.height);
+    scrollViewmainPagebar.frame=CGRectMake(0, 80, 200, self.frame.size.height-20);
 
     UIButton *button;
     UILabel *titleLable;
@@ -248,29 +261,29 @@
     NSString* urlString;
     NSURL *url;
     
-    
-    UIButton *gobackFolder=[[UIButton alloc]initWithFrame:CGRectMake(40, 0, 50, 50)];
-    [gobackFolder setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"GoBack.png"]]forState:UIControlStateNormal];
+    UIImage* backImage=[UIImage imageNamed:[NSString stringWithFormat:@"PopUpbtn.png"]];
+
+    UIButton *gobackFolder=[[UIButton alloc]initWithFrame:CGRectMake(10, 12, 180, backImage.size.height)];
+    [gobackFolder setBackgroundImage:backImage forState:UIControlStateNormal];
+    gobackFolder.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
+    [gobackFolder setTitle:NSLocalizedString(@"Back", @"Back") forState:UIControlStateNormal];
+
     [gobackFolder addTarget:self action:@selector(closePagebar) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:gobackFolder];
     
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    float size=(thumbnailrarray.count*image.size.width)+((thumbnailrarray.count-1)*40);
-    CGSize ScreenSize = self.bounds.size;
-    int EndSpace;
     for (int i=0; i<=thumbnailrarray.count-1; i++) {
       
         urlString=((CAttachment*)[thumbnailrarray objectAtIndex:i]).ThubnailUrl;
-        if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
-            EndSpace=(i/8)%8;
-        }
-        else{
-            EndSpace=(i/6)%6;
-        }
+       
         
-        int padding=thumbnailrarray.count>=6?450:0;
-        float origin=(ScreenSize.width-padding-size);
-        if(origin<=0) origin=254;
+        titleLable=[[UILabel alloc]init];
+        [titleLable setText:((CAttachment*)[thumbnailrarray objectAtIndex:i]).title];
+        titleLable.font = [UIFont fontWithName:@"Helvetica" size:17];
+
+        CGSize size = [titleLable.text sizeWithAttributes:@{NSFontAttributeName: titleLable.font}];
+        CGSize textSize = CGSizeMake(ceilf(size.width), ceilf(size.height));
+        
         if(mainDelegate.ShowThumbnail && ![urlString isEqualToString:@""])
         {
             
@@ -278,15 +291,15 @@
             imagedata = [[NSData alloc] initWithContentsOfURL:url];
             image = [UIImage imageWithData:imagedata];
 
-            button=[[UIButton alloc]initWithFrame:CGRectMake(30, i*133, 70, 85)];
+            button=[[UIButton alloc]initWithFrame:CGRectMake(40, i*133, 120, 85)];
 
-            titleLable=[[UILabel alloc]initWithFrame:CGRectMake(5,i*133+55 , 120, 100)];
+            titleLable.frame=CGRectMake(20,i*133+90 , 160, textSize.height+20);
         }
         else
         {
             image =[UIImage imageNamed:@"thumbnail1.png"];
-            button=[[UIButton alloc]initWithFrame:CGRectMake(30, i*133,image.size.width, image.size.height)];
-            titleLable=[[UILabel alloc]initWithFrame:CGRectMake(30, i*133+image.size.height-20, image.size.width+10, 100)];
+            button=[[UIButton alloc]initWithFrame:CGRectMake(100-image.size.width/2, i*133,image.size.width, image.size.height)];
+            titleLable.frame=CGRectMake(20, i*133+image.size.height,160, textSize.height+20);
         }
         
         
@@ -294,14 +307,12 @@
         button.tag=i;
        
         [button setBackgroundImage:image forState:UIControlStateNormal];
-        [titleLable setText:((CAttachment*)[thumbnailrarray objectAtIndex:i]).title];
         
         titleLable.lineBreakMode = NSLineBreakByWordWrapping;
         titleLable.numberOfLines = 2;
         
         titleLable.textAlignment=NSTextAlignmentCenter;
         titleLable.backgroundColor = [UIColor clearColor];
-        titleLable.font = [UIFont fontWithName:@"Helvetica" size:17];
         titleLable.textColor=[UIColor whiteColor];
         [scrollViewmainPagebar addSubview:button];
         [scrollViewmainPagebar addSubview:titleLable];
@@ -320,17 +331,24 @@
     if (!SYSTEM_VERSION_LESS_THAN(@"8.0")) {
  
     if (UIInterfaceOrientationIsPortrait(tointerfaceOrientation)) {
-        self.frame=CGRectMake(0, 0, 130, [UIScreen mainScreen].bounds.size.width);
+        self.frame=CGRectMake(0, 0, 200, [UIScreen mainScreen].bounds.size.width);
+        [self setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"metadataBg_Portraite.png"]]];
     }
-   scrollViewmainPagebar.contentSize = CGSizeMake(75, thumbnailrarray.count*160);
+   scrollViewmainPagebar.contentSize = CGSizeMake(200, thumbnailrarray.count*160);
     }
     else
     {
-        if (UIInterfaceOrientationIsLandscape(tointerfaceOrientation))
-          scrollViewmainPagebar.contentSize = CGSizeMake(75, thumbnailrarray.count*160);
-        else
-            scrollViewmainPagebar.contentSize = CGSizeMake(75, thumbnailrarray.count*140);
-            
+        if (UIInterfaceOrientationIsLandscape(tointerfaceOrientation)){
+          scrollViewmainPagebar.contentSize = CGSizeMake(200, thumbnailrarray.count*160);
+            [self setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"metadataBg1.png"]]];
+
+        }
+        else{
+            scrollViewmainPagebar.contentSize = CGSizeMake(200, thumbnailrarray.count*140);
+            [self setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"metadataBg_Portraite.png"]]];
+
+        }
+        
   
     }
 }

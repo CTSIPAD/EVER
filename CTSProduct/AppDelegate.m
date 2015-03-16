@@ -95,6 +95,8 @@
     self.selectedInboxColor=[UIColor colorWithRed:201/255.0f green:83/255.0f blue:55/255.0f alpha:1.0];
     self.iconViewColor=[UIColor colorWithRed:118/255.0f green:181/255.0f blue:190/255.0f alpha:1.0];
     self.InboxCellSelectedColor_ar=[UIColor colorWithPatternImage:[UIImage imageNamed:@"SelectedInbox_ar.png"]];
+    self.PopUpBgColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"PopUpBg.png"]];
+    self.PopUpTextColor=[UIColor colorWithRed:74/255.0f green:140/255.0f blue:146/255.0f alpha:1.0];
     self.InboxCellSelectedColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"SelectedInbox.png"]];
     thumbnailDefined=NO;
     [application setStatusBarHidden:YES];

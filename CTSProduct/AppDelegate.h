@@ -105,8 +105,8 @@
 @property(nonatomic,strong) UIColor *InboxCellColor_ar;
 @property(nonatomic,strong) UIColor *InboxCellSelectedColor_ar;
 @property(nonatomic,strong) UIColor *InboxCellSelectedColor;
-
-
+@property(nonatomic,strong) UIColor *PopUpBgColor;
+@property(nonatomic,strong) UIColor *PopUpTextColor;
 
 
 @property(nonatomic,assign) BOOL thumbnailDefined;
