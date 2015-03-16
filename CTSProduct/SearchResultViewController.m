@@ -527,9 +527,9 @@
     AcceptView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:AcceptView animated:YES completion:nil];
     if (SYSTEM_VERSION_LESS_THAN(@"8.0"))
-        AcceptView.view.superview.frame = CGRectMake(300, 200, 691, 499);
+        AcceptView.view.superview.frame = CGRectMake((1024-691)/2, (768-499)/2, 691, 499);
     else
-    AcceptView.preferredContentSize=CGSizeMake(691, 499);
+        AcceptView.preferredContentSize=CGSizeMake(691, 499);
    
     AcceptView.delegate=self;
     AcceptView.Action=action;
@@ -542,9 +542,13 @@
     transferView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:transferView animated:YES completion:nil];
     if (SYSTEM_VERSION_LESS_THAN(@"8.0"))
-        transferView.view.superview.frame = CGRectMake(300, 200,691, 499);
+        if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication]statusBarOrientation])) {
+            transferView.view.superview.frame = CGRectMake((768-691)/2,(1024-499)/2,  691, 499);
+        }
+        else
+            transferView.view.superview.frame = CGRectMake((1024-691)/2, (768-499)/2,691, 499);
     else
-     transferView.preferredContentSize=CGSizeMake(691, 499);
+        transferView.preferredContentSize=CGSizeMake(691, 499);
     //transferView.view.superview.frame = CGRectMake(300, 200, 450, 470); //it's important to do this after presentModalViewController
     // noteView.view.superview.center = self.view.center;
     transferView.delegate=self;
@@ -561,7 +565,7 @@
     uploadDialog.view.superview.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     [self presentViewController:uploadDialog animated:YES completion:nil];
     if (SYSTEM_VERSION_LESS_THAN(@"8.0"))
-         uploadDialog.view.superview.frame = CGRectMake(300, 200,515, 499);
+         uploadDialog.view.superview.frame = CGRectMake((1024-515)/2, (768-499)/2,515, 499);
     else
         uploadDialog.preferredContentSize=CGSizeMake(515, 499);
     

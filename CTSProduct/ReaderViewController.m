@@ -2798,7 +2798,7 @@ typedef enum{
         }else{
             correspondence=mainDelegate.searchModule.correspondenceList[self.correspondenceId];
         }
-        UploadControllerDialog *uploadDialog = [[UploadControllerDialog alloc] initWithFrame:CGRectMake(300, 200, 515, 499)];
+        UploadControllerDialog *uploadDialog = [[UploadControllerDialog alloc] initWithFrame:CGRectMake(0, 0, 515, 499)];
         uploadDialog.modalPresentationStyle = UIModalPresentationFormSheet;
         uploadDialog.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         uploadDialog.view.superview.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
@@ -2929,10 +2929,10 @@ typedef enum{
     transferView.preferredContentSize=CGSizeMake(691, 499);
     if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
         if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication]statusBarOrientation])) {
-            transferView.view.superview.frame = CGRectMake(200, 300, 691, 499);
+            transferView.view.superview.frame = CGRectMake((768-691)/2,(1024-499)/2,  691, 499);
         }
         else
-        transferView.view.superview.frame = CGRectMake(300, 200,691, 499); //it's important to do this after presentModalViewController
+            transferView.view.superview.frame = CGRectMake((1024-691)/2, (768-499)/2,691, 499); //it's important to do this after presentModalViewController
     }else{
          transferView.preferredContentSize=CGSizeMake(691, 499);
         
@@ -3153,8 +3153,11 @@ typedef enum{
         AcceptView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentViewController:AcceptView animated:YES completion:nil];
         if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
-            
-            AcceptView.view.superview.frame = CGRectMake(300, 200, 691, 499); //it's important to do this
+            if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication]statusBarOrientation])) {
+                AcceptView.view.superview.frame = CGRectMake((768-691)/2,(1024-499)/2,  691, 499);
+            }
+            else
+                AcceptView.view.superview.frame = CGRectMake((1024-691)/2, (768-499)/2,691, 499);
         }
         else
             AcceptView.preferredContentSize=CGSizeMake(691, 499);

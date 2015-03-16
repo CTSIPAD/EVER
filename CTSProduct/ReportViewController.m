@@ -89,94 +89,37 @@
     [self.view addSubview:viewheader];
     
     
-    UIButton *firstBtn=[[UIButton alloc] initWithFrame:CGRectMake(Width/6,((Height-720)/3), 220, 160)];
-    UIImage *PieImage=[UIImage imageNamed:@"Charts-By-Categorie.png"];
-    
-    [firstBtn setTitle:@"Charts By Category" forState:UIControlStateNormal];
-    [firstBtn setTitleColor:mainDelegate.SearchLabelsColor forState:UIControlStateNormal];
+    UIImage *PieImage=[UIImage imageNamed:@"categorie.png"];
+    int x=(Width+20-(2*PieImage.size.width))/3;
+    int y=((Height-720)/3);
+    int x2=2*x+PieImage.size.width;
+    int y2=2*y+PieImage.size.height-40;
+    UIButton *firstBtn=[[UIButton alloc] initWithFrame:CGRectMake(x,y, PieImage.size.width, PieImage.size.height)];
+
     [firstBtn addTarget:self action:@selector(ShowPie) forControlEvents:UIControlEventTouchUpInside];
     [firstBtn setBackgroundImage:PieImage forState:UIControlStateNormal];
-    [firstBtn setTitleEdgeInsets:UIEdgeInsetsMake(firstBtn.frame.size.height+50, 0, 0, 0)];
-    firstBtn.titleLabel.textAlignment=NSTextAlignmentCenter;
-    
-    UIView* PieView=[[UIView alloc]initWithFrame:CGRectMake(-10+Width/6, ((Height-720)/3)-10, 240, 180)];
-    PieView.layer.cornerRadius=15;
-    PieView.clipsToBounds=YES;
-    PieView.layer.borderWidth=0.5;
-    PieView.layer.borderColor=mainDelegate.SearchLabelsColor.CGColor;
-    PieView.backgroundColor=mainDelegate.cellColor;
-    
-//    [self.view addSubview:PieView];
-//    PieView.frame = CGRectMake(-10+Width/6, ((Height-720)/3)-10, 20.0f, 20.0f);
-//    [UIView beginAnimations:@"Zoom" context:NULL];
-//    [UIView setAnimationDuration:1];
-//    PieView.frame = CGRectMake(-10+Width/6, ((Height-720)/3)-10, 240, 180);
-//    [UIView commitAnimations];
-    [self addSubviewWithZoomInAnimation:PieView duration:0.5 delay:0.3 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(PieView.frame.origin.x+PieView.frame.size.width/2, PieView.frame.origin.y+PieView.frame.size.height/2) originX:PieView.frame.origin.x originY:PieView.frame.origin.y];
+ 
     [self addSubviewWithZoomInAnimation:firstBtn duration:0.5 delay:0.3 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(firstBtn.frame.origin.x+firstBtn.frame.size.width/2, firstBtn.frame.origin.y+firstBtn.frame.size.height/2) originX:firstBtn.frame.origin.x originY:firstBtn.frame.origin.y];
-    int x=firstBtn.frame.origin.x;
-    int y=firstBtn.frame.origin.y;
-    int width=firstBtn.frame.size.width;
-    int height=firstBtn.frame.size.height;
     
-    UIButton *secondBtn=[[UIButton alloc] initWithFrame:CGRectMake(x+width+100, y, width,height)];
-    UIImage *BarImage=[UIImage imageNamed:@"Charts-By-Structures.png"];
     
-    [secondBtn setBackgroundImage:BarImage forState:UIControlStateNormal];
-    [secondBtn setTitleEdgeInsets:UIEdgeInsetsMake(secondBtn.frame.size.height+50, 0, 0, 0)];
+    UIButton *secondBtn=[[UIButton alloc] initWithFrame:CGRectMake(x2, y,PieImage.size.width, PieImage.size.height)];
+    [secondBtn setBackgroundImage:[UIImage imageNamed:@"structure.png"] forState:UIControlStateNormal];
     [secondBtn addTarget:self action:@selector(ShowBar) forControlEvents:UIControlEventTouchUpInside];
-    secondBtn.titleLabel.textAlignment=NSTextAlignmentCenter;
-    [secondBtn setTitle:@"Charts By Structures" forState:UIControlStateNormal];
-    [secondBtn setTitleColor:mainDelegate.SearchLabelsColor forState:UIControlStateNormal];
-    UIView* BarView=[[UIView alloc]initWithFrame:CGRectMake(x+width+90, y-10, width+20,height+20)];
-    BarView.backgroundColor=mainDelegate.cellColor;
-    BarView.layer.cornerRadius=15;
-    BarView.clipsToBounds=YES;
-    BarView.layer.borderWidth=0.5;
-    PieView.layer.borderColor=mainDelegate.SearchLabelsColor.CGColor;
-    [self addSubviewWithZoomInAnimation:BarView duration:0.5 delay:0.5 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(BarView.frame.origin.x+BarView.frame.size.width/2, BarView.frame.origin.y+BarView.frame.size.height/2) originX:BarView.frame.origin.x originY:BarView.frame.origin.y];
     [self addSubviewWithZoomInAnimation:secondBtn duration:0.5 delay:0.5 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(secondBtn.frame.origin.x+secondBtn.frame.size.width/2, secondBtn.frame.origin.y+secondBtn.frame.size.height/2) originX:secondBtn.frame.origin.x originY:secondBtn.frame.origin.y];
-    UIButton *firstButton=[[UIButton alloc] initWithFrame:CGRectMake(Width/6,(2*firstBtn.frame.origin.y)+firstBtn.frame.size.height+10, 220, 160)];
-    UIImage *Collapseimage=[UIImage imageNamed:@"Charts-By-Months.png"];
+   
     
-    [firstButton setTitle:@"Charts By Months" forState:UIControlStateNormal];
-    [firstButton setTitleColor:mainDelegate.SearchLabelsColor forState:UIControlStateNormal];
+    UIButton *firstButton=[[UIButton alloc] initWithFrame:CGRectMake(x,y2, PieImage.size.width,PieImage.size.height)];
     [firstButton addTarget:self action:@selector(ShowReport) forControlEvents:UIControlEventTouchUpInside];
-    [firstButton setBackgroundImage:Collapseimage forState:UIControlStateNormal];
-    [firstButton setTitleEdgeInsets:UIEdgeInsetsMake(firstButton.frame.size.height+50, 0, 0, 0)];
-    firstButton.titleLabel.textAlignment=NSTextAlignmentCenter;
+    [firstButton setBackgroundImage:[UIImage imageNamed:@"months.png"] forState:UIControlStateNormal];
     
-    UIView* view=[[UIView alloc]initWithFrame:CGRectMake(-10+Width/6,(2*firstBtn.frame.origin.y)+firstBtn.frame.size.height, 240, 180)];
-    view.layer.cornerRadius=15;
-    view.clipsToBounds=YES;
-    view.layer.borderWidth=0.5;
-    view.layer.borderColor=mainDelegate.SearchLabelsColor.CGColor;
-    view.backgroundColor=mainDelegate.cellColor;
-    [self addSubviewWithZoomInAnimation:view duration:0.5 delay:0.8 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(view.frame.origin.x+view.frame.size.width/2, view.frame.origin.y+view.frame.size.height/2) originX:view.frame.origin.x originY:view.frame.origin.y];
     [self addSubviewWithZoomInAnimation:firstButton duration:0.5 delay:0.8 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(firstButton.frame.origin.x+firstButton.frame.size.width/2, firstButton.frame.origin.y+firstButton.frame.size.height/2) originX:firstButton.frame.origin.x originY:firstButton.frame.origin.y];
     
-    x=firstButton.frame.origin.x;
-    y=firstButton.frame.origin.y;
-    width=firstButton.frame.size.width;
-    height=firstButton.frame.size.height;
+
     
-    UIButton *secondButton=[[UIButton alloc] initWithFrame:CGRectMake(x+width+100, y, width,height)];
-    UIImage *calendarImage=[UIImage imageNamed:@"Overdue-Documents.png"];
+    UIButton *secondButton=[[UIButton alloc] initWithFrame:CGRectMake(x2, y2,PieImage.size.width, PieImage.size.height)];
     
-    [secondButton setBackgroundImage:calendarImage forState:UIControlStateNormal];
-    [secondButton setTitleEdgeInsets:UIEdgeInsetsMake(secondButton.frame.size.height+50, 0, 0, 0)];
+    [secondButton setBackgroundImage:[UIImage imageNamed:@"documents.png"] forState:UIControlStateNormal];
     [secondButton addTarget:self action:@selector(FilterReport) forControlEvents:UIControlEventTouchUpInside];
-    secondButton.titleLabel.textAlignment=NSTextAlignmentCenter;
-    [secondButton setTitle:@"Overdue Documents" forState:UIControlStateNormal];
-    [secondButton setTitleColor:mainDelegate.SearchLabelsColor forState:UIControlStateNormal];
-    UIView* view1=[[UIView alloc]initWithFrame:CGRectMake(x+width+90, y-10, width+20,height+20)];
-    view1.backgroundColor=mainDelegate.cellColor;
-    view1.layer.cornerRadius=15;
-    view1.clipsToBounds=YES;
-    view1.layer.borderWidth=0.5;
-    view.layer.borderColor=mainDelegate.SearchLabelsColor.CGColor;
-    [self.view addSubview:view1];
-    [self addSubviewWithZoomInAnimation:view1 duration:0.5 delay:1.0 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(view1.frame.origin.x+view1.frame.size.width/2, view1.frame.origin.y+view1.frame.size.height/2) originX:view1.frame.origin.x originY:view1.frame.origin.y];
     [self addSubviewWithZoomInAnimation:secondButton duration:0.5 delay:1.0 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(secondButton.frame.origin.x+secondButton.frame.size.width/2, secondButton.frame.origin.y+secondButton.frame.size.height/2) originX:secondButton.frame.origin.x originY:secondButton.frame.origin.y];
 }
 -(void)ShowPie

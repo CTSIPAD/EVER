@@ -20,6 +20,10 @@
 		0455513B1AB2E87C00A7844C /* OverdueBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551321AB2E87C00A7844C /* OverdueBarChartViewController.m */; };
 		0455513C1AB2E87C00A7844C /* VerticalBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */; };
 		0455513D1AB2E87C00A7844C /* VerticalBartChartViewController in Resources */ = {isa = PBXBuildFile; fileRef = 045551351AB2E87C00A7844C /* VerticalBartChartViewController */; };
+		0455EB7E1AB4B8C7003CAD85 /* categorie.png in Resources */ = {isa = PBXBuildFile; fileRef = 0455EB7D1AB4B8C7003CAD85 /* categorie.png */; };
+		0455EB821AB4E80B003CAD85 /* documents.png in Resources */ = {isa = PBXBuildFile; fileRef = 0455EB7F1AB4E80B003CAD85 /* documents.png */; };
+		0455EB831AB4E80B003CAD85 /* months.png in Resources */ = {isa = PBXBuildFile; fileRef = 0455EB801AB4E80B003CAD85 /* months.png */; };
+		0455EB841AB4E80B003CAD85 /* structure.png in Resources */ = {isa = PBXBuildFile; fileRef = 0455EB811AB4E80B003CAD85 /* structure.png */; };
 		045DC4AE1A5D738D009C3540 /* IMGtakephoto.png in Resources */ = {isa = PBXBuildFile; fileRef = 045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */; };
 		0481EF991AAF41D800BACA04 /* metadataBg1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0481EF981AAF41D800BACA04 /* metadataBg1.png */; };
 		04932D491AA9E05500180152 /* separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 04932D481AA9E05500180152 /* separator.png */; };
@@ -262,6 +266,10 @@
 		045551331AB2E87C00A7844C /* VerticalBarChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticalBarChartViewController.h; sourceTree = "<group>"; };
 		045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticalBarChartViewController.m; sourceTree = "<group>"; };
 		045551351AB2E87C00A7844C /* VerticalBartChartViewController */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VerticalBartChartViewController; sourceTree = "<group>"; };
+		0455EB7D1AB4B8C7003CAD85 /* categorie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = categorie.png; sourceTree = "<group>"; };
+		0455EB7F1AB4E80B003CAD85 /* documents.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = documents.png; sourceTree = "<group>"; };
+		0455EB801AB4E80B003CAD85 /* months.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = months.png; sourceTree = "<group>"; };
+		0455EB811AB4E80B003CAD85 /* structure.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = structure.png; sourceTree = "<group>"; };
 		045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMGtakephoto.png; sourceTree = "<group>"; };
 		0481EF981AAF41D800BACA04 /* metadataBg1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadataBg1.png; sourceTree = "<group>"; };
 		04932D481AA9E05500180152 /* separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = separator.png; sourceTree = "<group>"; };
@@ -667,10 +675,14 @@
 			isa = PBXGroup;
 			children = (
 				0499B7081AA468EC002609A0 /* Charts-By-Categorie.png */,
+				0455EB7F1AB4E80B003CAD85 /* documents.png */,
+				0455EB801AB4E80B003CAD85 /* months.png */,
+				0455EB811AB4E80B003CAD85 /* structure.png */,
 				0499B7091AA468EC002609A0 /* Charts-By-Months.png */,
 				0499B70A1AA468EC002609A0 /* Charts-By-Structures.png */,
 				0499B70B1AA468EC002609A0 /* Overdue-Documents.png */,
 				0499B70C1AA468EC002609A0 /* Overdue-Transfers.png */,
+				0455EB7D1AB4B8C7003CAD85 /* categorie.png */,
 				0499B7051AA45F0F002609A0 /* R2.png */,
 			);
 			name = images;
@@ -1554,6 +1566,7 @@
 				A2F23336195C397A008F71AF /* comments.png in Resources */,
 				A29793A519BEF42300AD6D1D /* disclosure@2x.png in Resources */,
 				0499B7191AA4C173002609A0 /* barBg.png in Resources */,
+				0455EB821AB4E80B003CAD85 /* documents.png in Resources */,
 				A29DA1B51A12045200BE6CAE /* metadata.png in Resources */,
 				A2B84F5A19628DAB0084035F /* GoBack.png in Resources */,
 				A2F61483195964F400956BF0 /* background@2x.png in Resources */,
@@ -1574,6 +1587,7 @@
 				A29DA1C71A12117B00BE6CAE /* downloadAll.png in Resources */,
 				A29DA1941A11FDD600BE6CAE /* MainSearchimg.png in Resources */,
 				A2010BF1195D954E004AC93C /* erase.png in Resources */,
+				0455EB841AB4E80B003CAD85 /* structure.png in Resources */,
 				A2010BEB195D6C55004AC93C /* FreeSignAll.png in Resources */,
 				A29DA1A11A12006E00BE6CAE /* seperatorimg.png in Resources */,
 				0499B7111AA468EC002609A0 /* Overdue-Transfers.png in Resources */,
@@ -1586,6 +1600,7 @@
 				04A17F0C1A95290200E76B01 /* cellbg_ar.png in Resources */,
 				A2B9FA18198121CD00A61F5F /* icon.png in Resources */,
 				A2C133D319ED68E50095264A /* HandSign.png in Resources */,
+				0455EB831AB4E80B003CAD85 /* months.png in Resources */,
 				A2F2332A19557E9500CA09DD /* Settings.bundle in Resources */,
 				0499B7221AA4C89F002609A0 /* d3.min.js in Resources */,
 				04A131451AAD8ECC00D422F8 /* refIcon.png in Resources */,
@@ -1624,6 +1639,7 @@
 				A2010BF2195D954E004AC93C /* highlight.png in Resources */,
 				A29DA1981A11FDD600BE6CAE /* Transfer.png in Resources */,
 				A29DA1A51A1200BE00BE6CAE /* lockimg.png in Resources */,
+				0455EB7E1AB4B8C7003CAD85 /* categorie.png in Resources */,
 				A27888621A1A466D0031C3CE /* More-flipped.png in Resources */,
 				A2B9FA1F1982459700A61F5F /* AddNew.png in Resources */,
 				A2E598F51A2F161E00CB97A6 /* loginLandscape.png in Resources */,
