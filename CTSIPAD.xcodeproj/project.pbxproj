@@ -18,7 +18,7 @@
 		045551391AB2E87C00A7844C /* D3VerticalBarChart.html in Resources */ = {isa = PBXBuildFile; fileRef = 0455512E1AB2E87C00A7844C /* D3VerticalBarChart.html */; };
 		0455513A1AB2E87C00A7844C /* HorizontalBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551301AB2E87C00A7844C /* HorizontalBarChartViewController.m */; };
 		0455513B1AB2E87C00A7844C /* OverdueBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551321AB2E87C00A7844C /* OverdueBarChartViewController.m */; };
-		0455513C1AB2E87C00A7844C /* VerticalBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */; };
+				0455513D1AB2E87C00A7844C /* VerticalBartChartViewController in Resources */ = {isa = PBXBuildFile; fileRef = 045551351AB2E87C00A7844C /* VerticalBartChartViewController */; };
 		045DC4AE1A5D738D009C3540 /* IMGtakephoto.png in Resources */ = {isa = PBXBuildFile; fileRef = 045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */; };
 		0481EF991AAF41D800BACA04 /* metadataBg1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0481EF981AAF41D800BACA04 /* metadataBg1.png */; };
 		04932D491AA9E05500180152 /* separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 04932D481AA9E05500180152 /* separator.png */; };
@@ -259,7 +259,8 @@
 		045551311AB2E87C00A7844C /* OverdueBarChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverdueBarChartViewController.h; sourceTree = "<group>"; };
 		045551321AB2E87C00A7844C /* OverdueBarChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverdueBarChartViewController.m; sourceTree = "<group>"; };
 		045551331AB2E87C00A7844C /* VerticalBarChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticalBarChartViewController.h; sourceTree = "<group>"; };
-		045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticalBarChartViewController.m; sourceTree = "<group>"; };
+
+		045551351AB2E87C00A7844C /* VerticalBartChartViewController */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VerticalBartChartViewController; sourceTree = "<group>"; };
 		045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMGtakephoto.png; sourceTree = "<group>"; };
 		0481EF981AAF41D800BACA04 /* metadataBg1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadataBg1.png; sourceTree = "<group>"; };
 		04932D481AA9E05500180152 /* separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = separator.png; sourceTree = "<group>"; };
@@ -651,7 +652,8 @@
 				045551311AB2E87C00A7844C /* OverdueBarChartViewController.h */,
 				045551321AB2E87C00A7844C /* OverdueBarChartViewController.m */,
 				045551331AB2E87C00A7844C /* VerticalBarChartViewController.h */,
-				045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */,
+
+				045551351AB2E87C00A7844C /* VerticalBartChartViewController */,
 				0499B7021AA459BE002609A0 /* ReportViewController.h */,
 				0499B7031AA459BE002609A0 /* ReportViewController.m */,
 				0499B71A1AA4C89F002609A0 /* Pie Chart */,
@@ -1607,6 +1609,7 @@
 				04A17F031A94B1D000E76B01 /* selectedcellArrow.png in Resources */,
 				A29DA1B71A12047100BE6CAE /* Signature.png in Resources */,
 				A2E598F61A2F161E00CB97A6 /* loginPortrait.png in Resources */,
+				0455513D1AB2E87C00A7844C /* VerticalBartChartViewController in Resources */,
 				04A131461AAD8ECC00D422F8 /* senderIcon.png in Resources */,
 				A2B84F5819628DAB0084035F /* file.png in Resources */,
 				A2010BF3195D954E004AC93C /* save.png in Resources */,

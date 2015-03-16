@@ -26,6 +26,7 @@
         {
             display: none;
         }
+<<<<<<< HEAD
         
         .d3-tip
         {
@@ -59,15 +60,24 @@
             left: 0;
         }
         
+=======
+>>>>>>> 2f3eb1664a4436f9cfcc1a2b04cab8808e43bfd8
         </style>
         
     </head>
     <body>
+<<<<<<< HEAD
         <center><h2>Correspondences Count by Status</h2></center>
         <div id="barChart" style="margin-top:30px;margin-left:20px;margin-bottom:30px;" onclick="hideToolTip(this)"/>
     </body>
     <script src="d3.min.js"></script>
     <script src="d3.tip.js"></script>
+=======
+        <center><h2>correspondences count by status</h2></center>
+        <div id="barChart" style="margin-top:30px;margin-left:20px;margin-bottom:30px;"/>
+    </body>
+    <script src="d3.min.js"></script>
+>>>>>>> 2f3eb1664a4436f9cfcc1a2b04cab8808e43bfd8
   
     <script type="text/javascript">
         
@@ -104,6 +114,7 @@
         .orient("left")
         .tickFormat(d3.format(".2s"));
         
+<<<<<<< HEAD
         var tip = d3.tip()
         .attr('class', 'd3-tip')
         .offset([-10, 0])
@@ -112,14 +123,19 @@
               })
 
         
+=======
+>>>>>>> 2f3eb1664a4436f9cfcc1a2b04cab8808e43bfd8
         var svg = d3.select("#barChart").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         
+<<<<<<< HEAD
         svg.call(tip);
         
+=======
+>>>>>>> 2f3eb1664a4436f9cfcc1a2b04cab8808e43bfd8
         var status = GetStatus(data);
         
         
@@ -159,12 +175,19 @@
         state.selectAll("rect")
         .data(function (d) { return d.Values; })
         .enter().append("rect")
+<<<<<<< HEAD
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide)
         .attr("width", x1.rangeBand())
         .attr("x", function (d) { return x1(d.Name); })
         .attr("height", function (d) { return height - y(d.Value); })
         .attr("y", height)
+=======
+        .attr("width", x1.rangeBand())
+        .attr("x", function (d) { return x1(d.Name); })
+        .attr("y", height)
+        .attr("height", function (d) { return height - y(d.Value); })
+>>>>>>> 2f3eb1664a4436f9cfcc1a2b04cab8808e43bfd8
         .transition().duration(1000).ease("in")
         .attr("y", function (d) { return y(d.Value); })
         .style("fill", function (d) { return color(d.Name); });
@@ -205,10 +228,13 @@
                                    return status;
         }
         
+<<<<<<< HEAD
         function hideToolTip(item) {
             tip.hide;
         }
         
+=======
+>>>>>>> 2f3eb1664a4436f9cfcc1a2b04cab8808e43bfd8
         function GetMax(data) {
             var max = -1;
             data.forEach(function (d) {
