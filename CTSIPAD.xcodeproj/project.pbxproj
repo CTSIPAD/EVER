@@ -60,6 +60,20 @@
 		04C59E291AB6E06D00B25AC2 /* months.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C59E261AB6E06D00B25AC2 /* months.png */; };
 		04C59E2A1AB6E06D00B25AC2 /* structure.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C59E271AB6E06D00B25AC2 /* structure.png */; };
 		04C8C5161AB254B400B2ED70 /* metadataBg_Portraite.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C8C5151AB254B400B2ED70 /* metadataBg_Portraite.png */; };
+		04C9043B1AB864B70008B4D4 /* InfColorBarPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C9042C1AB864B70008B4D4 /* InfColorBarPicker.m */; };
+		04C9043C1AB864B70008B4D4 /* InfColorIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C9042E1AB864B70008B4D4 /* InfColorIndicatorView.m */; };
+		04C9043D1AB864B70008B4D4 /* InfColorPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C904311AB864B70008B4D4 /* InfColorPickerController.m */; };
+		04C9043E1AB864B70008B4D4 /* InfColorPickerNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C904331AB864B70008B4D4 /* InfColorPickerNavigationController.m */; };
+		04C9043F1AB864B70008B4D4 /* InfColorPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04C904341AB864B70008B4D4 /* InfColorPickerView.xib */; };
+		04C904401AB864B70008B4D4 /* InfColorSquarePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C904361AB864B70008B4D4 /* InfColorSquarePicker.m */; };
+		04C904411AB864B70008B4D4 /* InfHSBSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C904381AB864B70008B4D4 /* InfHSBSupport.m */; };
+		04C904421AB864B70008B4D4 /* InfSourceColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C9043A1AB864B70008B4D4 /* InfSourceColorView.m */; };
+		04C9044D1AB87D320008B4D4 /* Ipad-Icon_29pt.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C904471AB87D320008B4D4 /* Ipad-Icon_29pt.png */; };
+		04C9044E1AB87D320008B4D4 /* Ipad-Icon_29pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C904481AB87D320008B4D4 /* Ipad-Icon_29pt@2x.png */; };
+		04C9044F1AB87D320008B4D4 /* Ipad-Icon_40pt.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C904491AB87D320008B4D4 /* Ipad-Icon_40pt.png */; };
+		04C904501AB87D320008B4D4 /* Ipad-Icon_40pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C9044A1AB87D320008B4D4 /* Ipad-Icon_40pt@2x.png */; };
+		04C904511AB87D320008B4D4 /* Ipad-Icon_76pt.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C9044B1AB87D320008B4D4 /* Ipad-Icon_76pt.png */; };
+		04C904521AB87D320008B4D4 /* Ipad-Icon_76pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C9044C1AB87D320008B4D4 /* Ipad-Icon_76pt@2x.png */; };
 		04CBF9F71AA841D800F9A82A /* d3pie.html in Resources */ = {isa = PBXBuildFile; fileRef = 04CBF9F61AA841D800F9A82A /* d3pie.html */; };
 		04CBF9F91AA842E100F9A82A /* d3pie.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 04CBF9F81AA842E100F9A82A /* d3pie.min.js */; };
 		956B97BC1966DB4F00D01DB8 /* note.m in Sources */ = {isa = PBXBuildFile; fileRef = 956B97BB1966DB4F00D01DB8 /* note.m */; };
@@ -120,8 +134,6 @@
 		A2B84F601962EBCC0084035F /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B84F5D1962EBCC0084035F /* SettingsViewController.m */; };
 		A2B9FA08197E4F0600A61F5F /* AttachmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B9FA07197E4F0600A61F5F /* AttachmentViewController.m */; };
 		A2B9FA12197FC95900A61F5F /* ToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B9FA11197FC95900A61F5F /* ToolbarItem.m */; };
-		A2B9FA18198121CD00A61F5F /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A2B9FA16198121CD00A61F5F /* icon.png */; };
-		A2B9FA19198121CD00A61F5F /* ipad_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A2B9FA17198121CD00A61F5F /* ipad_icon.png */; };
 		A2B9FA1F1982459700A61F5F /* AddNew.png in Resources */ = {isa = PBXBuildFile; fileRef = A2B9FA1C1982459700A61F5F /* AddNew.png */; };
 		A2B9FA211982459700A61F5F /* ShowAttachments.png in Resources */ = {isa = PBXBuildFile; fileRef = A2B9FA1E1982459700A61F5F /* ShowAttachments.png */; };
 		A2B9FA231982B3FD00A61F5F /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = A2B9FA221982B3FD00A61F5F /* camera.png */; };
@@ -307,6 +319,28 @@
 		04C59E261AB6E06D00B25AC2 /* months.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = months.png; sourceTree = "<group>"; };
 		04C59E271AB6E06D00B25AC2 /* structure.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = structure.png; sourceTree = "<group>"; };
 		04C8C5151AB254B400B2ED70 /* metadataBg_Portraite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadataBg_Portraite.png; sourceTree = "<group>"; };
+		04C9042B1AB864B70008B4D4 /* InfColorBarPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorBarPicker.h; sourceTree = "<group>"; };
+		04C9042C1AB864B70008B4D4 /* InfColorBarPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorBarPicker.m; sourceTree = "<group>"; };
+		04C9042D1AB864B70008B4D4 /* InfColorIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorIndicatorView.h; sourceTree = "<group>"; };
+		04C9042E1AB864B70008B4D4 /* InfColorIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorIndicatorView.m; sourceTree = "<group>"; };
+		04C9042F1AB864B70008B4D4 /* InfColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPicker.h; sourceTree = "<group>"; };
+		04C904301AB864B70008B4D4 /* InfColorPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPickerController.h; sourceTree = "<group>"; };
+		04C904311AB864B70008B4D4 /* InfColorPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorPickerController.m; sourceTree = "<group>"; };
+		04C904321AB864B70008B4D4 /* InfColorPickerNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPickerNavigationController.h; sourceTree = "<group>"; };
+		04C904331AB864B70008B4D4 /* InfColorPickerNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorPickerNavigationController.m; sourceTree = "<group>"; };
+		04C904341AB864B70008B4D4 /* InfColorPickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfColorPickerView.xib; sourceTree = "<group>"; };
+		04C904351AB864B70008B4D4 /* InfColorSquarePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorSquarePicker.h; sourceTree = "<group>"; };
+		04C904361AB864B70008B4D4 /* InfColorSquarePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorSquarePicker.m; sourceTree = "<group>"; };
+		04C904371AB864B70008B4D4 /* InfHSBSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfHSBSupport.h; sourceTree = "<group>"; };
+		04C904381AB864B70008B4D4 /* InfHSBSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfHSBSupport.m; sourceTree = "<group>"; };
+		04C904391AB864B70008B4D4 /* InfSourceColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfSourceColorView.h; sourceTree = "<group>"; };
+		04C9043A1AB864B70008B4D4 /* InfSourceColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfSourceColorView.m; sourceTree = "<group>"; };
+		04C904471AB87D320008B4D4 /* Ipad-Icon_29pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ipad-Icon_29pt.png"; sourceTree = "<group>"; };
+		04C904481AB87D320008B4D4 /* Ipad-Icon_29pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ipad-Icon_29pt@2x.png"; sourceTree = "<group>"; };
+		04C904491AB87D320008B4D4 /* Ipad-Icon_40pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ipad-Icon_40pt.png"; sourceTree = "<group>"; };
+		04C9044A1AB87D320008B4D4 /* Ipad-Icon_40pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ipad-Icon_40pt@2x.png"; sourceTree = "<group>"; };
+		04C9044B1AB87D320008B4D4 /* Ipad-Icon_76pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ipad-Icon_76pt.png"; sourceTree = "<group>"; };
+		04C9044C1AB87D320008B4D4 /* Ipad-Icon_76pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ipad-Icon_76pt@2x.png"; sourceTree = "<group>"; };
 		04CBF9F61AA841D800F9A82A /* d3pie.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = d3pie.html; sourceTree = "<group>"; };
 		04CBF9F81AA842E100F9A82A /* d3pie.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = d3pie.min.js; sourceTree = "<group>"; };
 		956B97BA1966DB4F00D01DB8 /* note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = note.h; sourceTree = "<group>"; };
@@ -379,8 +413,6 @@
 		A2B9FA07197E4F0600A61F5F /* AttachmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttachmentViewController.m; sourceTree = "<group>"; };
 		A2B9FA10197FC95900A61F5F /* ToolbarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolbarItem.h; sourceTree = "<group>"; };
 		A2B9FA11197FC95900A61F5F /* ToolbarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolbarItem.m; sourceTree = "<group>"; };
-		A2B9FA16198121CD00A61F5F /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		A2B9FA17198121CD00A61F5F /* ipad_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ipad_icon.png; sourceTree = "<group>"; };
 		A2B9FA1C1982459700A61F5F /* AddNew.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AddNew.png; sourceTree = "<group>"; };
 		A2B9FA1E1982459700A61F5F /* ShowAttachments.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ShowAttachments.png; sourceTree = "<group>"; };
 		A2B9FA221982B3FD00A61F5F /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
@@ -712,6 +744,29 @@
 			name = images;
 			sourceTree = "<group>";
 		};
+		04C9042A1AB864B70008B4D4 /* InfColorPicker */ = {
+			isa = PBXGroup;
+			children = (
+				04C9042B1AB864B70008B4D4 /* InfColorBarPicker.h */,
+				04C9042C1AB864B70008B4D4 /* InfColorBarPicker.m */,
+				04C9042D1AB864B70008B4D4 /* InfColorIndicatorView.h */,
+				04C9042E1AB864B70008B4D4 /* InfColorIndicatorView.m */,
+				04C9042F1AB864B70008B4D4 /* InfColorPicker.h */,
+				04C904301AB864B70008B4D4 /* InfColorPickerController.h */,
+				04C904311AB864B70008B4D4 /* InfColorPickerController.m */,
+				04C904321AB864B70008B4D4 /* InfColorPickerNavigationController.h */,
+				04C904331AB864B70008B4D4 /* InfColorPickerNavigationController.m */,
+				04C904341AB864B70008B4D4 /* InfColorPickerView.xib */,
+				04C904351AB864B70008B4D4 /* InfColorSquarePicker.h */,
+				04C904361AB864B70008B4D4 /* InfColorSquarePicker.m */,
+				04C904371AB864B70008B4D4 /* InfHSBSupport.h */,
+				04C904381AB864B70008B4D4 /* InfHSBSupport.m */,
+				04C904391AB864B70008B4D4 /* InfSourceColorView.h */,
+				04C9043A1AB864B70008B4D4 /* InfSourceColorView.m */,
+			);
+			path = InfColorPicker;
+			sourceTree = "<group>";
+		};
 		9572E0C11961567E0087A06C /* images */ = {
 			isa = PBXGroup;
 			children = (
@@ -979,6 +1034,7 @@
 			isa = PBXGroup;
 			children = (
 				A29DA1D01A138B8000BE6CAE /* CTSIPAD.entitlements */,
+				04C9042A1AB864B70008B4D4 /* InfColorPicker */,
 				0499B7011AA459AF002609A0 /* Reports */,
 				A2FE653419AC7C2300CC5628 /* USER Details */,
 				A2EB9201199B4D6A0047D0E3 /* Sync Result */,
@@ -1017,8 +1073,12 @@
 		A2F232EF19557C5000CA09DD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				A2B9FA16198121CD00A61F5F /* icon.png */,
-				A2B9FA17198121CD00A61F5F /* ipad_icon.png */,
+				04C904471AB87D320008B4D4 /* Ipad-Icon_29pt.png */,
+				04C904481AB87D320008B4D4 /* Ipad-Icon_29pt@2x.png */,
+				04C904491AB87D320008B4D4 /* Ipad-Icon_40pt.png */,
+				04C9044A1AB87D320008B4D4 /* Ipad-Icon_40pt@2x.png */,
+				04C9044B1AB87D320008B4D4 /* Ipad-Icon_76pt.png */,
+				04C9044C1AB87D320008B4D4 /* Ipad-Icon_76pt@2x.png */,
 				A2F232FD19557C5000CA09DD /* Images.xcassets */,
 				A2F2332719557DD500CA09DD /* Storyboard.storyboard */,
 				A2F232F119557C5000CA09DD /* InfoPlist.strings */,
@@ -1586,6 +1646,7 @@
 				A29DA1941A11FDD600BE6CAE /* MainSearchimg.png in Resources */,
 				A2010BF1195D954E004AC93C /* erase.png in Resources */,
 				04C59E281AB6E06D00B25AC2 /* documents.png in Resources */,
+				04C9044F1AB87D320008B4D4 /* Ipad-Icon_40pt.png in Resources */,
 				A2010BEB195D6C55004AC93C /* FreeSignAll.png in Resources */,
 				A29DA1A11A12006E00BE6CAE /* seperatorimg.png in Resources */,
 				0499B7111AA468EC002609A0 /* Overdue-Transfers.png in Resources */,
@@ -1596,7 +1657,6 @@
 				A29DA1CD1A124EE500BE6CAE /* sync.png in Resources */,
 				A2010BF6195D979A004AC93C /* delete_item.png in Resources */,
 				04A17F0C1A95290200E76B01 /* cellbg_ar.png in Resources */,
-				A2B9FA18198121CD00A61F5F /* icon.png in Resources */,
 				A2C133D319ED68E50095264A /* HandSign.png in Resources */,
 				A2F2332A19557E9500CA09DD /* Settings.bundle in Resources */,
 				0499B7221AA4C89F002609A0 /* d3.min.js in Resources */,
@@ -1606,9 +1666,10 @@
 				0499B7231AA4C89F002609A0 /* D3Ring.html in Resources */,
 				A2F614871959651100956BF0 /* default.plist in Resources */,
 				A29DA1B91A1204E100BE6CAE /* Annotations.png in Resources */,
-				A2B9FA19198121CD00A61F5F /* ipad_icon.png in Resources */,
 				04A17F021A94B1D000E76B01 /* cellbg.png in Resources */,
+				04C904501AB87D320008B4D4 /* Ipad-Icon_40pt@2x.png in Resources */,
 				A2A64BD819FF895900D8CCCD /* Offline.png in Resources */,
+				04C9044D1AB87D320008B4D4 /* Ipad-Icon_29pt.png in Resources */,
 				A22FC6811A1C879100A283BC /* cts_Unlock.png in Resources */,
 				A29DA1991A11FDD600BE6CAE /* UserIcon.png in Resources */,
 				A29DA1921A11FDD600BE6CAE /* AttachementsIcon.png in Resources */,
@@ -1628,6 +1689,7 @@
 				04A17EFC1A947C4100E76B01 /* Login.png in Resources */,
 				045551371AB2E87C00A7844C /* D3HorizontalBarChart.html in Resources */,
 				A278885D1A165EFB0031C3CE /* thumbnail3.png in Resources */,
+				04C904511AB87D320008B4D4 /* Ipad-Icon_76pt.png in Resources */,
 				A2EB9208199B60A10047D0E3 /* failure.jpg in Resources */,
 				A2EB9209199B60A10047D0E3 /* success.jpg in Resources */,
 				04A17F061A94BF1B00E76B01 /* backGroundImg.png in Resources */,
@@ -1635,7 +1697,9 @@
 				A2010BF2195D954E004AC93C /* highlight.png in Resources */,
 				A29DA1981A11FDD600BE6CAE /* Transfer.png in Resources */,
 				A29DA1A51A1200BE00BE6CAE /* lockimg.png in Resources */,
+				04C9043F1AB864B70008B4D4 /* InfColorPickerView.xib in Resources */,
 				A27888621A1A466D0031C3CE /* More-flipped.png in Resources */,
+				04C9044E1AB87D320008B4D4 /* Ipad-Icon_29pt@2x.png in Resources */,
 				A2B9FA1F1982459700A61F5F /* AddNew.png in Resources */,
 				04C59E2A1AB6E06D00B25AC2 /* structure.png in Resources */,
 				A2E598F51A2F161E00CB97A6 /* loginLandscape.png in Resources */,
@@ -1648,6 +1712,7 @@
 				A2B9FA231982B3FD00A61F5F /* camera.png in Resources */,
 				A27888591A163EED0031C3CE /* Folder.png in Resources */,
 				04A131441AAD8ECC00D422F8 /* DateIcon.png in Resources */,
+				04C904521AB87D320008B4D4 /* Ipad-Icon_76pt@2x.png in Resources */,
 				04A131491AAD8EF700D422F8 /* metadataSeparator.png in Resources */,
 				04524B0E1AB196B8008814B0 /* PopUpCancelBtn_en.png in Resources */,
 				0499B70E1AA468EC002609A0 /* Charts-By-Months.png in Resources */,
@@ -1685,6 +1750,7 @@
 				A2F614541959606C00956BF0 /* AnnotationsController.m in Sources */,
 				A2F613E91958778200956BF0 /* GDataXMLElement-Extras.m in Sources */,
 				A2F24F37195DB7BD00D0A564 /* ActionsViewController.m in Sources */,
+				04C9043D1AB864B70008B4D4 /* InfColorPickerController.m in Sources */,
 				A2F613FE19587EDA00956BF0 /* CFolder.m in Sources */,
 				A2B9FA12197FC95900A61F5F /* ToolbarItem.m in Sources */,
 				A2F614BF19596BBF00956BF0 /* ThumbsViewController.m in Sources */,
@@ -1739,6 +1805,7 @@
 				A2F613E4195876CF00956BF0 /* CParser.m in Sources */,
 				A2F613DE1958757800956BF0 /* CUser.m in Sources */,
 				A2F6147B1959640F00956BF0 /* PMThemeEngine.m in Sources */,
+				04C9043B1AB864B70008B4D4 /* InfColorBarPicker.m in Sources */,
 				A2F614B619596ADE00956BF0 /* ReaderThumbFetch.m in Sources */,
 				A2F614171958BDCC00956BF0 /* SearchResultViewController.m in Sources */,
 				A2F614CC19596D2800956BF0 /* SignatureController.m in Sources */,
@@ -1754,12 +1821,16 @@
 				A2F6144219595C8800956BF0 /* ReaderContentView.m in Sources */,
 				A2F614901959683B00956BF0 /* CGPDFDocument.m in Sources */,
 				A2F61458195960A200956BF0 /* TransferViewController.m in Sources */,
+				04C904411AB864B70008B4D4 /* InfHSBSupport.m in Sources */,
 				A2F6143219595C6400956BF0 /* PdfGalleryCollectionViewCell.m in Sources */,
 				A2F614C619596C2D00956BF0 /* MetadataViewController.m in Sources */,
 				A2F6148D195965C800956BF0 /* MoreTableViewController.m in Sources */,
 				A29DA1891A11FD5B00BE6CAE /* HeaderView.m in Sources */,
+				04C904401AB864B70008B4D4 /* InfColorSquarePicker.m in Sources */,
+				04C9043C1AB864B70008B4D4 /* InfColorIndicatorView.m in Sources */,
 				A2E75C97197E432E0085CD10 /* UploadControllerDialog.m in Sources */,
 				A2F6147F1959643900956BF0 /* NSDate+Helpers.m in Sources */,
+				04C904421AB864B70008B4D4 /* InfSourceColorView.m in Sources */,
 				A2C133D519ED68E50095264A /* SPUserResizableView.m in Sources */,
 				A2F614AA19596AB900956BF0 /* ReaderMainToolbar.m in Sources */,
 				A2EC2AFE196D2CAF00411E1C /* OfflineAction.m in Sources */,
@@ -1771,6 +1842,7 @@
 				A2F2331D1959A544008F71AF /* SplitViewController.m in Sources */,
 				A2F8B59D19899110001BB7DF /* CustomViewController.m in Sources */,
 				A2F613D319586F5500956BF0 /* FileManager.m in Sources */,
+				04C9043E1AB864B70008B4D4 /* InfColorPickerNavigationController.m in Sources */,
 				A2F614C219596BE800956BF0 /* UIXToolbarView.m in Sources */,
 				0455513A1AB2E87C00A7844C /* HorizontalBarChartViewController.m in Sources */,
 				A2F614771959640F00956BF0 /* PMCalendarView.m in Sources */,
