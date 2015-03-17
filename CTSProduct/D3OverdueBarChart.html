@@ -151,7 +151,7 @@
                   
                   var svg = d3.select("#barChart").append("svg")
                   
-                  .attr("width", width + margin.left + margin.right)
+                  .attr("width",600)// width + margin.left + margin.right)
                   
                   .attr("height", height + margin.top + margin.bottom)
                   
@@ -247,9 +247,9 @@
                   
                   
                   
-                  /*var legend = svg.selectAll(".legend")
+                  var legend = svg.selectAll(".legend")
                    
-                   .data(structures.slice().reverse())
+                   .data(dataset)
                    
                    .enter().append("g")
                    
@@ -261,7 +261,7 @@
                    
                    legend.append("rect")
                    
-                   .attr("x", width)
+                   .attr("x", width+100)
                    
                    .attr("width", 18)
                    
@@ -273,7 +273,7 @@
                    
                    legend.append("text")
                    
-                   .attr("x", width - 6)
+                   .attr("x", width+94)
                    
                    .attr("y", 9)
                    
@@ -281,7 +281,7 @@
                    
                    .style("text-anchor", "end")
                    
-                   .text(function (d) { return d.Label; });*/
+                   .text(function (d) { return d.Label; });
                   
                   
                   
@@ -328,7 +328,7 @@
                   }
                   
                   function GetWidth(data){
-                      var w = 700 - margin.left - margin.right;
+                      var w = 600 - margin.left - margin.right;
                       if(data.length == 1){
                           w = (w/3);
                       }

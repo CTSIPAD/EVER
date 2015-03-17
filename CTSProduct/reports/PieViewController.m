@@ -14,6 +14,7 @@
     CGFloat Width;
     CGFloat Height;
     AppDelegate *mainDelegate;
+    UIButton *filterWeeklyButton,*filterMonthlyButton,*filterYearlyButton;
 }
 
 @property (retain, nonatomic) IBOutlet UIWebView *WebView;
@@ -30,6 +31,30 @@
     self.navigationController.navigationBarHidden = NO;
     self.navigationController.navigationBar.translucent = YES;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showHideNavbar:)];
+    
+    filterWeeklyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [filterWeeklyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2-140,-15,70,60)];
+    [filterWeeklyButton setTitle:@"Weekly" forState:UIControlStateNormal];
+    [filterWeeklyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    filterWeeklyButton.backgroundColor =mainDelegate.InboxCellSelectedColor;
+    [self.navigationController.navigationBar addSubview:filterWeeklyButton];
+    [filterWeeklyButton addTarget:self action:@selector(getWeeklyData) forControlEvents:UIControlEventTouchUpInside];
+    
+    filterMonthlyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [filterMonthlyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2-70,-15,70,60)];
+    [filterMonthlyButton setTitle:@"monthly" forState:UIControlStateNormal];
+    [filterMonthlyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    filterMonthlyButton.backgroundColor =mainDelegate.InboxCellSelectedColor;
+    [self.navigationController.navigationBar addSubview:filterMonthlyButton];
+    [filterMonthlyButton addTarget:self action:@selector(getMonthlyData) forControlEvents:UIControlEventTouchUpInside];
+    
+    filterYearlyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [filterYearlyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2,-15,70,60)];
+    [filterYearlyButton setTitle:@"Yearly" forState:UIControlStateNormal];
+    [filterYearlyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    filterYearlyButton.backgroundColor =mainDelegate.InboxCellSelectedColor;
+    [self.navigationController.navigationBar addSubview:filterYearlyButton];
+    [filterYearlyButton addTarget:self action:@selector(getYearlyData) forControlEvents:UIControlEventTouchUpInside];
 
     if (SYSTEM_VERSION_LESS_THAN(@"8.0")){
         Width=self.view.frame.size.width;
@@ -65,6 +90,17 @@
 
 }
 
+-(void) getWeeklyData{
+    
+}
+
+-(void) getMonthlyData{
+    
+}
+
+-(void) getYearlyData{
+    
+}
 
 -(void) showHideNavbar:(id) sender
 {
@@ -87,6 +123,14 @@
 	return YES;
 }
 
+-(void) viewWillDisappear:(BOOL)animated {
+    if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
+        filterWeeklyButton.hidden = YES;
+        filterMonthlyButton.hidden = YES;
+        filterYearlyButton.hidden = YES;
+    }
+    [super viewWillDisappear:animated];
+}
 
 #pragma mark - UIWebViewDelegate
 
