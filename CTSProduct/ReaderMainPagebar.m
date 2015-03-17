@@ -409,16 +409,39 @@
                 // NSString *tempPdfLocation=[CParser loadPdfFile:fileToOpen.url inDirectory:correspondence.Id];
                 NSString* indexx=[indexes objectAtIndex:self.attachmentId];
                 [delegate setAttachmentIdInToolbar:indexx.intValue];
+                    BOOL ArLang=[mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]?true:false;
                 if(indexx.intValue==correspondence.attachmentsList.count-1){
-                    [delegate disableNext];
-                    if(correspondence.attachmentsList.count>1)
-                        [delegate enablePrev];
+                    if (ArLang) {
+                        [delegate disablePrev];
+
+                    }
+                    else
+                        [delegate disableNext];
+                    if(correspondence.attachmentsList.count>1){
+                        if (ArLang) {
+                            [delegate enableNext];
+                            
+                        }
+                        else
+                            [delegate enablePrev];
+                    }
                 }
                 else
                     if(indexx.intValue==0){
-                        [delegate disablePrev];
-                        if(correspondence.attachmentsList.count>1)
-                            [delegate enableNext];
+                        if (ArLang) {
+                            [delegate disableNext];
+                            
+                        }
+                        else
+                            [delegate disablePrev];
+                        if(correspondence.attachmentsList.count>1){
+                            if (ArLang) {
+                                [delegate enablePrev];
+                                
+                            }
+                            else
+                                [delegate enableNext];
+                        }
                     }
                     else{
                         [delegate enableNext];
