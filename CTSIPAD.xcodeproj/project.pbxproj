@@ -20,6 +20,14 @@
 		0455513B1AB2E87C00A7844C /* OverdueBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551321AB2E87C00A7844C /* OverdueBarChartViewController.m */; };
 		0455513C1AB2E87C00A7844C /* VerticalBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */; };
 		045DC4AE1A5D738D009C3540 /* IMGtakephoto.png in Resources */ = {isa = PBXBuildFile; fileRef = 045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */; };
+		047DBA021AB970E200DB75EE /* InfColorBarPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9F31AB970E200DB75EE /* InfColorBarPicker.m */; };
+		047DBA031AB970E200DB75EE /* InfColorIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9F51AB970E200DB75EE /* InfColorIndicatorView.m */; };
+		047DBA041AB970E200DB75EE /* InfColorPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9F81AB970E200DB75EE /* InfColorPickerController.m */; };
+		047DBA051AB970E200DB75EE /* InfColorPickerNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9FA1AB970E200DB75EE /* InfColorPickerNavigationController.m */; };
+		047DBA061AB970E200DB75EE /* InfColorPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 047DB9FB1AB970E200DB75EE /* InfColorPickerView.xib */; };
+		047DBA071AB970E200DB75EE /* InfColorSquarePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9FD1AB970E200DB75EE /* InfColorSquarePicker.m */; };
+		047DBA081AB970E200DB75EE /* InfHSBSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9FF1AB970E200DB75EE /* InfHSBSupport.m */; };
+		047DBA091AB970E200DB75EE /* InfSourceColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DBA011AB970E200DB75EE /* InfSourceColorView.m */; };
 		0481EF991AAF41D800BACA04 /* metadataBg1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0481EF981AAF41D800BACA04 /* metadataBg1.png */; };
 		04932D491AA9E05500180152 /* separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 04932D481AA9E05500180152 /* separator.png */; };
 		04932D4D1AA9E31A00180152 /* SelectedInbox_ar.png in Resources */ = {isa = PBXBuildFile; fileRef = 04932D4A1AA9E31A00180152 /* SelectedInbox_ar.png */; };
@@ -60,14 +68,6 @@
 		04C59E291AB6E06D00B25AC2 /* months.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C59E261AB6E06D00B25AC2 /* months.png */; };
 		04C59E2A1AB6E06D00B25AC2 /* structure.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C59E271AB6E06D00B25AC2 /* structure.png */; };
 		04C8C5161AB254B400B2ED70 /* metadataBg_Portraite.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C8C5151AB254B400B2ED70 /* metadataBg_Portraite.png */; };
-		04C9043B1AB864B70008B4D4 /* InfColorBarPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C9042C1AB864B70008B4D4 /* InfColorBarPicker.m */; };
-		04C9043C1AB864B70008B4D4 /* InfColorIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C9042E1AB864B70008B4D4 /* InfColorIndicatorView.m */; };
-		04C9043D1AB864B70008B4D4 /* InfColorPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C904311AB864B70008B4D4 /* InfColorPickerController.m */; };
-		04C9043E1AB864B70008B4D4 /* InfColorPickerNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C904331AB864B70008B4D4 /* InfColorPickerNavigationController.m */; };
-		04C9043F1AB864B70008B4D4 /* InfColorPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04C904341AB864B70008B4D4 /* InfColorPickerView.xib */; };
-		04C904401AB864B70008B4D4 /* InfColorSquarePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C904361AB864B70008B4D4 /* InfColorSquarePicker.m */; };
-		04C904411AB864B70008B4D4 /* InfHSBSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C904381AB864B70008B4D4 /* InfHSBSupport.m */; };
-		04C904421AB864B70008B4D4 /* InfSourceColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C9043A1AB864B70008B4D4 /* InfSourceColorView.m */; };
 		04C9044D1AB87D320008B4D4 /* Ipad-Icon_29pt.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C904471AB87D320008B4D4 /* Ipad-Icon_29pt.png */; };
 		04C9044E1AB87D320008B4D4 /* Ipad-Icon_29pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C904481AB87D320008B4D4 /* Ipad-Icon_29pt@2x.png */; };
 		04C9044F1AB87D320008B4D4 /* Ipad-Icon_40pt.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C904491AB87D320008B4D4 /* Ipad-Icon_40pt.png */; };
@@ -277,6 +277,22 @@
 		045551331AB2E87C00A7844C /* VerticalBarChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticalBarChartViewController.h; sourceTree = "<group>"; };
 		045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticalBarChartViewController.m; sourceTree = "<group>"; };
 		045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMGtakephoto.png; sourceTree = "<group>"; };
+		047DB9F21AB970E200DB75EE /* InfColorBarPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorBarPicker.h; sourceTree = "<group>"; };
+		047DB9F31AB970E200DB75EE /* InfColorBarPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorBarPicker.m; sourceTree = "<group>"; };
+		047DB9F41AB970E200DB75EE /* InfColorIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorIndicatorView.h; sourceTree = "<group>"; };
+		047DB9F51AB970E200DB75EE /* InfColorIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorIndicatorView.m; sourceTree = "<group>"; };
+		047DB9F61AB970E200DB75EE /* InfColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPicker.h; sourceTree = "<group>"; };
+		047DB9F71AB970E200DB75EE /* InfColorPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPickerController.h; sourceTree = "<group>"; };
+		047DB9F81AB970E200DB75EE /* InfColorPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorPickerController.m; sourceTree = "<group>"; };
+		047DB9F91AB970E200DB75EE /* InfColorPickerNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPickerNavigationController.h; sourceTree = "<group>"; };
+		047DB9FA1AB970E200DB75EE /* InfColorPickerNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorPickerNavigationController.m; sourceTree = "<group>"; };
+		047DB9FB1AB970E200DB75EE /* InfColorPickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfColorPickerView.xib; sourceTree = "<group>"; };
+		047DB9FC1AB970E200DB75EE /* InfColorSquarePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorSquarePicker.h; sourceTree = "<group>"; };
+		047DB9FD1AB970E200DB75EE /* InfColorSquarePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorSquarePicker.m; sourceTree = "<group>"; };
+		047DB9FE1AB970E200DB75EE /* InfHSBSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfHSBSupport.h; sourceTree = "<group>"; };
+		047DB9FF1AB970E200DB75EE /* InfHSBSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfHSBSupport.m; sourceTree = "<group>"; };
+		047DBA001AB970E200DB75EE /* InfSourceColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfSourceColorView.h; sourceTree = "<group>"; };
+		047DBA011AB970E200DB75EE /* InfSourceColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfSourceColorView.m; sourceTree = "<group>"; };
 		0481EF981AAF41D800BACA04 /* metadataBg1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadataBg1.png; sourceTree = "<group>"; };
 		04932D481AA9E05500180152 /* separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = separator.png; sourceTree = "<group>"; };
 		04932D4A1AA9E31A00180152 /* SelectedInbox_ar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SelectedInbox_ar.png; sourceTree = "<group>"; };
@@ -319,22 +335,6 @@
 		04C59E261AB6E06D00B25AC2 /* months.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = months.png; sourceTree = "<group>"; };
 		04C59E271AB6E06D00B25AC2 /* structure.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = structure.png; sourceTree = "<group>"; };
 		04C8C5151AB254B400B2ED70 /* metadataBg_Portraite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadataBg_Portraite.png; sourceTree = "<group>"; };
-		04C9042B1AB864B70008B4D4 /* InfColorBarPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorBarPicker.h; sourceTree = "<group>"; };
-		04C9042C1AB864B70008B4D4 /* InfColorBarPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorBarPicker.m; sourceTree = "<group>"; };
-		04C9042D1AB864B70008B4D4 /* InfColorIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorIndicatorView.h; sourceTree = "<group>"; };
-		04C9042E1AB864B70008B4D4 /* InfColorIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorIndicatorView.m; sourceTree = "<group>"; };
-		04C9042F1AB864B70008B4D4 /* InfColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPicker.h; sourceTree = "<group>"; };
-		04C904301AB864B70008B4D4 /* InfColorPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPickerController.h; sourceTree = "<group>"; };
-		04C904311AB864B70008B4D4 /* InfColorPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorPickerController.m; sourceTree = "<group>"; };
-		04C904321AB864B70008B4D4 /* InfColorPickerNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPickerNavigationController.h; sourceTree = "<group>"; };
-		04C904331AB864B70008B4D4 /* InfColorPickerNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorPickerNavigationController.m; sourceTree = "<group>"; };
-		04C904341AB864B70008B4D4 /* InfColorPickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfColorPickerView.xib; sourceTree = "<group>"; };
-		04C904351AB864B70008B4D4 /* InfColorSquarePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorSquarePicker.h; sourceTree = "<group>"; };
-		04C904361AB864B70008B4D4 /* InfColorSquarePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorSquarePicker.m; sourceTree = "<group>"; };
-		04C904371AB864B70008B4D4 /* InfHSBSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfHSBSupport.h; sourceTree = "<group>"; };
-		04C904381AB864B70008B4D4 /* InfHSBSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfHSBSupport.m; sourceTree = "<group>"; };
-		04C904391AB864B70008B4D4 /* InfSourceColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfSourceColorView.h; sourceTree = "<group>"; };
-		04C9043A1AB864B70008B4D4 /* InfSourceColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfSourceColorView.m; sourceTree = "<group>"; };
 		04C904471AB87D320008B4D4 /* Ipad-Icon_29pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ipad-Icon_29pt.png"; sourceTree = "<group>"; };
 		04C904481AB87D320008B4D4 /* Ipad-Icon_29pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ipad-Icon_29pt@2x.png"; sourceTree = "<group>"; };
 		04C904491AB87D320008B4D4 /* Ipad-Icon_40pt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ipad-Icon_40pt.png"; sourceTree = "<group>"; };
@@ -679,6 +679,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		047DB9F11AB970E200DB75EE /* InfColorPicker */ = {
+			isa = PBXGroup;
+			children = (
+				047DB9F21AB970E200DB75EE /* InfColorBarPicker.h */,
+				047DB9F31AB970E200DB75EE /* InfColorBarPicker.m */,
+				047DB9F41AB970E200DB75EE /* InfColorIndicatorView.h */,
+				047DB9F51AB970E200DB75EE /* InfColorIndicatorView.m */,
+				047DB9F61AB970E200DB75EE /* InfColorPicker.h */,
+				047DB9F71AB970E200DB75EE /* InfColorPickerController.h */,
+				047DB9F81AB970E200DB75EE /* InfColorPickerController.m */,
+				047DB9F91AB970E200DB75EE /* InfColorPickerNavigationController.h */,
+				047DB9FA1AB970E200DB75EE /* InfColorPickerNavigationController.m */,
+				047DB9FB1AB970E200DB75EE /* InfColorPickerView.xib */,
+				047DB9FC1AB970E200DB75EE /* InfColorSquarePicker.h */,
+				047DB9FD1AB970E200DB75EE /* InfColorSquarePicker.m */,
+				047DB9FE1AB970E200DB75EE /* InfHSBSupport.h */,
+				047DB9FF1AB970E200DB75EE /* InfHSBSupport.m */,
+				047DBA001AB970E200DB75EE /* InfSourceColorView.h */,
+				047DBA011AB970E200DB75EE /* InfSourceColorView.m */,
+			);
+			path = InfColorPicker;
+			sourceTree = "<group>";
+		};
 		0499B7011AA459AF002609A0 /* Reports */ = {
 			isa = PBXGroup;
 			children = (
@@ -1034,8 +1057,8 @@
 		A2F232EE19557C5000CA09DD /* CTSIPAD */ = {
 			isa = PBXGroup;
 			children = (
+				047DB9F11AB970E200DB75EE /* InfColorPicker */,
 				A29DA1D01A138B8000BE6CAE /* CTSIPAD.entitlements */,
-				04C9042A1AB864B70008B4D4 /* InfColorPicker */,
 				0499B7011AA459AF002609A0 /* Reports */,
 				A2FE653419AC7C2300CC5628 /* USER Details */,
 				A2EB9201199B4D6A0047D0E3 /* Sync Result */,
@@ -1623,6 +1646,7 @@
 				A29DA1BF1A120BF800BE6CAE /* Searchimg.png in Resources */,
 				04932D491AA9E05500180152 /* separator.png in Resources */,
 				A2F23336195C397A008F71AF /* comments.png in Resources */,
+				047DBA061AB970E200DB75EE /* InfColorPickerView.xib in Resources */,
 				A29793A519BEF42300AD6D1D /* disclosure@2x.png in Resources */,
 				0499B7191AA4C173002609A0 /* barBg.png in Resources */,
 				A29DA1B51A12045200BE6CAE /* metadata.png in Resources */,
@@ -1698,7 +1722,6 @@
 				A2010BF2195D954E004AC93C /* highlight.png in Resources */,
 				A29DA1981A11FDD600BE6CAE /* Transfer.png in Resources */,
 				A29DA1A51A1200BE00BE6CAE /* lockimg.png in Resources */,
-				04C9043F1AB864B70008B4D4 /* InfColorPickerView.xib in Resources */,
 				A27888621A1A466D0031C3CE /* More-flipped.png in Resources */,
 				04C9044E1AB87D320008B4D4 /* Ipad-Icon_29pt@2x.png in Resources */,
 				A2B9FA1F1982459700A61F5F /* AddNew.png in Resources */,
@@ -1736,6 +1759,7 @@
 				A2F6144E1959602E00956BF0 /* NoteAlertView.m in Sources */,
 				A2F6140A19587F4B00956BF0 /* CAnnotation.m in Sources */,
 				A2F614B719596ADE00956BF0 /* ReaderThumbQueue.m in Sources */,
+				047DBA071AB970E200DB75EE /* InfColorSquarePicker.m in Sources */,
 				A2F6145C1959638400956BF0 /* ActionTaskController.m in Sources */,
 				A2F613ED1958784800956BF0 /* CFPendingAction.m in Sources */,
 				A2F614EC1959769000956BF0 /* Signature.m in Sources */,
@@ -1751,7 +1775,6 @@
 				A2F614541959606C00956BF0 /* AnnotationsController.m in Sources */,
 				A2F613E91958778200956BF0 /* GDataXMLElement-Extras.m in Sources */,
 				A2F24F37195DB7BD00D0A564 /* ActionsViewController.m in Sources */,
-				04C9043D1AB864B70008B4D4 /* InfColorPickerController.m in Sources */,
 				A2F613FE19587EDA00956BF0 /* CFolder.m in Sources */,
 				A2B9FA12197FC95900A61F5F /* ToolbarItem.m in Sources */,
 				A2F614BF19596BBF00956BF0 /* ThumbsViewController.m in Sources */,
@@ -1768,6 +1791,7 @@
 				A2F6147A1959640F00956BF0 /* PMSelectionView.m in Sources */,
 				A2F613FB19587B6400956BF0 /* CAttachment.m in Sources */,
 				A2F614B819596ADE00956BF0 /* ReaderThumbRender.m in Sources */,
+				047DBA081AB970E200DB75EE /* InfHSBSupport.m in Sources */,
 				A2F614B519596ADE00956BF0 /* ReaderThumbCache.m in Sources */,
 				A2F6140719587F3800956BF0 /* CAction.m in Sources */,
 				A2F6144019595C8800956BF0 /* ReaderContentPage.m in Sources */,
@@ -1800,20 +1824,24 @@
 				A2F614E91959760800956BF0 /* DropDownView.m in Sources */,
 				A2F613DA1958745400956BF0 /* NSData+Base64.m in Sources */,
 				A2F6140D19587F5D00956BF0 /* CSearchCriteria.m in Sources */,
+				047DBA041AB970E200DB75EE /* InfColorPickerController.m in Sources */,
 				A2F6141E1959534A00956BF0 /* TableResultCell.m in Sources */,
 				A2F614791959640F00956BF0 /* PMPeriod.m in Sources */,
+				047DBA031AB970E200DB75EE /* InfColorIndicatorView.m in Sources */,
 				A2F614271959553500956BF0 /* rijndael.c in Sources */,
 				A2F613E4195876CF00956BF0 /* CParser.m in Sources */,
 				A2F613DE1958757800956BF0 /* CUser.m in Sources */,
 				A2F6147B1959640F00956BF0 /* PMThemeEngine.m in Sources */,
-				04C9043B1AB864B70008B4D4 /* InfColorBarPicker.m in Sources */,
+				047DBA051AB970E200DB75EE /* InfColorPickerNavigationController.m in Sources */,
 				A2F614B619596ADE00956BF0 /* ReaderThumbFetch.m in Sources */,
 				A2F614171958BDCC00956BF0 /* SearchResultViewController.m in Sources */,
 				A2F614CC19596D2800956BF0 /* SignatureController.m in Sources */,
 				A2F614CF19596D3900956BF0 /* CommentViewController.m in Sources */,
 				A2F613D71958737E00956BF0 /* StringEncryption.m in Sources */,
 				A2F614761959640F00956BF0 /* PMCalendarController.m in Sources */,
+				047DBA091AB970E200DB75EE /* InfSourceColorView.m in Sources */,
 				A2FE653719AC7C4300CC5628 /* UserDetailsViewController.m in Sources */,
+				047DBA021AB970E200DB75EE /* InfColorBarPicker.m in Sources */,
 				A2F6144619595EC100956BF0 /* ReaderViewController.m in Sources */,
 				A2F614DF195973FA00956BF0 /* SignatureViewController.m in Sources */,
 				0499B7041AA459BE002609A0 /* ReportViewController.m in Sources */,
@@ -1822,16 +1850,12 @@
 				A2F6144219595C8800956BF0 /* ReaderContentView.m in Sources */,
 				A2F614901959683B00956BF0 /* CGPDFDocument.m in Sources */,
 				A2F61458195960A200956BF0 /* TransferViewController.m in Sources */,
-				04C904411AB864B70008B4D4 /* InfHSBSupport.m in Sources */,
 				A2F6143219595C6400956BF0 /* PdfGalleryCollectionViewCell.m in Sources */,
 				A2F614C619596C2D00956BF0 /* MetadataViewController.m in Sources */,
 				A2F6148D195965C800956BF0 /* MoreTableViewController.m in Sources */,
 				A29DA1891A11FD5B00BE6CAE /* HeaderView.m in Sources */,
-				04C904401AB864B70008B4D4 /* InfColorSquarePicker.m in Sources */,
-				04C9043C1AB864B70008B4D4 /* InfColorIndicatorView.m in Sources */,
 				A2E75C97197E432E0085CD10 /* UploadControllerDialog.m in Sources */,
 				A2F6147F1959643900956BF0 /* NSDate+Helpers.m in Sources */,
-				04C904421AB864B70008B4D4 /* InfSourceColorView.m in Sources */,
 				A2C133D519ED68E50095264A /* SPUserResizableView.m in Sources */,
 				A2F614AA19596AB900956BF0 /* ReaderMainToolbar.m in Sources */,
 				A2EC2AFE196D2CAF00411E1C /* OfflineAction.m in Sources */,
@@ -1843,7 +1867,6 @@
 				A2F2331D1959A544008F71AF /* SplitViewController.m in Sources */,
 				A2F8B59D19899110001BB7DF /* CustomViewController.m in Sources */,
 				A2F613D319586F5500956BF0 /* FileManager.m in Sources */,
-				04C9043E1AB864B70008B4D4 /* InfColorPickerNavigationController.m in Sources */,
 				A2F614C219596BE800956BF0 /* UIXToolbarView.m in Sources */,
 				0455513A1AB2E87C00A7844C /* HorizontalBarChartViewController.m in Sources */,
 				A2F614771959640F00956BF0 /* PMCalendarView.m in Sources */,
