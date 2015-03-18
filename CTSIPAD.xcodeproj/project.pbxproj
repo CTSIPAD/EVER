@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		043477AD1AB1AADE009513D8 /* EditSignature.png in Resources */ = {isa = PBXBuildFile; fileRef = 043477AC1AB1AADE009513D8 /* EditSignature.png */; };
 		043477AF1AB220F8009513D8 /* NotePopUpBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 043477AE1AB220F8009513D8 /* NotePopUpBg.png */; };
-		043477B11AB23DD0009513D8 /* uploadBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 043477B01AB23DD0009513D8 /* uploadBg.png */; };
+		044773E71AB8BDF90067E39B /* uploadBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 044773E61AB8BDF90067E39B /* uploadBg.png */; };
 		04524B0D1AB196B8008814B0 /* PopUpCancelBtn_ar.png in Resources */ = {isa = PBXBuildFile; fileRef = 04524B0B1AB196B8008814B0 /* PopUpCancelBtn_ar.png */; };
 		04524B0E1AB196B8008814B0 /* PopUpCancelBtn_en.png in Resources */ = {isa = PBXBuildFile; fileRef = 04524B0C1AB196B8008814B0 /* PopUpCancelBtn_en.png */; };
 		045551361AB2E87C00A7844C /* d3.tip.js in Resources */ = {isa = PBXBuildFile; fileRef = 0455512B1AB2E87C00A7844C /* d3.tip.js */; };
@@ -20,6 +20,14 @@
 		0455513B1AB2E87C00A7844C /* OverdueBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551321AB2E87C00A7844C /* OverdueBarChartViewController.m */; };
 		0455513C1AB2E87C00A7844C /* VerticalBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */; };
 		045DC4AE1A5D738D009C3540 /* IMGtakephoto.png in Resources */ = {isa = PBXBuildFile; fileRef = 045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */; };
+		047DBA021AB970E200DB75EE /* InfColorBarPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9F31AB970E200DB75EE /* InfColorBarPicker.m */; };
+		047DBA031AB970E200DB75EE /* InfColorIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9F51AB970E200DB75EE /* InfColorIndicatorView.m */; };
+		047DBA041AB970E200DB75EE /* InfColorPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9F81AB970E200DB75EE /* InfColorPickerController.m */; };
+		047DBA051AB970E200DB75EE /* InfColorPickerNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9FA1AB970E200DB75EE /* InfColorPickerNavigationController.m */; };
+		047DBA061AB970E200DB75EE /* InfColorPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 047DB9FB1AB970E200DB75EE /* InfColorPickerView.xib */; };
+		047DBA071AB970E200DB75EE /* InfColorSquarePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9FD1AB970E200DB75EE /* InfColorSquarePicker.m */; };
+		047DBA081AB970E200DB75EE /* InfHSBSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9FF1AB970E200DB75EE /* InfHSBSupport.m */; };
+		047DBA091AB970E200DB75EE /* InfSourceColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DBA011AB970E200DB75EE /* InfSourceColorView.m */; };
 		0481EF991AAF41D800BACA04 /* metadataBg1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0481EF981AAF41D800BACA04 /* metadataBg1.png */; };
 		04932D491AA9E05500180152 /* separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 04932D481AA9E05500180152 /* separator.png */; };
 		04932D4D1AA9E31A00180152 /* SelectedInbox_ar.png in Resources */ = {isa = PBXBuildFile; fileRef = 04932D4A1AA9E31A00180152 /* SelectedInbox_ar.png */; };
@@ -263,7 +271,7 @@
 /* Begin PBXFileReference section */
 		043477AC1AB1AADE009513D8 /* EditSignature.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EditSignature.png; sourceTree = "<group>"; };
 		043477AE1AB220F8009513D8 /* NotePopUpBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotePopUpBg.png; sourceTree = "<group>"; };
-		043477B01AB23DD0009513D8 /* uploadBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uploadBg.png; sourceTree = "<group>"; };
+		044773E61AB8BDF90067E39B /* uploadBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uploadBg.png; sourceTree = "<group>"; };
 		04524B0B1AB196B8008814B0 /* PopUpCancelBtn_ar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PopUpCancelBtn_ar.png; sourceTree = "<group>"; };
 		04524B0C1AB196B8008814B0 /* PopUpCancelBtn_en.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PopUpCancelBtn_en.png; sourceTree = "<group>"; };
 		0455512B1AB2E87C00A7844C /* d3.tip.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = d3.tip.js; path = ../d3.tip.js; sourceTree = "<group>"; };
@@ -277,6 +285,22 @@
 		045551331AB2E87C00A7844C /* VerticalBarChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticalBarChartViewController.h; sourceTree = "<group>"; };
 		045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticalBarChartViewController.m; sourceTree = "<group>"; };
 		045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMGtakephoto.png; sourceTree = "<group>"; };
+		047DB9F21AB970E200DB75EE /* InfColorBarPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorBarPicker.h; sourceTree = "<group>"; };
+		047DB9F31AB970E200DB75EE /* InfColorBarPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorBarPicker.m; sourceTree = "<group>"; };
+		047DB9F41AB970E200DB75EE /* InfColorIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorIndicatorView.h; sourceTree = "<group>"; };
+		047DB9F51AB970E200DB75EE /* InfColorIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorIndicatorView.m; sourceTree = "<group>"; };
+		047DB9F61AB970E200DB75EE /* InfColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPicker.h; sourceTree = "<group>"; };
+		047DB9F71AB970E200DB75EE /* InfColorPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPickerController.h; sourceTree = "<group>"; };
+		047DB9F81AB970E200DB75EE /* InfColorPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorPickerController.m; sourceTree = "<group>"; };
+		047DB9F91AB970E200DB75EE /* InfColorPickerNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPickerNavigationController.h; sourceTree = "<group>"; };
+		047DB9FA1AB970E200DB75EE /* InfColorPickerNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorPickerNavigationController.m; sourceTree = "<group>"; };
+		047DB9FB1AB970E200DB75EE /* InfColorPickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfColorPickerView.xib; sourceTree = "<group>"; };
+		047DB9FC1AB970E200DB75EE /* InfColorSquarePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorSquarePicker.h; sourceTree = "<group>"; };
+		047DB9FD1AB970E200DB75EE /* InfColorSquarePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorSquarePicker.m; sourceTree = "<group>"; };
+		047DB9FE1AB970E200DB75EE /* InfHSBSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfHSBSupport.h; sourceTree = "<group>"; };
+		047DB9FF1AB970E200DB75EE /* InfHSBSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfHSBSupport.m; sourceTree = "<group>"; };
+		047DBA001AB970E200DB75EE /* InfSourceColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfSourceColorView.h; sourceTree = "<group>"; };
+		047DBA011AB970E200DB75EE /* InfSourceColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfSourceColorView.m; sourceTree = "<group>"; };
 		0481EF981AAF41D800BACA04 /* metadataBg1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadataBg1.png; sourceTree = "<group>"; };
 		04932D481AA9E05500180152 /* separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = separator.png; sourceTree = "<group>"; };
 		04932D4A1AA9E31A00180152 /* SelectedInbox_ar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SelectedInbox_ar.png; sourceTree = "<group>"; };
@@ -679,6 +703,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		047DB9F11AB970E200DB75EE /* InfColorPicker */ = {
+			isa = PBXGroup;
+			children = (
+				047DB9F21AB970E200DB75EE /* InfColorBarPicker.h */,
+				047DB9F31AB970E200DB75EE /* InfColorBarPicker.m */,
+				047DB9F41AB970E200DB75EE /* InfColorIndicatorView.h */,
+				047DB9F51AB970E200DB75EE /* InfColorIndicatorView.m */,
+				047DB9F61AB970E200DB75EE /* InfColorPicker.h */,
+				047DB9F71AB970E200DB75EE /* InfColorPickerController.h */,
+				047DB9F81AB970E200DB75EE /* InfColorPickerController.m */,
+				047DB9F91AB970E200DB75EE /* InfColorPickerNavigationController.h */,
+				047DB9FA1AB970E200DB75EE /* InfColorPickerNavigationController.m */,
+				047DB9FB1AB970E200DB75EE /* InfColorPickerView.xib */,
+				047DB9FC1AB970E200DB75EE /* InfColorSquarePicker.h */,
+				047DB9FD1AB970E200DB75EE /* InfColorSquarePicker.m */,
+				047DB9FE1AB970E200DB75EE /* InfHSBSupport.h */,
+				047DB9FF1AB970E200DB75EE /* InfHSBSupport.m */,
+				047DBA001AB970E200DB75EE /* InfSourceColorView.h */,
+				047DBA011AB970E200DB75EE /* InfSourceColorView.m */,
+			);
+			path = InfColorPicker;
+			sourceTree = "<group>";
+		};
 		0499B7011AA459AF002609A0 /* Reports */ = {
 			isa = PBXGroup;
 			children = (
@@ -955,7 +1002,7 @@
 		A2B9FA0B197E63CA00A61F5F /* images */ = {
 			isa = PBXGroup;
 			children = (
-				043477B01AB23DD0009513D8 /* uploadBg.png */,
+				044773E61AB8BDF90067E39B /* uploadBg.png */,
 				045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */,
 				A2B9FA221982B3FD00A61F5F /* camera.png */,
 			);
@@ -1638,7 +1685,7 @@
 				04A17EFE1A94807400E76B01 /* Login_ar.png in Resources */,
 				A29793A419BEF42300AD6D1D /* disclosure.png in Resources */,
 				043477AD1AB1AADE009513D8 /* EditSignature.png in Resources */,
-				043477B11AB23DD0009513D8 /* uploadBg.png in Resources */,
+				044773E71AB8BDF90067E39B /* uploadBg.png in Resources */,
 				0499B70F1AA468EC002609A0 /* Charts-By-Structures.png in Resources */,
 				0499B7241AA4C89F002609A0 /* Donut3D.js in Resources */,
 				A29DA1BB1A12072B00BE6CAE /* iconViewSeperator.png in Resources */,

@@ -91,12 +91,12 @@ static int count;
         imageView.backgroundColor=mainDelegate.SearchViewColors;
         imageView.layer.cornerRadius=10;
         
-        UILabel *Titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, frame.size.width-100, 20)];
+        UILabel *Titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 10, frame.size.width-200, 20)];
         Titlelabel.text = NSLocalizedString(@"UploadAttachment",@"Upload Attachment");
-        Titlelabel.textAlignment=NSTextAlignmentLeft;
+        Titlelabel.textAlignment=NSTextAlignmentCenter;
         Titlelabel.backgroundColor = [UIColor clearColor];
         Titlelabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
-        Titlelabel.textColor=mainDelegate.selectedInboxColor;
+        Titlelabel.textColor=mainDelegate.titleColor;
      
         
         
@@ -114,49 +114,35 @@ static int count;
         [takePhotobtn addTarget:self action:@selector(takePhoto) forControlEvents:UIControlEventTouchUpInside];
         
         UIButton* closeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        UIImage *closeButtonImage;
-        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
-            closeButtonImage=[UIImage imageNamed:@"PopUpCancelBtn_ar.png"];
-            btnWidth=closeButtonImage.size.width;
-            btnHeight=closeButtonImage.size.height;
-            closeButton.frame = CGRectMake(50, imageView.frame.origin.y+imageView.frame.size.height+120, btnWidth, btnHeight);
-        }else{
-            closeButtonImage=[UIImage imageNamed:@"PopUpCancelBtn_en.png"];
-            btnWidth=closeButtonImage.size.width;
-            btnHeight=closeButtonImage.size.height;
-            closeButton.frame = CGRectMake((frame.size.width-50)-btnWidth, imageView.frame.origin.y+imageView.frame.size.height+120, btnWidth, btnHeight);
-            [closeButton setTitleEdgeInsets: UIEdgeInsetsMake(0,20,0,0)];
-        }
-        [closeButton setBackgroundImage:closeButtonImage forState:UIControlStateNormal];
-        closeButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
+        btnWidth=95;
+        btnHeight=35;
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+            closeButton.frame = CGRectMake(0, 0, btnWidth, btnHeight);
+        else
+            closeButton.frame = CGRectMake(frame.size.width-btnWidth, 0, btnWidth, btnHeight);
+        
+        closeButton.backgroundColor=[UIColor clearColor];
+        
+        closeButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
         [closeButton setTitle:NSLocalizedString(@"Cancel",@"Cancel") forState:UIControlStateNormal];
         [closeButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
         [closeButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
         
         
+        UIButton* uploadButton  = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+            uploadButton.frame = CGRectMake(frame.size.width-btnWidth, 0, btnWidth, btnHeight);
+        else
+            uploadButton.frame = CGRectMake(0, 0, btnWidth, btnHeight);
         
-        
-        
-        UIButton* uploadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        UIImage *SaveButtonImage;
-        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
-            SaveButtonImage=[UIImage imageNamed:@"PopUpbtn.png"];
-            btnWidth=SaveButtonImage.size.width;
-            btnHeight=SaveButtonImage.size.height;
-            uploadButton.frame = CGRectMake(btnWidth+60, imageView.frame.origin.y+imageView.frame.size.height+120, btnWidth, btnHeight);
-        }else{
-            SaveButtonImage=[UIImage imageNamed:@"PopUpbtn.png"];
-            btnWidth=SaveButtonImage.size.width;
-            btnHeight=SaveButtonImage.size.height;
-            uploadButton.frame = CGRectMake((frame.size.width-60)-(2*btnWidth), imageView.frame.origin.y+imageView.frame.size.height+120, btnWidth, btnHeight);
-            
-        }
-        [uploadButton setBackgroundImage:SaveButtonImage forState:UIControlStateNormal];
-        
-        uploadButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:14];
+        uploadButton.backgroundColor=[UIColor clearColor];
+        uploadButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
         [uploadButton setTitle:NSLocalizedString(@"Upload",@"Upload") forState:UIControlStateNormal];
         [uploadButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
         [uploadButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+        
+        
+       
         
         
 
@@ -189,7 +175,7 @@ static int count;
         if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
             attachment.textAlignment=NSTextAlignmentRight;
             txtAttachmentName.textAlignment=NSTextAlignmentRight;
-            Titlelabel.textAlignment=NSTextAlignmentRight;
+//            Titlelabel.textAlignment=NSTextAlignmentRight;
         }
         else
             attachment.textAlignment=NSTextAlignmentLeft;

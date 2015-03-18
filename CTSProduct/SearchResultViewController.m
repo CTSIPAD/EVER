@@ -522,14 +522,14 @@
 }
 -(void)PopUpCommentDialog:(UITableViewController*)viewcontroller Action:(CAction *)action document:(ReaderDocument*)document1{
     
-    CommentViewController *AcceptView = [[CommentViewController alloc] initWithActionName:CGRectMake(0, 200, 691, 499)  Action:action];
+    CommentViewController *AcceptView = [[CommentViewController alloc] initWithActionName:CGRectMake(0, 200, 691, 455)  Action:action];
     AcceptView.modalPresentationStyle = UIModalPresentationFormSheet;
     AcceptView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:AcceptView animated:YES completion:nil];
     if (SYSTEM_VERSION_LESS_THAN(@"8.0"))
-        AcceptView.view.superview.frame = CGRectMake((1024-691)/2, (768-499)/2, 691, 499);
+        AcceptView.view.superview.frame = CGRectMake((1024-691)/2, (768-455)/2, 691, 455);
     else
-        AcceptView.preferredContentSize=CGSizeMake(691, 499);
+        AcceptView.preferredContentSize=CGSizeMake(691, 455);
    
     AcceptView.delegate=self;
     AcceptView.Action=action;
@@ -537,18 +537,18 @@
     
 }
 -(void)PopUpTransferDialog{
-    TransferViewController *transferView = [[TransferViewController alloc] initWithFrame:CGRectMake(0, 200, 691, 499)];
+    TransferViewController *transferView = [[TransferViewController alloc] initWithFrame:CGRectMake(0, 200, 691, 455)];
     transferView.modalPresentationStyle = UIModalPresentationFormSheet;
     transferView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:transferView animated:YES completion:nil];
     if (SYSTEM_VERSION_LESS_THAN(@"8.0"))
         if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication]statusBarOrientation])) {
-            transferView.view.superview.frame = CGRectMake((768-691)/2,(1024-499)/2,  691, 499);
+            transferView.view.superview.frame = CGRectMake((768-691)/2,(1024-455)/2,  691, 455);
         }
         else
-            transferView.view.superview.frame = CGRectMake((1024-691)/2, (768-499)/2,691, 499);
+            transferView.view.superview.frame = CGRectMake((1024-691)/2, (768-455)/2,691, 455);
     else
-        transferView.preferredContentSize=CGSizeMake(691, 499);
+        transferView.preferredContentSize=CGSizeMake(691, 455);
     //transferView.view.superview.frame = CGRectMake(300, 200, 450, 470); //it's important to do this after presentModalViewController
     // noteView.view.superview.center = self.view.center;
     transferView.delegate=self;
@@ -559,15 +559,15 @@
     
     correspondence=mainDelegate.searchModule.correspondenceList[index];
     
-    UploadControllerDialog *uploadDialog = [[UploadControllerDialog alloc] initWithFrame:CGRectMake(300, 200, 515, 499)];
+    UploadControllerDialog *uploadDialog = [[UploadControllerDialog alloc] initWithFrame:CGRectMake(300, 200, 515, 457)];
     uploadDialog.modalPresentationStyle = UIModalPresentationFormSheet;
     uploadDialog.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     uploadDialog.view.superview.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     [self presentViewController:uploadDialog animated:YES completion:nil];
     if (SYSTEM_VERSION_LESS_THAN(@"8.0"))
-         uploadDialog.view.superview.frame = CGRectMake((1024-515)/2, (768-499)/2,515, 499);
+         uploadDialog.view.superview.frame = CGRectMake((1024-515)/2, (768-457)/2,515, 457);
     else
-        uploadDialog.preferredContentSize=CGSizeMake(515, 499);
+        uploadDialog.preferredContentSize=CGSizeMake(515, 457);
     
     uploadDialog.CorrespondenceId=correspondence.Id;
     uploadDialog.quickActionSelected=YES;

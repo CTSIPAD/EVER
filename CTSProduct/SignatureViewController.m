@@ -26,6 +26,8 @@
 {
     AppDelegate *mainDelegate ;
     CGRect _realBounds;
+    CGFloat btnWidth;
+    CGFloat btnHeight;
 
     
     
@@ -73,10 +75,10 @@
         UIView *paddingView2=[[UIView alloc] initWithFrame:CGRectMake(0, 0,10 ,35)];
         
         
-        UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(50, 30, frame.size.width-100, 25)];
-        lblTitle.textColor = mainDelegate.selectedInboxColor;
+        UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(100, 5, frame.size.width-200, 25)];
+        lblTitle.textColor = mainDelegate.titleColor;
         lblTitle.text =NSLocalizedString(@"Signature.YourSignature", @"Your Signature");
-        lblTitle.textAlignment=NSTextAlignmentLeft;
+        lblTitle.textAlignment=NSTextAlignmentCenter;
         lblTitle.backgroundColor = [UIColor clearColor];
         lblTitle.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
         
@@ -163,33 +165,32 @@
        
         sigView=[[Signature alloc]initWithFrame:CGRectMake(-60+(frame.size.width-175)/2, 70, 295, 175) signature:mainDelegate.user.signature];
         UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        UIImage *SaveNoteImage;
-        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
-            SaveNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
-            saveButton.frame = CGRectMake(2*SaveNoteImage.size.width+70, frame.size.height-60, SaveNoteImage.size.width, SaveNoteImage.size.height);
-        }else{
-            SaveNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
-            saveButton.frame = CGRectMake((frame.size.width-70)-(3*SaveNoteImage.size.width), frame.size.height-60, SaveNoteImage.size.width, SaveNoteImage.size.height);
-            
-        }
-        [saveButton setBackgroundImage:SaveNoteImage forState:UIControlStateNormal];
+        btnWidth=95;
+        btnHeight=35;
+        saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+            saveButton.frame = CGRectMake(frame.size.width-btnWidth, 0, btnWidth, btnHeight);
+        else
+            saveButton.frame = CGRectMake(0, 0, btnWidth, btnHeight);
         
-        saveButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
+        saveButton.backgroundColor=[UIColor clearColor];
+        saveButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
         [saveButton setTitle:NSLocalizedString(@"Save", @"Save") forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
         [saveButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
         [self.view addSubview:saveButton];
-        
+
         
         
         
         UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        UIImage*SaveNoteImage;
         if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
             SaveNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
-            clearButton.frame = CGRectMake(SaveNoteImage.size.width+60, frame.size.height-60, SaveNoteImage.size.width, SaveNoteImage.size.height);
+            clearButton.frame = CGRectMake(50, frame.size.height-60, SaveNoteImage.size.width, SaveNoteImage.size.height);
         }else{
             SaveNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
-            clearButton.frame = CGRectMake((frame.size.width-60)-(2*SaveNoteImage.size.width),frame.size.height-60, SaveNoteImage.size.width, SaveNoteImage.size.height);
+            clearButton.frame = CGRectMake((frame.size.width-SaveNoteImage.size.width-50),frame.size.height-60, SaveNoteImage.size.width, SaveNoteImage.size.height);
             
         }
         [clearButton setBackgroundImage:SaveNoteImage forState:UIControlStateNormal];
@@ -205,23 +206,19 @@
         
         
         UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        UIImage *closeButtonImage;
-        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
-            closeButtonImage=[UIImage imageNamed:@"PopUpCancelBtn_ar.png"];
-            
-            cancelButton.frame = CGRectMake(50,frame.size.height-60, closeButtonImage.size.width, closeButtonImage.size.height);
-            lblTitle.textAlignment=NSTextAlignmentRight;
-
-        }else{
-            closeButtonImage=[UIImage imageNamed:@"PopUpCancelBtn_en.png"];
-            cancelButton.frame = CGRectMake((frame.size.width-50)-closeButtonImage.size.width, frame.size.height-60, closeButtonImage.size.width, closeButtonImage.size.height);
-            [cancelButton setTitleEdgeInsets: UIEdgeInsetsMake(0,15,0,0)];
-        }
-        [cancelButton setBackgroundImage:closeButtonImage forState:UIControlStateNormal];
-        cancelButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
-        [cancelButton setTitle:NSLocalizedString(@"Close", @"Close") forState:UIControlStateNormal];
+        cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+            cancelButton.frame = CGRectMake(0, 0, btnWidth, btnHeight);
+        else
+            cancelButton.frame = CGRectMake(frame.size.width-btnWidth, 0, btnWidth, btnHeight);
+        
+        cancelButton.backgroundColor=[UIColor clearColor];
+        
+        cancelButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
+        [cancelButton setTitle:NSLocalizedString(@"Cancel",@"Cancel") forState:UIControlStateNormal];
         [cancelButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
         [cancelButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+        
         [self.view addSubview:cancelButton];
         
         [self.view addSubview:lblTitle];

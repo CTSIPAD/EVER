@@ -874,42 +874,40 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
                 [myCustomView setAlpha:0.0f];
                 
                 
-                textView = [[UITextView alloc] initWithFrame:CGRectMake(50, 50, 328, 150)];
+                textView = [[UITextView alloc] initWithFrame:CGRectMake(50, 70, 328, 150)];
                 [textView setText:achived_string];
                 
                 [myCustomView addSubview:textView];
                 
-                UIButton *saveNote = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-                UIImage *SaveNoteImage;
-                if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
-                    SaveNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
-                    saveNote.frame = CGRectMake(2*SaveNoteImage.size.width+70, textView.frame.origin.y+textView.frame.size.height+20, SaveNoteImage.size.width, SaveNoteImage.size.height);
-                }else{
-                    SaveNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
-                    saveNote.frame = CGRectMake((myCustomView.frame.size.width-70)-(3*SaveNoteImage.size.width), textView.frame.origin.y+textView.frame.size.height+20, SaveNoteImage.size.width, SaveNoteImage.size.height);
-                    
-                }
-                [saveNote setBackgroundImage:SaveNoteImage forState:UIControlStateNormal];
                 
-                saveNote.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
+                UIButton *saveNote = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                CGFloat btnWidth=95;
+                CGFloat btnHeight=35;
+                saveNote = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+                    saveNote.frame = CGRectMake(myCustomView.frame.size.width-btnWidth, 0, btnWidth, btnHeight);
+                else
+                    saveNote.frame = CGRectMake(0, 0, btnWidth, btnHeight);
+                
+                saveNote.backgroundColor=[UIColor clearColor];
+                saveNote.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
                 [saveNote setTitle:NSLocalizedString(@"Save", @"Save") forState:UIControlStateNormal];
                 [saveNote addTarget:self action:@selector(saveCustomView:) forControlEvents:UIControlEventTouchUpInside];
                 [saveNote setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
                 [myCustomView addSubview:saveNote];
-
-                
                 
                 
                 UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                UIImage*ClearNoteImage;
                 if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
-                    SaveNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
-                    clearButton.frame = CGRectMake(SaveNoteImage.size.width+60, textView.frame.origin.y+textView.frame.size.height+20, SaveNoteImage.size.width, SaveNoteImage.size.height);
+                    ClearNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
+                    clearButton.frame = CGRectMake(50, myCustomView.frame.size.height-60, ClearNoteImage.size.width, ClearNoteImage.size.height);
                 }else{
-                    SaveNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
-                    clearButton.frame = CGRectMake((myCustomView.frame.size.width-60)-(2*SaveNoteImage.size.width), textView.frame.origin.y+textView.frame.size.height+20, SaveNoteImage.size.width, SaveNoteImage.size.height);
+                    ClearNoteImage=[UIImage imageNamed:@"PopUpbtn.png"];
+                    clearButton.frame = CGRectMake((myCustomView.frame.size.width-ClearNoteImage.size.width-50),myCustomView.frame.size.height-60, ClearNoteImage.size.width, ClearNoteImage.size.height);
                     
                 }
-                [clearButton setBackgroundImage:SaveNoteImage forState:UIControlStateNormal];
+                [clearButton setBackgroundImage:ClearNoteImage forState:UIControlStateNormal];
                 
                 clearButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
                 [clearButton setTitle:NSLocalizedString(@"Clear", @"Clear") forState:UIControlStateNormal];
@@ -920,24 +918,24 @@ FS_BOOL MyMapFont(FS_LPVOID param, FS_LPCSTR name, FS_INT32 charset,
                 
                 
                 
-            
+                
                 UIButton *dismissButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-                UIImage *closeButtonImage;
-                if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
-                    closeButtonImage=[UIImage imageNamed:@"PopUpCancelBtn_ar.png"];
-
-                    dismissButton.frame = CGRectMake(50, textView.frame.origin.y+textView.frame.size.height+20, closeButtonImage.size.width, closeButtonImage.size.height);
-                }else{
-                    closeButtonImage=[UIImage imageNamed:@"PopUpCancelBtn_en.png"];
-                    dismissButton.frame = CGRectMake((myCustomView.frame.size.width-50)-closeButtonImage.size.width, textView.frame.origin.y+textView.frame.size.height+20, closeButtonImage.size.width, closeButtonImage.size.height);
-                    [dismissButton setTitleEdgeInsets: UIEdgeInsetsMake(0,15,0,0)];
-                }
-                [dismissButton setBackgroundImage:closeButtonImage forState:UIControlStateNormal];
-                dismissButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
-                [dismissButton setTitle:NSLocalizedString(@"Close", @"Close") forState:UIControlStateNormal];
+                dismissButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+                    dismissButton.frame = CGRectMake(0, 0, btnWidth, btnHeight);
+                else
+                    dismissButton.frame = CGRectMake(myCustomView.frame.size.width-btnWidth, 0, btnWidth, btnHeight);
+                
+                dismissButton.backgroundColor=[UIColor clearColor];
+                
+                dismissButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
+                [dismissButton setTitle:NSLocalizedString(@"Cancel",@"Cancel") forState:UIControlStateNormal];
                 [dismissButton addTarget:self action:@selector(dismissCustomView:) forControlEvents:UIControlEventTouchUpInside];
                 [dismissButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+                
                 [myCustomView addSubview:dismissButton];
+                
+                
 
                 
                 
