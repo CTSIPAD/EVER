@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface PieViewController : UIViewController
-
+-(NSDate*) getFromDate:(NSString*)status;
 @end

@@ -266,7 +266,7 @@
 		044773E61AB8BDF90067E39B /* uploadBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uploadBg.png; sourceTree = "<group>"; };
 		04524B0B1AB196B8008814B0 /* PopUpCancelBtn_ar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PopUpCancelBtn_ar.png; sourceTree = "<group>"; };
 		04524B0C1AB196B8008814B0 /* PopUpCancelBtn_en.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PopUpCancelBtn_en.png; sourceTree = "<group>"; };
-		0455512B1AB2E87C00A7844C /* d3.tip.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = d3.tip.js; sourceTree = "<group>"; };
+		0455512B1AB2E87C00A7844C /* d3.tip.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = d3.tip.js; path = ../d3.tip.js; sourceTree = "<group>"; };
 		0455512C1AB2E87C00A7844C /* D3HorizontalBarChart.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = D3HorizontalBarChart.html; sourceTree = "<group>"; };
 		0455512D1AB2E87C00A7844C /* D3OverdueBarChart.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = D3OverdueBarChart.html; sourceTree = "<group>"; };
 		0455512E1AB2E87C00A7844C /* D3VerticalBarChart.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = D3VerticalBarChart.html; sourceTree = "<group>"; };
@@ -682,16 +682,9 @@
 		0499B7011AA459AF002609A0 /* Reports */ = {
 			isa = PBXGroup;
 			children = (
-				0455512B1AB2E87C00A7844C /* d3.tip.js */,
-				0455512C1AB2E87C00A7844C /* D3HorizontalBarChart.html */,
-				0455512D1AB2E87C00A7844C /* D3OverdueBarChart.html */,
-				0455512E1AB2E87C00A7844C /* D3VerticalBarChart.html */,
-				0455512F1AB2E87C00A7844C /* HorizontalBarChartViewController.h */,
-				045551301AB2E87C00A7844C /* HorizontalBarChartViewController.m */,
-				045551311AB2E87C00A7844C /* OverdueBarChartViewController.h */,
-				045551321AB2E87C00A7844C /* OverdueBarChartViewController.m */,
-				045551331AB2E87C00A7844C /* VerticalBarChartViewController.h */,
-				045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */,
+				3E18D3FD1AB888B60047404C /* Overdue Bar Chart  */,
+				3E18D3FB1AB8885D0047404C /* Horizontal Bar Chart */,
+				3E18D3FA1AB8882C0047404C /* Vertical Bar Chart */,
 				0499B7021AA459BE002609A0 /* ReportViewController.h */,
 				0499B7031AA459BE002609A0 /* ReportViewController.m */,
 				0499B71A1AA4C89F002609A0 /* Pie Chart */,
@@ -722,6 +715,7 @@
 			children = (
 				0499B7271AA4C8BE002609A0 /* PieViewController.h */,
 				0499B7281AA4C8BE002609A0 /* PieViewController.m */,
+				0455512B1AB2E87C00A7844C /* d3.tip.js */,
 				0499B71B1AA4C89F002609A0 /* d3.legend.js */,
 				0499B71C1AA4C89F002609A0 /* d3.min.js */,
 				0499B71D1AA4C89F002609A0 /* D3Ring.html */,
@@ -744,27 +738,34 @@
 			name = images;
 			sourceTree = "<group>";
 		};
-		04C9042A1AB864B70008B4D4 /* InfColorPicker */ = {
+		3E18D3FA1AB8882C0047404C /* Vertical Bar Chart */ = {
 			isa = PBXGroup;
 			children = (
-				04C9042B1AB864B70008B4D4 /* InfColorBarPicker.h */,
-				04C9042C1AB864B70008B4D4 /* InfColorBarPicker.m */,
-				04C9042D1AB864B70008B4D4 /* InfColorIndicatorView.h */,
-				04C9042E1AB864B70008B4D4 /* InfColorIndicatorView.m */,
-				04C9042F1AB864B70008B4D4 /* InfColorPicker.h */,
-				04C904301AB864B70008B4D4 /* InfColorPickerController.h */,
-				04C904311AB864B70008B4D4 /* InfColorPickerController.m */,
-				04C904321AB864B70008B4D4 /* InfColorPickerNavigationController.h */,
-				04C904331AB864B70008B4D4 /* InfColorPickerNavigationController.m */,
-				04C904341AB864B70008B4D4 /* InfColorPickerView.xib */,
-				04C904351AB864B70008B4D4 /* InfColorSquarePicker.h */,
-				04C904361AB864B70008B4D4 /* InfColorSquarePicker.m */,
-				04C904371AB864B70008B4D4 /* InfHSBSupport.h */,
-				04C904381AB864B70008B4D4 /* InfHSBSupport.m */,
-				04C904391AB864B70008B4D4 /* InfSourceColorView.h */,
-				04C9043A1AB864B70008B4D4 /* InfSourceColorView.m */,
+				0455512E1AB2E87C00A7844C /* D3VerticalBarChart.html */,
+				045551331AB2E87C00A7844C /* VerticalBarChartViewController.h */,
+				045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */,
 			);
-			path = InfColorPicker;
+			name = "Vertical Bar Chart";
+			sourceTree = "<group>";
+		};
+		3E18D3FB1AB8885D0047404C /* Horizontal Bar Chart */ = {
+			isa = PBXGroup;
+			children = (
+				0455512C1AB2E87C00A7844C /* D3HorizontalBarChart.html */,
+				0455512F1AB2E87C00A7844C /* HorizontalBarChartViewController.h */,
+				045551301AB2E87C00A7844C /* HorizontalBarChartViewController.m */,
+			);
+			name = "Horizontal Bar Chart";
+			sourceTree = "<group>";
+		};
+		3E18D3FD1AB888B60047404C /* Overdue Bar Chart  */ = {
+			isa = PBXGroup;
+			children = (
+				0455512D1AB2E87C00A7844C /* D3OverdueBarChart.html */,
+				045551311AB2E87C00A7844C /* OverdueBarChartViewController.h */,
+				045551321AB2E87C00A7844C /* OverdueBarChartViewController.m */,
+			);
+			name = "Overdue Bar Chart ";
 			sourceTree = "<group>";
 		};
 		9572E0C11961567E0087A06C /* images */ = {
@@ -1927,7 +1928,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "8d15d7b2-3678-49dd-aed2-0503e0c7d026";
+				PROVISIONING_PROFILE = "9c495b27-1b3d-4427-a39b-62e682cf952e";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -1960,7 +1961,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PROVISIONING_PROFILE = "8d15d7b2-3678-49dd-aed2-0503e0c7d026";
+				PROVISIONING_PROFILE = "9c495b27-1b3d-4427-a39b-62e682cf952e";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
@@ -1994,7 +1995,7 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CTSIPAD;
-				PROVISIONING_PROFILE = "8d15d7b2-3678-49dd-aed2-0503e0c7d026";
+				PROVISIONING_PROFILE = "9c495b27-1b3d-4427-a39b-62e682cf952e";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2027,7 +2028,7 @@
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = CTSIPAD;
-				PROVISIONING_PROFILE = "8d15d7b2-3678-49dd-aed2-0503e0c7d026";
+				PROVISIONING_PROFILE = "9c495b27-1b3d-4427-a39b-62e682cf952e";
 				VALID_ARCHS = armv7;
 				WRAPPER_EXTENSION = app;
 			};

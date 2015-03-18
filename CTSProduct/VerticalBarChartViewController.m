@@ -14,6 +14,8 @@
     CGFloat Width;
     CGFloat Height;
     AppDelegate *mainDelegate;
+    UIButton *filterWeeklyButton,*filterMonthlyButton,*filterYearlyButton;
+    NSString *verticalBarDateRange;
 }
 @property (retain, nonatomic) IBOutlet UIWebView *WebView;
 @end
@@ -27,6 +29,31 @@
     self.navigationController.navigationBarHidden = NO;
     self.navigationController.navigationBar.translucent = YES;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showHideNavbar:)];
+    
+    filterWeeklyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [filterWeeklyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2-140,-15,70,59)];
+    [filterWeeklyButton setTitle:@"Weekly" forState:UIControlStateNormal];
+    [filterWeeklyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    filterWeeklyButton.backgroundColor =mainDelegate.InboxCellSelectedColor;
+    [self.navigationController.navigationBar addSubview:filterWeeklyButton];
+    [filterWeeklyButton addTarget:self action:@selector(getWeeklyData) forControlEvents:UIControlEventTouchUpInside];
+    
+    filterMonthlyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [filterMonthlyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2-70,-15,70,59)];
+    [filterMonthlyButton setTitle:@"monthly" forState:UIControlStateNormal];
+    [filterMonthlyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    filterMonthlyButton.backgroundColor =mainDelegate.InboxCellSelectedColor;
+    [self.navigationController.navigationBar addSubview:filterMonthlyButton];
+    [filterMonthlyButton addTarget:self action:@selector(getMonthlyData) forControlEvents:UIControlEventTouchUpInside];
+    
+    filterYearlyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [filterYearlyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2,-15,70,59)];
+    [filterYearlyButton setTitle:@"Yearly" forState:UIControlStateNormal];
+    [filterYearlyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    filterYearlyButton.backgroundColor =mainDelegate.InboxCellSelectedColor;
+    [self.navigationController.navigationBar addSubview:filterYearlyButton];
+    [filterYearlyButton addTarget:self action:@selector(getYearlyData) forControlEvents:UIControlEventTouchUpInside];
+    
     
     if (SYSTEM_VERSION_LESS_THAN(@"8.0")){
         Width=self.view.frame.size.width;
@@ -58,9 +85,70 @@
     
     [self.WebView loadHTMLString:html baseURL:[NSURL fileURLWithPath:[htmlPath stringByDeletingLastPathComponent]]];
     [self.view addGestureRecognizer:tapGesture];
+    
+    
+}
 
+-(void) getWeeklyData{
+    verticalBarDateRange = @"weekly";
+    [self callWebViewDidFinishLoading];
+}
 
+-(void) getMonthlyData{
+    verticalBarDateRange = @"monthly";
+    [self callWebViewDidFinishLoading];
+}
+
+-(void) getYearlyData{
+    verticalBarDateRange = @"yearly";
+    [self callWebViewDidFinishLoading];
+}
+
+-(NSString*) castDateToString:(NSDate*)date{
+    NSString *retVal ;
+    NSDateFormatter *formatter;
+    
+    formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MM-dd-yyyy"];
+    
+    retVal = [formatter stringFromDate:date];
+    return retVal;
+}
+
+-(NSDate*) getFromDate:(NSString*)status{
+    NSDate *retVal;
+    NSDate *now = [NSDate date];  // now
+    NSDate *today;
+    [[NSCalendar currentCalendar] rangeOfUnit:NSDayCalendarUnit // beginning of this day
+                                    startDate:&today // save it here
+                                     interval:NULL
+                                      forDate:now];
+    
+    NSDateComponents *comp = [[NSDateComponents alloc] init];
+    
+    if([status  isEqualToString: @"week"])
+    {
+        comp.day = -7;
+        NSDate * oneWeekBefore = [[NSCalendar currentCalendar] dateByAddingComponents:comp
+                                                                               toDate:today
+                                                                              options:0];
+        retVal = oneWeekBefore;
+    }else if([status isEqualToString:@"month"]){
+        comp.day = -30;
+        NSDate * oneMonthBefore = [[NSCalendar currentCalendar] dateByAddingComponents:comp
+                                                                                toDate:today
+                                                                               options:0];
+        retVal = oneMonthBefore;
+    }else{
+        comp.day = -365;
+        NSDate * oneYearBefore = [[NSCalendar currentCalendar] dateByAddingComponents:comp
+                                                                               toDate:today
+                                                                              options:0];
+        retVal = oneYearBefore;
     }
+    
+    return retVal;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -88,11 +176,29 @@
     return YES;
 }
 
+-(void) callWebViewDidFinishLoading{
+    NSString *htmlPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"D3VerticalBarChart" ofType:@"html"];
+    NSString *html = [NSString stringWithContentsOfFile:htmlPath usedEncoding:nil error:nil];
+    
+    [self.WebView loadHTMLString:html baseURL:[NSURL fileURLWithPath:[htmlPath stringByDeletingLastPathComponent]]];
+}
+
+
+-(void) viewWillDisappear:(BOOL)animated {
+    if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
+        filterWeeklyButton.hidden = YES;
+        filterMonthlyButton.hidden = YES;
+        filterYearlyButton.hidden = YES;
+        verticalBarDateRange = @"general";
+    }
+    [super viewWillDisappear:animated];
+}
+
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     /*NSString* data=@"[{structure:\"طبابة\", completed:5,draft:6,new:7},{structure:\"مشتريات\", completed:2,draft:3,new:4},{structure:\"ps\", completed:9,draft:1,new:3}]";
-    NSString *showDataFunc = [NSString stringWithFormat:@"showData(%@)", data];
-    [self.WebView stringByEvaluatingJavaScriptFromString:showDataFunc];*/
+     NSString *showDataFunc = [NSString stringWithFormat:@"showData(%@)", data];
+     [self.WebView stringByEvaluatingJavaScriptFromString:showDataFunc];*/
     NSString *serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
     NSString *getPieChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCorrespondenceStructureCountData?token=%@&language=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
     NSURL *url = [NSURL URLWithString:getPieChartDataUrl];
