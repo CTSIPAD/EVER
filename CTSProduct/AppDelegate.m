@@ -28,7 +28,7 @@
 @synthesize AnnotationsMode=_AnnotationsMode;
 @synthesize Highlights =_Highlights,Notes=_Notes,attachmentType=_attachmentType,Char_count;
 @synthesize IncomingHighlights =_IncomingHighlights,IncomingNotes=_IncomingNotes;
-@synthesize textColor,bgColor,buttonColor,titleColor,cellColor,iconViewColor,CorrespondenceCellColor,TablebgColor,metaDataCellColor,selectedInboxColor,thumbnailDefined;
+@synthesize textColor,bgColor,buttonColor,titleColor,cellColor,iconViewColor,CorrespondenceCellColor,SignatureColor,TablebgColor,metaDataCellColor,selectedInboxColor,thumbnailDefined;
 @synthesize barView,logoView,logFilePath;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -98,6 +98,7 @@
     self.PopUpBgColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"PopUpBg.png"]];
     self.PopUpTextColor=[UIColor colorWithRed:74/255.0f green:140/255.0f blue:146/255.0f alpha:1.0];
     self.InboxCellSelectedColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"SelectedInbox.png"]];
+    SignatureColor=[UIColor blackColor];
     thumbnailDefined=NO;
     [application setStatusBarHidden:YES];
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"barBg.png"] forBarMetrics:UIBarMetricsDefault];

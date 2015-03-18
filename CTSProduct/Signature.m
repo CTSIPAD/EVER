@@ -10,6 +10,7 @@
 #import "Base64.h"
 #import "CParser.h"
 #import "FileManager.h"
+#import "AppDelegate.h"
 static
 CGPoint midPoint(CGPoint p1 ,CGPoint p2){
     return CGPointMake((p1.x+p2.x)*0.5, (p1.y+p2.y)*0.5);
@@ -57,7 +58,8 @@ CGPoint midPoint(CGPoint p1 ,CGPoint p2){
     currentPoint=[touch locationInView:self];
 }
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    
+    AppDelegate* mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     UITouch *touch=[touches anyObject];
     previousPoint2=previousPoint1;
     previousPoint1=[touch previousLocationInView:self];
@@ -74,8 +76,8 @@ CGPoint midPoint(CGPoint p1 ,CGPoint p2){
     CGContextAddQuadCurveToPoint(context, previousPoint1.x, previousPoint1.y, mid2.x, mid2.y);
     CGContextSetLineCap(context, kCGLineCapRound);
     CGContextSetLineWidth(context, 2.0);
-    
-    CGContextSetRGBStrokeColor(context, 0, 18/255.0, 282/255.0, 1.0);
+    CGContextSetStrokeColorWithColor(context,mainDelegate.SignatureColor.CGColor);
+
     CGContextStrokePath(context);
     self.sigView.image=UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

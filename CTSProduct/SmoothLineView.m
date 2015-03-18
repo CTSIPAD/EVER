@@ -51,6 +51,8 @@ CGPoint midPoint(CGPoint p1, CGPoint p2);
   self = [super initWithFrame:frame];
   
   if (self) {
+     AppDelegate* mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     self.backgroundColor = DEFAULT_BACKGROUND_COLOR;
       CGFloat borderWidth = 2.0f;
       
@@ -59,7 +61,7 @@ CGPoint midPoint(CGPoint p1, CGPoint p2);
       self.layer.borderWidth = borderWidth;
 		_path = CGPathCreateMutable();
     _lineWidth = DEFAULT_WIDTH;
-    _lineColor = DEFAULT_COLOR;
+    _lineColor = mainDelegate.SignatureColor;
     _empty = YES;
   }
   
