@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		043477AD1AB1AADE009513D8 /* EditSignature.png in Resources */ = {isa = PBXBuildFile; fileRef = 043477AC1AB1AADE009513D8 /* EditSignature.png */; };
 		043477AF1AB220F8009513D8 /* NotePopUpBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 043477AE1AB220F8009513D8 /* NotePopUpBg.png */; };
-		043477B11AB23DD0009513D8 /* uploadBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 043477B01AB23DD0009513D8 /* uploadBg.png */; };
+		044773E71AB8BDF90067E39B /* uploadBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 044773E61AB8BDF90067E39B /* uploadBg.png */; };
 		04524B0D1AB196B8008814B0 /* PopUpCancelBtn_ar.png in Resources */ = {isa = PBXBuildFile; fileRef = 04524B0B1AB196B8008814B0 /* PopUpCancelBtn_ar.png */; };
 		04524B0E1AB196B8008814B0 /* PopUpCancelBtn_en.png in Resources */ = {isa = PBXBuildFile; fileRef = 04524B0C1AB196B8008814B0 /* PopUpCancelBtn_en.png */; };
 		045551361AB2E87C00A7844C /* d3.tip.js in Resources */ = {isa = PBXBuildFile; fileRef = 0455512B1AB2E87C00A7844C /* d3.tip.js */; };
@@ -263,7 +263,7 @@
 /* Begin PBXFileReference section */
 		043477AC1AB1AADE009513D8 /* EditSignature.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = EditSignature.png; sourceTree = "<group>"; };
 		043477AE1AB220F8009513D8 /* NotePopUpBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotePopUpBg.png; sourceTree = "<group>"; };
-		043477B01AB23DD0009513D8 /* uploadBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uploadBg.png; sourceTree = "<group>"; };
+		044773E61AB8BDF90067E39B /* uploadBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uploadBg.png; sourceTree = "<group>"; };
 		04524B0B1AB196B8008814B0 /* PopUpCancelBtn_ar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PopUpCancelBtn_ar.png; sourceTree = "<group>"; };
 		04524B0C1AB196B8008814B0 /* PopUpCancelBtn_en.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PopUpCancelBtn_en.png; sourceTree = "<group>"; };
 		0455512B1AB2E87C00A7844C /* d3.tip.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = d3.tip.js; sourceTree = "<group>"; };
@@ -931,7 +931,7 @@
 		A2B9FA0B197E63CA00A61F5F /* images */ = {
 			isa = PBXGroup;
 			children = (
-				043477B01AB23DD0009513D8 /* uploadBg.png */,
+				044773E61AB8BDF90067E39B /* uploadBg.png */,
 				045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */,
 				A2B9FA221982B3FD00A61F5F /* camera.png */,
 			);
@@ -1614,7 +1614,7 @@
 				04A17EFE1A94807400E76B01 /* Login_ar.png in Resources */,
 				A29793A419BEF42300AD6D1D /* disclosure.png in Resources */,
 				043477AD1AB1AADE009513D8 /* EditSignature.png in Resources */,
-				043477B11AB23DD0009513D8 /* uploadBg.png in Resources */,
+				044773E71AB8BDF90067E39B /* uploadBg.png in Resources */,
 				0499B70F1AA468EC002609A0 /* Charts-By-Structures.png in Resources */,
 				0499B7241AA4C89F002609A0 /* Donut3D.js in Resources */,
 				A29DA1BB1A12072B00BE6CAE /* iconViewSeperator.png in Resources */,

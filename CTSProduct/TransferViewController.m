@@ -71,12 +71,12 @@
 
         self.view.backgroundColor=mainDelegate.PopUpBgColor;
         
-        Titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 50, frame.size.width-100, 20)];
+        Titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 10, frame.size.width-200, 20)];
         Titlelabel.text = NSLocalizedString(@"Transfer.TransferCorrespondence",@"Transfer Correspondence");
         Titlelabel.backgroundColor = [UIColor clearColor];
         Titlelabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:20];
-        Titlelabel.textAlignment=NSTextAlignmentLeft;
-        Titlelabel.textColor=mainDelegate.selectedInboxColor;
+        Titlelabel.textAlignment=NSTextAlignmentCenter;
+        Titlelabel.textColor=mainDelegate.titleColor;
 
         
         Section= [[UILabel alloc] initWithFrame:CGRectMake(50, 85, frame.size.width-100, 20)];
@@ -185,49 +185,33 @@
         
         
         closeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        UIImage *closeButtonImage;
-        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
-            closeButtonImage=[UIImage imageNamed:@"PopUpCancelBtn_ar.png"];
-            btnWidth=closeButtonImage.size.width;
-            btnHeight=closeButtonImage.size.height;
-             closeButton.frame = CGRectMake(50, txtNote.frame.origin.y+txtNote.frame.size.height+20, btnWidth, btnHeight);
-        }else{
-            closeButtonImage=[UIImage imageNamed:@"PopUpCancelBtn_en.png"];
-            btnWidth=closeButtonImage.size.width;
-            btnHeight=closeButtonImage.size.height;
-            closeButton.frame = CGRectMake((frame.size.width-50)-btnWidth, txtNote.frame.origin.y+txtNote.frame.size.height+20, btnWidth, btnHeight);
-            [closeButton setTitleEdgeInsets: UIEdgeInsetsMake(0,15,0,0)];
-        }
-        [closeButton setBackgroundImage:closeButtonImage forState:UIControlStateNormal];
-        closeButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
+        btnWidth=100;
+        btnHeight=35;
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+             closeButton.frame = CGRectMake(0, 0, btnWidth, btnHeight);
+        else
+            closeButton.frame = CGRectMake(frame.size.width-btnWidth, 0, btnWidth, btnHeight);
+    
+        closeButton.backgroundColor=[UIColor clearColor];
+
+        closeButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:18];
         [closeButton setTitle:NSLocalizedString(@"Cancel",@"Cancel") forState:UIControlStateNormal];
         [closeButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
         [closeButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
         
         
-        
-        
-        
         saveButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        UIImage *SaveButtonImage;
-        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"]) {
-            SaveButtonImage=[UIImage imageNamed:@"PopUpbtn.png"];
-            btnWidth=SaveButtonImage.size.width;
-            btnHeight=SaveButtonImage.size.height;
-            saveButton.frame = CGRectMake(btnWidth+60, txtNote.frame.origin.y+txtNote.frame.size.height+20, btnWidth, btnHeight);
-        }else{
-            SaveButtonImage=[UIImage imageNamed:@"PopUpbtn.png"];
-            btnWidth=SaveButtonImage.size.width;
-            btnHeight=SaveButtonImage.size.height;
-            saveButton.frame = CGRectMake((frame.size.width-60)-(2*btnWidth), txtNote.frame.origin.y+txtNote.frame.size.height+20, btnWidth, btnHeight);
-            
-        }
-        [saveButton setBackgroundImage:SaveButtonImage forState:UIControlStateNormal];
+        if ([mainDelegate.IpadLanguage isEqualToString:@"ar"])
+            saveButton.frame = CGRectMake(frame.size.width-btnWidth, 0, btnWidth, btnHeight);
+        else
+            saveButton.frame = CGRectMake(0, 0, btnWidth, btnHeight);
 
-        saveButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:14];
+        saveButton.backgroundColor=[UIColor clearColor];
+        saveButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:16];
         [saveButton setTitle:NSLocalizedString(@"Transfer",@"Transfer") forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
         [saveButton setTitleColor:mainDelegate.titleColor forState:UIControlStateNormal];
+       
         if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
             // arabic frame
             ddbtnDueDate.frame = CGRectMake(frame.size.width/2+20, 185, 40, 30);
@@ -246,7 +230,7 @@
             txtTransferTo.textAlignment=NSTextAlignmentRight;
             lblTransferTo.textAlignment=NSTextAlignmentRight;
             Section.textAlignment=NSTextAlignmentRight;
-            Titlelabel.textAlignment=NSTextAlignmentRight;
+//            Titlelabel.textAlignment=NSTextAlignmentRight;
 
         }
         

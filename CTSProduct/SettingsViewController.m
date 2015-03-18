@@ -144,11 +144,11 @@
 
                 SignatureViewController *signatureView;
                 if(mainDelegate.PinCodeEnabled){
-                    signatureView = [[SignatureViewController alloc] initWithFrame:CGRectMake(310, 100, 515, 499)];
+                    signatureView = [[SignatureViewController alloc] initWithFrame:CGRectMake(310, 100, 515, 457)];
                 }
                 else
                 {
-                    signatureView = [[SignatureViewController alloc] initWithFrame:CGRectMake(310, 100, 515, 342)];
+                    signatureView = [[SignatureViewController alloc] initWithFrame:CGRectMake(310, 100, 515, 333)];
 
                 }
             signatureView.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -157,21 +157,21 @@
               
                 if (SYSTEM_VERSION_LESS_THAN(@"8.0")){
                     if(mainDelegate.PinCodeEnabled){
-                        signatureView.view.superview.frame = CGRectMake(310, 100, 515, 499);
+                        signatureView.view.superview.frame = CGRectMake(310, 100, 515, 457);
                     }
                     else
                     {
-                        signatureView.view.superview.frame = CGRectMake(310, 100, 515, 342);
+                        signatureView.view.superview.frame = CGRectMake(310, 100, 515, 333);
                     }
 
                 }
                 else{
                     if(mainDelegate.PinCodeEnabled){
-                        signatureView.preferredContentSize=CGSizeMake(515, 499);
+                        signatureView.preferredContentSize=CGSizeMake(515, 457);
                     }
                     else
                     {
-                        signatureView.preferredContentSize=CGSizeMake(515, 342);
+                        signatureView.preferredContentSize=CGSizeMake(515, 333);
                     }
                 }
             }
