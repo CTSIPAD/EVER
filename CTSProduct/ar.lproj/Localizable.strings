@@ -179,3 +179,23 @@
 "DefaultSignAlreadyChosen"="سبق أن اخترت التوقيع الافتراضي.	 الرجاء حفظ التوقيع اليدوي أولاً أو إلغاءه ";
 "HandSignAlreadyChosen"="سبق أن اخترت التوقيع اليدوي. الرجاء حفظ التوقيع الافتراضي أولاً أو إلغاءه";
 "ErrorInURL"="تعذر فتح المرفق . السبب : الرابط غير صالح !";
+
+"Reports.ChartsByCategory" = "لوحة حسب الفئة";
+"Reports.ChartsByStructure" = "لوحة حسب الجهات";
+"Reports.ChartsByMonths" = "لوحة حسب الأشهر";
+"Reports.OverdueDocuments" = "لوحة الإحالات المتأخرة";
+
+"Reports.Weekly" = "أسبوعياً";
+"Reports.Monthly" = "شهرياً";
+"Reports.Yearly" = "سنوياً";
+"Reports.CorrespondencesByCategory" = "المراسلات حسب الفئة";
+"Reports.CorrespondencesCountbyStatus" = "عدد المراسلات حسب الحالة";
+"Reports.CorrespondencesCountByStructures" = "عدد المراسلات حسب المنظمة";
+"Reports.NumberOfOverdueTransfersByStructure" = "عدة التحويلات المغلقة المتأخرة حسب المنظمة";
+"Reports.Count" = "العدد";
+"Reports.Structure" = "المنظمة";
+"Reports.Month" = "الأشهر";
+"Reports.ShowingAllData" = "عرض جميع البيانات*";
+"Reports.ShowRangeDate" = "%@ عرض البيانات من تاريخ @% إلى تاريخ*";
+"Reports.ShowingDataFrom" = "*عرض البيانات من تاريخ";
+"Reports.ToDate" = "إلى تاريخ";

@@ -82,6 +82,12 @@
 		3EC220A41AB96679008D0731 /* InfColorSquarePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC2209A1AB96679008D0731 /* InfColorSquarePicker.m */; };
 		3EC220A51AB96679008D0731 /* InfHSBSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC2209C1AB96679008D0731 /* InfHSBSupport.m */; };
 		3EC220A61AB96679008D0731 /* InfSourceColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC2209E1AB96679008D0731 /* InfSourceColorView.m */; };
+		3EC4FF381ABAFC8400AC3222 /* ClickedMonth.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EC4FF321ABAFC8400AC3222 /* ClickedMonth.png */; };
+		3EC4FF391ABAFC8400AC3222 /* ClickedWeek.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EC4FF331ABAFC8400AC3222 /* ClickedWeek.png */; };
+		3EC4FF3A1ABAFC8400AC3222 /* ClickedYear.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EC4FF341ABAFC8400AC3222 /* ClickedYear.png */; };
+		3EC4FF3B1ABAFC8400AC3222 /* NotClickedMonth.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EC4FF351ABAFC8400AC3222 /* NotClickedMonth.png */; };
+		3EC4FF3C1ABAFC8400AC3222 /* NotClickedWeek.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EC4FF361ABAFC8400AC3222 /* NotClickedWeek.png */; };
+		3EC4FF3D1ABAFC8400AC3222 /* NotClickedYear.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EC4FF371ABAFC8400AC3222 /* NotClickedYear.png */; };
 		956B97BC1966DB4F00D01DB8 /* note.m in Sources */ = {isa = PBXBuildFile; fileRef = 956B97BB1966DB4F00D01DB8 /* note.m */; };
 		956B97BF1966DB6600D01DB8 /* HighlightClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 956B97BE1966DB6600D01DB8 /* HighlightClass.m */; };
 		A2010BEA195D6C55004AC93C /* FreeSign.png in Resources */ = {isa = PBXBuildFile; fileRef = A2010BE6195D6C55004AC93C /* FreeSign.png */; };
@@ -355,6 +361,12 @@
 		3EC2209C1AB96679008D0731 /* InfHSBSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfHSBSupport.m; sourceTree = "<group>"; };
 		3EC2209D1AB96679008D0731 /* InfSourceColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfSourceColorView.h; sourceTree = "<group>"; };
 		3EC2209E1AB96679008D0731 /* InfSourceColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfSourceColorView.m; sourceTree = "<group>"; };
+		3EC4FF321ABAFC8400AC3222 /* ClickedMonth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClickedMonth.png; sourceTree = "<group>"; };
+		3EC4FF331ABAFC8400AC3222 /* ClickedWeek.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClickedWeek.png; sourceTree = "<group>"; };
+		3EC4FF341ABAFC8400AC3222 /* ClickedYear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClickedYear.png; sourceTree = "<group>"; };
+		3EC4FF351ABAFC8400AC3222 /* NotClickedMonth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotClickedMonth.png; sourceTree = "<group>"; };
+		3EC4FF361ABAFC8400AC3222 /* NotClickedWeek.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotClickedWeek.png; sourceTree = "<group>"; };
+		3EC4FF371ABAFC8400AC3222 /* NotClickedYear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotClickedYear.png; sourceTree = "<group>"; };
 		956B97BA1966DB4F00D01DB8 /* note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = note.h; sourceTree = "<group>"; };
 		956B97BB1966DB4F00D01DB8 /* note.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = note.m; sourceTree = "<group>"; };
 		956B97BD1966DB6600D01DB8 /* HighlightClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightClass.h; sourceTree = "<group>"; };
@@ -720,6 +732,12 @@
 		0499B7071AA45F1F002609A0 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				3EC4FF321ABAFC8400AC3222 /* ClickedMonth.png */,
+				3EC4FF331ABAFC8400AC3222 /* ClickedWeek.png */,
+				3EC4FF341ABAFC8400AC3222 /* ClickedYear.png */,
+				3EC4FF351ABAFC8400AC3222 /* NotClickedMonth.png */,
+				3EC4FF361ABAFC8400AC3222 /* NotClickedWeek.png */,
+				3EC4FF371ABAFC8400AC3222 /* NotClickedYear.png */,
 				04C59E251AB6E06D00B25AC2 /* documents.png */,
 				04C59E261AB6E06D00B25AC2 /* months.png */,
 				04C59E271AB6E06D00B25AC2 /* structure.png */,
@@ -1689,6 +1707,7 @@
 				A2F614861959651100956BF0 /* apple calendar.plist in Resources */,
 				A29DA1A71A1200BE00BE6CAE /* subjectimg.png in Resources */,
 				A27888561A1633850031C3CE /* Priorityimg.png in Resources */,
+				3EC4FF3A1ABAFC8400AC3222 /* ClickedYear.png in Resources */,
 				A2B9FA211982459700A61F5F /* ShowAttachments.png in Resources */,
 				A2F61482195964F400956BF0 /* background.png in Resources */,
 				A2A64BD919FF895900D8CCCD /* Online.png in Resources */,
@@ -1702,11 +1721,14 @@
 				04C9044F1AB87D320008B4D4 /* Ipad-Icon_40pt.png in Resources */,
 				A2010BEB195D6C55004AC93C /* FreeSignAll.png in Resources */,
 				A29DA1A11A12006E00BE6CAE /* seperatorimg.png in Resources */,
+				3EC4FF381ABAFC8400AC3222 /* ClickedMonth.png in Resources */,
 				0499B7111AA468EC002609A0 /* Overdue-Transfers.png in Resources */,
+				3EC4FF391ABAFC8400AC3222 /* ClickedWeek.png in Resources */,
 				A29DA1971A11FDD600BE6CAE /* SaveIcon.png in Resources */,
 				0425D3671ABB102A00E62051 /* splashlogoLight.png in Resources */,
 				04A1314D1AAD8F3D00D422F8 /* PopUpBg.png in Resources */,
 				A29DA1C51A1210DA00BE6CAE /* settings.png in Resources */,
+				3EC4FF3D1ABAFC8400AC3222 /* NotClickedYear.png in Resources */,
 				A29DA1CB1A121AF700BE6CAE /* detailviewBackground.png in Resources */,
 				A29DA1CD1A124EE500BE6CAE /* sync.png in Resources */,
 				A2010BF6195D979A004AC93C /* delete_item.png in Resources */,
@@ -1751,6 +1773,7 @@
 				04A17F061A94BF1B00E76B01 /* backGroundImg.png in Resources */,
 				A2B4FE6C1965501400D7EAB5 /* Actions.png in Resources */,
 				A2010BF2195D954E004AC93C /* highlight.png in Resources */,
+				3EC4FF3C1ABAFC8400AC3222 /* NotClickedWeek.png in Resources */,
 				A29DA1981A11FDD600BE6CAE /* Transfer.png in Resources */,
 				A29DA1A51A1200BE00BE6CAE /* lockimg.png in Resources */,
 				A27888621A1A466D0031C3CE /* More-flipped.png in Resources */,
@@ -1767,6 +1790,7 @@
 				A2B9FA231982B3FD00A61F5F /* camera.png in Resources */,
 				A27888591A163EED0031C3CE /* Folder.png in Resources */,
 				04A131441AAD8ECC00D422F8 /* DateIcon.png in Resources */,
+				3EC4FF3B1ABAFC8400AC3222 /* NotClickedMonth.png in Resources */,
 				04C904521AB87D320008B4D4 /* Ipad-Icon_76pt@2x.png in Resources */,
 				04A131491AAD8EF700D422F8 /* metadataSeparator.png in Resources */,
 				04524B0E1AB196B8008814B0 /* PopUpCancelBtn_en.png in Resources */,

@@ -34,29 +34,34 @@
     self.navigationController.navigationBar.translucent = YES;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showHideNavbar:)];
     
+    
+    UIImage *notClickedWeek=[UIImage imageNamed:@"NotClickedWeek.png"];
     filterWeeklyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [filterWeeklyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2-140,-15,70,59)];
-    [filterWeeklyButton setTitle:@"Weekly" forState:UIControlStateNormal];
-    [filterWeeklyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    filterWeeklyButton.backgroundColor =mainDelegate.InboxCellSelectedColor;
+    [filterWeeklyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2-140,2.5,70,40)];
+    [filterWeeklyButton setTitle:NSLocalizedString(@"Reports.Weekly", @"Weekly") forState:UIControlStateNormal];
+    [filterWeeklyButton setBackgroundImage:notClickedWeek forState:UIControlStateNormal];
+    [filterWeeklyButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.navigationController.navigationBar addSubview:filterWeeklyButton];
     [filterWeeklyButton addTarget:self action:@selector(getWeeklyData) forControlEvents:UIControlEventTouchUpInside];
     
+    UIImage *notClickedMonth=[UIImage imageNamed:@"NotClickedMonth.png"];
     filterMonthlyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [filterMonthlyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2-70,-15,70,59)];
-    [filterMonthlyButton setTitle:@"monthly" forState:UIControlStateNormal];
-    [filterMonthlyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    filterMonthlyButton.backgroundColor =mainDelegate.InboxCellSelectedColor;
+    [filterMonthlyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2-70,2.5,70,40)];
+    [filterMonthlyButton setTitle:NSLocalizedString(@"Reports.Monthly", @"Monthly") forState:UIControlStateNormal];
+    [filterMonthlyButton setBackgroundImage:notClickedMonth forState:UIControlStateNormal];
+    [filterMonthlyButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.navigationController.navigationBar addSubview:filterMonthlyButton];
     [filterMonthlyButton addTarget:self action:@selector(getMonthlyData) forControlEvents:UIControlEventTouchUpInside];
     
+    UIImage *notClickedYear=[UIImage imageNamed:@"NotClickedYear.png"];
     filterYearlyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [filterYearlyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2,-15,70,59)];
-    [filterYearlyButton setTitle:@"Yearly" forState:UIControlStateNormal];
-    [filterYearlyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    filterYearlyButton.backgroundColor =mainDelegate.InboxCellSelectedColor;
+    [filterYearlyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2,2.5,70,40)];
+    [filterYearlyButton setTitle:NSLocalizedString(@"Reports.Yearly", @"Yearly") forState:UIControlStateNormal];
+    [filterYearlyButton setBackgroundImage:notClickedYear forState:UIControlStateNormal];
+    [filterYearlyButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.navigationController.navigationBar addSubview:filterYearlyButton];
     [filterYearlyButton addTarget:self action:@selector(getYearlyData) forControlEvents:UIControlEventTouchUpInside];
+
     
     if (SYSTEM_VERSION_LESS_THAN(@"8.0")){
         Width=self.view.frame.size.width;
@@ -93,30 +98,50 @@
 }
 
 -(void) getWeeklyData{
+    [self resetMenuButtonsImages];
+    UIImage *clickedWeek=[UIImage imageNamed:@"ClickedWeek.png"];
+    [filterWeeklyButton setBackgroundImage:clickedWeek forState:UIControlStateNormal];
     pieDateRange = @"weekly";
     [self callWebViewDidFinishLoading];
 }
 
 -(void) getMonthlyData{
+    [self resetMenuButtonsImages];
+    UIImage *clickedMonth=[UIImage imageNamed:@"ClickedMonth.png"];
+    [filterMonthlyButton setBackgroundImage:clickedMonth forState:UIControlStateNormal];
     pieDateRange = @"monthly";
     [self callWebViewDidFinishLoading];
 }
 
 -(void) getYearlyData{
+    [self resetMenuButtonsImages];
+    UIImage *clickedYear=[UIImage imageNamed:@"ClickedYear.png"];
+    [filterYearlyButton setBackgroundImage:clickedYear forState:UIControlStateNormal];
     pieDateRange = @"yearly";
     [self callWebViewDidFinishLoading];
+}
+
+-(void) resetMenuButtonsImages{
+    UIImage *notClickedWeek=[UIImage imageNamed:@"NotClickedWeek.png"];
+    UIImage *notClickedMonth=[UIImage imageNamed:@"NotClickedMonth.png"];
+    UIImage *notClickedYear=[UIImage imageNamed:@"NotClickedYear.png"];
+    [filterWeeklyButton setBackgroundImage:notClickedWeek forState:UIControlStateNormal];
+    [filterMonthlyButton setBackgroundImage:notClickedMonth forState:UIControlStateNormal];
+    [filterYearlyButton setBackgroundImage:notClickedYear forState:UIControlStateNormal];
 }
 
 -(NSString*) castDateToString:(NSDate*)date{
     NSString *retVal ;
     NSDateFormatter *formatter;
-    
+    NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     formatter = [[NSDateFormatter alloc] init];
+    [formatter setLocale:usLocale];
     [formatter setDateFormat:@"MM-dd-yyyy"];
     
     retVal = [formatter stringFromDate:date];
     return retVal;
 }
+
 
 -(NSDate*) getFromDate:(NSString*)status{
     NSDate *retVal;
@@ -151,10 +176,6 @@
     }
     
     return retVal;
-}
-
--(void)ClearWebViewContent{
-    [self.WebView loadHTMLString:@"<html><head></head><body></body></html>" baseURL:nil];
 }
 
 -(void) showHideNavbar:(id) sender
@@ -203,32 +224,39 @@
     
     NSString *serverUrl;
     NSString *getPieChartDataUrl;
+    NSString *fromDateString;
+    NSString *toDateString;
+    NSDate *fromDate;
+    NSString *message;
     if([pieDateRange isEqualToString:@"general"]){
         serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
         getPieChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCategoriesCountData?token=%@&language=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
+        message = [NSString stringWithFormat:NSLocalizedString(@"Reports.ShowingAllData", @"Showing all data")];
     }else if([pieDateRange isEqualToString:@"weekly"]){
-        NSDate *fromDate =[self getFromDate:@"week"];
-        NSString *fromDateString = [self castDateToString:fromDate];
-        NSString *toDateString = [self castDateToString:[NSDate date]];
+        fromDate =[self getFromDate:@"week"];
+        fromDateString = [self castDateToString:fromDate];
+        toDateString = [self castDateToString:[NSDate date]];
         
         serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
         getPieChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCategoriesCountData?token=%@&language=%@&fromDate=%@&toDate=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage,fromDateString,toDateString];
+        message = [NSString stringWithFormat:@"%@ %@ %@ %@",[NSString stringWithFormat:NSLocalizedString(@"Reports.ShowingDataFrom", @"*Showing data from")],fromDateString,[NSString stringWithFormat:NSLocalizedString(@"Reports.ToDate", @"to")],toDateString];
+        
     }else if([pieDateRange isEqualToString:@"monthly"]){
-        NSDate *fromDate =[self getFromDate:@"month"];
-        NSString *fromDateString = [self castDateToString:fromDate];
-        NSString *toDateString = [self castDateToString:[NSDate date]];
+        fromDate =[self getFromDate:@"month"];
+        fromDateString = [self castDateToString:fromDate];
+        toDateString = [self castDateToString:[NSDate date]];
         
         serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
         getPieChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCategoriesCountData?token=%@&language=%@&fromDate=%@&toDate=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage,fromDateString,toDateString];
-        
+         message = [NSString stringWithFormat:@"%@ %@ %@ %@",[NSString stringWithFormat:NSLocalizedString(@"Reports.ShowingDataFrom", @"*Showing data from")],fromDateString,[NSString stringWithFormat:NSLocalizedString(@"Reports.ToDate", @"to")],toDateString];
     }else if([pieDateRange isEqualToString:@"yearly"]){
-        NSDate *fromDate =[self getFromDate:@"year"];
-        NSString *fromDateString = [self castDateToString:fromDate];
-        NSString *toDateString = [self castDateToString:[NSDate date]];
+        fromDate =[self getFromDate:@"year"];
+        fromDateString = [self castDateToString:fromDate];
+        toDateString = [self castDateToString:[NSDate date]];
         
         serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
         getPieChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCategoriesCountData?token=%@&language=%@&fromDate=%@&toDate=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage,fromDateString,toDateString];
-        
+         message = [NSString stringWithFormat:@"%@ %@ %@ %@",[NSString stringWithFormat:NSLocalizedString(@"Reports.ShowingDataFrom", @"*Showing data from")],fromDateString,[NSString stringWithFormat:NSLocalizedString(@"Reports.ToDate", @"to")],toDateString];
     }
     NSURL *url = [NSURL URLWithString:getPieChartDataUrl];
     NSMutableURLRequest* request=[[NSMutableURLRequest alloc]initWithURL:url];
@@ -244,9 +272,11 @@
     NSInteger statusCode = [HTTPResponse statusCode];
     
     if([[NSString stringWithFormat: @"%ld", (long)statusCode]  isEqual: @"200"]){
-        NSString* title=@"{text:\"Correspondences by Category\"}";
+        
+        NSString* title=[NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.CorrespondencesByCategory", @"Correspondences by Category")];
         NSString* size=[NSString stringWithFormat:@"{size:%f}",Width-50];
-        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showRing(%@,%@,%@)",size,title,data]];
+        message =[NSString stringWithFormat:@"{text:\"%@\"}",message];
+        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showRing(%@,%@,%@,%@)",size,title,data,message]];
         
     }
     

@@ -110,7 +110,10 @@
     
     if([[NSString stringWithFormat: @"%ld", (long)statusCode]  isEqual: @"200"]){
         
-        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showData(%@)",data]];
+        NSString *structure =[NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.Structure", @"structure")];
+        NSString *count = [NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.Count", @"count")];
+        NSString *title =[NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.NumberOfOverdueTransfersByStructure", @"Number of Overdue Transfers by Structure")];
+        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showData(%@,%@,%@,%@)",data,structure,count,title]];
         
     }
     
