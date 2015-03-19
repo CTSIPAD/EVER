@@ -31,30 +31,32 @@
     self.navigationController.navigationBar.translucent = YES;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showHideNavbar:)];
     
+    UIImage *notClickedWeek=[UIImage imageNamed:@"NotClickedWeek.png"];
     filterWeeklyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [filterWeeklyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2-140,-15,70,59)];
+    [filterWeeklyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2-140,2.5,70,40)];
     [filterWeeklyButton setTitle:NSLocalizedString(@"Reports.Weekly", @"Weekly") forState:UIControlStateNormal];
-    [filterWeeklyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    filterWeeklyButton.backgroundColor =mainDelegate.InboxCellSelectedColor;
+    [filterWeeklyButton setBackgroundImage:notClickedWeek forState:UIControlStateNormal];
+    [filterWeeklyButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.navigationController.navigationBar addSubview:filterWeeklyButton];
     [filterWeeklyButton addTarget:self action:@selector(getWeeklyData) forControlEvents:UIControlEventTouchUpInside];
     
+    UIImage *notClickedMonth=[UIImage imageNamed:@"NotClickedMonth.png"];
     filterMonthlyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [filterMonthlyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2-70,-15,70,59)];
+    [filterMonthlyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2-70,2.5,70,40)];
     [filterMonthlyButton setTitle:NSLocalizedString(@"Reports.Monthly", @"Monthly") forState:UIControlStateNormal];
-    [filterMonthlyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    filterMonthlyButton.backgroundColor =mainDelegate.InboxCellSelectedColor;
+    [filterMonthlyButton setBackgroundImage:notClickedMonth forState:UIControlStateNormal];
+    [filterMonthlyButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.navigationController.navigationBar addSubview:filterMonthlyButton];
     [filterMonthlyButton addTarget:self action:@selector(getMonthlyData) forControlEvents:UIControlEventTouchUpInside];
     
+    UIImage *notClickedYear=[UIImage imageNamed:@"NotClickedYear.png"];
     filterYearlyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [filterYearlyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2,-15,70,59)];
+    [filterYearlyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2,2.5,70,40)];
     [filterYearlyButton setTitle:NSLocalizedString(@"Reports.Yearly", @"Yearly") forState:UIControlStateNormal];
-    [filterYearlyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    filterYearlyButton.backgroundColor =mainDelegate.InboxCellSelectedColor;
+    [filterYearlyButton setBackgroundImage:notClickedYear forState:UIControlStateNormal];
+    [filterYearlyButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.navigationController.navigationBar addSubview:filterYearlyButton];
     [filterYearlyButton addTarget:self action:@selector(getYearlyData) forControlEvents:UIControlEventTouchUpInside];
-    
     
     if (SYSTEM_VERSION_LESS_THAN(@"8.0")){
         Width=self.view.frame.size.width;
@@ -91,18 +93,36 @@
 }
 
 -(void) getWeeklyData{
+    [self resetMenuButtonsImages];
+    UIImage *clickedWeek=[UIImage imageNamed:@"ClickedWeek.png"];
+    [filterWeeklyButton setBackgroundImage:clickedWeek forState:UIControlStateNormal];
     verticalBarDateRange = @"weekly";
     [self callWebViewDidFinishLoading];
 }
 
 -(void) getMonthlyData{
+    [self resetMenuButtonsImages];
+    UIImage *clickedMonth=[UIImage imageNamed:@"ClickedMonth.png"];
+    [filterMonthlyButton setBackgroundImage:clickedMonth forState:UIControlStateNormal];
     verticalBarDateRange = @"monthly";
     [self callWebViewDidFinishLoading];
 }
 
 -(void) getYearlyData{
+    [self resetMenuButtonsImages];
+    UIImage *clickedYear=[UIImage imageNamed:@"ClickedYear.png"];
+    [filterYearlyButton setBackgroundImage:clickedYear forState:UIControlStateNormal];
     verticalBarDateRange = @"yearly";
     [self callWebViewDidFinishLoading];
+}
+
+-(void) resetMenuButtonsImages{
+    UIImage *notClickedWeek=[UIImage imageNamed:@"NotClickedWeek.png"];
+    UIImage *notClickedMonth=[UIImage imageNamed:@"NotClickedMonth.png"];
+    UIImage *notClickedYear=[UIImage imageNamed:@"NotClickedYear.png"];
+    [filterWeeklyButton setBackgroundImage:notClickedWeek forState:UIControlStateNormal];
+    [filterMonthlyButton setBackgroundImage:notClickedMonth forState:UIControlStateNormal];
+    [filterYearlyButton setBackgroundImage:notClickedYear forState:UIControlStateNormal];
 }
 
 -(NSString*) castDateToString:(NSDate*)date{

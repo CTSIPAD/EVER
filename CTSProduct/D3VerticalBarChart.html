@@ -161,10 +161,11 @@
         .attr("width", x1.rangeBand())
         .attr("x", function (d) { return x1(d.Name); })
         .attr("height", function (d) { return height - y(d.Value); })
-        .attr("y", height)
+        .attr("y",height)
         .transition().duration(1000).ease("in")
         .attr("y", function (d) { return y(d.Value); })
         .style("fill", function (d) { return color(d.Name); });
+        
         
         var legend = svg.selectAll(".legend")
         .data(status.slice().reverse())

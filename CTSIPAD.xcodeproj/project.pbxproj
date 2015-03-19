@@ -20,14 +20,6 @@
 		0455513B1AB2E87C00A7844C /* OverdueBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551321AB2E87C00A7844C /* OverdueBarChartViewController.m */; };
 		0455513C1AB2E87C00A7844C /* VerticalBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */; };
 		045DC4AE1A5D738D009C3540 /* IMGtakephoto.png in Resources */ = {isa = PBXBuildFile; fileRef = 045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */; };
-		047DBA021AB970E200DB75EE /* InfColorBarPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9F31AB970E200DB75EE /* InfColorBarPicker.m */; };
-		047DBA031AB970E200DB75EE /* InfColorIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9F51AB970E200DB75EE /* InfColorIndicatorView.m */; };
-		047DBA041AB970E200DB75EE /* InfColorPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9F81AB970E200DB75EE /* InfColorPickerController.m */; };
-		047DBA051AB970E200DB75EE /* InfColorPickerNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9FA1AB970E200DB75EE /* InfColorPickerNavigationController.m */; };
-		047DBA061AB970E200DB75EE /* InfColorPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 047DB9FB1AB970E200DB75EE /* InfColorPickerView.xib */; };
-		047DBA071AB970E200DB75EE /* InfColorSquarePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9FD1AB970E200DB75EE /* InfColorSquarePicker.m */; };
-		047DBA081AB970E200DB75EE /* InfHSBSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DB9FF1AB970E200DB75EE /* InfHSBSupport.m */; };
-		047DBA091AB970E200DB75EE /* InfSourceColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 047DBA011AB970E200DB75EE /* InfSourceColorView.m */; };
 		0481EF991AAF41D800BACA04 /* metadataBg1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0481EF981AAF41D800BACA04 /* metadataBg1.png */; };
 		04932D491AA9E05500180152 /* separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 04932D481AA9E05500180152 /* separator.png */; };
 		04932D4D1AA9E31A00180152 /* SelectedInbox_ar.png in Resources */ = {isa = PBXBuildFile; fileRef = 04932D4A1AA9E31A00180152 /* SelectedInbox_ar.png */; };
@@ -84,6 +76,12 @@
 		3EC220A41AB96679008D0731 /* InfColorSquarePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC2209A1AB96679008D0731 /* InfColorSquarePicker.m */; };
 		3EC220A51AB96679008D0731 /* InfHSBSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC2209C1AB96679008D0731 /* InfHSBSupport.m */; };
 		3EC220A61AB96679008D0731 /* InfSourceColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC2209E1AB96679008D0731 /* InfSourceColorView.m */; };
+		3EC4FF381ABAFC8400AC3222 /* ClickedMonth.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EC4FF321ABAFC8400AC3222 /* ClickedMonth.png */; };
+		3EC4FF391ABAFC8400AC3222 /* ClickedWeek.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EC4FF331ABAFC8400AC3222 /* ClickedWeek.png */; };
+		3EC4FF3A1ABAFC8400AC3222 /* ClickedYear.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EC4FF341ABAFC8400AC3222 /* ClickedYear.png */; };
+		3EC4FF3B1ABAFC8400AC3222 /* NotClickedMonth.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EC4FF351ABAFC8400AC3222 /* NotClickedMonth.png */; };
+		3EC4FF3C1ABAFC8400AC3222 /* NotClickedWeek.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EC4FF361ABAFC8400AC3222 /* NotClickedWeek.png */; };
+		3EC4FF3D1ABAFC8400AC3222 /* NotClickedYear.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EC4FF371ABAFC8400AC3222 /* NotClickedYear.png */; };
 		956B97BC1966DB4F00D01DB8 /* note.m in Sources */ = {isa = PBXBuildFile; fileRef = 956B97BB1966DB4F00D01DB8 /* note.m */; };
 		956B97BF1966DB6600D01DB8 /* HighlightClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 956B97BE1966DB6600D01DB8 /* HighlightClass.m */; };
 		A2010BEA195D6C55004AC93C /* FreeSign.png in Resources */ = {isa = PBXBuildFile; fileRef = A2010BE6195D6C55004AC93C /* FreeSign.png */; };
@@ -285,22 +283,6 @@
 		045551331AB2E87C00A7844C /* VerticalBarChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticalBarChartViewController.h; sourceTree = "<group>"; };
 		045551341AB2E87C00A7844C /* VerticalBarChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticalBarChartViewController.m; sourceTree = "<group>"; };
 		045DC4AD1A5D738D009C3540 /* IMGtakephoto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IMGtakephoto.png; sourceTree = "<group>"; };
-		047DB9F21AB970E200DB75EE /* InfColorBarPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorBarPicker.h; sourceTree = "<group>"; };
-		047DB9F31AB970E200DB75EE /* InfColorBarPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorBarPicker.m; sourceTree = "<group>"; };
-		047DB9F41AB970E200DB75EE /* InfColorIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorIndicatorView.h; sourceTree = "<group>"; };
-		047DB9F51AB970E200DB75EE /* InfColorIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorIndicatorView.m; sourceTree = "<group>"; };
-		047DB9F61AB970E200DB75EE /* InfColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPicker.h; sourceTree = "<group>"; };
-		047DB9F71AB970E200DB75EE /* InfColorPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPickerController.h; sourceTree = "<group>"; };
-		047DB9F81AB970E200DB75EE /* InfColorPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorPickerController.m; sourceTree = "<group>"; };
-		047DB9F91AB970E200DB75EE /* InfColorPickerNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorPickerNavigationController.h; sourceTree = "<group>"; };
-		047DB9FA1AB970E200DB75EE /* InfColorPickerNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorPickerNavigationController.m; sourceTree = "<group>"; };
-		047DB9FB1AB970E200DB75EE /* InfColorPickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfColorPickerView.xib; sourceTree = "<group>"; };
-		047DB9FC1AB970E200DB75EE /* InfColorSquarePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorSquarePicker.h; sourceTree = "<group>"; };
-		047DB9FD1AB970E200DB75EE /* InfColorSquarePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorSquarePicker.m; sourceTree = "<group>"; };
-		047DB9FE1AB970E200DB75EE /* InfHSBSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfHSBSupport.h; sourceTree = "<group>"; };
-		047DB9FF1AB970E200DB75EE /* InfHSBSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfHSBSupport.m; sourceTree = "<group>"; };
-		047DBA001AB970E200DB75EE /* InfSourceColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfSourceColorView.h; sourceTree = "<group>"; };
-		047DBA011AB970E200DB75EE /* InfSourceColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfSourceColorView.m; sourceTree = "<group>"; };
 		0481EF981AAF41D800BACA04 /* metadataBg1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = metadataBg1.png; sourceTree = "<group>"; };
 		04932D481AA9E05500180152 /* separator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = separator.png; sourceTree = "<group>"; };
 		04932D4A1AA9E31A00180152 /* SelectedInbox_ar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SelectedInbox_ar.png; sourceTree = "<group>"; };
@@ -367,6 +349,12 @@
 		3EC2209C1AB96679008D0731 /* InfHSBSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfHSBSupport.m; sourceTree = "<group>"; };
 		3EC2209D1AB96679008D0731 /* InfSourceColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfSourceColorView.h; sourceTree = "<group>"; };
 		3EC2209E1AB96679008D0731 /* InfSourceColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfSourceColorView.m; sourceTree = "<group>"; };
+		3EC4FF321ABAFC8400AC3222 /* ClickedMonth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClickedMonth.png; sourceTree = "<group>"; };
+		3EC4FF331ABAFC8400AC3222 /* ClickedWeek.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClickedWeek.png; sourceTree = "<group>"; };
+		3EC4FF341ABAFC8400AC3222 /* ClickedYear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClickedYear.png; sourceTree = "<group>"; };
+		3EC4FF351ABAFC8400AC3222 /* NotClickedMonth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotClickedMonth.png; sourceTree = "<group>"; };
+		3EC4FF361ABAFC8400AC3222 /* NotClickedWeek.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotClickedWeek.png; sourceTree = "<group>"; };
+		3EC4FF371ABAFC8400AC3222 /* NotClickedYear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotClickedYear.png; sourceTree = "<group>"; };
 		956B97BA1966DB4F00D01DB8 /* note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = note.h; sourceTree = "<group>"; };
 		956B97BB1966DB4F00D01DB8 /* note.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = note.m; sourceTree = "<group>"; };
 		956B97BD1966DB6600D01DB8 /* HighlightClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightClass.h; sourceTree = "<group>"; };
@@ -703,29 +691,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		047DB9F11AB970E200DB75EE /* InfColorPicker */ = {
-			isa = PBXGroup;
-			children = (
-				047DB9F21AB970E200DB75EE /* InfColorBarPicker.h */,
-				047DB9F31AB970E200DB75EE /* InfColorBarPicker.m */,
-				047DB9F41AB970E200DB75EE /* InfColorIndicatorView.h */,
-				047DB9F51AB970E200DB75EE /* InfColorIndicatorView.m */,
-				047DB9F61AB970E200DB75EE /* InfColorPicker.h */,
-				047DB9F71AB970E200DB75EE /* InfColorPickerController.h */,
-				047DB9F81AB970E200DB75EE /* InfColorPickerController.m */,
-				047DB9F91AB970E200DB75EE /* InfColorPickerNavigationController.h */,
-				047DB9FA1AB970E200DB75EE /* InfColorPickerNavigationController.m */,
-				047DB9FB1AB970E200DB75EE /* InfColorPickerView.xib */,
-				047DB9FC1AB970E200DB75EE /* InfColorSquarePicker.h */,
-				047DB9FD1AB970E200DB75EE /* InfColorSquarePicker.m */,
-				047DB9FE1AB970E200DB75EE /* InfHSBSupport.h */,
-				047DB9FF1AB970E200DB75EE /* InfHSBSupport.m */,
-				047DBA001AB970E200DB75EE /* InfSourceColorView.h */,
-				047DBA011AB970E200DB75EE /* InfSourceColorView.m */,
-			);
-			path = InfColorPicker;
-			sourceTree = "<group>";
-		};
 		0499B7011AA459AF002609A0 /* Reports */ = {
 			isa = PBXGroup;
 			children = (
@@ -743,6 +708,12 @@
 		0499B7071AA45F1F002609A0 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				3EC4FF321ABAFC8400AC3222 /* ClickedMonth.png */,
+				3EC4FF331ABAFC8400AC3222 /* ClickedWeek.png */,
+				3EC4FF341ABAFC8400AC3222 /* ClickedYear.png */,
+				3EC4FF351ABAFC8400AC3222 /* NotClickedMonth.png */,
+				3EC4FF361ABAFC8400AC3222 /* NotClickedWeek.png */,
+				3EC4FF371ABAFC8400AC3222 /* NotClickedYear.png */,
 				04C59E251AB6E06D00B25AC2 /* documents.png */,
 				04C59E261AB6E06D00B25AC2 /* months.png */,
 				04C59E271AB6E06D00B25AC2 /* structure.png */,
@@ -1709,6 +1680,7 @@
 				A2F614861959651100956BF0 /* apple calendar.plist in Resources */,
 				A29DA1A71A1200BE00BE6CAE /* subjectimg.png in Resources */,
 				A27888561A1633850031C3CE /* Priorityimg.png in Resources */,
+				3EC4FF3A1ABAFC8400AC3222 /* ClickedYear.png in Resources */,
 				A2B9FA211982459700A61F5F /* ShowAttachments.png in Resources */,
 				A2F61482195964F400956BF0 /* background.png in Resources */,
 				A2A64BD919FF895900D8CCCD /* Online.png in Resources */,
@@ -1721,10 +1693,13 @@
 				04C9044F1AB87D320008B4D4 /* Ipad-Icon_40pt.png in Resources */,
 				A2010BEB195D6C55004AC93C /* FreeSignAll.png in Resources */,
 				A29DA1A11A12006E00BE6CAE /* seperatorimg.png in Resources */,
+				3EC4FF381ABAFC8400AC3222 /* ClickedMonth.png in Resources */,
 				0499B7111AA468EC002609A0 /* Overdue-Transfers.png in Resources */,
+				3EC4FF391ABAFC8400AC3222 /* ClickedWeek.png in Resources */,
 				A29DA1971A11FDD600BE6CAE /* SaveIcon.png in Resources */,
 				04A1314D1AAD8F3D00D422F8 /* PopUpBg.png in Resources */,
 				A29DA1C51A1210DA00BE6CAE /* settings.png in Resources */,
+				3EC4FF3D1ABAFC8400AC3222 /* NotClickedYear.png in Resources */,
 				A29DA1CB1A121AF700BE6CAE /* detailviewBackground.png in Resources */,
 				A29DA1CD1A124EE500BE6CAE /* sync.png in Resources */,
 				A2010BF6195D979A004AC93C /* delete_item.png in Resources */,
@@ -1767,6 +1742,7 @@
 				04A17F061A94BF1B00E76B01 /* backGroundImg.png in Resources */,
 				A2B4FE6C1965501400D7EAB5 /* Actions.png in Resources */,
 				A2010BF2195D954E004AC93C /* highlight.png in Resources */,
+				3EC4FF3C1ABAFC8400AC3222 /* NotClickedWeek.png in Resources */,
 				A29DA1981A11FDD600BE6CAE /* Transfer.png in Resources */,
 				A29DA1A51A1200BE00BE6CAE /* lockimg.png in Resources */,
 				A27888621A1A466D0031C3CE /* More-flipped.png in Resources */,
@@ -1783,6 +1759,7 @@
 				A2B9FA231982B3FD00A61F5F /* camera.png in Resources */,
 				A27888591A163EED0031C3CE /* Folder.png in Resources */,
 				04A131441AAD8ECC00D422F8 /* DateIcon.png in Resources */,
+				3EC4FF3B1ABAFC8400AC3222 /* NotClickedMonth.png in Resources */,
 				04C904521AB87D320008B4D4 /* Ipad-Icon_76pt@2x.png in Resources */,
 				04A131491AAD8EF700D422F8 /* metadataSeparator.png in Resources */,
 				04524B0E1AB196B8008814B0 /* PopUpCancelBtn_en.png in Resources */,
