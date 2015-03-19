@@ -104,8 +104,9 @@
     NSInteger statusCode = [HTTPResponse statusCode];
     
     if([[NSString stringWithFormat: @"%ld", (long)statusCode]  isEqual: @"200"]){
-        
-        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showData(%@)",data]];
+    NSString *month =[NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.Month", @"month")];
+        NSString *title =[NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.CorrespondencesCountByStructures", @"Correspondences Count by Structures")];
+    [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showData(%@,%@,%@)",data,month,title]];
         
     }
     

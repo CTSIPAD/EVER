@@ -194,7 +194,7 @@
 "Reports.OverdueDocuments" = "Overdue Documents";
 "Reports.Weekly" = "Weekly";
 "Reports.Monthly" = "Monthly";
-"Reports.Yearly" = "yearly";
+"Reports.Yearly" = "Yearly";
 "Reports.CorrespondencesByCategory" = "Correspondences by Category";
 "Reports.CorrespondencesCountbyStatus" = "Correspondences Count by Status";
 "Reports.CorrespondencesCountByStructures" = "Correspondences Count by Structures";
@@ -202,3 +202,7 @@
 "Reports.Count" = "count";
 "Reports.Structure" = "structure";
 "Reports.Month" = "month";
+"Reports.ShowingAllData" = "*Showing all data";
+"Reports.ShowRangeDate" = "*showing data from %@ to %@";
+"Reports.ShowingDataFrom" = "*Showing data from";
+"Reports.ToDate" = "to";

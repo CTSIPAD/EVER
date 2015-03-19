@@ -184,6 +184,7 @@
 "Reports.ChartsByStructure" = "لوحة حسب الجهات";
 "Reports.ChartsByMonths" = "لوحة حسب الأشهر";
 "Reports.OverdueDocuments" = "لوحة الإحالات المتأخرة";
+
 "Reports.Weekly" = "أسبوعياً";
 "Reports.Monthly" = "شهرياً";
 "Reports.Yearly" = "سنوياً";
@@ -194,3 +195,7 @@
 "Reports.Count" = "العدد";
 "Reports.Structure" = "المنظمة";
 "Reports.Month" = "الأشهر";
+"Reports.ShowingAllData" = "عرض جميع البيانات*";
+"Reports.ShowRangeDate" = "%@ عرض البيانات من تاريخ @% إلى تاريخ*";
+"Reports.ShowingDataFrom" = "*عرض البيانات من تاريخ";
+"Reports.ToDate" = "إلى تاريخ";

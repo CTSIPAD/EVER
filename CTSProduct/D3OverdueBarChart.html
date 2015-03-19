@@ -73,7 +73,7 @@
     
     <body>
         
-        <center><h3>Number of Overdue Transfers by Structures</h3></center>
+        <center><h3 id="chartTitle">Number of Overdue Transfers by Structures</h3></center>
         
         <div id="barChart" style="margin-top:30px;margin-left:20px;margin-bottom:20px;" onclick="hideToolTip(this)"/>
         
@@ -87,8 +87,8 @@
     
     <script>
      
-     function showData(dataset) {
-       
+     function showData(dataset,structure,count,title) {
+       document.getElementById("chartTitle").textContent=title.text;
        var margin = {top: 40, right: 20, bottom: 40, left: 40};
        
        var width = GetWidth(dataset);//700 - margin.left - margin.right;
@@ -193,7 +193,7 @@
                   
                   .style("font-size", "20px")
                   
-                  .text("Structure");
+                  .text(structure.text);
                   
                   
                   
@@ -215,7 +215,7 @@
                   
                   .style("font-size","15px")
                   
-                  .text("Count");
+                  .text(count.text);
                   
                   
                   

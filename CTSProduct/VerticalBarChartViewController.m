@@ -33,7 +33,7 @@
     
     filterWeeklyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [filterWeeklyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2-140,-15,70,59)];
-    [filterWeeklyButton setTitle:@"Weekly" forState:UIControlStateNormal];
+    [filterWeeklyButton setTitle:NSLocalizedString(@"Reports.Weekly", @"Weekly") forState:UIControlStateNormal];
     [filterWeeklyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     filterWeeklyButton.backgroundColor =mainDelegate.InboxCellSelectedColor;
     [self.navigationController.navigationBar addSubview:filterWeeklyButton];
@@ -41,7 +41,7 @@
     
     filterMonthlyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [filterMonthlyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2-70,-15,70,59)];
-    [filterMonthlyButton setTitle:@"monthly" forState:UIControlStateNormal];
+    [filterMonthlyButton setTitle:NSLocalizedString(@"Reports.Monthly", @"Monthly") forState:UIControlStateNormal];
     [filterMonthlyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     filterMonthlyButton.backgroundColor =mainDelegate.InboxCellSelectedColor;
     [self.navigationController.navigationBar addSubview:filterMonthlyButton];
@@ -49,7 +49,7 @@
     
     filterYearlyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [filterYearlyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2,-15,70,59)];
-    [filterYearlyButton setTitle:@"Yearly" forState:UIControlStateNormal];
+    [filterYearlyButton setTitle:NSLocalizedString(@"Reports.Yearly", @"Yearly") forState:UIControlStateNormal];
     [filterYearlyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     filterYearlyButton.backgroundColor =mainDelegate.InboxCellSelectedColor;
     [self.navigationController.navigationBar addSubview:filterYearlyButton];
@@ -108,8 +108,9 @@
 -(NSString*) castDateToString:(NSDate*)date{
     NSString *retVal ;
     NSDateFormatter *formatter;
-    
+    NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     formatter = [[NSDateFormatter alloc] init];
+    [formatter setLocale:usLocale];
     [formatter setDateFormat:@"MM-dd-yyyy"];
     
     retVal = [formatter stringFromDate:date];
@@ -210,7 +211,7 @@
     if([verticalBarDateRange isEqualToString:@"general"]){
         serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
         getVerticalChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCorrespondenceStructureCountData?token=%@&language=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
-        message = [NSString stringWithFormat:@"showing all data"];
+        message = [NSString stringWithFormat:NSLocalizedString(@"Reports.ShowingAllData", @"Showing all data")];
     }else if([verticalBarDateRange isEqualToString:@"weekly"]){
         fromDate =[self getFromDate:@"week"];
         fromDateString = [self castDateToString:fromDate];
@@ -218,8 +219,7 @@
         
         serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
         getVerticalChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCorrespondenceStructureCountData?token=%@&language=%@&fromDate=%@&toDate=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage,fromDateString,toDateString];
-        message = [NSString stringWithFormat:@"showing data from %@ to %@",fromDateString,toDateString];
-        
+             message = [NSString stringWithFormat:@"%@ %@ %@ %@",[NSString stringWithFormat:NSLocalizedString(@"Reports.ShowingDataFrom", @"*Showing data from")],fromDateString,[NSString stringWithFormat:NSLocalizedString(@"Reports.ToDate", @"to")],toDateString];
     }else if([verticalBarDateRange isEqualToString:@"monthly"]){
         fromDate =[self getFromDate:@"month"];
         fromDateString = [self castDateToString:fromDate];
@@ -227,8 +227,7 @@
         
         serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
         getVerticalChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCorrespondenceStructureCountData?token=%@&language=%@&fromDate=%@&toDate=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage,fromDateString,toDateString];
-        message = [NSString stringWithFormat:@"showing data from %@ to %@",fromDateString,toDateString];
-        
+             message = [NSString stringWithFormat:@"%@ %@ %@ %@",[NSString stringWithFormat:NSLocalizedString(@"Reports.ShowingDataFrom", @"*Showing data from")],fromDateString,[NSString stringWithFormat:NSLocalizedString(@"Reports.ToDate", @"to")],toDateString];
     }else if([verticalBarDateRange isEqualToString:@"yearly"]){
         fromDate =[self getFromDate:@"year"];
         fromDateString = [self castDateToString:fromDate];
@@ -236,9 +235,7 @@
         
         serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
         getVerticalChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCorrespondenceStructureCountData?token=%@&language=%@&fromDate=%@&toDate=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage,fromDateString,toDateString];
-        message = [NSString stringWithFormat:@"showing data from %@ to %@",fromDateString,toDateString];
-        
-    }
+         message = [NSString stringWithFormat:@"%@ %@ %@ %@",[NSString stringWithFormat:NSLocalizedString(@"Reports.ShowingDataFrom", @"*Showing data from")],fromDateString,[NSString stringWithFormat:NSLocalizedString(@"Reports.ToDate", @"to")],toDateString];    }
     NSURL *url = [NSURL URLWithString:getVerticalChartDataUrl];
     NSMutableURLRequest* request=[[NSMutableURLRequest alloc]initWithURL:url];
     NSURLResponse * response = nil;
@@ -253,10 +250,11 @@
     NSInteger statusCode = [HTTPResponse statusCode];
     
     if([[NSString stringWithFormat: @"%ld", (long)statusCode]  isEqual: @"200"]){
-        NSString *stringStructure = NSLocalizedString(@"Reports.Structure", @"structure");
-        NSString *stringCount = NSLocalizedString(@"Reports.Count", @"count");
-         message =[NSString stringWithFormat:@"{text:\"*%@\"}",message];
-        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showData(%@,%@)",data,message]];
+         message =[NSString stringWithFormat:@"{text:\"%@\"}",message];
+        NSString *structure =[NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.Structure", @"structure")];
+        NSString *count = [NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.Count", @"count")];
+        NSString *title = [NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.CorrespondencesCountbyStatus", @"Correspondences Count by Status")];
+        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showData(%@,%@,%@,%@,%@)",data,message,structure,count,title]];
         
     }
     
