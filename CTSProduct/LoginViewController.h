@@ -20,5 +20,5 @@
 @property (strong, nonatomic) IBOutlet UITextField *txtPassword;
 @property (strong, nonatomic) IBOutlet UIButton *btnLogin;
 - (IBAction)Login:(id)sender;
-
+-(void)ShowSlider;
 @end

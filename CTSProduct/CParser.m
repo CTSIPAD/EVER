@@ -665,6 +665,36 @@
         return user;
     }
 }
++(void)fetchPhotos{
+    NSString* url;
+    AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    if(!mainDelegate.SupportsServlets)
+        url = [NSString stringWithFormat:@"http://%@/Login",mainDelegate.serverUrl];
+    else
+        url = [NSString stringWithFormat:@"http://%@?action=Login",mainDelegate.serverUrl];
+    NSData *xmlData ;
+    
+    NSError *error;
+    if(!mainDelegate.isOfflineMode){
+        NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
+        xmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+        if(xmlData==nil){
+            [mainDelegate.LoginSliderImages addObject:@"loginScrollBg.png"];
+            [mainDelegate.LoginSliderImages addObject:@"loginPortrait.png"];
+            [mainDelegate.LoginSliderImages addObject:@"loginPortrait.png"];
+            [mainDelegate.LoginSliderImages addObject:@"loginPortrait.png"];
+
+            return;
+        }
+    }
+    GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
+                                                           options:0 error:&error];
+    NSArray *results = [doc nodesForXPath:@"//Result" error:nil];
+    GDataXMLElement *userXML =  [results objectAtIndex:0];
+    
+    
+}
 
 +(void)LoadDepartmentChanges:(NSData *) xmlData{
     AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];

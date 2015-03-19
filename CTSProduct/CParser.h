@@ -45,4 +45,5 @@
 +(void)ShowMessage:(NSString*)message;
 +(CGFloat)pixelToPoints:(CGFloat)px;
 +(void)SendLogs;
++(void)fetchPhotos;
 @end

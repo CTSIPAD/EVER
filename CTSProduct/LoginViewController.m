@@ -27,6 +27,8 @@
     NSString* IconsCached;
     NSString* Password;
     UIImage* LoginbtnImg;
+    UIImageView *animatedSplashScreen;
+    UIImageView *logo;
     
 }
 
@@ -52,14 +54,41 @@
     }
     appDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.inboxForArchiveSelected=0;
+  
+    
+    
+     animatedSplashScreen  = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+ [self addSubviewWithZoomInAnimation:animatedSplashScreen duration:0.4 delay:0 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(animatedSplashScreen.frame.origin.x+animatedSplashScreen.frame.size.width/2, animatedSplashScreen.frame.origin.y+animatedSplashScreen.frame.size.height/2) originX:animatedSplashScreen.frame.origin.x originY:animatedSplashScreen.frame.origin.y];    animatedSplashScreen.animationImages= [NSArray arrayWithObjects:[UIImage imageNamed:@"splash1.png"],[UIImage imageNamed:@"splash2.png"],[UIImage imageNamed:@"splash4.png"], nil];
+    animatedSplashScreen.animationRepeatCount=1;
+    animatedSplashScreen.animationDuration=6;
+    [animatedSplashScreen startAnimating];
+
+   [self performSelector:@selector(Changelogo) withObject:nil afterDelay:4.1];
+    
+    logo  =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"splashlogo.png"]];
+    
+    [self addSubviewWithDropInAnimation:logo duration:0.4 withParentView:self.view FromPoint:CGPointMake(logo.frame.origin.x+self.view.frame.size.width/2, self.view.frame.origin.y+self.view.frame.size.height/2) originX:self.view.frame.origin.x/2 originY:self.view.frame.origin.y/2];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [CParser fetchPhotos];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self performSelector:@selector(hideSplash:) withObject:animatedSplashScreen afterDelay:5.0];
+            [self performSelector:@selector(initLoginView) withObject:nil afterDelay:5.0];
+
+        });
+        
+    });
+    
+}
+-(void)initLoginView{
     /**** UserName TextView ******/
     
     self.txtUsername.autoresizingMask = UIViewAutoresizingNone;
-//    self.txtUsername.layer.borderWidth=2;
+    //    self.txtUsername.layer.borderWidth=2;
     self.txtUsername.backgroundColor=[UIColor clearColor];
     self.txtUsername.layer.borderColor=[[UIColor clearColor] CGColor];
-//    self.txtUsername.layer.cornerRadius=10;
-//    self.txtUsername.clipsToBounds=YES;
+    //    self.txtUsername.layer.cornerRadius=10;
+    //    self.txtUsername.clipsToBounds=YES;
     self.txtUsername.returnKeyType = UIReturnKeyGo;
     self.txtUsername.autocorrectionType=FALSE;
     self.txtUsername.text=@"dory";
@@ -72,11 +101,11 @@
     /**** Password TextView ******/
     
     self.txtPassword.autoresizingMask = UIViewAutoresizingNone;
-//    self.txtPassword.layer.borderWidth=2;
+    //    self.txtPassword.layer.borderWidth=2;
     self.txtPassword.backgroundColor=[UIColor clearColor];
     self.txtPassword.layer.borderColor=[[UIColor clearColor] CGColor];
-//    self.txtPassword.layer.cornerRadius=10;
-//    self.txtPassword.clipsToBounds=YES;
+    //    self.txtPassword.layer.cornerRadius=10;
+    //    self.txtPassword.clipsToBounds=YES;
     self.txtPassword.secureTextEntry=YES;
     self.txtPassword.returnKeyType = UIReturnKeyGo;
     self.txtPassword.textColor=[UIColor colorWithRed:48/255.0 green:157/255.0 blue:174/255.0 alpha:1];
@@ -106,14 +135,14 @@
     /**** LOGIN BUTTON ******/
     
     self.btnLogin.autoresizingMask = UIViewAutoresizingNone;
-//    self.btnLogin.backgroundColor=[UIColor colorWithRed:37/255.0f green:96/255.0f blue:172/255.0f alpha:1.0];
+    //    self.btnLogin.backgroundColor=[UIColor colorWithRed:37/255.0f green:96/255.0f blue:172/255.0f alpha:1.0];
     [self.btnLogin setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     CGFloat red = 0.0f / 255.0f;
     CGFloat green = 155.0f / 255.0f;
     CGFloat blue = 213.0f / 255.0f;
     [self.btnLogin setTitleColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0] forState:UIControlStateHighlighted];
-//    self.btnLogin.layer.borderColor=[[UIColor grayColor] CGColor];
-//    self.btnLogin.layer.cornerRadius=10;
+    //    self.btnLogin.layer.borderColor=[[UIColor grayColor] CGColor];
+    //    self.btnLogin.layer.cornerRadius=10;
     if([appDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
         self.btnLogin.titleLabel.text=@"تسجيل الدخول";
         [self.btnLogin.titleLabel setFont:[UIFont fontWithName:@"Helvetica" size:18]];
@@ -131,8 +160,123 @@
     
     [self.view addSubview:self.txtUsername];
     
+    UIScrollView *scr=[[UIScrollView alloc] initWithFrame:CGRectMake(33, 135,460, 515)];
+    scr.tag = 1;
+    scr.autoresizingMask=UIViewAutoresizingNone;
+    [self.view addSubview:scr];
+    [self setupScrollView:scr];
+    UIPageControl *pgCtr = [[UIPageControl alloc] initWithFrame:CGRectMake(33, scr.frame.size.height+scr.frame.origin.y-36, scr.frame.size.width, 36)];
+    [pgCtr setTag:12];
+    pgCtr.numberOfPages=appDelegate.LoginSliderImages.count;
+    pgCtr.autoresizingMask=UIViewAutoresizingNone;
+    //    pgCtr.backgroundColor=appDelegate.selectedInboxColor;
+    [self.view addSubview:pgCtr];
+}
+
+-(void)Changelogo
+{
+    logo.image=[UIImage imageNamed:@"splashlogoLight.png"];
+    
+}
+-(void)hideSplash:(id)object
+{
     
     
+    [logo removeFromSuperview];
+    [animatedSplashScreen removeFromSuperview];
+//
+//    CGContextRef imageContext = UIGraphicsGetCurrentContext();
+//    [UIView beginAnimations:nil context:imageContext];
+//    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+//    [UIView setAnimationDuration:3];
+//    [UIView setAnimationDelegate:self];
+//    animatedSplashScreen.alpha=0.0;
+//    [UIView commitAnimations];
+    
+}
+
+-(void) addSubviewWithZoomInAnimation:(UIView*)view duration:(float)secs delay:(float)del
+                               option:(UIViewAnimationOptions)option withParentView:(UIView*)ParentView FromPoint:(CGPoint)sourcePoint
+                              originX:(CGFloat)x originY:(CGFloat)y
+{
+    [self.view addSubview:view];
+    [self.view bringSubviewToFront:view];
+    view.center=sourcePoint;
+    
+    CGAffineTransform trans= CGAffineTransformScale(view.transform,0.01,0.01);
+    view.transform=trans;
+    
+    [ParentView addSubview:view];
+    [ParentView bringSubviewToFront:view];
+    
+    [UIView animateWithDuration:secs delay:del options:option
+                     animations:^{
+                         view.transform=CGAffineTransformScale(view.transform,100.0,100.0);
+                         view.frame=CGRectMake(x,y,view.frame.size.width,view.frame.size.height);
+                     }
+                     completion:nil];
+}
+-(void) addSubviewWithDropInAnimation:(UIView*)view duration:(float)secs withParentView:(UIView*)ParentView FromPoint:(CGPoint)sourcePoint
+                              originX:(CGFloat)x originY:(CGFloat)y
+{
+    [self.view addSubview:view];
+    [self.view bringSubviewToFront:view];
+    view.center=sourcePoint;
+    
+    CGAffineTransform trans= CGAffineTransformScale(view.transform,0.01,0.01);
+    view.transform=trans;
+    
+    [ParentView addSubview:view];
+    [ParentView bringSubviewToFront:view];
+    
+    [UIView animateWithDuration:0.6/1.5 delay:1 options:UIViewAnimationOptionAllowUserInteraction
+                     animations:^{
+                         view.transform=CGAffineTransformScale(CGAffineTransformIdentity,1.1,1.1);
+                     }
+                     completion:^(BOOL finished){
+                         [UIView animateWithDuration:0.4/2
+                                          animations:^{
+                                              view.transform=CGAffineTransformScale(CGAffineTransformIdentity,0.9,0.9);
+                                          }
+                                          completion:^(BOOL finished){
+                                              [UIView animateWithDuration:0.3/2
+                                                               animations:^{
+                                                                   view.transform=CGAffineTransformIdentity;
+                                                               }];
+                                          }];
+                     }];
+}
+
+
+-(void)ShowSlider{
+   
+
+}
+- (void)setupScrollView:(UIScrollView*)scrMain {
+      for (int i=1; i<=appDelegate.LoginSliderImages.count; i++) {
+        UIImage *image = [UIImage imageNamed:[appDelegate.LoginSliderImages objectAtIndex:i-1]];
+        UIImageView *imgV = [[UIImageView alloc] initWithFrame:CGRectMake((i-1)*scrMain.frame.size.width, 0, scrMain.frame.size.width, scrMain.frame.size.height)];
+        imgV.contentMode=UIViewContentModeScaleToFill;
+        [imgV setImage:image];
+        imgV.tag=i+1;
+        [scrMain addSubview:imgV];
+    }
+    [scrMain setContentSize:CGSizeMake(scrMain.frame.size.width*appDelegate.LoginSliderImages.count, scrMain.frame.size.height)];
+    [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(scrollingTimer) userInfo:nil repeats:YES];
+}
+
+- (void)scrollingTimer {
+    UIScrollView *scrMain = (UIScrollView*) [self.view viewWithTag:1];
+    UIPageControl *pgCtr = (UIPageControl*) [self.view viewWithTag:12];
+    CGFloat contentOffset = scrMain.contentOffset.x;
+    int nextPage = (int)(contentOffset/scrMain.frame.size.width) + 1 ;
+    if( nextPage!=appDelegate.LoginSliderImages.count )  {
+        [scrMain scrollRectToVisible:CGRectMake(nextPage*scrMain.frame.size.width, 0, scrMain.frame.size.width, scrMain.frame.size.height) animated:YES];
+        pgCtr.currentPage=nextPage;
+    } else {
+        [scrMain scrollRectToVisible:CGRectMake(0, 0, scrMain.frame.size.width, scrMain.frame.size.height) animated:YES];
+        pgCtr.currentPage=0;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated{

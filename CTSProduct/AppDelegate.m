@@ -28,8 +28,8 @@
 @synthesize AnnotationsMode=_AnnotationsMode;
 @synthesize Highlights =_Highlights,Notes=_Notes,attachmentType=_attachmentType,Char_count;
 @synthesize IncomingHighlights =_IncomingHighlights,IncomingNotes=_IncomingNotes;
-@synthesize textColor,bgColor,buttonColor,titleColor,cellColor,iconViewColor,CorrespondenceCellColor,SignatureColor,TablebgColor,metaDataCellColor,selectedInboxColor,thumbnailDefined;
-@synthesize barView,logoView,logFilePath;
+@synthesize textColor,bgColor,buttonColor,titleColor,cellColor,iconViewColor,CorrespondenceCellColor,SignatureColor,TablebgColor,metaDataCellColor,selectedInboxColor,thumbnailDefined,LoginSliderImages;
+@synthesize barView,logoView,logFilePath,viewController;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
@@ -54,6 +54,8 @@
     self.searchResultViewController = [[SearchResultViewController alloc]initWithStyle:UITableViewStylePlain];
     self.DrawLayerViews=[[NSMutableDictionary alloc]init];
     self.DocumentsPath=[[NSMutableArray alloc]init];
+    LoginSliderImages=[[NSMutableArray alloc]init];
+    
     self.IpadLanguage=[[[NSBundle mainBundle] preferredLocalizations]objectAtIndex:0];
     self.serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
     self.isOfflineMode = [[[NSUserDefaults standardUserDefaults] stringForKey:@"offline_mode"] boolValue];
@@ -100,10 +102,11 @@
     self.InboxCellSelectedColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"SelectedInbox.png"]];
     SignatureColor=[UIColor blackColor];
     thumbnailDefined=NO;
+   
     [application setStatusBarHidden:YES];
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"barBg.png"] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setTintColor:self.textColor];
-    
+  
     return YES;
 }
 -(NSString*)CurrentDateStringFromDate:(NSDate*)dateTimeInLine withFormat:(NSString*)dateFormat

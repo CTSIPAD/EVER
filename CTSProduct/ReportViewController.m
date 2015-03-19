@@ -121,6 +121,8 @@
     [secondButton setBackgroundImage:[UIImage imageNamed:@"documents.png"] forState:UIControlStateNormal];
     [secondButton addTarget:self action:@selector(FilterReport) forControlEvents:UIControlEventTouchUpInside];
     [self addSubviewWithZoomInAnimation:secondButton duration:0.5 delay:1.0 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(secondButton.frame.origin.x+secondButton.frame.size.width/2, secondButton.frame.origin.y+secondButton.frame.size.height/2) originX:secondButton.frame.origin.x originY:secondButton.frame.origin.y];
+
+
 }
 -(void)ShowPie
 {

@@ -13,10 +13,15 @@
 #import "SplitViewController.h"
 #import "SearchResultViewController.h"
 #import "containerView.h"
+#import "LoginViewController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>{
+    UIImageView *splashView;
+
+}
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) LoginViewController *viewController;
 @property (strong,nonatomic) UIView *indicatorView;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
@@ -83,6 +88,7 @@
 @property (retain,nonatomic) NSMutableArray* IncomingNotes;
 @property (retain,nonatomic) NSMutableArray* folderNames;
 @property (retain,nonatomic) NSMutableArray* DocumentsPath;
+@property (retain,nonatomic) NSMutableArray* LoginSliderImages;
 @property (retain,nonatomic) NSMutableDictionary* Lookups;
 @property (strong,nonatomic)NSString* attachmentType;
 @property (retain,nonatomic) NSMutableDictionary* DrawLayerViews;
