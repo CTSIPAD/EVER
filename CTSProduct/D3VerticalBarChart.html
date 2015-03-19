@@ -64,6 +64,7 @@
     </head>
     <body>
         <center><h2>Correspondences Count by Status</h2></center>
+        <span id="mySpan" style="position:absolute; bottom:8%; left:0;font-size:13px;"></span>
         <div id="barChart" style="margin-top:30px;margin-left:20px;margin-bottom:30px;" onclick="hideToolTip(this)"/>
     </body>
     <script src="d3.min.js"></script>
@@ -71,12 +72,8 @@
   
     <script type="text/javascript">
         
-        /*var data = new Array();
-         data.push({ "structure": "product", "completed": 1, "draft": 2, "new": 3 });
-         data.push({ "structure": "sales", "completed": 4, "draft": 5, "new": 6 });
-         data.push({ "structure": "ps", "completed": 9, "draft": 8, "new": 7 });*/
-    function showData(data) {
-        
+    function showData(data,message) {
+        document.getElementById("mySpan").textContent=message.text;
         var margin = { top: 30, right: 20, bottom: 40, left: 40 },
         width = 700 - margin.left - margin.right,
         height = 520 - margin.top - margin.bottom;
@@ -219,7 +216,8 @@
                                           });
                          });
                          return max;
-        }    }
+        }
+    }
     
         </script>
 </html>

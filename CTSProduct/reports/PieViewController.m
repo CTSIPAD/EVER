@@ -153,10 +153,6 @@
     return retVal;
 }
 
--(void)ClearWebViewContent{
-    [self.WebView loadHTMLString:@"<html><head></head><body></body></html>" baseURL:nil];
-}
-
 -(void) showHideNavbar:(id) sender
 {
     // write code to show/hide nav bar here
@@ -203,31 +199,39 @@
     
     NSString *serverUrl;
     NSString *getPieChartDataUrl;
+    NSString *fromDateString;
+    NSString *toDateString;
+    NSDate *fromDate;
+    NSString *message;
     if([pieDateRange isEqualToString:@"general"]){
         serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
         getPieChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCategoriesCountData?token=%@&language=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
+        message = [NSString stringWithFormat:@"showing all data"];
     }else if([pieDateRange isEqualToString:@"weekly"]){
-        NSDate *fromDate =[self getFromDate:@"week"];
-        NSString *fromDateString = [self castDateToString:fromDate];
-        NSString *toDateString = [self castDateToString:[NSDate date]];
+        fromDate =[self getFromDate:@"week"];
+        fromDateString = [self castDateToString:fromDate];
+        toDateString = [self castDateToString:[NSDate date]];
         
         serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
         getPieChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCategoriesCountData?token=%@&language=%@&fromDate=%@&toDate=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage,fromDateString,toDateString];
+        message = [NSString stringWithFormat:@"showing data from %@ to %@",fromDateString,toDateString];
     }else if([pieDateRange isEqualToString:@"monthly"]){
-        NSDate *fromDate =[self getFromDate:@"month"];
-        NSString *fromDateString = [self castDateToString:fromDate];
-        NSString *toDateString = [self castDateToString:[NSDate date]];
+        fromDate =[self getFromDate:@"month"];
+        fromDateString = [self castDateToString:fromDate];
+        toDateString = [self castDateToString:[NSDate date]];
         
         serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
         getPieChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCategoriesCountData?token=%@&language=%@&fromDate=%@&toDate=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage,fromDateString,toDateString];
+        message = [NSString stringWithFormat:@"showing data from %@ to %@",fromDateString,toDateString];
         
     }else if([pieDateRange isEqualToString:@"yearly"]){
-        NSDate *fromDate =[self getFromDate:@"year"];
-        NSString *fromDateString = [self castDateToString:fromDate];
-        NSString *toDateString = [self castDateToString:[NSDate date]];
+        fromDate =[self getFromDate:@"year"];
+        fromDateString = [self castDateToString:fromDate];
+        toDateString = [self castDateToString:[NSDate date]];
         
         serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
         getPieChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCategoriesCountData?token=%@&language=%@&fromDate=%@&toDate=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage,fromDateString,toDateString];
+        message = [NSString stringWithFormat:@"showing data from %@ to %@",fromDateString,toDateString];
         
     }
     NSURL *url = [NSURL URLWithString:getPieChartDataUrl];
@@ -244,9 +248,11 @@
     NSInteger statusCode = [HTTPResponse statusCode];
     
     if([[NSString stringWithFormat: @"%ld", (long)statusCode]  isEqual: @"200"]){
-        NSString* title=@"{text:\"Correspondences by Category\"}";
+        
+        NSString* title=[NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.CorrespondencesByCategory", @"Correspondences by Category")];
         NSString* size=[NSString stringWithFormat:@"{size:%f}",Width-50];
-        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showRing(%@,%@,%@)",size,title,data]];
+        message =[NSString stringWithFormat:@"{text:\"*%@\"}",message];
+        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showRing(%@,%@,%@,%@)",size,title,data,message]];
         
     }
     

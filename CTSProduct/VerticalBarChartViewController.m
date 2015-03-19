@@ -25,6 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    verticalBarDateRange = @"general";
     self.navigationItem.hidesBackButton=NO;
     self.navigationController.navigationBarHidden = NO;
     self.navigationController.navigationBar.translucent = YES;
@@ -199,9 +200,46 @@
     /*NSString* data=@"[{structure:\"طبابة\", completed:5,draft:6,new:7},{structure:\"مشتريات\", completed:2,draft:3,new:4},{structure:\"ps\", completed:9,draft:1,new:3}]";
      NSString *showDataFunc = [NSString stringWithFormat:@"showData(%@)", data];
      [self.WebView stringByEvaluatingJavaScriptFromString:showDataFunc];*/
-    NSString *serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
-    NSString *getPieChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCorrespondenceStructureCountData?token=%@&language=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
-    NSURL *url = [NSURL URLWithString:getPieChartDataUrl];
+    
+    NSString *serverUrl;
+    NSString *getVerticalChartDataUrl;
+    NSDate *fromDate;
+    NSString *fromDateString;
+    NSString *toDateString;
+    NSString *message;
+    if([verticalBarDateRange isEqualToString:@"general"]){
+        serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
+        getVerticalChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCorrespondenceStructureCountData?token=%@&language=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage];
+        message = [NSString stringWithFormat:@"showing all data"];
+    }else if([verticalBarDateRange isEqualToString:@"weekly"]){
+        fromDate =[self getFromDate:@"week"];
+        fromDateString = [self castDateToString:fromDate];
+        toDateString = [self castDateToString:[NSDate date]];
+        
+        serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
+        getVerticalChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCorrespondenceStructureCountData?token=%@&language=%@&fromDate=%@&toDate=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage,fromDateString,toDateString];
+        message = [NSString stringWithFormat:@"showing data from %@ to %@",fromDateString,toDateString];
+        
+    }else if([verticalBarDateRange isEqualToString:@"monthly"]){
+        fromDate =[self getFromDate:@"month"];
+        fromDateString = [self castDateToString:fromDate];
+        toDateString = [self castDateToString:[NSDate date]];
+        
+        serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
+        getVerticalChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCorrespondenceStructureCountData?token=%@&language=%@&fromDate=%@&toDate=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage,fromDateString,toDateString];
+        message = [NSString stringWithFormat:@"showing data from %@ to %@",fromDateString,toDateString];
+        
+    }else if([verticalBarDateRange isEqualToString:@"yearly"]){
+        fromDate =[self getFromDate:@"year"];
+        fromDateString = [self castDateToString:fromDate];
+        toDateString = [self castDateToString:[NSDate date]];
+        
+        serverUrl = [[NSUserDefaults standardUserDefaults] stringForKey:@"url_preference"];
+        getVerticalChartDataUrl =[NSString stringWithFormat:@"http://%@/GetCorrespondenceStructureCountData?token=%@&language=%@&fromDate=%@&toDate=%@",serverUrl,mainDelegate.user.token,mainDelegate.IpadLanguage,fromDateString,toDateString];
+        message = [NSString stringWithFormat:@"showing data from %@ to %@",fromDateString,toDateString];
+        
+    }
+    NSURL *url = [NSURL URLWithString:getVerticalChartDataUrl];
     NSMutableURLRequest* request=[[NSMutableURLRequest alloc]initWithURL:url];
     NSURLResponse * response = nil;
     NSError * error = nil;
@@ -215,8 +253,10 @@
     NSInteger statusCode = [HTTPResponse statusCode];
     
     if([[NSString stringWithFormat: @"%ld", (long)statusCode]  isEqual: @"200"]){
-        
-        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showData(%@)",data]];
+        NSString *stringStructure = NSLocalizedString(@"Reports.Structure", @"structure");
+        NSString *stringCount = NSLocalizedString(@"Reports.Count", @"count");
+         message =[NSString stringWithFormat:@"{text:\"*%@\"}",message];
+        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showData(%@,%@)",data,message]];
         
     }
     

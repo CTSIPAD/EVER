@@ -15,14 +15,16 @@
     </style>
 </head>
 <body>
-
 <div id="pieChart"></div>
+<span id="mySpan" style="position:absolute; bottom:7%; left:0;"></span>
 <div id="legend" class="legend"></div>
 <script src="d3.min.js"></script>
 <script src="d3pie.min.js"></script>
 
 <script>
-    function showRing(size,title,Data){
+function showRing(size,title,Data,message){
+    
+document.getElementById("mySpan").textContent=message.text;
 var pie = new d3pie("pieChart", {
 	"header": {
 		"title": {
@@ -114,7 +116,6 @@ var svg = d3.select("#legend")
 .attr("height", 35*Data.length);
 
 
-
 var legend = svg.append("g")
 .attr("class", "legend")
 .attr('transform', 'translate(0,15)')
@@ -143,7 +144,12 @@ legend.selectAll('rect')
              var text = d.label;
              return text;
              });
-        document.getElementById('legend').style.width=maxWidth(Data);    }
+        document.getElementById('legend').style.width=maxWidth(Data);
+        
+    }
+
+
+
 </script>
 
 </body>
