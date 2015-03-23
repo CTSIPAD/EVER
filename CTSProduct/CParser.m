@@ -666,7 +666,7 @@
     }
 }
 +(void)fetchPhotos{
-    NSString* url;
+    /*NSString* url;
     AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     if(!mainDelegate.SupportsServlets)
@@ -691,7 +691,7 @@
     GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
                                                            options:0 error:&error];
     NSArray *results = [doc nodesForXPath:@"//Result" error:nil];
-    GDataXMLElement *userXML =  [results objectAtIndex:0];
+    GDataXMLElement *userXML =  [results objectAtIndex:0];*/
     
     
 }
