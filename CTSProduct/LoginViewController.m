@@ -59,19 +59,18 @@
     appDelegate.inboxForArchiveSelected=0;
   
     if(appDelegate.LoginSliderImages.count==0){
-    
-     animatedSplashScreen  = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
- [self addSubviewWithZoomInAnimation:animatedSplashScreen duration:0.4 delay:0 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(animatedSplashScreen.frame.origin.x+animatedSplashScreen.frame.size.width/2, animatedSplashScreen.frame.origin.y+animatedSplashScreen.frame.size.height/2) originX:animatedSplashScreen.frame.origin.x originY:animatedSplashScreen.frame.origin.y];    animatedSplashScreen.animationImages= [NSArray arrayWithObjects:[UIImage imageNamed:@"splash1.png"],[UIImage imageNamed:@"splash2.png"],[UIImage imageNamed:@"splash4.png"], nil];
-    animatedSplashScreen.animationRepeatCount=1;
-    animatedSplashScreen.animationDuration=6;
-    [animatedSplashScreen startAnimating];
+        Splash  = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+        Splash.image=[UIImage imageNamed:@"splash1.png"];
+        [self.view addSubview:Splash];
 
-   [self performSelector:@selector(Changelogo) withObject:nil afterDelay:4.1];
-        [self performSelector:@selector(AddImage) withObject:nil afterDelay:6];
+
+    animatedSplashScreen  = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    [self addSubviewWithZoomInAnimation:animatedSplashScreen duration:0.4 delay:0 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(animatedSplashScreen.frame.origin.x+animatedSplashScreen.frame.size.width/2, animatedSplashScreen.frame.origin.y+animatedSplashScreen.frame.size.height/2) originX:animatedSplashScreen.frame.origin.x originY:animatedSplashScreen.frame.origin.y];    animatedSplashScreen.animationImages= [NSArray arrayWithObjects:[UIImage imageNamed:@"splashLoading.png"],[UIImage imageNamed:@"splashLoading1.png"],[UIImage imageNamed:@"splashLoading2.png"],[UIImage imageNamed:@"splashLoading3.png"], nil];
+    animatedSplashScreen.animationRepeatCount=4;
+    animatedSplashScreen.animationDuration=6;
 
     logo  =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"splashlogo.png"]];
-    
-    [self addSubviewWithDropInAnimation:logo duration:0.4 withParentView:self.view FromPoint:CGPointMake(logo.frame.origin.x+self.view.frame.size.width/2, self.view.frame.origin.y+self.view.frame.size.height/2) originX:self.view.frame.origin.x/2 originY:self.view.frame.origin.y/2];
+    [self addSubviewWithDropInAnimation:logo duration:0.6 withParentView:self.view FromPoint:CGPointMake(logo.frame.origin.x+self.view.frame.size.width/2, self.view.frame.origin.y+self.view.frame.size.height/2) originX:self.view.frame.origin.x/2 originY:self.view.frame.origin.y/2];
 
     
     
@@ -91,17 +90,18 @@
     }
     else
     {
+        UIImage* image=[UIImage imageNamed:@"loginScrollBg.png"];
+        NSData *ImageData = UIImagePNGRepresentation(image);
+        [appDelegate.LoginSliderImages addObject:ImageData];
         [self initLoginView];
     }
     
 }
 -(void)AddImage{
-    Splash  = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    [animatedSplashScreen startAnimating];
 
-    Splash.image=[UIImage imageNamed:@"splash4.png"];
-    [logo removeFromSuperview];
-    [self.view addSubview:Splash];
-    [self.view addSubview:logo];
+//    [logo removeFromSuperview];
+//    [self.view addSubview:logo];
 
 }
 -(void)initLoginView{
@@ -275,6 +275,9 @@
                                               [UIView animateWithDuration:0.3/2
                                                                animations:^{
                                                                    view.transform=CGAffineTransformIdentity;
+                                                               }completion:^(BOOL finished){
+                                                                   [animatedSplashScreen startAnimating];
+
                                                                }];
                                           }];
                      }];
