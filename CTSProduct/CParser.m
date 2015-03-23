@@ -666,7 +666,7 @@
     }
 }
 +(void)fetchPhotos{
-    NSString* url;
+    /*NSString* url;
     AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     if(!mainDelegate.SupportsServlets)

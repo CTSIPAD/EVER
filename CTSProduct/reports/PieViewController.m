@@ -40,7 +40,7 @@
     [filterWeeklyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2-140,2.5,70,40)];
     [filterWeeklyButton setTitle:NSLocalizedString(@"Reports.Weekly", @"Weekly") forState:UIControlStateNormal];
     [filterWeeklyButton setBackgroundImage:notClickedWeek forState:UIControlStateNormal];
-    [filterWeeklyButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [filterWeeklyButton setTitleColor:[self colorWithHexString:@"2f9dac"] forState:UIControlStateNormal];
     [self.navigationController.navigationBar addSubview:filterWeeklyButton];
     [filterWeeklyButton addTarget:self action:@selector(getWeeklyData) forControlEvents:UIControlEventTouchUpInside];
     
@@ -49,7 +49,7 @@
     [filterMonthlyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2-70,2.5,70,40)];
     [filterMonthlyButton setTitle:NSLocalizedString(@"Reports.Monthly", @"Monthly") forState:UIControlStateNormal];
     [filterMonthlyButton setBackgroundImage:notClickedMonth forState:UIControlStateNormal];
-    [filterMonthlyButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [filterMonthlyButton setTitleColor:[self colorWithHexString:@"2f9dac"] forState:UIControlStateNormal];
     [self.navigationController.navigationBar addSubview:filterMonthlyButton];
     [filterMonthlyButton addTarget:self action:@selector(getMonthlyData) forControlEvents:UIControlEventTouchUpInside];
     
@@ -58,7 +58,7 @@
     [filterYearlyButton setFrame:CGRectMake(self.navigationController.view.frame.size.width/2,2.5,70,40)];
     [filterYearlyButton setTitle:NSLocalizedString(@"Reports.Yearly", @"Yearly") forState:UIControlStateNormal];
     [filterYearlyButton setBackgroundImage:notClickedYear forState:UIControlStateNormal];
-    [filterYearlyButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [filterYearlyButton setTitleColor:[self colorWithHexString:@"2f9dac"] forState:UIControlStateNormal];
     [self.navigationController.navigationBar addSubview:filterYearlyButton];
     [filterYearlyButton addTarget:self action:@selector(getYearlyData) forControlEvents:UIControlEventTouchUpInside];
 
@@ -102,6 +102,7 @@
     UIImage *clickedWeek=[UIImage imageNamed:@"ClickedWeek.png"];
     [filterWeeklyButton setBackgroundImage:clickedWeek forState:UIControlStateNormal];
     pieDateRange = @"weekly";
+    [filterWeeklyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self callWebViewDidFinishLoading];
 }
 
@@ -110,6 +111,7 @@
     UIImage *clickedMonth=[UIImage imageNamed:@"ClickedMonth.png"];
     [filterMonthlyButton setBackgroundImage:clickedMonth forState:UIControlStateNormal];
     pieDateRange = @"monthly";
+    [filterMonthlyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self callWebViewDidFinishLoading];
 }
 
@@ -118,6 +120,7 @@
     UIImage *clickedYear=[UIImage imageNamed:@"ClickedYear.png"];
     [filterYearlyButton setBackgroundImage:clickedYear forState:UIControlStateNormal];
     pieDateRange = @"yearly";
+    [filterYearlyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self callWebViewDidFinishLoading];
 }
 
@@ -128,6 +131,9 @@
     [filterWeeklyButton setBackgroundImage:notClickedWeek forState:UIControlStateNormal];
     [filterMonthlyButton setBackgroundImage:notClickedMonth forState:UIControlStateNormal];
     [filterYearlyButton setBackgroundImage:notClickedYear forState:UIControlStateNormal];
+    [filterWeeklyButton setTitleColor:[self colorWithHexString:@"2f9dac"] forState:UIControlStateNormal];
+    [filterMonthlyButton setTitleColor:[self colorWithHexString:@"2f9dac"] forState:UIControlStateNormal];
+    [filterYearlyButton setTitleColor:[self colorWithHexString:@"2f9dac"] forState:UIControlStateNormal];
 }
 
 -(NSString*) castDateToString:(NSDate*)date{
@@ -193,6 +199,42 @@
         // Show the Navigation Bar
         [self.navigationController setNavigationBarHidden:NO animated:YES];
     }
+}
+
+-(UIColor*)colorWithHexString:(NSString*)hex
+{
+    NSString *cString = [[hex stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
+    
+    // String should be 6 or 8 characters
+    if ([cString length] < 6) return [UIColor grayColor];
+    
+    // strip 0X if it appears
+    if ([cString hasPrefix:@"0X"]) cString = [cString substringFromIndex:2];
+    
+    if ([cString length] != 6) return  [UIColor grayColor];
+    
+    // Separate into r, g, b substrings
+    NSRange range;
+    range.location = 0;
+    range.length = 2;
+    NSString *rString = [cString substringWithRange:range];
+    
+    range.location = 2;
+    NSString *gString = [cString substringWithRange:range];
+    
+    range.location = 4;
+    NSString *bString = [cString substringWithRange:range];
+    
+    // Scan values
+    unsigned int r, g, b;
+    [[NSScanner scannerWithString:rString] scanHexInt:&r];
+    [[NSScanner scannerWithString:gString] scanHexInt:&g];
+    [[NSScanner scannerWithString:bString] scanHexInt:&b];
+    
+    return [UIColor colorWithRed:((float) r / 255.0f)
+                           green:((float) g / 255.0f)
+                            blue:((float) b / 255.0f)
+                           alpha:1.0f];
 }
 - (BOOL)shouldAutorotate
 {
