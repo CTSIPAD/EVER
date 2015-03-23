@@ -670,9 +670,9 @@
     AppDelegate * mainDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     if(!mainDelegate.SupportsServlets)
-        url = [NSString stringWithFormat:@"http://%@/Login",mainDelegate.serverUrl];
+        url = [NSString stringWithFormat:@"http://%@/GetSliderPhotos",mainDelegate.serverUrl];
     else
-        url = [NSString stringWithFormat:@"http://%@?action=Login",mainDelegate.serverUrl];
+        url = [NSString stringWithFormat:@"http://%@?action=GetSliderPhotos",mainDelegate.serverUrl];
     NSData *xmlData ;
     
     NSError *error;
@@ -680,19 +680,33 @@
         NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
         xmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
         if(xmlData==nil){
-            [mainDelegate.LoginSliderImages addObject:@"loginScrollBg.png"];
-            [mainDelegate.LoginSliderImages addObject:@"loginPortrait.png"];
-            [mainDelegate.LoginSliderImages addObject:@"loginPortrait.png"];
-            [mainDelegate.LoginSliderImages addObject:@"loginPortrait.png"];
-
+            UIImage* image=[UIImage imageNamed:@"loginScrollBg.png"];
+            NSData *ImageData = UIImagePNGRepresentation(image);
+            [mainDelegate.LoginSliderImages addObject:ImageData];
             return;
         }
     }
     GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:xmlData
                                                            options:0 error:&error];
     NSArray *results = [doc nodesForXPath:@"//Result" error:nil];
-    GDataXMLElement *userXML =  [results objectAtIndex:0];
+
+    GDataXMLElement *SliderPhotosXML =  [results objectAtIndex:0];
     
+    NSArray *ListSliderPhotosEl = [SliderPhotosXML elementsForName:@"ListSliderPhotos"];
+    
+    for (GDataXMLElement * SliderPhotoEl in ListSliderPhotosEl) {
+        NSArray *SliderPhotoList = [SliderPhotoEl elementsForName:@"SliderPhoto"];
+
+        if(SliderPhotoList.count>0){
+            for (GDataXMLElement *SliderItem in SliderPhotoList) {
+                NSString* strUrl = SliderItem.stringValue;
+                NSURL *url=[NSURL URLWithString:strUrl];
+                NSData *data = [NSData dataWithContentsOfURL:url ];
+                [mainDelegate.LoginSliderImages addObject:data];
+            }
+        }
+        
+    }
     
 }
 

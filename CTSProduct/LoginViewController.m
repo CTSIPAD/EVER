@@ -29,6 +29,9 @@
     UIImage* LoginbtnImg;
     UIImageView *animatedSplashScreen;
     UIImageView *logo;
+    UIImageView* Splash;
+    UIScrollView *scr;
+    UIPageControl *pgCtr;
     
 }
 
@@ -55,7 +58,7 @@
     appDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.inboxForArchiveSelected=0;
   
-    
+    if(appDelegate.LoginSliderImages.count==0){
     
      animatedSplashScreen  = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
  [self addSubviewWithZoomInAnimation:animatedSplashScreen duration:0.4 delay:0 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(animatedSplashScreen.frame.origin.x+animatedSplashScreen.frame.size.width/2, animatedSplashScreen.frame.origin.y+animatedSplashScreen.frame.size.height/2) originX:animatedSplashScreen.frame.origin.x originY:animatedSplashScreen.frame.origin.y];    animatedSplashScreen.animationImages= [NSArray arrayWithObjects:[UIImage imageNamed:@"splash1.png"],[UIImage imageNamed:@"splash2.png"],[UIImage imageNamed:@"splash4.png"], nil];
@@ -64,21 +67,42 @@
     [animatedSplashScreen startAnimating];
 
    [self performSelector:@selector(Changelogo) withObject:nil afterDelay:4.1];
-    
+        [self performSelector:@selector(AddImage) withObject:nil afterDelay:6];
+
     logo  =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"splashlogo.png"]];
     
     [self addSubviewWithDropInAnimation:logo duration:0.4 withParentView:self.view FromPoint:CGPointMake(logo.frame.origin.x+self.view.frame.size.width/2, self.view.frame.origin.y+self.view.frame.size.height/2) originX:self.view.frame.origin.x/2 originY:self.view.frame.origin.y/2];
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [CParser fetchPhotos];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self performSelector:@selector(hideSplash:) withObject:animatedSplashScreen afterDelay:5.0];
-            [self performSelector:@selector(initLoginView) withObject:nil afterDelay:5.0];
 
-        });
-        
-    });
     
+    
+    dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
+    
+        dispatch_async(imageQueue, ^{
+            
+            [CParser fetchPhotos];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self performSelector:@selector(hideSplash:) withObject:animatedSplashScreen afterDelay:6.0];
+                [self performSelector:@selector(initLoginView) withObject:nil afterDelay:6.0];
+                
+            });
+            
+        }); 
+    
+    }
+    else
+    {
+        [self initLoginView];
+    }
+    
+}
+-(void)AddImage{
+    Splash  = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+
+    Splash.image=[UIImage imageNamed:@"splash4.png"];
+    [logo removeFromSuperview];
+    [self.view addSubview:Splash];
+    [self.view addSubview:logo];
+
 }
 -(void)initLoginView{
     /**** UserName TextView ******/
@@ -91,6 +115,7 @@
     //    self.txtUsername.clipsToBounds=YES;
     self.txtUsername.returnKeyType = UIReturnKeyGo;
     self.txtUsername.autocorrectionType=FALSE;
+    self.txtUsername.placeholder=@"Username";
     self.txtUsername.text=@"dory";
     self.txtUsername.textColor=[UIColor colorWithRed:48/255.0 green:157/255.0 blue:174/255.0 alpha:1];
     [self.txtUsername setValue:[UIColor colorWithRed:48/255.0 green:157/255.0 blue:174/255.0 alpha:1] forKeyPath:@"_placeholderLabel.textColor"];
@@ -104,7 +129,7 @@
     //    self.txtPassword.layer.borderWidth=2;
     self.txtPassword.backgroundColor=[UIColor clearColor];
     self.txtPassword.layer.borderColor=[[UIColor clearColor] CGColor];
-    //    self.txtPassword.layer.cornerRadius=10;
+    self.txtPassword.placeholder=@"Password";
     //    self.txtPassword.clipsToBounds=YES;
     self.txtPassword.secureTextEntry=YES;
     self.txtPassword.returnKeyType = UIReturnKeyGo;
@@ -116,20 +141,29 @@
     
     if([appDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
         LoginbtnImg=[UIImage imageNamed:@"Login_ar.png"];
+        [self.btnLogin setTitle:@"تسجيل الدخول" forState:UIControlStateNormal];
         self.txtUsername.rightViewMode = UITextFieldViewModeAlways;
         self.txtPassword.rightViewMode = UITextFieldViewModeAlways;
         self.txtUsername.rightView= paddingView;
         self.txtPassword.rightView= paddingView2;
+        self.txtUsername.placeholder=@"اسم المستخدم";
+        self.txtPassword.placeholder=@"كلمة السر";
+
         
     }
     else{
         LoginbtnImg=[UIImage imageNamed:@"Login.png"];
+        [self.btnLogin setTitle:@"" forState:UIControlStateNormal];
         self.txtUsername.leftViewMode = UITextFieldViewModeAlways;
         self.txtPassword.leftViewMode = UITextFieldViewModeAlways;
         self.txtUsername.leftView= paddingView;
         self.txtPassword.leftView= paddingView2;
         
     }
+    [self.btnLogin setBackgroundImage:LoginbtnImg forState:UIControlStateNormal];
+
+//    [self.btnLogin setImage:LoginbtnImg forState:UIControlStateNormal];
+
     self.txtPassword.text=@"dory";
     
     /**** LOGIN BUTTON ******/
@@ -137,10 +171,7 @@
     self.btnLogin.autoresizingMask = UIViewAutoresizingNone;
     //    self.btnLogin.backgroundColor=[UIColor colorWithRed:37/255.0f green:96/255.0f blue:172/255.0f alpha:1.0];
     [self.btnLogin setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    CGFloat red = 0.0f / 255.0f;
-    CGFloat green = 155.0f / 255.0f;
-    CGFloat blue = 213.0f / 255.0f;
-    [self.btnLogin setTitleColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0] forState:UIControlStateHighlighted];
+    [self.btnLogin setTitleColor:appDelegate.titleColor forState:UIControlStateHighlighted];
     //    self.btnLogin.layer.borderColor=[[UIColor grayColor] CGColor];
     //    self.btnLogin.layer.cornerRadius=10;
     if([appDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"]){
@@ -160,12 +191,12 @@
     
     [self.view addSubview:self.txtUsername];
     
-    UIScrollView *scr=[[UIScrollView alloc] initWithFrame:CGRectMake(33, 135,460, 515)];
+    scr=[[UIScrollView alloc] initWithFrame:CGRectMake(33, 135,460, 515)];
     scr.tag = 1;
     scr.autoresizingMask=UIViewAutoresizingNone;
     [self.view addSubview:scr];
     [self setupScrollView:scr];
-    UIPageControl *pgCtr = [[UIPageControl alloc] initWithFrame:CGRectMake(33, scr.frame.size.height+scr.frame.origin.y-36, scr.frame.size.width, 36)];
+    pgCtr = [[UIPageControl alloc] initWithFrame:CGRectMake(33, scr.frame.size.height+scr.frame.origin.y-36, scr.frame.size.width, 36)];
     [pgCtr setTag:12];
     pgCtr.numberOfPages=appDelegate.LoginSliderImages.count;
     pgCtr.autoresizingMask=UIViewAutoresizingNone;
@@ -184,6 +215,8 @@
     
     [logo removeFromSuperview];
     [animatedSplashScreen removeFromSuperview];
+    [Splash removeFromSuperview];
+
 //
 //    CGContextRef imageContext = UIGraphicsGetCurrentContext();
 //    [UIView beginAnimations:nil context:imageContext];
@@ -248,13 +281,9 @@
 }
 
 
--(void)ShowSlider{
-   
-
-}
 - (void)setupScrollView:(UIScrollView*)scrMain {
       for (int i=1; i<=appDelegate.LoginSliderImages.count; i++) {
-        UIImage *image = [UIImage imageNamed:[appDelegate.LoginSliderImages objectAtIndex:i-1]];
+        UIImage *image = [UIImage imageWithData:[appDelegate.LoginSliderImages objectAtIndex:i-1]];
         UIImageView *imgV = [[UIImageView alloc] initWithFrame:CGRectMake((i-1)*scrMain.frame.size.width, 0, scrMain.frame.size.width, scrMain.frame.size.height)];
         imgV.contentMode=UIViewContentModeScaleToFill;
         [imgV setImage:image];
@@ -267,7 +296,7 @@
 
 - (void)scrollingTimer {
     UIScrollView *scrMain = (UIScrollView*) [self.view viewWithTag:1];
-    UIPageControl *pgCtr = (UIPageControl*) [self.view viewWithTag:12];
+    pgCtr = (UIPageControl*) [self.view viewWithTag:12];
     CGFloat contentOffset = scrMain.contentOffset.x;
     int nextPage = (int)(contentOffset/scrMain.frame.size.width) + 1 ;
     if( nextPage!=appDelegate.LoginSliderImages.count )  {
@@ -313,7 +342,6 @@
 	if(interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown){
         
         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginPortrait.png"]];
-        
         
     }
     else if(interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight){
