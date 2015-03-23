@@ -57,26 +57,22 @@
     }
     appDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.inboxForArchiveSelected=0;
-  
+    
     if(appDelegate.LoginSliderImages.count==0){
-    
-     animatedSplashScreen  = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
- [self addSubviewWithZoomInAnimation:animatedSplashScreen duration:0.4 delay:0 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(animatedSplashScreen.frame.origin.x+animatedSplashScreen.frame.size.width/2, animatedSplashScreen.frame.origin.y+animatedSplashScreen.frame.size.height/2) originX:animatedSplashScreen.frame.origin.x originY:animatedSplashScreen.frame.origin.y];    animatedSplashScreen.animationImages= [NSArray arrayWithObjects:[UIImage imageNamed:@"splash1.png"],[UIImage imageNamed:@"splash2.png"],[UIImage imageNamed:@"splash4.png"], nil];
-    animatedSplashScreen.animationRepeatCount=1;
-    animatedSplashScreen.animationDuration=6;
-    [animatedSplashScreen startAnimating];
-
-   [self performSelector:@selector(Changelogo) withObject:nil afterDelay:4.1];
+        
+        animatedSplashScreen  = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+        [self addSubviewWithZoomInAnimation:animatedSplashScreen duration:0.4 delay:0 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(animatedSplashScreen.frame.origin.x+animatedSplashScreen.frame.size.width/2, animatedSplashScreen.frame.origin.y+animatedSplashScreen.frame.size.height/2) originX:animatedSplashScreen.frame.origin.x originY:animatedSplashScreen.frame.origin.y];    animatedSplashScreen.animationImages= [NSArray arrayWithObjects:[UIImage imageNamed:@"splash1.png"],[UIImage imageNamed:@"splash2.png"],[UIImage imageNamed:@"splash4.png"], nil];
+        animatedSplashScreen.animationRepeatCount=1;
+        animatedSplashScreen.animationDuration=6;
+        [animatedSplashScreen startAnimating];
+        
+        [self performSelector:@selector(Changelogo) withObject:nil afterDelay:4.1];
         [self performSelector:@selector(AddImage) withObject:nil afterDelay:6];
-
-    logo  =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"splashlogo.png"]];
-    
-    [self addSubviewWithDropInAnimation:logo duration:0.4 withParentView:self.view FromPoint:CGPointMake(logo.frame.origin.x+self.view.frame.size.width/2, self.view.frame.origin.y+self.view.frame.size.height/2) originX:self.view.frame.origin.x/2 originY:self.view.frame.origin.y/2];
-
-    
-    
-    dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
-    
+        logo  =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"splashlogo.png"]];
+        
+        [self addSubviewWithDropInAnimation:logo duration:0.4 withParentView:self.view FromPoint:CGPointMake(logo.frame.origin.x+self.view.frame.size.width/2, self.view.frame.origin.y+self.view.frame.size.height/2) originX:self.view.frame.origin.x/2 originY:self.view.frame.origin.y/2];
+        
+        dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
         dispatch_async(imageQueue, ^{
             
             [CParser fetchPhotos];
@@ -86,8 +82,8 @@
                 
             });
             
-        }); 
-    
+        });
+        
     }
     else
     {
@@ -97,12 +93,12 @@
 }
 -(void)AddImage{
     Splash  = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
-
+    
     Splash.image=[UIImage imageNamed:@"splash4.png"];
     [logo removeFromSuperview];
     [self.view addSubview:Splash];
     [self.view addSubview:logo];
-
+    
 }
 -(void)initLoginView{
     /**** UserName TextView ******/
@@ -148,7 +144,7 @@
         self.txtPassword.rightView= paddingView2;
         self.txtUsername.placeholder=@"اسم المستخدم";
         self.txtPassword.placeholder=@"كلمة السر";
-
+        
         
     }
     else{
@@ -161,9 +157,9 @@
         
     }
     [self.btnLogin setBackgroundImage:LoginbtnImg forState:UIControlStateNormal];
-
-//    [self.btnLogin setImage:LoginbtnImg forState:UIControlStateNormal];
-
+    
+    //    [self.btnLogin setImage:LoginbtnImg forState:UIControlStateNormal];
+    
     self.txtPassword.text=@"dory";
     
     /**** LOGIN BUTTON ******/
@@ -192,6 +188,7 @@
     [self.view addSubview:self.txtUsername];
     
     scr=[[UIScrollView alloc] initWithFrame:CGRectMake(33, 135,460, 515)];
+    
     scr.tag = 1;
     scr.autoresizingMask=UIViewAutoresizingNone;
     [self.view addSubview:scr];
@@ -216,15 +213,15 @@
     [logo removeFromSuperview];
     [animatedSplashScreen removeFromSuperview];
     [Splash removeFromSuperview];
-
-//
-//    CGContextRef imageContext = UIGraphicsGetCurrentContext();
-//    [UIView beginAnimations:nil context:imageContext];
-//    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-//    [UIView setAnimationDuration:3];
-//    [UIView setAnimationDelegate:self];
-//    animatedSplashScreen.alpha=0.0;
-//    [UIView commitAnimations];
+    
+    //
+    //    CGContextRef imageContext = UIGraphicsGetCurrentContext();
+    //    [UIView beginAnimations:nil context:imageContext];
+    //    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    //    [UIView setAnimationDuration:3];
+    //    [UIView setAnimationDelegate:self];
+    //    animatedSplashScreen.alpha=0.0;
+    //    [UIView commitAnimations];
     
 }
 
@@ -282,7 +279,7 @@
 
 
 - (void)setupScrollView:(UIScrollView*)scrMain {
-      for (int i=1; i<=appDelegate.LoginSliderImages.count; i++) {
+    for (int i=1; i<=appDelegate.LoginSliderImages.count; i++) {
         UIImage *image = [UIImage imageWithData:[appDelegate.LoginSliderImages objectAtIndex:i-1]];
         UIImageView *imgV = [[UIImageView alloc] initWithFrame:CGRectMake((i-1)*scrMain.frame.size.width, 0, scrMain.frame.size.width, scrMain.frame.size.height)];
         imgV.contentMode=UIViewContentModeScaleToFill;
@@ -339,17 +336,29 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
     [txtPassword resignFirstResponder];
     [txtUsername resignFirstResponder];
-	if(interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown){
+    [scr removeFromSuperview];
+    [pgCtr removeFromSuperview];
+    if(interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown){
         
         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginPortrait.png"]];
-        
+        scr=[[UIScrollView alloc] initWithFrame:CGRectMake(35, 100,690, 355)];
     }
     else if(interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight){
-        
+        scr=[[UIScrollView alloc] initWithFrame:CGRectMake(33, 135,460, 515)];
         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginLandscape.png"]];
         
     }
-	
+    scr.tag = 1;
+    scr.autoresizingMask=UIViewAutoresizingNone;
+    [self.view addSubview:scr];
+    [self setupScrollView:scr];
+    pgCtr = [[UIPageControl alloc] initWithFrame:CGRectMake(33, scr.frame.size.height+scr.frame.origin.y-36, scr.frame.size.width, 36)];
+    [pgCtr setTag:12];
+    pgCtr.numberOfPages=appDelegate.LoginSliderImages.count;
+    pgCtr.autoresizingMask=UIViewAutoresizingNone;
+    [self.view addSubview:pgCtr];
+    
+    
 }
 
 
@@ -468,9 +477,9 @@
         {
             if ([username isEqual:@""])
                 [self ShowMessage:NSLocalizedString(@"EmptyUserName", @"Empty username")];
- 
+            
             else if ([password isEqual:@""])
-            [self ShowMessage:NSLocalizedString(@"EmptyPassword",@"EmptyPassword")];
+                [self ShowMessage:NSLocalizedString(@"EmptyPassword",@"EmptyPassword")];
             [self stopIndicator];
             if(!appDelegate.isOfflineMode){
                 [defaults setObject:@"NO" forKey:@"LoginSuccess"];
@@ -492,8 +501,8 @@
                 
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"You Must Login in online before!" delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"ok") otherButtonTitles:nil];
                 [alert show];
-              //  self.txtUsername.text=@"";
-               // self.txtPassword.text=@"";
+                //  self.txtUsername.text=@"";
+                // self.txtPassword.text=@"";
                 [self stopIndicator];
                 return;
                 
@@ -501,8 +510,8 @@
                 if([CParser LoadLogin:[self.txtUsername.text lowercaseString] password:Password]<=0){
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Alert" message:@"Wrong username or password please try again" delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"ok") otherButtonTitles:nil];
                     [alert show];
-                   // self.txtUsername.text=@"";
-                   // self.txtPassword.text=@"";
+                    // self.txtUsername.text=@"";
+                    // self.txtPassword.text=@"";
                     [self stopIndicator];
                     return;
                 }
@@ -512,13 +521,13 @@
             [self stopIndicator];
             NSLog(@"Error:loadUserWithData returned null user");
         }
-            
+        
         if(![user.ServerMessage isEqualToString:@"OK"]){
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UnableToConnect", @"unable to connect server") message:user.ServerMessage delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
             [alert show];
             [defaults synchronize];
-          //  self.txtUsername.text=@"";
-          //  self.txtPassword.text=@"";
+            //  self.txtUsername.text=@"";
+            //  self.txtPassword.text=@"";
             [self stopIndicator];
             return;
         }
@@ -541,7 +550,7 @@
                 }
                 
                 appDelegate.user=user;
-           
+                
                 if(!appDelegate.isOfflineMode){
                     IconsCached=@"YES";
                     [defaults setObject:IconsCached forKey:@"iconsCache"];
@@ -576,7 +585,7 @@
 
 -(void)saveDocInCache:(CAttachment*)firstDoc inDirectory:(NSString*)dirName
 {
-	[firstDoc saveInCacheinDirectory:dirName fromSharepoint:appDelegate.isSharepoint];
+    [firstDoc saveInCacheinDirectory:dirName fromSharepoint:appDelegate.isSharepoint];
 }
 
 
@@ -599,7 +608,7 @@
 }
 
 - (void)dismiss {
-	[SVProgressHUD dismiss];
+    [SVProgressHUD dismiss];
 }
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
@@ -644,11 +653,11 @@
                 else
                     self.view.frame = CGRectOffset(self.view.frame,0, -140);
             }
-                else
-                    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
-                        self.view.frame = CGRectOffset(self.view.frame,-140, 0);
-                    }
             else
+                if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+                    self.view.frame = CGRectOffset(self.view.frame,-140, 0);
+                }
+                else
                     self.view.frame = CGRectOffset(self.view.frame,0, 140);
             
             [UIView commitAnimations];
@@ -684,6 +693,7 @@
 -(void)adjustControls:(UIInterfaceOrientation)interfaceOrientation{
     if(interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)
     {
+        
         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginPortrait.png"]];
         self.txtUsername.frame=CGRectMake(157, 660, 470, 60);
         self.txtPassword.frame=CGRectMake(157, 741, 470, 60);
@@ -694,7 +704,9 @@
         
     }
     else if(interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight){
-
+        
+        
+        
         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginLandscape.png"]];
         self.txtUsername.frame=CGRectMake(617, 319, 295, 50);
         self.txtPassword.frame=CGRectMake(617, 392, 295, 50);
@@ -714,8 +726,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    
-	return YES;
+    return YES;
 }
 
 @end
