@@ -574,8 +574,16 @@ if(textField.text.length>=mainDelegate.Char_count){
 }
 - (void)calendarController:(PMCalendarController *)calendarController didChangePeriod:(PMPeriod *)newPeriod
 {
-    NSString *newPeriodDate = [newPeriod.endDate dateStringWithFormat:@"yyyy-MM-dd"];
-    txtDueDate.text = [NSString stringWithFormat:@"%@",newPeriodDate];
+    NSDate* now=[NSDate date].dateWithoutTime;
+    if ((![newPeriod.endDate isBefore:[NSDate date]])||[now isEqualToDate:newPeriod.endDate])
+    {
+        
+        NSString *newPeriodDate = [newPeriod.endDate dateStringWithFormat:@"yyyy-MM-dd"];
+        txtDueDate.text = [NSString stringWithFormat:@"%@",newPeriodDate];
+        
+    }
+    else
+        ShowCalender=YES;
     if(!ShowCalender)
     {
         

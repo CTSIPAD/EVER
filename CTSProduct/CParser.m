@@ -680,9 +680,9 @@
         NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:0 timeoutInterval:mainDelegate.Request_timeOut];
         xmlData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
         if(xmlData==nil){
-            UIImage* image=[UIImage imageNamed:@"loginScrollBg.png"];
-            NSData *ImageData = UIImagePNGRepresentation(image);
-            [mainDelegate.LoginSliderImages addObject:ImageData];
+//            UIImage* image=[UIImage imageNamed:@"loginScrollBg.png"];
+//            NSData *ImageData = UIImagePNGRepresentation(image);
+//            [mainDelegate.LoginSliderImages addObject:ImageData];
             return;
         }
     }

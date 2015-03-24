@@ -66,7 +66,7 @@
 
     animatedSplashScreen  = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     [self addSubviewWithZoomInAnimation:animatedSplashScreen duration:0.4 delay:0 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(animatedSplashScreen.frame.origin.x+animatedSplashScreen.frame.size.width/2, animatedSplashScreen.frame.origin.y+animatedSplashScreen.frame.size.height/2) originX:animatedSplashScreen.frame.origin.x originY:animatedSplashScreen.frame.origin.y];    animatedSplashScreen.animationImages= [NSArray arrayWithObjects:[UIImage imageNamed:@"splashLoading.png"],[UIImage imageNamed:@"splashLoading1.png"],[UIImage imageNamed:@"splashLoading2.png"],[UIImage imageNamed:@"splashLoading3.png"], nil];
-    animatedSplashScreen.animationRepeatCount=4;
+    animatedSplashScreen.animationRepeatCount=100;
     animatedSplashScreen.animationDuration=6;
 
     logo  =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"splashlogo.png"]];

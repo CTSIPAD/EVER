@@ -247,8 +247,16 @@
 - (void)calendarController:(PMCalendarController *)calendarController didChangePeriod:(PMPeriod *)newPeriod
 {
     //  NSString *currentDate = [[NSDate date] dateStringWithFormat:@"yyyy-MM-dd"];
+    NSDate* now=[NSDate date].dateWithoutTime;
+    if ((![newPeriod.endDate isBefore:[NSDate date]])||[now isEqualToDate:newPeriod.endDate])
+    {
+       
     NSString *newPeriodDate = [newPeriod.endDate dateStringWithFormat:@"yyyy-MM-dd"];
     txtCriteria.text = [NSString stringWithFormat:@"%@",newPeriodDate];
+    
+    }
+    else
+        ShowCalender=YES;
     if(!ShowCalender)
     {
         

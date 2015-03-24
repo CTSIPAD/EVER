@@ -92,7 +92,7 @@
     CGFloat red = 53.0f / 255.0f;
     CGFloat green = 53.0f / 255.0f;
     CGFloat blue = 53.0f / 255.0f;
-    
+    //mounir color
     self.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
     
     
@@ -856,7 +856,11 @@
                     }
                 }
                 
-                PMThemeElementType type = PMThemeCalendarDigitsActiveElementType;
+                PMThemeElementType type;
+                if(dayNumber< todayIndex)
+                    type=PMThemeCalendarDigitsInactiveElementType;
+                else
+                    type = PMThemeCalendarDigitsActiveElementType;
                 
                 if (isToday)
                 {
