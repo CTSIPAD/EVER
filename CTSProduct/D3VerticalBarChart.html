@@ -164,8 +164,8 @@
         .attr("width", x1.rangeBand())
         .attr("height", function (d) { return 0; })
         .transition().duration(1000).ease("in")
-        .attr("height", function (d) { return  y(d.Value); })
-        .attr("y", function (d) { return height-y(d.Value); })
+        .attr("height", function (d) { return  height-y(d.Value); })
+        .attr("y", function (d) { return y(d.Value); })
         .style("fill", function (d) { return color(d.Name); });
         
         

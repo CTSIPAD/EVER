@@ -3283,26 +3283,25 @@ typedef enum{
             [self addChildViewController:metadataTable];
             metadataContainer=[[UIView alloc]initWithFrame:CGRectMake(0,0,200, self.view.bounds.size.height )];
             
-//            UIButton *close = [UIButton buttonWithType:UIButtonTypeCustom];
-//            if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
-//                close.frame = CGRectMake(8, 10, 20, 20);
-//            else
-//                close.frame = CGRectMake(metadataContainer.frame.origin.x+metadataContainer.frame.size.width-30, 10, 20, 20);
-//            [close setBackgroundImage:[UIImage imageNamed:@"delete_item.png"] forState:UIControlStateNormal];
-//            [close addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
-//            [close setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            UIButton *close = [UIButton buttonWithType:UIButtonTypeCustom];
+            if([mainDelegate.IpadLanguage.lowercaseString isEqualToString:@"ar"])
+                close.frame = CGRectMake(8, 10, 20, 20);
+            else
+                close.frame = CGRectMake(metadataContainer.frame.origin.x+metadataContainer.frame.size.width-30, 10, 20, 20);
+            [close setBackgroundImage:[UIImage imageNamed:@"delete_item.png"] forState:UIControlStateNormal];
+            [close addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
+            [close setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             
             metadataContainer=[[UIView alloc]initWithFrame:CGRectMake(0,0,200, self.view.bounds.size.height )];
             
             
             [metadataContainer addSubview:metadataTable.view];
-//            [metadataContainer addSubview:close];
+            [metadataContainer addSubview:close];
             [self.view addSubview:metadataContainer];
 
 //            m_pdfview.frame=CGRectMake(320+(self.view.bounds.size.width-(320+m_pdfview.frame.size.width))/2, 0, m_pdfview.frame.size.width, m_pdfview.frame.size.height);
 //            PdfScroll.frame=m_pdfview.frame;
             
-            //jis orientation
             UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
             if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown) {
                 [metadataContainer removeFromSuperview];
@@ -3599,7 +3598,7 @@ typedef enum{
     }
 }
 -(void)Sign{
-    [self hide];
+//    [self hide];
     [Base64 initialize];
     NSData* imgData;
     if (mainDelegate.user.signature==nil || [mainDelegate.user.signature isEqualToString:@""]) {
@@ -3669,7 +3668,7 @@ typedef enum{
 }
 -(void)HideToolbar{
     [mainToolbar hideToolbar];
-    [self hide];
+//    [self hide];
     if ( (mainPagebar.hidden == NO))
     {
         folderPagebar.hidden = true;
@@ -3680,7 +3679,7 @@ typedef enum{
     
 }
 -(void)HandSign{
-    [self hide];
+//    [self hide];
     [m_pdfview setBtnErase:NO];
 
     if(m_pdfview.btnSign){
