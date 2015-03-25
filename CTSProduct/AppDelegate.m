@@ -30,6 +30,11 @@
 @synthesize IncomingHighlights =_IncomingHighlights,IncomingNotes=_IncomingNotes;
 @synthesize textColor,bgColor,buttonColor,titleColor,cellColor,iconViewColor,CorrespondenceCellColor,SignatureColor,TablebgColor,metaDataCellColor,selectedInboxColor,thumbnailDefined,LoginSliderImages;
 @synthesize barView,logoView,logFilePath,viewController;
+-(BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    self.ShowSplash=YES;
+    return YES;
+}
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
