@@ -46,7 +46,7 @@
     freopen([logFilePath cStringUsingEncoding:NSASCIIStringEncoding],"a+",stderr);
 
     /**** End Create Log file ****/
-    
+    self.ShowSplash=YES;
     self.barView=[[UIView alloc] init];
     self.logoView=[[UIImageView alloc] init];
     self.highlightNow=NO;

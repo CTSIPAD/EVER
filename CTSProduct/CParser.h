@@ -46,4 +46,5 @@
 +(CGFloat)pixelToPoints:(CGFloat)px;
 +(void)SendLogs;
 +(void)fetchPhotos;
++(NSMutableArray*)LoadSliderImages;
 @end

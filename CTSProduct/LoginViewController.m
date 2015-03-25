@@ -57,8 +57,8 @@
     }
     appDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.inboxForArchiveSelected=0;
-  
-    if(appDelegate.LoginSliderImages.count==0){
+    if(appDelegate.ShowSplash){
+        appDelegate.ShowSplash=NO;
         Splash  = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
         Splash.image=[UIImage imageNamed:@"splash1.png"];
         [self.view addSubview:Splash];
@@ -77,8 +77,10 @@
     dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
     
         dispatch_async(imageQueue, ^{
-            
-            [CParser fetchPhotos];
+            appDelegate.LoginSliderImages=[CParser LoadSliderImages];
+            if(appDelegate.LoginSliderImages.count==0){
+                [CParser fetchPhotos];
+            }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self performSelector:@selector(hideSplash:) withObject:animatedSplashScreen afterDelay:6.0];
                 [self performSelector:@selector(initLoginView) withObject:nil afterDelay:6.0];
@@ -90,9 +92,6 @@
     }
     else
     {
-        UIImage* image=[UIImage imageNamed:@"loginScrollBg.png"];
-        NSData *ImageData = UIImagePNGRepresentation(image);
-        [appDelegate.LoginSliderImages addObject:ImageData];
         [self initLoginView];
     }
     

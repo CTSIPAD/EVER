@@ -703,6 +703,7 @@
                     NSURL *url=[NSURL URLWithString:strUrl];
                     NSData *data = [NSData dataWithContentsOfURL:url ];
                     [mainDelegate.LoginSliderImages addObject:data];
+                    [self cacheSliderImages:data];
                 }
             }
             
@@ -852,6 +853,50 @@
     }
     return data;
 }
++(NSMutableArray*)LoadSliderImages{
+    NSFetchRequest *fetchRequest;
+    NSError *error;
+    NSEntityDescription *entity;
+    id delegate = [[UIApplication sharedApplication] delegate];
+    
+    NSManagedObjectContext* managedObjectContext = [delegate managedObjectContext];
+    
+    fetchRequest = [[NSFetchRequest alloc] init];
+    entity = [NSEntityDescription
+              entityForName:@"SliderImages" inManagedObjectContext:managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSMutableArray * data=[[NSMutableArray alloc]init];
+    for (NSManagedObject *obj in fetchedObjects) {
+        NSString* value = [obj valueForKey:@"image"];
+        [data addObject:value];
+        
+    }
+    return data;
+}
+
++(void)cacheSliderImages:(NSData*)value{
+    NSError *error;
+
+    id delegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext* managedObjectContext = [delegate managedObjectContext];
+    
+    NSManagedObject *dataRecord = [NSEntityDescription
+                                   insertNewObjectForEntityForName:@"SliderImages"
+                                   inManagedObjectContext:managedObjectContext];
+    [dataRecord setValue:value forKey:@"image"];
+    
+    //NSData *imageData = UIImageJPEGRepresentation(node.image,0.2);
+    
+    
+    if (![managedObjectContext save:&error]) {
+        
+        NSLog(@"Error:%@", error);
+    }
+    
+}
+
 +(NSMutableArray*)LoadInboxItems{
     NSFetchRequest *fetchRequest;
     NSError *error;

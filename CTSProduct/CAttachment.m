@@ -202,7 +202,8 @@
         NSString* pdfCacheName = [self.url lastPathComponent];//take the name of the file
         
         tempPdfLocation = [path stringByAppendingPathComponent:pdfCacheName];//compute the full path for the file
-         BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:tempPdfLocation];//check if file is already exists
+//         BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:tempPdfLocation];//check if file is already exists
+        BOOL fileExists =NO;
          if(!fileExists){//write file to cache if not exist
         
             NSData *data = [NSData dataWithContentsOfURL:url ];

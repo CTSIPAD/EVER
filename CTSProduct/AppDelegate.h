@@ -29,6 +29,7 @@
 @property (strong, nonatomic) NSString* IpadLanguage;
 @property (nonatomic,assign) NSInteger attachementsCount;
 @property(nonatomic,assign)BOOL isSharepoint;
+@property(nonatomic,assign)BOOL ShowSplash;
 @property(nonatomic,assign)BOOL isOfflineMode;
 @property(nonatomic,assign)BOOL Downloading;
 @property(nonatomic,assign)BOOL Sync;
