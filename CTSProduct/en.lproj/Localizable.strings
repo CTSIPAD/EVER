@@ -206,3 +206,4 @@
 "Reports.ShowRangeDate" = "*showing data from %@ to %@";
 "Reports.ShowingDataFrom" = "*Showing data from";
 "Reports.ToDate" = "to";
+"Reports.EmptyMessage" = "No data to display.";

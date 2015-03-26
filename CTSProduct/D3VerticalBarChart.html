@@ -67,13 +67,15 @@
         <span id="chartTitle" style="position:absolute; top:0 ;left:25%;font-size:24px;font-family:'open sans';"></span>
         <span id="mySpan" style="position:absolute; bottom:8%; left:0;font-size:13px; "></span>
         <div id="barChart" style="margin-top:30px;margin-left:20px;margin-bottom:30px;" onclick="hideToolTip(this)"/>
+        <span id="emptyDataMsg" style="position:absolute; top:0 ;left:30%;font-size:24px;font-family:'open sans';"></span>
     </body>
     <script src="d3.min.js"></script>
     <script src="d3.tip.js"></script>
   
     <script type="text/javascript">
         
-    function showData(data,message,structure,count,title) {
+    function showData(data,message,structure,count,title,emptyMsg) {
+        if(data.length>0){
         document.getElementById("mySpan").textContent=message.text;
         document.getElementById("chartTitle").textContent=title.text;
         var margin = { top: 30, right: 20, bottom: 40, left: 40 },
@@ -160,7 +162,7 @@
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide)
         .attr("x", function (d) { return x1(d.Name); })
-        .attr("y",function (d) { return height;)
+        .attr("y",function (d) { return height;})
         .attr("width", x1.rangeBand())
         .attr("height", 0)
         .transition().duration(1000).ease("in")
@@ -219,6 +221,9 @@
                                           });
                          });
                          return max;
+        }
+        }else{
+            document.getElementById("emptyDataMsg").textContent=emptyMsg.text;
         }
     }
     

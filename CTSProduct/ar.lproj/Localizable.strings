@@ -199,3 +199,4 @@
 "Reports.ShowRangeDate" = "%@ عرض البيانات من تاريخ @% إلى تاريخ*";
 "Reports.ShowingDataFrom" = "*عرض البيانات من تاريخ";
 "Reports.ToDate" = "إلى تاريخ";
+"Reports.EmptyMessage" = ".لا يوجد بيانات";

@@ -76,6 +76,7 @@
 		04C904521AB87D320008B4D4 /* Ipad-Icon_76pt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04C9044C1AB87D320008B4D4 /* Ipad-Icon_76pt@2x.png */; };
 		04CBF9F71AA841D800F9A82A /* d3pie.html in Resources */ = {isa = PBXBuildFile; fileRef = 04CBF9F61AA841D800F9A82A /* d3pie.html */; };
 		04CBF9F91AA842E100F9A82A /* d3pie.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 04CBF9F81AA842E100F9A82A /* d3pie.min.js */; };
+		3EB9B43C1AC3FDA1009BA331 /* Close.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EB9B43B1AC3FDA1009BA331 /* Close.png */; };
 		3EBB382E1AB96DFA00829D44 /* InfColorPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EBB382D1AB96DFA00829D44 /* InfColorPickerView.xib */; };
 		3EC2209F1AB96679008D0731 /* InfColorBarPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC220901AB96679008D0731 /* InfColorBarPicker.m */; };
 		3EC220A01AB96679008D0731 /* InfColorIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC220921AB96679008D0731 /* InfColorIndicatorView.m */; };
@@ -90,6 +91,7 @@
 		3EC4FF3B1ABAFC8400AC3222 /* NotClickedMonth.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EC4FF351ABAFC8400AC3222 /* NotClickedMonth.png */; };
 		3EC4FF3C1ABAFC8400AC3222 /* NotClickedWeek.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EC4FF361ABAFC8400AC3222 /* NotClickedWeek.png */; };
 		3EC4FF3D1ABAFC8400AC3222 /* NotClickedYear.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EC4FF371ABAFC8400AC3222 /* NotClickedYear.png */; };
+		3EF5185E1AC40003000FC238 /* Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 3EF5185D1AC40003000FC238 /* Back.png */; };
 		956B97BC1966DB4F00D01DB8 /* note.m in Sources */ = {isa = PBXBuildFile; fileRef = 956B97BB1966DB4F00D01DB8 /* note.m */; };
 		956B97BF1966DB6600D01DB8 /* HighlightClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 956B97BE1966DB6600D01DB8 /* HighlightClass.m */; };
 		A2010BEA195D6C55004AC93C /* FreeSign.png in Resources */ = {isa = PBXBuildFile; fileRef = A2010BE6195D6C55004AC93C /* FreeSign.png */; };
@@ -349,6 +351,7 @@
 		04C9044C1AB87D320008B4D4 /* Ipad-Icon_76pt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ipad-Icon_76pt@2x.png"; sourceTree = "<group>"; };
 		04CBF9F61AA841D800F9A82A /* d3pie.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = d3pie.html; sourceTree = "<group>"; };
 		04CBF9F81AA842E100F9A82A /* d3pie.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = d3pie.min.js; sourceTree = "<group>"; };
+		3EB9B43B1AC3FDA1009BA331 /* Close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Close.png; sourceTree = "<group>"; };
 		3EBB382D1AB96DFA00829D44 /* InfColorPickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfColorPickerView.xib; sourceTree = "<group>"; };
 		3EC2208F1AB96679008D0731 /* InfColorBarPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfColorBarPicker.h; sourceTree = "<group>"; };
 		3EC220901AB96679008D0731 /* InfColorBarPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfColorBarPicker.m; sourceTree = "<group>"; };
@@ -371,6 +374,7 @@
 		3EC4FF351ABAFC8400AC3222 /* NotClickedMonth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotClickedMonth.png; sourceTree = "<group>"; };
 		3EC4FF361ABAFC8400AC3222 /* NotClickedWeek.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotClickedWeek.png; sourceTree = "<group>"; };
 		3EC4FF371ABAFC8400AC3222 /* NotClickedYear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotClickedYear.png; sourceTree = "<group>"; };
+		3EF5185D1AC40003000FC238 /* Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Back.png; sourceTree = "<group>"; };
 		956B97BA1966DB4F00D01DB8 /* note.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = note.h; sourceTree = "<group>"; };
 		956B97BB1966DB4F00D01DB8 /* note.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = note.m; sourceTree = "<group>"; };
 		956B97BD1966DB6600D01DB8 /* HighlightClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightClass.h; sourceTree = "<group>"; };
@@ -841,6 +845,8 @@
 		9572E0C11961567E0087A06C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				3EF5185D1AC40003000FC238 /* Back.png */,
+				3EB9B43B1AC3FDA1009BA331 /* Close.png */,
 				A278885A1A165E6F0031C3CE /* thumbnail1.png */,
 				A278885C1A165EFB0031C3CE /* thumbnail3.png */,
 				043477AE1AB220F8009513D8 /* NotePopUpBg.png */,
@@ -1676,6 +1682,7 @@
 				045986811AC06B1D004708F8 /* splashLoading3.png in Resources */,
 				045551381AB2E87C00A7844C /* D3OverdueBarChart.html in Resources */,
 				A29DA1C91A12126500BE6CAE /* Logout.png in Resources */,
+				3EB9B43C1AC3FDA1009BA331 /* Close.png in Resources */,
 				04A1314E1AAD8F3D00D422F8 /* PopUpbtn.png in Resources */,
 				A2F232F319557C5000CA09DD /* InfoPlist.strings in Resources */,
 				A29DA1951A11FDD600BE6CAE /* NextIcon.png in Resources */,
@@ -1797,6 +1804,7 @@
 				043477AF1AB220F8009513D8 /* NotePopUpBg.png in Resources */,
 				A2B9FA231982B3FD00A61F5F /* camera.png in Resources */,
 				A27888591A163EED0031C3CE /* Folder.png in Resources */,
+				3EF5185E1AC40003000FC238 /* Back.png in Resources */,
 				04A131441AAD8ECC00D422F8 /* DateIcon.png in Resources */,
 				0459867E1AC06B1D004708F8 /* splashLoading.png in Resources */,
 				3EC4FF3B1ABAFC8400AC3222 /* NotClickedMonth.png in Resources */,
