@@ -337,9 +337,11 @@
 
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration{
+    
     [self adjustControls:interfaceOrientation];
 }
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
+    
     [txtPassword resignFirstResponder];
     [txtUsername resignFirstResponder];
     [scr removeFromSuperview];
@@ -728,11 +730,12 @@
     activityIndicatorObject.transform = CGAffineTransformMakeScale(1.5, 1.5);
     [self.view addSubview:activityIndicatorObject];
 }
-
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+-(BOOL)shouldAutorotate{
+    if (appDelegate.ShowSplash) {
+        return NO;
+    }
     return YES;
 }
+
 
 @end
