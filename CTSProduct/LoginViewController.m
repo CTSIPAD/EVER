@@ -62,20 +62,20 @@
         Splash  = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
         Splash.image=[UIImage imageNamed:@"splash1.png"];
         [self.view addSubview:Splash];
-
-
-    animatedSplashScreen  = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
-    [self addSubviewWithZoomInAnimation:animatedSplashScreen duration:0.4 delay:0 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(animatedSplashScreen.frame.origin.x+animatedSplashScreen.frame.size.width/2, animatedSplashScreen.frame.origin.y+animatedSplashScreen.frame.size.height/2) originX:animatedSplashScreen.frame.origin.x originY:animatedSplashScreen.frame.origin.y];    animatedSplashScreen.animationImages= [NSArray arrayWithObjects:[UIImage imageNamed:@"splashLoading.png"],[UIImage imageNamed:@"splashLoading1.png"],[UIImage imageNamed:@"splashLoading2.png"],[UIImage imageNamed:@"splashLoading3.png"], nil];
-    animatedSplashScreen.animationRepeatCount=100;
-    animatedSplashScreen.animationDuration=6;
-
-    logo  =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"splashlogo.png"]];
-    [self addSubviewWithDropInAnimation:logo duration:0.6 withParentView:self.view FromPoint:CGPointMake(logo.frame.origin.x+self.view.frame.size.width/2, self.view.frame.origin.y+self.view.frame.size.height/2) originX:self.view.frame.origin.x/2 originY:self.view.frame.origin.y/2];
-
-    
-    
-    dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
-    
+        
+        
+        animatedSplashScreen  = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+        [self addSubviewWithZoomInAnimation:animatedSplashScreen duration:0.4 delay:0 option:UIViewAnimationOptionAllowUserInteraction withParentView:self.view FromPoint:CGPointMake(animatedSplashScreen.frame.origin.x+animatedSplashScreen.frame.size.width/2, animatedSplashScreen.frame.origin.y+animatedSplashScreen.frame.size.height/2) originX:animatedSplashScreen.frame.origin.x originY:animatedSplashScreen.frame.origin.y];    animatedSplashScreen.animationImages= [NSArray arrayWithObjects:[UIImage imageNamed:@"splashLoading.png"],[UIImage imageNamed:@"splashLoading1.png"],[UIImage imageNamed:@"splashLoading2.png"],[UIImage imageNamed:@"splashLoading3.png"], nil];
+        animatedSplashScreen.animationRepeatCount=100;
+        animatedSplashScreen.animationDuration=6;
+        
+        logo  =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"splashlogo.png"]];
+        [self addSubviewWithDropInAnimation:logo duration:0.6 withParentView:self.view FromPoint:CGPointMake(logo.frame.origin.x+self.view.frame.size.width/2, self.view.frame.origin.y+self.view.frame.size.height/2) originX:self.view.frame.origin.x/2 originY:self.view.frame.origin.y/2];
+        
+        
+        
+        dispatch_queue_t imageQueue = dispatch_queue_create("Image Queue",NULL);
+        
         dispatch_async(imageQueue, ^{
             appDelegate.LoginSliderImages=[CParser LoadSliderImages];
             if(appDelegate.LoginSliderImages.count==0){
@@ -98,10 +98,10 @@
 }
 -(void)AddImage{
     [animatedSplashScreen startAnimating];
-
-//    [logo removeFromSuperview];
-//    [self.view addSubview:logo];
-
+    
+    //    [logo removeFromSuperview];
+    //    [self.view addSubview:logo];
+    
 }
 -(void)initLoginView{
     /**** UserName TextView ******/
@@ -277,7 +277,7 @@
                                                                    view.transform=CGAffineTransformIdentity;
                                                                }completion:^(BOOL finished){
                                                                    [animatedSplashScreen startAnimating];
-
+                                                                   
                                                                }];
                                           }];
                      }];
@@ -346,26 +346,25 @@
     [txtUsername resignFirstResponder];
     [scr removeFromSuperview];
     [pgCtr removeFromSuperview];
-    if(interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown){
-        
-        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginPortrait.png"]];
-        scr=[[UIScrollView alloc] initWithFrame:CGRectMake(35, 100,690, 355)];
-    }
-    else if(interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight){
-        scr=[[UIScrollView alloc] initWithFrame:CGRectMake(33, 135,460, 515)];
-        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginLandscape.png"]];
-        
-    }
-    scr.tag = 1;
-    scr.autoresizingMask=UIViewAutoresizingNone;
-    [self.view addSubview:scr];
-    [self setupScrollView:scr];
-    pgCtr = [[UIPageControl alloc] initWithFrame:CGRectMake(33, scr.frame.size.height+scr.frame.origin.y-36, scr.frame.size.width, 36)];
-    [pgCtr setTag:12];
-    pgCtr.numberOfPages=appDelegate.LoginSliderImages.count;
-    pgCtr.autoresizingMask=UIViewAutoresizingNone;
-    [self.view addSubview:pgCtr];
-    
+        if(interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown){
+            
+            self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginPortrait.png"]];
+            scr=[[UIScrollView alloc] initWithFrame:CGRectMake(35, 100,690, 355)];
+        }
+        else if(interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight){
+            scr=[[UIScrollView alloc] initWithFrame:CGRectMake(33, 135,460, 515)];
+            self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loginLandscape.png"]];
+            
+        }
+        scr.tag = 1;
+        scr.autoresizingMask=UIViewAutoresizingNone;
+        [self.view addSubview:scr];
+        [self setupScrollView:scr];
+        pgCtr = [[UIPageControl alloc] initWithFrame:CGRectMake(33, scr.frame.size.height+scr.frame.origin.y-36, scr.frame.size.width, 36)];
+        [pgCtr setTag:12];
+        pgCtr.numberOfPages=appDelegate.LoginSliderImages.count;
+        pgCtr.autoresizingMask=UIViewAutoresizingNone;
+        [self.view addSubview:pgCtr];
     
 }
 
@@ -735,6 +734,7 @@
         return NO;
     }
     return YES;
+  
 }
 
 

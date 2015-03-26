@@ -316,9 +316,10 @@
     if([[NSString stringWithFormat: @"%ld", (long)statusCode]  isEqual: @"200"]){
         
         NSString* title=[NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.CorrespondencesByCategory", @"Correspondences by Category")];
+        NSString *emptyMessage =[NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.EmptyMessage", @"No data to display.")];
         NSString* size=[NSString stringWithFormat:@"{size:%f}",Width-50];
         message =[NSString stringWithFormat:@"{text:\"%@\"}",message];
-        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showRing(%@,%@,%@,%@)",size,title,data,message]];
+        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showRing(%@,%@,%@,%@,%@)",size,title,data,message,emptyMessage]];
         
     }
     

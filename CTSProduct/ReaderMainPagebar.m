@@ -261,12 +261,12 @@
     NSString* urlString;
     NSURL *url;
     
-    UIImage* backImage=[UIImage imageNamed:[NSString stringWithFormat:@"PopUpbtn.png"]];
+    UIImage* backImage=[UIImage imageNamed:[NSString stringWithFormat:@"Back.png"]];
 
-    UIButton *gobackFolder=[[UIButton alloc]initWithFrame:CGRectMake(10, 12, 180, backImage.size.height)];
+    UIButton *gobackFolder=[[UIButton alloc]initWithFrame:CGRectMake(10, 12, 180, backImage.size.height-10)];
     [gobackFolder setBackgroundImage:backImage forState:UIControlStateNormal];
-    gobackFolder.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
-    [gobackFolder setTitle:NSLocalizedString(@"Back", @"Back") forState:UIControlStateNormal];
+    //gobackFolder.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:17];
+    //[gobackFolder setTitle:NSLocalizedString(@"Back", @"Back") forState:UIControlStateNormal];
 
     [gobackFolder addTarget:self action:@selector(closePagebar) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:gobackFolder];

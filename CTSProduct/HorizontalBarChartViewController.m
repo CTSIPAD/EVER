@@ -106,7 +106,9 @@
     if([[NSString stringWithFormat: @"%ld", (long)statusCode]  isEqual: @"200"]){
     NSString *month =[NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.Month", @"month")];
         NSString *title =[NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.CorrespondencesCountByStructures", @"Correspondences Count by Structures")];
-    [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showData(%@,%@,%@)",data,month,title]];
+        NSString *emptyMessage =[NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.EmptyMessage", @"No data to display.")];
+        NSString *count =[NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.Count", @"No data to display.")];
+    [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showData(%@,%@,%@,%@,%@)",data,month,title,emptyMessage,count]];
         
     }
     

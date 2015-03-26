@@ -3288,7 +3288,7 @@ typedef enum{
                 close.frame = CGRectMake(8, 10, 20, 20);
             else
                 close.frame = CGRectMake(metadataContainer.frame.origin.x+metadataContainer.frame.size.width-30, 10, 20, 20);
-            [close setBackgroundImage:[UIImage imageNamed:@"delete_item.png"] forState:UIControlStateNormal];
+            [close setBackgroundImage:[UIImage imageNamed:@"Close.png"] forState:UIControlStateNormal];
             [close addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
             [close setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             

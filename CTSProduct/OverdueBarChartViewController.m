@@ -113,7 +113,8 @@
         NSString *structure =[NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.Structure", @"structure")];
         NSString *count = [NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.Count", @"count")];
         NSString *title =[NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.NumberOfOverdueTransfersByStructure", @"Number of Overdue Transfers by Structure")];
-        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showData(%@,%@,%@,%@)",data,structure,count,title]];
+        NSString *emptyMessage =[NSString stringWithFormat:@"{text:\"%@\"}",NSLocalizedString(@"Reports.EmptyMessage", @"No data to display.")];
+        [self.WebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"showData(%@,%@,%@,%@,%@)",data,structure,count,title,emptyMessage]];
         
     }
     
