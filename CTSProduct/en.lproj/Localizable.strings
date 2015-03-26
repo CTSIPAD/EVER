@@ -71,7 +71,7 @@
 "Transfer.TransferTo"="Transfer To";
 "Transfer.Purpose"="Purpose";
 "Transfer.DueDate"="Due Date";
-"Transfer.Note"="Note";
+"Transfer.Note"="Instructions To Receiver";
 "Transfer.PrivateNote"="Private Note";
 "Transfer.PublicNote"="Public Note";
 "Transfer.Cancel"="Cancel";

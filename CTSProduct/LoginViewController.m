@@ -115,7 +115,7 @@
     self.txtUsername.returnKeyType = UIReturnKeyGo;
     self.txtUsername.autocorrectionType=FALSE;
     self.txtUsername.placeholder=@"Username";
-    self.txtUsername.text=@"dory";
+    self.txtUsername.text=@"doh";
     self.txtUsername.textColor=[UIColor colorWithRed:48/255.0 green:157/255.0 blue:174/255.0 alpha:1];
     [self.txtUsername setValue:[UIColor colorWithRed:48/255.0 green:157/255.0 blue:174/255.0 alpha:1] forKeyPath:@"_placeholderLabel.textColor"];
     
@@ -163,7 +163,7 @@
     
     //    [self.btnLogin setImage:LoginbtnImg forState:UIControlStateNormal];
     
-    self.txtPassword.text=@"dory";
+    self.txtPassword.text=@"ever123";
     
     /**** LOGIN BUTTON ******/
     

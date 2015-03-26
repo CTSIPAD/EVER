@@ -74,6 +74,7 @@
     <script type="text/javascript">
         
     function showData(data,message,structure,count,title) {
+        
         document.getElementById("mySpan").textContent=message.text;
         document.getElementById("chartTitle").textContent=title.text;
         var margin = { top: 30, right: 20, bottom: 40, left: 40 },
@@ -160,7 +161,7 @@
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide)
         .attr("x", function (d) { return x1(d.Name); })
-        .attr("y",function (d) { return height;)
+        .attr("y",function (d) { return height;})
         .attr("width", x1.rangeBand())
         .attr("height", 0)
         .transition().duration(1000).ease("in")

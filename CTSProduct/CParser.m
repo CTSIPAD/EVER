@@ -702,8 +702,10 @@
                     NSString* strUrl = SliderItem.stringValue;
                     NSURL *url=[NSURL URLWithString:strUrl];
                     NSData *data = [NSData dataWithContentsOfURL:url ];
-                    [mainDelegate.LoginSliderImages addObject:data];
-                    [self cacheSliderImages:data];
+                    if(data!=nil){
+                        [mainDelegate.LoginSliderImages addObject:data];
+                        [self cacheSliderImages:data];
+                    }
                 }
             }
             

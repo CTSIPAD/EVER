@@ -33,6 +33,8 @@
 -(BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.ShowSplash=YES;
+    LoginSliderImages=[[NSMutableArray alloc]init];
+
     return YES;
 }
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
