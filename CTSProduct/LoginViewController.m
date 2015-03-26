@@ -58,7 +58,6 @@
     appDelegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
     appDelegate.inboxForArchiveSelected=0;
     if(appDelegate.ShowSplash){
-        appDelegate.ShowSplash=NO;
         Splash  = [[UIImageView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
         Splash.image=[UIImage imageNamed:@"splash1.png"];
         [self.view addSubview:Splash];
@@ -202,6 +201,8 @@
     pgCtr.autoresizingMask=UIViewAutoresizingNone;
     //    pgCtr.backgroundColor=appDelegate.selectedInboxColor;
     [self.view addSubview:pgCtr];
+    appDelegate.ShowSplash=NO;
+
 }
 
 -(void)Changelogo
