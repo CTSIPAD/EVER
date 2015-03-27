@@ -51,6 +51,11 @@
         border-radius: 2px;
     }
     
+    #chartDiv
+    {
+        position: absolute;
+    }
+    
     /* Creates a small triangle extender for the tooltip */
     .d3-tip:after
     {
@@ -73,14 +78,14 @@
         left: 0;
     }
     
+    
     </style>
   
     </head>
     <body>
         <span id="chartTitle" style="position:absolute; top:0 ;left:25%;font-size:24px;font-family:'open sans';"></span>
         <span id="emptyDataMsg" style="position:absolute; top:0 ;left:30%;font-size:24px;font-family:'open sans';"></span>
-       <!--<span id="test" style="position:absolute; bottom:18%; left:40%;font-size:18px; "></span>-->
-        <div style="margin-top: 50px;margin-left:30px" onclick="hideToolTip(this)">
+        <div id="chartDiv" style="margin-top: 50px;margin-left:30px" onclick="hideToolTip(this)">
             <svg class="chart"></svg>
         </div>
     </body>
@@ -89,11 +94,12 @@
     <script>
         
     function showData(data,month,title,emptyMsg,countTxt) {
-        if(data.Labels.length>0){
+        
+    if(data.Labels.length>0){
+    GetDivPosition(data);
     document.getElementById("chartTitle").textContent=title.text;
-    //document.getElementById("test").textContent=countTxt.text;
     var colors = GetColors(data);
-    var chartHeight = 450;
+    var chartHeight = GetHeight(data);//450;
     var aux = chartHeight -(10*(data.Labels.length ));
     var groupHeight = aux / (data.Labels.length);
     var chartWidth = 400,
@@ -149,6 +155,7 @@
     var chart = d3.select(".chart")
     .attr("width", spaceForNames + chartWidth + spaceForLegend)
     .attr("height", chartHeight);
+    
     
     // Create bars
     var bar = chart.selectAll("g")
@@ -259,14 +266,27 @@
            
            function GetHeight(data){
                var w = 450;
-               if(data.length == 1){
+               if(data.Labels.length == 1){
                    w = (w/3);
                }
-               if(data.length == 2){
+               if(data.Labels.length == 2){
                    w = (w/2);
                }
                return w;
            }
+           
+           function GetDivPosition(data){
+               
+               if(data.Labels.length == 1){
+                    document.getElementById("chartDiv").style.top="200px";
+                    
+               }
+               if(data.Labels.length == 2){
+                   document.getElementById("chartDiv").style.top="150px";
+               }else{
+                   document.getElementById("chartDiv").style.top="50px";
+               }
+            }
 
 
         }else{
